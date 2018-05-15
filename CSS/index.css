@@ -1,0 +1,107 @@
+nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
+    height: 58px;
+    line-height: 58px;
+}
+
+
+.modal{
+    width:40%
+}
+#logo{
+    margin-left: 20px;
+}
+
+.nav-list{
+    margin-right:20px;
+}
+
+#logout-button{
+    margin-top: 13px;
+}
+
+.section1{
+    text-align:center;
+}
+
+h4,h5{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight:bold;
+    text-align: center;
+}
+
+li:hover,li.active {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.secondary-content{
+    color: #f0120d;
+}
+
+#notification-nav{
+    top: auto !important;
+    left: 75.7% !important;
+    width: 24% !important;
+}
+
+#profile-nav{
+    top:auto !important;
+    left:72.13% !important;
+    width: 24% !important;
+    overflow: auto;
+    margin-right: 20px;
+    padding-right:20px;
+}
+
+/*Create color part*/
+.color-container {
+    text-align: justify;
+    width: 600px;
+    /*position: relative;*/
+}
+
+.colorpicker {
+    background-color: #222222;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 2px 2px 2px #444444;
+    color: #FFFFFF;
+    font-size: 12px;
+    position: fixed;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    /*position: absolute;
+    left: 180px;
+    top: 40px;*/
+}
+
+#picker {
+    cursor: crosshair;
+    margin: 10px;
+    border: 0;
+    position: relative;
+}
+
+.preview {
+    border-radius: 3px;
+    border: solid 1px;
+    box-shadow: 2px 2px 2px #444444;
+    cursor: pointer;
+    height: 50px;
+    width: 140px;
+}
+
+/*Create product part*/
+.card.small .card-content, .card.medium .card-content, .card.large .card-content {
+    max-height: 66.645%;
+    overflow: hidden;
+}
+.card.large {
+    height: 600px;
+}
+
+.select-wrapper .dropdown-content{
+    position: relative;
+    top: auto !important;
+}
+
+

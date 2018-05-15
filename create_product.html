@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+    <link rel = "stylesheet"
+          href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel = "stylesheet"
+          href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css">
+    <link rel= "stylesheet"
+          href="CSS/index.css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js">
+    </script>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/js/materialize.min.js">
+    </script>
+    <script src = ./JS/create_product.js>
+    </script>
+    <title>DigiVaate</title>
+</head>
+<body>
+<!-- Navigation bar -->
+<nav>
+    <div class="nav-wrapper indigo lighten-2">
+        <a href="index.html" class="brand-logo" id="logo">DIGIVAATE</a>
+        <!--
+        <a class="waves-effect right btn nav-list indigo darken-3" id="logout-button">LOGOUT</a>
+        -->
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a id="view-profile" class='dropdown-trigger' href='#' data-target='profile-nav'><i class="material-icons">person</i></a></li>
+            <li><a id="view-notification" class='dropdown-trigger' href='#' data-target='notification-nav'><i class="material-icons">notifications</i></a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- notification nav -->
+
+<ul id='notification-nav' class='dropdown-content'>
+    <li><h5>Notifications</h5></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="#!">There is 1 change on "ABC" collection</a></li>
+    <li><a href="#!">There is 1 change on "ABC" collection</a></li>
+    <li><a href="#!">There is 1 change on "ABC" collection</a></li>
+</ul>
+<!-- profile nav -->
+<ul id='profile-nav' class='dropdown-content'>
+    <li><h5>Profile</h5></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="#!">Edit profile</a></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="#!">LOGOUT</a></li>
+</ul>
+<nav>
+    <div class="nav-wrapper">
+        <div class="col s12">
+            <a href="#!" class="breadcrumb">Team 1</a>
+            <a href="#!" class="breadcrumb">Collection</a>
+            <a href="#!" class="breadcrumb">Color</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Create product part -->
+<div class="row">
+    <div class="col s9">
+        <h3>New Product</h3>
+        <div class="col s10">
+        <div class="card large">
+            <div class="card-content">
+                <h5>T-Shirt</h5>
+            </div>
+            <div class="divider"></div>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab"><a href="#product-information">Information</a></li>
+                    <li class="tab"><a href="#size">Size</a></li>
+                    <li class="tab"><a href="#test5">Price</a></li>
+                </ul>
+            </div>
+            <div class="card-content">
+                <div id="product-information">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="product-name">Product Name</label>
+                            <input id="product-name" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="product-code">Product Code</label>
+                            <input id="product-code" type="text" class="validate">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6" id="color-picker">
+                            Colors
+                            <select multiple>
+                                <option value="1">Red</option>
+                                <option value="2">Blue</option>
+                                <option value="3">Green</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field col s6" id="material-picker">
+                            Materials
+                            <select multiple>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="product-description" class="materialize-textarea" data-length="120"></textarea>
+                            <label for="product-description">Description</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="test5">Test 2</div>
+                <div id="size">Test 2</div>
+            </div>
+            <div class="card-action">
+                <a href="#">Submit</a>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col s3">
+        <!-- Side navigation panel -->
+        <h5>Menu</h5>
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header">Product</div>
+                <div class="collapsible-body"><a href="create_product.html">Create new product</a></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Color</div>
+                <div class="collapsible-body"><a href="create_color.html">Create new color</a></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Budget</div>
+                <div class="collapsible-body"><a href="create_budget.html">Create new budget</a></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Outfit</div>
+                <div class="collapsible-body"><a href="">Create new outfit</a></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Theme</div>
+                <div class="collapsible-body"><a href="">Create new theme</a></div>
+            </li>
+        </ul>
+    </div>
+</div>
