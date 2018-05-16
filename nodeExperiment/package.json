@@ -1,0 +1,19 @@
+{
+  "name": "nodeexperiment",
+  "version": "1.0.0",
+  "description": "Node.js RESTful API excercise (Build simple shop api)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api"
+  ],
+  "author": "Markus",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

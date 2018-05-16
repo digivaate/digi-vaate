@@ -60,3 +60,19 @@ typings/
 # next.js build output
 .next
 .DS_Store
+
+## NODE EXPERIMENT
+# User-specific stuff
+nodeExperiment/.idea/**/workspace.xml
+nodeExperiment/.idea/**/tasks.xml
+nodeExperiment/.idea/**/dictionaries
+nodeExperiment/.idea/**/shelf
+
+# Sensitive or high-churn files
+nodeExperiment/.idea/**/dataSources/
+nodeExperiment/.idea/**/dataSources.ids
+nodeExperiment/.idea/**/dataSources.local.xml
+nodeExperiment/.idea/**/sqlDataSources.xml
+nodeExperiment/.idea/**/dynamic.xml
+nodeExperiment/.idea/**/uiDesigner.xml
+nodeExperiment/.idea/**/dbnavigator.xml
