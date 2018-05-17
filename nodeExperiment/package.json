@@ -14,8 +14,9 @@
   "author": "Markus",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "latest",
     "express": "^4.16.3",
-    "morgan": "^1.9.0",
-    "body-parser": "latest"
+    "mongoose": "^5.1.1",
+    "morgan": "^1.9.0"
   }
 }
