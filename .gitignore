@@ -76,3 +76,5 @@ nodeExperiment/.idea/**/sqlDataSources.xml
 nodeExperiment/.idea/**/dynamic.xml
 nodeExperiment/.idea/**/uiDesigner.xml
 nodeExperiment/.idea/**/dbnavigator.xml
+
+.idea/workspace.xml
