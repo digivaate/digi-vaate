@@ -1,18 +1,29 @@
 import React,{ Component } from "react";
-import { render } from "react-dom";
 import { makeData } from "../Data";
+import ProductCard from "./product-card"
 
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { Select, Button, Divider } from 'antd';
 
+
+const Option = Select.Option;
 class BudgetPlanningTable extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            data: makeData()
+            data: makeData(),
+            styleName:'',
+            coverPercentage : 0,
+            coverAmount: 0,
+            purchasePrice: 0,
+            unitPriceWithoutTax: 0,
+            consumerPrice: 0
         };
         this.renderEditable = this.renderEditable.bind(this);
+        this.addNewRow = this.addNewRow.bind(this);
+        this.removeRow = this.removeRow.bind(this);
     }
 
     renderEditable(cellInfo) {
@@ -45,10 +56,17 @@ class BudgetPlanningTable extends Component {
         })
     }
 
-    render() {
-        const {data} = this.state;
+    loadProduct(productData){
+        console.log(productData)
+    }
 
-        console.log(data);
+    render() {
+        console.log("This is from hahaha");
+        console.log(this.state);
+        const {data} = this.state;
+        const {coverAmount} = this.state;
+        const {purchasePrice} = this.state;
+
 
         // First delivery sum calculation
         const sumOfAmountFirstDelivery = function(){
@@ -99,6 +117,24 @@ class BudgetPlanningTable extends Component {
             return componentValue.reduce((a,b) => a+b,0)
         };
 
+        // Total of cover price and purchase price
+
+        const sumOfCoverAmount = function(){
+            let componentValue = [];
+            for (let i = 0; i < data.length; i++) {
+                componentValue.push(parseFloat(data[i].amountFirstDelivery) * coverAmount);
+            }
+            return componentValue.reduce((a,b) => a+b,0)
+        };
+
+        const sumOfPurchasePrice = function(){
+            let componentValue = [];
+            for (let i = 0; i < data.length; i++) {
+                componentValue.push(parseFloat(data[i].amountFirstDelivery) * purchasePrice);
+            }
+            return componentValue.reduce((a,b) => a+b,0)
+        };
+
         // Total unit sum calculation
         const sumOfEstimatedTotalUnit = function(){
             let componentValue = [];
@@ -116,28 +152,29 @@ class BudgetPlanningTable extends Component {
             return componentValue.reduce((a,b) => a+b,0)
         };
 
+
         // columns of table
         const columns = [
             {
                 Header: "Style Name",
                 headerClassName: "wordwrap",
-                accessor: "styleName",
-                Cell: this.renderEditable,
-                width: 130,
-                Footer: () => <button onClick={() => this.addNewRow()}> Add new row </button>
+                Cell: () => <Select defaultValue="trench-coat" style={{ width: 130 }}>
+                    <Option value="trench-coat">Trench coat</Option>
+                    <Option value="blouse">Blouse</Option>
+                    <Option value="jacket">Jacket</Option>
+
+                </Select>,
+                width: 140,
             },
             {
                 Header: "Consumer Price",
                 headerClassName: "wordwrap",
-                accessor: "consumerPrice",
-                Cell: this.renderEditable,
-                Footer: () => <button onClick={() => this.removeRow()}> Remove row </button>
+                Cell: this.state.consumerPrice,
             },
             {
                 Header: "Unit Price without Taxes",
                 headerClassName: "wordwrap",
-                accessor: "unitPriceWithoutTax",
-                Cell: this.renderEditable
+                Cell: this.state.unitPriceWithoutTax
             },
             {
                 Header: "Amount 1st delivery",
@@ -214,19 +251,31 @@ class BudgetPlanningTable extends Component {
                 Header: "Cover %",
                 headerClassName: "wordwrap",
                 accessor: "coverPercentage",
-                Cell: this.renderEditable
+                Cell: () => this.state.coverPercentage
             },
             {
                 Header: "Cover amount",
                 headerClassName: "wordwrap",
-                accessor: "coverAmount",
-                Cell: this.renderEditable
+                id: "coverAmount",
+                accessor: d =>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: parseFloat(d.amountFirstDelivery) * this.state.coverAmount
+                        }}
+                    />,
+                Footer: sumOfCoverAmount
             },
             {
                 Header: "Purchasing budget",
                 headerClassName: "wordwrap",
-                accessor: "purchasingBudget",
-                Cell: this.renderEditable
+                id: "purchasingPrice",
+                accessor: d =>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: parseFloat(d.amountFirstDelivery) * this.state.purchasePrice
+                        }}
+                    />,
+                Footer: sumOfPurchasePrice
             },
             {
                 Header: "Estimated total unit",
@@ -258,6 +307,8 @@ class BudgetPlanningTable extends Component {
         return (
             <div>
                 <h1> Week 3 Budget Plan </h1>
+                <Button onClick={() => this.addNewRow()}> Add new row </Button>
+                <Button onClick={() => this.removeRow()}> Remove row </Button>
                 <ReactTable
                     sortable = {false}
                     data={data}
@@ -266,6 +317,9 @@ class BudgetPlanningTable extends Component {
                     className="highlight"
                 />
                 <br />
+                <Divider/>
+                <h2>Product card</h2>
+                <ProductCard onSaveProduct = {productData => this.loadProduct(productData)} />
             </div>
         );
     }
