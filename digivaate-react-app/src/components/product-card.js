@@ -15,6 +15,7 @@ class ProductCard extends Component{
             styleName: '',
             coverAmount:0,
             purchasePrice:0,
+            merchantGrossFit:0
         };
         this.products = [];
         this.handleChange = this.handleChange.bind(this);
@@ -40,7 +41,7 @@ class ProductCard extends Component{
 
     loadProduct(){
         this.setState({
-            coverAmount: parseFloat(((this.state.materialCost + this.state.subcontractingCost)*this.state.coverPercentage/(1-this.state.coverPercentage)).toFixed(2)),
+            coverAmount: parseFloat(((this.state.materialCost + this.state.subcontractingCost)*(this.state.coverPercentage/100)/(1-(this.state.coverPercentage/100))).toFixed(2)),
             purchasePrice: parseFloat((this.state.materialCost + this.state.subcontractingCost).toFixed(2)),
         });
     }
@@ -51,6 +52,7 @@ class ProductCard extends Component{
             materialCost: this.state.materialCost,
             subcontractingCost: this.state.subcontractingCost,
             consumerPriceCommercial:this.state.consumerPriceCommercial,
+            merchantGrossFit: this.state.merchantGrossFit,
             styleName: this.state.styleName,
             coverAmount:this.state.coverAmount,
             purchasePrice:this.state.purchasePrice,
@@ -66,7 +68,7 @@ class ProductCard extends Component{
     render(){
         this.unitPriceWithoutTax = parseFloat((this.state.coverAmount + this.state.purchasePrice).toFixed(2));
         this.sellingPriceWithTax = parseFloat((this.unitPriceWithoutTax * 1.24).toFixed(2));
-        this.consumerPrice = parseFloat((this.sellingPriceWithTax * 2).toFixed(2));
+        this.consumerPrice = parseFloat((this.sellingPriceWithTax / (this.state.merchantGrossFit/100)).toFixed(2));
 
         return (
             <div>
@@ -101,6 +103,15 @@ class ProductCard extends Component{
                 <p> Purchase price: {this.state.purchasePrice} </p>
                 <p> Selling price without sales taxes: {this.unitPriceWithoutTax} </p>
                 <p> Selling price with 24% sales taxes: {this.sellingPriceWithTax} </p>
+                <label>
+                    Merchant's gross profit percentage
+                    <Input
+                        style={{ width: '20%' }}
+                        type="text"
+                        name = "merchantGrossFit"
+                        value={this.state.merchantGrossFit}
+                        onChange={this.handleChange} />
+                </label>
                 <p> Consumer price: {this.consumerPrice} </p>
                 <label>
                     Consumer price for commercial

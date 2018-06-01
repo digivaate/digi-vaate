@@ -70,13 +70,13 @@ class SubcontractingCost extends Component{
                 width: 130,
             },
             {
-                Header: "Column 1",
+                Header: "Amount of production",
                 headerClassName: "wordwrap",
                 accessor: "column1",
                 Cell: this.renderEditable,
             },
             {
-                Header: "Column2",
+                Header: "Sampling cost",
                 headerClassName: "wordwrap",
                 accessor: "column2",
                 Cell: this.renderEditable
