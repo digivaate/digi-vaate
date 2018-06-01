@@ -20,7 +20,7 @@ class BudgetPlanningTable extends Component {
         this.addNewRow = this.addNewRow.bind(this);
         this.removeRow = this.removeRow.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
-        this.producSelect = this.producSelect.bind(this);
+        this.productSelect = this.productSelect.bind(this);
     }
 
     renderEditable(cellInfo) {
@@ -66,7 +66,7 @@ class BudgetPlanningTable extends Component {
     }
 
 
-    producSelect(cellInfo){
+    productSelect(cellInfo){
         if (!this.products) {
             return "No product yet!";
         }
@@ -207,7 +207,7 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Style Name",
                 headerClassName: "wordwrap",
-                Cell: this.producSelect,
+                Cell: this.productSelect,
                 width: 140,
             },
             {
@@ -349,6 +349,9 @@ class BudgetPlanningTable extends Component {
 
         return (
             <div>
+                <h2>Product card</h2>
+                <ProductCard onSaveProduct = {products => this.loadProduct(products)} />
+                <Divider/>
                 <h1> Week 3 Budget Plan </h1>
                 <Button onClick={() => this.addNewRow()}> Add new row </Button>
                 <Button onClick={() => this.removeRow()}> Remove row </Button>
@@ -361,9 +364,6 @@ class BudgetPlanningTable extends Component {
                     className="highlight"
                 />
                 <br />
-                <Divider/>
-                <h2>Product card</h2>
-                <ProductCard onSaveProduct = {products => this.loadProduct(products)} />
             </div>
         );
     }
