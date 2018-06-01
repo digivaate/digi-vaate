@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { makeData } from "../Data";
-import ProductCard from "./product-card"
+import ProductCard from "./product-card";
 
 // Import React Table
 import ReactTable from "react-table";
@@ -14,16 +14,13 @@ class BudgetPlanningTable extends Component {
         super(props);
         this.state = {
             data: makeData(),
-            styleName:'',
-            coverPercentage : 0,
-            coverAmount: 0,
-            purchasePrice: 0,
-            unitPriceWithoutTax: 0,
-            consumerPrice: 0
+            productIndex: 0
         };
         this.renderEditable = this.renderEditable.bind(this);
         this.addNewRow = this.addNewRow.bind(this);
         this.removeRow = this.removeRow.bind(this);
+        this.refreshTable = this.refreshTable.bind(this);
+        this.producSelect = this.producSelect.bind(this);
     }
 
     renderEditable(cellInfo) {
@@ -34,6 +31,7 @@ class BudgetPlanningTable extends Component {
                 onBlur={e => {
                     const data = [...this.state.data];
                     data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                    console.log(cellInfo.column.id, cellInfo.index);
                     this.setState({ data });
 
                 }}
@@ -56,17 +54,67 @@ class BudgetPlanningTable extends Component {
         })
     }
 
-    loadProduct(productData){
-        console.log(productData)
+    refreshTable(){
+        this.setState({
+            data: this.state.data
+        })
+    }
+
+    loadProduct(products){
+        this.products = products;
+        console.log(this.products);
+    }
+
+
+    producSelect(cellInfo){
+        if (!this.products) {
+            return "No product yet!";
+        }
+        const options = this.products.map(d => <Option key={d.styleName} value={d.styleName}>{d.styleName}</Option>);
+        return (
+            <Select defaultValue="Choose product"
+                    onChange={(value) => {
+                        for(let i = 0; i< this.products.length; i++){
+                            if(value === this.products[i].styleName){
+                                console.log(cellInfo.index);
+                                const {data} = this.state;
+                                data[cellInfo.index].styleName = value;
+                                this.setState({
+                                    data: this.state.data.map(element => {
+                                        console.log(element);
+                                        if (element.styleName === value){
+                                            return {
+                                                productGroup: "Enter group",
+                                                unitPriceWithoutTax: this.products[i].unitPriceWithoutTax,
+                                                averagePrice: 0,
+                                                amountFirstDelivery: 0,
+                                                amountSecondDelivery: 0,
+                                                amountThirdDelivery: 0,
+                                                consumerPriceCommercial: this.products[i].consumerPriceCommercial,
+                                                styleName:'',
+                                                coverPercentage : this.products[i].coverPercentage,
+                                                coverAmount: this.products[i].coverAmount,
+                                                purchasePrice: this.products[i].purchasePrice,}
+                                        }
+                                        else{
+                                            return element
+                                        }
+                                    }),
+                                });
+                            }
+                        }
+
+                    }}
+                    style={{ width: 130 }}>
+                {options}
+            </Select>
+        )
     }
 
     render() {
-        console.log("This is from hahaha");
-        console.log(this.state);
         const {data} = this.state;
-        const {coverAmount} = this.state;
-        const {purchasePrice} = this.state;
-
+        console.log("------");
+        console.log(data);
 
         // First delivery sum calculation
         const sumOfAmountFirstDelivery = function(){
@@ -122,7 +170,7 @@ class BudgetPlanningTable extends Component {
         const sumOfCoverAmount = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat(data[i].amountFirstDelivery) * coverAmount);
+                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery) * parseFloat(data[i].coverAmount)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -130,7 +178,7 @@ class BudgetPlanningTable extends Component {
         const sumOfPurchasePrice = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat(data[i].amountFirstDelivery) * purchasePrice);
+                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery) * parseFloat(data[i].purchasePrice)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -153,28 +201,24 @@ class BudgetPlanningTable extends Component {
         };
 
 
+
         // columns of table
         const columns = [
             {
                 Header: "Style Name",
                 headerClassName: "wordwrap",
-                Cell: () => <Select defaultValue="trench-coat" style={{ width: 130 }}>
-                    <Option value="trench-coat">Trench coat</Option>
-                    <Option value="blouse">Blouse</Option>
-                    <Option value="jacket">Jacket</Option>
-
-                </Select>,
+                Cell: this.producSelect,
                 width: 140,
             },
             {
                 Header: "Consumer Price",
                 headerClassName: "wordwrap",
-                Cell: this.state.consumerPrice,
+                accessor: "consumerPriceCommercial",
             },
             {
                 Header: "Unit Price without Taxes",
                 headerClassName: "wordwrap",
-                Cell: this.state.unitPriceWithoutTax
+                accessor: "unitPriceWithoutTax",
             },
             {
                 Header: "Amount 1st delivery",
@@ -251,7 +295,6 @@ class BudgetPlanningTable extends Component {
                 Header: "Cover %",
                 headerClassName: "wordwrap",
                 accessor: "coverPercentage",
-                Cell: () => this.state.coverPercentage
             },
             {
                 Header: "Cover amount",
@@ -260,7 +303,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat(d.amountFirstDelivery) * this.state.coverAmount
+                            __html: parseFloat((parseFloat(d.amountFirstDelivery) * parseFloat(d.coverAmount)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfCoverAmount
@@ -272,7 +315,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat(d.amountFirstDelivery) * this.state.purchasePrice
+                            __html: parseFloat((parseFloat(d.amountFirstDelivery) * parseFloat(d.purchasePrice)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfPurchasePrice
@@ -309,6 +352,7 @@ class BudgetPlanningTable extends Component {
                 <h1> Week 3 Budget Plan </h1>
                 <Button onClick={() => this.addNewRow()}> Add new row </Button>
                 <Button onClick={() => this.removeRow()}> Remove row </Button>
+                <Button onClick={() => this.refreshTable()}> Refresh </Button>
                 <ReactTable
                     sortable = {false}
                     data={data}
@@ -319,7 +363,7 @@ class BudgetPlanningTable extends Component {
                 <br />
                 <Divider/>
                 <h2>Product card</h2>
-                <ProductCard onSaveProduct = {productData => this.loadProduct(productData)} />
+                <ProductCard onSaveProduct = {products => this.loadProduct(products)} />
             </div>
         );
     }

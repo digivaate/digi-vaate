@@ -16,6 +16,7 @@ class ProductCard extends Component{
             coverAmount:0,
             purchasePrice:0,
         };
+        this.products = [];
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -57,8 +58,9 @@ class ProductCard extends Component{
             sellingPriceWithTax : this.sellingPriceWithTax,
             consumerPrice: this.consumerPrice
         };
-        console.log(productData);
-        this.props.onSaveProduct(productData);
+        this.products.push(productData);
+        console.log(this.products);
+        this.props.onSaveProduct(this.products);
     }
 
     render(){
@@ -79,12 +81,12 @@ class ProductCard extends Component{
                 </label>
                 <h4>{this.state.styleName}</h4>
                 <Row gutter={8}>
-                <Col span={12}>
-                    <MaterialCost onGetMC = {materialCost => this.getMC(materialCost)} />
-                </Col>
-                <Col span={12}>
-                    <SubcontractingCost onGetSC = {subcontractingCost => this.getSC(subcontractingCost)} />
-                </Col>
+                    <Col span={12}>
+                        <MaterialCost onGetMC = {materialCost => this.getMC(materialCost)} />
+                    </Col>
+                    <Col span={12}>
+                        <SubcontractingCost onGetSC = {subcontractingCost => this.getSC(subcontractingCost)} />
+                    </Col>
                 </Row>
                 <label>
                     Cover Percentage

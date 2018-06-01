@@ -51,7 +51,11 @@ export const newRow = () => {
         amountFirstDelivery: 0,
         amountSecondDelivery: 0,
         amountThirdDelivery: 0,
-        consumerPrice: 0,
+        consumerPriceCommercial: 0,
+        styleName:'',
+        coverPercentage : 0,
+        coverAmount: 0,
+        purchasePrice: 0,
     };
 };
 
