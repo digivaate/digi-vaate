@@ -2,15 +2,42 @@
   "name": "digi-vaate",
   "version": "0.1.0",
   "private": true,
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "homepage": "https://github.com/makkelip/digi-vaate#readme",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makkelip/digi-vaate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/makkelip/digi-vaate/issues"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "dev:server": "nodemon server/server",
+    "dev": "concurrently --kill-others \"npm run dev-client\" \"npm run dev-server\""
+  },
   "dependencies": {
+    "express": "^4.16.3",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-node-externals": "^1.7.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.5",
+    "url-loader": "^1.0.1","html-webpack-plugin": "latest"
   }
 }
