@@ -15,9 +15,10 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
+    "babel-node": "babel-node --presets=latest",
     "build": "webpack --mode production",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "dev:server": "nodemon server/server",
+    "dev:server": "nodemon server/server --exec babel-node",
     "dev": "concurrently --kill-others \"npm run dev-client\" \"npm run dev-server\""
   },
   "dependencies": {
@@ -27,17 +28,19 @@
     "react-scripts": "1.1.4"
   },
   "devDependencies": {
-    "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4",
-    "webpack-dev-server": "^3.1.4",
-    "webpack-node-externals": "^1.7.2",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.5.1",
+    "html-webpack-plugin": "latest",
     "nodemon": "^1.17.5",
-    "url-loader": "^1.0.1","html-webpack-plugin": "latest"
+    "url-loader": "^1.0.1",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-node-externals": "^1.7.2"
   }
 }
