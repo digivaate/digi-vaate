@@ -7,10 +7,10 @@ const port = process.env.PORT || 3000;
 const outputDir = "dist";
 
 const serverConfig = {
+    target: 'node',
     node: {
         __dirname: true
     },
-    target: 'node',
     entry: {
         server: './server/server.js'
     },
@@ -64,8 +64,8 @@ const clientConfig = {
     plugins: [
         new CleanWebpackPlugin([outputDir]),
         new HtmlWebpackPlugin({
-            template: "./client/assets/index.html",
-            favicon: "./client/assets/favicon.ico"
+            //template: "./client/assets/index.html",
+            //favicon: "./client/assets/favicon.ico"
         })
     ]
 };
