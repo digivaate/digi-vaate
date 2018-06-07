@@ -3,6 +3,7 @@ import 'antd/dist/antd.css'
 import { render } from "react-dom";
 import "react-table/react-table.css";
 import BudgetPlanningTable from './components/budget-planning'
+import ColorIndexPage from './components/colors/index'
 import { Layout } from 'antd';
 const { Content } = Layout;
 
@@ -21,5 +22,5 @@ class App extends React.Component {
     }
 }
 
-render(<App />, document.getElementById("root"));
+render(<ColorIndexPage />, document.getElementById("root"));
 
