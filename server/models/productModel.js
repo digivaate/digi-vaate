@@ -11,12 +11,9 @@ const productSchema = mongoose.Schema({
         name: { type: String },
         amount: { type: Number, min: 0 }
     }],
-    materialCosts: [{
-        name: {type: String, required: true},
-        article: {type: String},
+    materials: [{
+        material: {type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true},
         consumption: {type: Number, min: 0},
-        unitPrice: {type: Number, min: 0},
-        freight: {type: Number, min: 0}
     }]
 });
 
