@@ -38,7 +38,7 @@ const clientConfig = {
                 loader: "html-loader"
             },
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader"
@@ -64,7 +64,7 @@ const clientConfig = {
     plugins: [
         new CleanWebpackPlugin([outputDir]),
         new HtmlWebpackPlugin({
-            //template: "./client/assets/index.html",
+            template: "./client/index.html",
             //favicon: "./client/assets/favicon.ico"
         })
     ]
