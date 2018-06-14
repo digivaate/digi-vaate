@@ -38,7 +38,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, '../client/')));
 
 //Back-end routes
+app.use('/api/collection', require('./routes/collectionRoute'));
+app.use('/api/color', require('./routes/colorRoute'));
+app.use('/api/material', require('./routes/materialRoute'));
 app.use('/api/product', require('./routes/productRoute'));
+app.use('/api/season', require('./routes/seasonRoute'));
 
 //Error handling
 app.use((req, res, next) => {

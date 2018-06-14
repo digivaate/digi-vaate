@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const materialSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    name: {type: String, required},
+    name: {type: String, required: true },
     weight: {type: Number, min: 0},
     width: {type: Number, min: 0},
     price: {type: Number, min: 0},

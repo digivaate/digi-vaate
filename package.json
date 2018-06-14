@@ -17,7 +17,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "dev:server": "nodemon server/server",
+    "dev:server": "nodemon --exec babel-node server/server",
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\""
   },
   "dependencies": {

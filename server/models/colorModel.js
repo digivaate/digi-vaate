@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const colorSchema = mongoose.Schema({
     _id: {type: mongoose.Schema.Types.ObjectId},
-    name: {type: String, required},
+    name: {type: String, required: true },
     value: {type: String,
         validate: {
             validator: (v) => {
