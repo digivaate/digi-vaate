@@ -195,8 +195,8 @@ class BudgetPlanningTable extends Component {
         // columns of table
         const columns = [
             {
-                Header: "Style Name",
-                headerClassName: "wordwrap",
+                Header: "Product",
+                headerClassName: "wordwrapEdit",
                 Cell: this.productSelect,
                 width: 140,
             },
@@ -212,7 +212,7 @@ class BudgetPlanningTable extends Component {
             },
             {
                 Header: "Amount 1st delivery",
-                headerClassName: "wordwrap",
+                headerClassName: "wordwrapEdit",
                 accessor: "amountFirstDelivery",
                 Cell: this.renderEditable,
                 Footer: sumOfAmountFirstDelivery
