@@ -5,7 +5,8 @@ const colorSchema = mongoose.Schema({
     name: {type: String, required},
     value: {type: String,
         validate: {
-            validator: function(v) {
+            validator: (v) => {
+                //Hexadecimal value
                 return /^#(?:[0-9a-f]{3}){1,2}$/i.test(v);
             },
             message: '{VALUE} is not a valid phone number!'
