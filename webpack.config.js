@@ -56,7 +56,8 @@ const clientConfig = {
     },devServer: {
         port: port,
         open: true,
-        contentBase: './dist/client',
+        contentBase: './client/',
+        historyApiFallback: true,
         proxy: {
             "/api": "http://localhost:8080"
         }
