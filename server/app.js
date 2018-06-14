@@ -39,7 +39,6 @@ app.use(express.static(path.resolve(__dirname, '../client/')));
 
 //Back-end routes
 app.use('/api/product', require('./routes/productRoute'));
-app.use('/api/budgetPlan', require('./routes/budgetPlanRoute'));
 
 //Error handling
 app.use((req, res, next) => {

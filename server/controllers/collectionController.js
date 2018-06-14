@@ -1,8 +1,8 @@
-const Product = require('../models/productModel');
-const mongoose = require('mongoose');
+import Collection from '../models/collectionModel';
+import mongoose from 'mongoose';
 
 exports.find_all = (req, res) => {
-    Product.find()
+    Collection.find()
         .exec()
         .then(docs => {
             res.status(200).json(docs);
@@ -13,8 +13,9 @@ exports.find_all = (req, res) => {
         });
 };
 
+
 exports.find_by_id = (req, res) => {
-    Product.findById(req.params.id)
+    Collection.findById(req.params.id)
         .exec()
         .then(doc => {
             console.log('From database', doc);
@@ -31,19 +32,18 @@ exports.find_by_id = (req, res) => {
 };
 
 exports.create = (req, res) => {
-    const product = new Product({
+    const collection = new Collection({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
-        resellerProfitPercent: req.body.resellerProfitPercent,
-        coverPercent: req.body.coverPercent,
-        commercialPrice: req.body.commercialPrice,
-        subcCosts: req.body.subcCosts,
-        materials: req.body.materials
+        colors: req.body.colors,
+        theme: req.body.theme,
+        materials: req.body.materials,
+        products: req.body.products
     });
-    product.save()
+    collection.save()
         .then(result => {
             res.status(201).json({
-                message: 'Product stored',
+                message: 'Collection stored',
                 created: result
             });
         })
@@ -61,7 +61,7 @@ exports.edit = (req, res) => {
     for (const ops of req.body) {
         updateOps[ops.propertyName] = ops.value;
     }
-    Product.update({ _id: id }, { $set: updateOps})
+    Collection.update({ _id: id }, { $set: updateOps})
         .exec()
         .then(result => {
             res.status(200).json(result);
@@ -74,7 +74,7 @@ exports.edit = (req, res) => {
 
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Product.remove({ _id: id})
+    Collection.remove({ _id: id})
         .exec()
         .then(result => {
             res.status(200).json(result);

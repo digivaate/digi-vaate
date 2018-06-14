@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true},
-    taxPercent: {type: Number, min: 0, max: 100},
     resellerProfitPercent: {type: Number, min: 0, max: 100},
     coverPercent: {type: Number, min: 0, max: 100},
     commercialPrice: {type: Number, min: 0},

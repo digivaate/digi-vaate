@@ -1,28 +1,10 @@
-const BudgetPlan = require('../models/budgetPlanModel');
+const Color = require('../models/colorModel');
 const mongoose = require('mongoose');
 
 exports.find_all = (req, res) => {
-    BudgetPlan.find()
-        .populate({
-            path: 'deliveryWeeks.products',
-            model: 'Product',
-            //select: 'name'
-        })
+    Color.find()
         .exec()
         .then(docs => {
-            /*
-            for (let i=0; i<docs.length; i++) {
-                for (let j=0; j<docs[i].deliveryWeeks.length; j++) {
-                    for (let k=0; k<docs[i].deliveryWeeks[j].products.length; k++) {
-                            docs[i].deliveryWeeks[j].products[k] = {
-                                _id: docs[i].deliveryWeeks[j].products[k]._id,
-                                name: docs[i].deliveryWeeks[j].products[k].name,
-                                url: URL + 'product/' + docs[i].deliveryWeeks[j].products[k]._id,
-                            };
-                    }
-                }
-            }
-            */
             res.status(200).json(docs);
         })
         .catch(err => {
@@ -32,15 +14,15 @@ exports.find_all = (req, res) => {
 };
 
 exports.find_by_id = (req, res) => {
-    BudgetPlan.findById(req.params.budgetPlanId)
-        .populate({
-            path: 'deliveryWeeks.products',
-            model: 'Product',
-            //select: 'name'
-        })
+    Color.findById(req.params.id)
         .exec()
-        .then(docs => {
-            res.status(200).json(docs);
+        .then(doc => {
+            console.log('From database', doc);
+            if (doc) {
+                res.status(200).json(doc);
+            } else {
+                res.status(404).json({message: 'No valid entry found'});
+            }
         })
         .catch(err => {
             console.log(err);
@@ -49,16 +31,15 @@ exports.find_by_id = (req, res) => {
 };
 
 exports.create = (req, res) => {
-    const budgetPlan = new BudgetPlan({
+    const color = new Color({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
-        deliveryWeeks: req.body.deliveryWeeks,
+        value: req.body.value
     });
-    budgetPlan.save()
+    color.save()
         .then(result => {
-            console.log(result);
             res.status(201).json({
-                message: 'Budget plan stored',
+                message: 'Product stored',
                 created: result
             });
         })
@@ -71,12 +52,12 @@ exports.create = (req, res) => {
 };
 
 exports.edit = (req, res) => {
-    const id = req.params.budgetPlanId;
+    const id = req.params.id;
     const updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propertyName] = ops.value;
     }
-    BudgetPlan.update({ _id: id }, { $set: updateOps })
+    Color.update({ _id: id }, { $set: updateOps})
         .exec()
         .then(result => {
             res.status(200).json(result);
@@ -88,7 +69,8 @@ exports.edit = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    BudgetPlan.remove({ _id: req.params.budgetPlanId})
+    const id = req.params.id;
+    Color.remove({ _id: id})
         .exec()
         .then(result => {
             res.status(200).json(result);

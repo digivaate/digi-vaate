@@ -4,6 +4,7 @@ const seasonSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, default: getDateTime()},
     budget: {type: Number, min: 0},
+    taxPercent: {type: Number, min: 0, max: 100},
     collections: [{type: mongoose.Schema.Types.ObjectId, ref: 'Collection'}],
 });
 
