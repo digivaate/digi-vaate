@@ -76,35 +76,12 @@ class ProductCard extends Component{
             subcCosts:this.subcCosts,
             materialCosts:this.materialCosts
         };
-        console.log("The object to be sent:");
-        console.log(newProduct);
 
-
-
-
-        /*fetch('/api/product', {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(newProduct), // data can be `string` or {object}!
-            headers:{
-                'Content-Type': 'application/json',
-                mode:'no-cors'
-            }
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log('Success:', response));*/
         axios.post('http://localhost:3000/api/product',newProduct)
             .then(function (response) {
                 console.log(response);
             })
             .catch(function (error) {
-                console.log('it fucking error');
-                console.log(error);
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-
             });
 
         const modal = Modal.success({
@@ -148,9 +125,8 @@ class ProductCard extends Component{
                         value={this.state.coverPercentage}
                         onChange={this.handleChange} />
                 </label>
-                <p> Cover amount :{this.state.coverAmount}</p>
-                <p> Purchase price: {this.state.purchasePrice} </p>
-                <p> Selling price without sales taxes: {this.unitPriceWithoutTax} </p>
+                <br/>
+                <br/>
                 <label>
                     Tax Percentage
                     <Input
@@ -160,7 +136,8 @@ class ProductCard extends Component{
                         value={this.state.taxPercent}
                         onChange={this.handleChange} />
                 </label>
-                <p> Selling price with sales taxes: {this.sellingPriceWithTax} </p>
+                <br/>
+                <br/>
                 <label>
                     Merchant's gross profit percentage
                     <Input
@@ -170,6 +147,11 @@ class ProductCard extends Component{
                         value={this.state.merchantGrossFit}
                         onChange={this.handleChange} />
                 </label>
+                <br/>
+                <p> Cover amount :{this.state.coverAmount}</p>
+                <p> Purchase price: {this.state.purchasePrice} </p>
+                <p> Selling price without sales taxes: {this.unitPriceWithoutTax} </p>
+                <p> Selling price with sales taxes: {this.sellingPriceWithTax} </p>
                 <p> Consumer price: {this.consumerPrice} </p>
                 <label>
                     Consumer price for commercial
