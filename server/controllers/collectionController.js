@@ -16,6 +16,9 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Collection.findById(req.params.id)
+        .populate({path: 'colors'})
+        .populate({path: 'materials'})
+        .populate({path: 'products'})
         .exec()
         .then(doc => {
             console.log('From database', doc);
@@ -58,8 +61,10 @@ exports.create = (req, res) => {
 exports.edit = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propertyName] = ops.value;
+    for (let ops in req.body) {
+        if (req.body.hasOwnProperty(ops)) {
+            updateOps[ops] = req.body[ops];
+        }
     }
     Collection.update({ _id: id }, { $set: updateOps})
         .exec()

@@ -11,7 +11,7 @@ const productSchema = mongoose.Schema({
         amount: { type: Number, min: 0 }
     }],
     materials: [{
-        material: {type: mongoose.Schema.Types.ObjectId, ref: 'Material', required: true},
+        material: {type: mongoose.Schema.Types.ObjectId, ref: 'Material', required: true, },
         consumption: {type: Number, min: 0},
     }]
 });

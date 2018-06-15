@@ -13,7 +13,7 @@ const materialSchema = new mongoose.Schema({
     salesAgent: {type: String}, //??
     pattern: {}, //??
     composition: {}, //??
-    colors: [{type: mongoose.Schema.Types.ObjectId, ref: 'Color'}],
+    colors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Color' }],
 });
 
 module.exports = mongoose.model('Material', materialSchema);

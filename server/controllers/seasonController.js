@@ -34,11 +34,9 @@ exports.create = (req, res) => {
     const season = new Season({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
-        resellerProfitPercent: req.body.resellerProfitPercent,
-        coverPercent: req.body.coverPercent,
-        commercialPrice: req.body.commercialPrice,
-        subcCosts: req.body.subcCosts,
-        materials: req.body.materials
+        budget: req.body.budget,
+        taxPercent: req.body.taxPercent,
+        collections: req.body.collections
     });
     season.save()
         .then(result => {
@@ -58,10 +56,12 @@ exports.create = (req, res) => {
 exports.edit = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propertyName] = ops.value;
+    for (let ops in req.body) {
+        if (req.body.hasOwnProperty(ops)) {
+            updateOps[ops] = req.body[ops];
+        }
     }
-    Season.update({ _id: id }, { $set: updateOps})
+    Season.update({ _id: id }, { $set: req.body })
         .exec()
         .then(result => {
             res.status(200).json(result);

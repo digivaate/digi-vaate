@@ -54,8 +54,10 @@ exports.create = (req, res) => {
 exports.edit = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propertyName] = ops.value;
+    for (let ops in req.body) {
+        if (req.body.hasOwnProperty(ops)) {
+            updateOps[ops] = req.body[ops];
+        }
     }
     Color.update({ _id: id }, { $set: updateOps})
         .exec()

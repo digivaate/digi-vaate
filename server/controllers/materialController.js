@@ -1,4 +1,5 @@
 import Material from '../models/materialModel';
+import Color from '../models/colorModel';
 import mongoose from 'mongoose';
 
 exports.find_all = (req, res) => {
@@ -16,15 +17,11 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Material.findById(req.params.id)
-        .populate({
-            path: 'colors',
-            model: 'Color'
-        })
+        .populate({ path: 'colors' })
         .exec()
-        .then(doc => {
-            console.log('From database', doc);
-            if (doc) {
-                res.status(200).json(doc);
+        .then(material => {
+            if (material) {
+                res.status(200).json(material);
             } else {
                 res.status(404).json({message: 'No valid entry found'});
             }
@@ -69,8 +66,10 @@ exports.create = (req, res) => {
 exports.edit = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propertyName] = ops.value;
+    for (let ops in req.body) {
+        if (req.body.hasOwnProperty(ops)) {
+            updateOps[ops] = req.body[ops];
+        }
     }
     Material.update({ _id: id }, { $set: updateOps})
         .exec()
