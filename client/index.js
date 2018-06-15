@@ -9,7 +9,8 @@ import FooterArea from './components/layout/footer'
 import ColorIndexPage from './components/colors/index'
 import ProductCard from './components/product-card'
 import ProductsDisplay from './components/products-display'
-import {BrowserRouter,Route} from 'react-router-dom'
+import SingleProduct from './components/single-product'
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { Layout, Breadcrumb } from 'antd';
 const { Content } = Layout;
 
@@ -32,10 +33,13 @@ class App extends React.Component {
                                 </Breadcrumb>
                                 <Content style={{ padding: '0 24px', minHeight: 280,margin: 0 }}>
                                     <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-                                        <Route path="/budget" component={BudgetPlanningTable} />
-                                        <Route path="/colors" component={ColorIndexPage} />
-                                        <Route path="/product" component={ProductCard} />
-                                        <Route path="/all-products" component={ProductsDisplay}/>
+                                        <Switch>
+                                            <Route path="/budget" component={BudgetPlanningTable} />
+                                            <Route path="/colors" component={ColorIndexPage} />
+                                            <Route path="/product" component={ProductCard} />
+                                            <Route path="/all-products" component={ProductsDisplay}/>
+                                            <Route path="/:id" exact component={SingleProduct} />
+                                        </Switch>
                                     </div>
                                 </Content>
                             </Layout>
