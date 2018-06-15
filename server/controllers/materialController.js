@@ -16,6 +16,10 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Material.findById(req.params.id)
+        .populate({
+            path: 'colors',
+            model: 'Color'
+        })
         .exec()
         .then(doc => {
             console.log('From database', doc);

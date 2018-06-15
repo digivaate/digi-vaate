@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser');
+import morgan from 'morgan';
 
 //Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -34,6 +35,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+//Log requests
+app.use(morgan('dev'));
 //Serve front end
 app.use(express.static(path.resolve(__dirname, '../client/')));
 
