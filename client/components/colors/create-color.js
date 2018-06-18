@@ -1,6 +1,7 @@
 import React from 'react';
 import ColorPicker from './color_picker'
 import { Button, Modal, Form, Input, message } from 'antd';
+import axios from 'axios';
 const FormItem = Form.Item;
 
 const ColorCreateForm = Form.create()(
@@ -53,7 +54,7 @@ class ColorPage extends React.Component {
     state = {
         visible: false,
     };
-    colorsCollection = [];
+    colorsCollection = {};
     hexCodeValues = "";
     getHexCode = (hexCodeValues) => {
         this.hexCodeValues = hexCodeValues;
@@ -73,17 +74,21 @@ class ColorPage extends React.Component {
                 return;
             }
             values.hexCode = "";
-            this.colorsCollection.push(values);
-            for (let i = 0;i<this.colorsCollection.length;i++){
-                if(this.colorsCollection[i].hexCode === ""){
-                    this.colorsCollection[i].hexCode = this.hexCodeValues;
-                }
-            }
-            console.log(this.colorsCollection);
-            this.props.colorCard(this.colorsCollection);
+            this.colorsCollection = values;
+            this.colorsCollection.hexCode = this.hexCodeValues;
             form.resetFields();
             this.setState({ visible: false });
             message.success('Successfully created',1);
+            const newColor = {
+                name: this.colorsCollection.name,
+                value: this.colorsCollection.hexCode
+            };
+            axios.post('api/color',newColor)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                });
         });
     };
     saveFormRef = (formRef) => {

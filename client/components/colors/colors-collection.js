@@ -1,28 +1,41 @@
 import React,{Component} from 'react';
 import ColorPage from './create-color';
-import { Card, Icon, Avatar } from 'antd';
+import { Card, Icon, Button } from 'antd';
+import axios from 'axios';
 const { Meta } = Card;
 
 class ColorCollection extends Component{
     constructor(props){
         super(props);
-        this.state ={};
+        this.state ={
+            fetchColors: false
+        };
+        this.loadColors = this.loadColors.bind(this);
     }
 
     colorCard = [];
 
-    getColorCard(values){
-        this.colorCard = values;
-        this.setState({});
+    componentDidMount(){
+        this.loadColors();
     }
 
 
-    render() {
+    loadColors(){
+        axios.get('api/color')
+            .then(response => {
+                this.colorCard = response.data;
+                this.setState({
+                    fetchColors: true
+                });
+            })
+            .catch(err => console.log(err));
+    }
+
+    render(){
         if(this.colorCard.length === 0){
             return (
                 <div>
-                    <ColorPage colorCard={values => this.getColorCard(values) }/>
-                    <br/>
+                    <Button onClick={this.loadColors}>Refresh</Button>
                     <Card title="Color Collection">
                     </Card>
                 </div>
@@ -36,7 +49,7 @@ class ColorCollection extends Component{
                             width: '150px',
                             height: '150px',
                             textAlign: 'center',
-                            backgroundColor: element.hexCode,
+                            backgroundColor: element.value,
                             borderRadius: '4px'
                         }}
                         actions={[<Icon type="setting"/>, <Icon type="edit"/>, <Icon type="ellipsis"/>]}
@@ -44,7 +57,7 @@ class ColorCollection extends Component{
                     >
                         <Meta
                             title={element.name}
-                            description={element.colorCode}
+                            description={element.value}
                             style={{
                                 width: '100%',
                                 height: '60%',
@@ -59,8 +72,7 @@ class ColorCollection extends Component{
             });
             return (
                 <div>
-                    <ColorPage colorCard={values => this.getColorCard(values) }/>
-                    <br/>
+                    <Button onClick={this.loadColors}> Refresh</Button>
                     <Card title="Color Collection">
                         {colorCard}
                     </Card>
