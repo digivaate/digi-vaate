@@ -14,14 +14,14 @@ exports.find_all = (req, res) => {
         });
 };
 
-
 exports.find_by_id = (req, res) => {
     Material.findById(req.params.id)
         .populate({ path: 'colors' })
-        .exec()
-        .then(material => {
+        .exec((err, material) => {
             if (material) {
-                res.status(200).json(material);
+                material.markModified('colors');
+                res.send(material);
+                material.save();
             } else {
                 res.status(404).json({message: 'No valid entry found'});
             }
