@@ -17,11 +17,14 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Material.findById(req.params.id)
+        .select('-__v')
         .populate({ path: 'colors' })
         .exec()
         .then(material => {
             if (material) {
+                material.markModified('colors');
                 res.status(200).json(material);
+                material.save();
             } else {
                 res.status(404).json({message: 'No valid entry found'});
             }

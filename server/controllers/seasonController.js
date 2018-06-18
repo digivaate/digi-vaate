@@ -15,11 +15,15 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Season.findById(req.params.id)
+        .select('-__v')
+        .populate('collections')
         .exec()
         .then(doc => {
             console.log('From database', doc);
             if (doc) {
+                doc.markModified('collections');
                 res.status(200).json(doc);
+                doc.save();
             } else {
                 res.status(404).json({message: 'No valid entry found'});
             }

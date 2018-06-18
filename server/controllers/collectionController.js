@@ -16,6 +16,7 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Collection.findById(req.params.id)
+        .select('-__v')
         .populate({path: 'colors'})
         .populate({path: 'materials'})
         .populate({path: 'products'})
@@ -23,7 +24,11 @@ exports.find_by_id = (req, res) => {
         .then(doc => {
             console.log('From database', doc);
             if (doc) {
+                doc.markModified('colors');
+                doc.markModified('materials');
+                doc.markModified('products');
                 res.status(200).json(doc);
+                doc.save();
             } else {
                 res.status(404).json({message: 'No valid entry found'});
             }

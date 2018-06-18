@@ -15,10 +15,10 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Product.findById(req.params.id)
+        .select('-__v')
         .populate({ path: 'materials.material' })
         .exec()
         .then(doc => {
-            console.log('From database', doc);
             if (doc) {
                 res.status(200).json(doc);
             } else {

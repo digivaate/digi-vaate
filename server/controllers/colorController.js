@@ -15,6 +15,7 @@ exports.find_all = (req, res) => {
 
 exports.find_by_id = (req, res) => {
     Color.findById(req.params.id)
+        .select('-__v')
         .exec()
         .then(doc => {
             console.log('From database', doc);
