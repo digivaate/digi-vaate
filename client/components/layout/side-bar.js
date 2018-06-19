@@ -33,7 +33,13 @@ class SideBar extends Component{
             );
         }
         return (
-            <Sider width={200} style={{ background: '#fff' }}>
+            <Sider width={280}
+                   style={{
+                       background: '#fff',
+                       borderRight: '1px groove',
+                       height:'700px',
+                       borderColor:'grey'
+                   }}>
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={['1']}

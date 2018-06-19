@@ -20,19 +20,14 @@ class App extends React.Component {
     render(){
         return(
             <BrowserRouter>
-                <Layout className="layout">
+                <Layout className="layout" style={{backgroundColor:'white'}}>
                     <NavBar />
-                    <Content style={{ marginTop : 64 }}>
+                    <Content style={{ marginTop : 75 }}>
                         <Layout>
                             <SideBar />
-                            <Layout style={{ padding: '0 24px 24px' }}>
-                                <Breadcrumb style={{ margin: '16px 0' }}>
-                                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                                </Breadcrumb>
-                                <Content style={{ padding: '0 24px', minHeight: 280,margin: 0 }}>
-                                    <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+                            <Layout style={{ padding: '0 24px 24px',backgroundColor:'white' }}>
+                                <Content style={{ padding: '0 24px',margin: 0 }}>
+                                    <div style={{ background: '#fff', padding: 24 }}>
                                         <Switch>
                                             <Route path="/budget" component={BudgetPlanningTable} />
                                             <Route path="/colors" component={ColorIndexPage} />
