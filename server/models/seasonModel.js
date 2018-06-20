@@ -6,6 +6,7 @@ const seasonSchema = new mongoose.Schema({
     budget: {type: Number, min: 0},
     taxPercent: {type: Number, min: 0, max: 100},
     collections: [{type: mongoose.Schema.Types.ObjectId, ref: 'Collection'}],
+    products: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}]
 });
 
 module.exports = mongoose.model('Season', seasonSchema);
@@ -17,5 +18,5 @@ function getDateTime() {
     month = (month < 10 ? "0" : "") + month;
     let day = date.getDate();
     day = (day < 10 ? "0" : "") + day;
-    return year + ':' + month + ':' + day;
+    return year + '-' + month + '-' + day;
 }
