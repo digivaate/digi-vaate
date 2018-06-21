@@ -21,7 +21,7 @@ class ColorCollection extends Component{
 
 
     loadColors(){
-        axios.get('api/color')
+        axios.get('http://localhost:3000/api/color')
             .then(response => {
                 this.colorCard = response.data;
                 this.setState({

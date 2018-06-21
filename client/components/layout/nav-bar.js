@@ -1,8 +1,8 @@
 import React,{ Component } from "react";
 import 'antd/dist/antd.css'
 import { render } from "react-dom";
-import "react-table/react-table.css";
-import { Layout, Menu } from 'antd';
+import BreadCrumbDisplay from './breadcrumb'
+import { Layout, Menu,Row, Col } from 'antd';
 const { Header } = Layout;
 
 class NavBar extends Component{
@@ -17,23 +17,37 @@ class NavBar extends Component{
                         position: 'fixed',
                         zIndex: 1,
                         width: '100%',
+                        opacity: 1,
+                        height:'150px',
+                        backgroundColor:'white',
+                        borderBottom:'1px groove'
                     }}>
-                <div className="logo" />
+                <div className="ant-row">
+                    <Col className="gutter-row" span={6}>
+                        <div className="gutter-box">
+                            <h1>DigiVaate</h1>
+                        </div>
+                    </Col>
                 <Menu
-                    theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={"1"}
                     style={{
-                        lineHeight: '64px'
+                        lineHeight: '75px',
+                        fontColor:'black',
+                        float:'right',
+                        border:'none'
                     }}
                 >
-                    <Menu.Item key="1">nav 1</Menu.Item>
-                    <Menu.Item key="2">nav 2</Menu.Item>
-                    <Menu.Item key="3">nav 3</Menu.Item>
+                    <Menu.Item key="1">Nav1</Menu.Item>
+                    <Menu.Item key="2">Nav2</Menu.Item>
+                    <Menu.Item key="3">Nav3</Menu.Item>
                 </Menu>
+                </div>
+                <div className="ant-row">
+                    <BreadCrumbDisplay/>
+                </div>
             </Header>
         )
     }
 }
 
-export default NavBar
+export default NavBar;

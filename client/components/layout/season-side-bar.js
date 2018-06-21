@@ -9,7 +9,7 @@ const {  Sider } = Layout;
 import axios from'axios';
 
 
-class SideBar extends Component{
+class CompanySideBar extends Component{
     constructor(props){
         super(props);
     }
@@ -48,11 +48,11 @@ class SideBar extends Component{
                     style={{ height: '100%',borderRight: 0  }}
                 >
                     <SubMenu key="sub2"
-                             title={<span>Season</span>}
+                             title={<span>Collection</span>}
                     >
                         <Menu.Item key="5">
-                            <NavLink to="/season1" className="nav-text">
-                                    Season 1
+                            <NavLink to="/season1/collection1" className="nav-text">
+                                Collection 1
                             </NavLink>
                         </Menu.Item>
                     </SubMenu>
@@ -62,4 +62,4 @@ class SideBar extends Component{
     }
 }
 
-export default SideBar;
+export default CompanySideBar;

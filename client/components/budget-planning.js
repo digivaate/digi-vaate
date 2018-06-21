@@ -65,7 +65,7 @@ class BudgetPlanningTable extends Component {
     }
 
     componentDidMount() {
-        axios.get('api/product')
+        axios.get('http://localhost:3000/api/product')
             .then(response => this.products = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));

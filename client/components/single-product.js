@@ -13,13 +13,14 @@ class SingleProduct extends Component{
 
     }
     componentDidUpdate(){
+        console.log("---");
         console.log(this.props);
         this.loadProduct()
     }
     loadProduct(){
         if(this.props.match.params.id){
             if ( !this.state.loadedProduct || (this.state.loadedProduct._id !== this.props.match.params.id) ) {
-                axios.get("/api/product/"+ this.props.match.params.id)
+                axios.get("http://localhost:3000/api/product/"+ this.props.match.params.id)
                     .then(response => {
                         this.setState({loadedProduct: response.data});
                         console.log(response.data)
@@ -45,7 +46,7 @@ class SingleProduct extends Component{
         }
         else{
             console.log(this.state.loadedProduct);
-            return "Loading..."
+            return "Loading........"
         }
 
     }

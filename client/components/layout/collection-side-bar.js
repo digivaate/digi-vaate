@@ -9,13 +9,13 @@ const {  Sider } = Layout;
 import axios from'axios';
 
 
-class SideBar extends Component{
+class CollectionSideBar extends Component{
     constructor(props){
         super(props);
     }
 
     componentDidMount() {
-        axios.get('api/product')
+        axios.get('http://localhost:3000/api/product')
             .then(response => this.products = response.data)
             .then(() => this.setState({}))
             .catch(err => console.log(err));
@@ -23,7 +23,7 @@ class SideBar extends Component{
 
     render(){
         console.log("From side-bar");
-        console.log(this.props.location);
+        console.log(this.props);
         let renderProductList = null;
         if(this.products){
             renderProductList = this.products.map(product =>
@@ -47,19 +47,25 @@ class SideBar extends Component{
                     defaultSelectedKeys={['1']}
                     style={{ height: '100%',borderRight: 0  }}
                 >
-                    <SubMenu key="sub2"
-                             title={<span>Season</span>}
+                    <SubMenu key="sub1"
+                             title={<span>Products</span>}
                     >
-                        <Menu.Item key="5">
-                            <NavLink to="/season1" className="nav-text">
-                                    Season 1
-                            </NavLink>
-                        </Menu.Item>
+                        {renderProductList}
                     </SubMenu>
+                    <Menu.Item key="3">
+                        <NavLink to="/season1/collection1/colors" className="nav-text">
+                            Colors
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="4">
+                        <NavLink to="/season1/collection1/budget" className="nav-text">
+                            Budget
+                        </NavLink>
+                    </Menu.Item>
                 </Menu>
             </Sider>
         )
     }
 }
 
-export default SideBar;
+export default CollectionSideBar;
