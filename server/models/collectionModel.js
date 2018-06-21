@@ -1,5 +1,17 @@
-const mongoose = require('mongoose');
+export default (sequelize, DataTypes) => {
+    const Collection = sequelize.define('collections', {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    });
 
+    Collection.associate = (models) => {
+
+    };
+    return Collection;
+};
+/*
 const collectionSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true },
@@ -8,5 +20,4 @@ const collectionSchema = new mongoose.Schema({
     materials: [{type: mongoose.Schema.Types.ObjectId, ref: 'Material'}],
     products: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}]
 });
-
-module.exports = mongoose.model('Collection', collectionSchema);
+*/

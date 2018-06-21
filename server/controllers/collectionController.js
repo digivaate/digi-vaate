@@ -1,19 +1,29 @@
-import Collection from '../models/collectionModel';
-import mongoose from 'mongoose';
+import models from '../models/models';
 
 exports.find_all = (req, res) => {
-    Collection.find()
-        .exec()
-        .then(docs => {
-            res.status(200).json(docs);
+    models.Collection.findAll()
+        .then(doc => {
+            res.send(doc);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: err })
+            console.error('Error: ' + err);
+            res.send({ error: err })
         });
 };
 
+exports.create = (req, res) => {
+    console.log(req.body);
+    models.Collection.create(req.body)
+        .then(doc => {
+            res.send(doc);
+        })
+        .catch(err => {
+            console.error('Error: ' + err);
+            res.status(500).json({ error: err });
+        });
+};
 
+/*
 exports.find_by_id = (req, res) => {
     Collection.findById(req.params.id)
         .select('-__v')
@@ -39,29 +49,7 @@ exports.find_by_id = (req, res) => {
         });
 };
 
-exports.create = (req, res) => {
-    const collection = new Collection({
-        _id: mongoose.Types.ObjectId(),
-        name: req.body.name,
-        colors: req.body.colors,
-        theme: req.body.theme,
-        materials: req.body.materials,
-        products: req.body.products
-    });
-    collection.save()
-        .then(result => {
-            res.status(201).json({
-                message: 'Collection stored',
-                created: result
-            });
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: 'Create failed',
-                error: err
-            });
-        });
-};
+
 
 exports.edit = (req, res) => {
     const id = req.params.id;
@@ -94,3 +82,4 @@ exports.delete = (req, res) => {
             res.status(500).json({ error: err });
         });
 };
+*/
