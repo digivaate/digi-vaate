@@ -8,6 +8,6 @@ router.get('/:id/collections', SeasonController.get_collections);
 //router.get('/:id/products', SeasonController.find_all_products);
 router.post('/', SeasonController.create);
 //router.patch('/:id', SeasonController.set_collections);
-//router.delete('/:id', SeasonController.delete);
+router.delete('/:id', SeasonController.delete);
 
 module.exports = router;

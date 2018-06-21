@@ -12,7 +12,7 @@ exports.find_all = (req, res) => {
 };
 
 exports.find_by_id = (req, res) => {
-    models.Season.findById(req.params.id)
+    models.Season.findById(req.params.id, { include: [{ all: true }] })
         .then(doc => {
             res.send(doc);
         })
@@ -36,7 +36,12 @@ exports.get_collections = (req, res) => {
 }
 
 exports.create = (req, res) => {
-    models.Season.create(req.body)
+    models.Season.create(req.body, {
+        include: [{
+            model: models.Collection,
+            as: 'collections'
+        }]
+    })
         .then(doc => {
             res.send(doc);
         })
@@ -46,66 +51,27 @@ exports.create = (req, res) => {
         });
 };
 
-exports.set_collections = (req, res) => {
+exports.update = (req, res) => {
     models.Season.findById(req.params.id)
         .then(season => {
-            season.setCollections()
-        });
-};
-
-/*
-
-exports.find_all_products = (req, res) => {
-    Season.findById(req.params.id)
-        .select('products collections')
-        .populate('products')
-        .populate('collections')
-        .exec()
-        .then(seasonDoc => {
-            const products = [];
-            Collection.populate(seasonDoc, {
-                path: 'collections.products',
-                model: 'Product'
-            }, () => {
-                products.push(seasonDoc.products);
-                seasonDoc.collections.forEach((coll) => {
-                    products.push(coll.products);
-                });
-                res.send(products);
-            });
-        });
-};
-
-exports.edit = (req, res) => {
-    const id = req.params.id;
-    const updateOps = {};
-    for (let ops in req.body) {
-        if (req.body.hasOwnProperty(ops)) {
-            updateOps[ops] = req.body[ops];
-        }
-    }
-    Season.update({ _id: id }, { $set: req.body })
-        .exec()
-        .then(result => {
-            res.status(200).json(result);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err});
+            season.updateAttributes(req.body);
         });
 };
 
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    Season.remove({ _id: id})
-        .exec()
-        .then(result => {
-            res.status(200).json(result);
+    models.Season.findById(req.params.id)
+        .then(season => {
+            if (season) {
+                season.destroy();
+                res.send({status: 'deleted'});
+            } else {
+                res.status(500).json({
+                    error: 'Not existing or already deleted'
+                });
+            }
         })
         .catch(err => {
-            console.log(err);
+            console.error('Error: ' + err);
             res.status(500).json({ error: err });
         });
 };
-
-*/
