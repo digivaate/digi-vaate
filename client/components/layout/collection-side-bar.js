@@ -34,6 +34,7 @@ class CollectionSideBar extends Component{
                 </Menu.Item>
             );
         }
+        console.log(renderProductList);
         return (
             <Sider width={280}
                    style={{
@@ -53,12 +54,12 @@ class CollectionSideBar extends Component{
                         {renderProductList}
                     </SubMenu>
                     <Menu.Item key="3">
-                        <NavLink to="/season1/collection1/colors" className="nav-text">
+                        <NavLink to="/2018-06-20/collection1/colors" className="nav-text">
                             Colors
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <NavLink to="/season1/collection1/budget" className="nav-text">
+                        <NavLink to="/2018-06-20/collection1/budget" className="nav-text">
                             Budget
                         </NavLink>
                     </Menu.Item>

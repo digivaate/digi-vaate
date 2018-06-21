@@ -15,26 +15,26 @@ class SideBar extends Component{
     }
 
     componentDidMount() {
-        axios.get('api/product')
-            .then(response => this.products = response.data)
+        axios.get('http://localhost:3000/api/season')
+            .then(response => {
+                this.seasons = response.data;
+                console.log(this.seasons)
+            })
             .then(() => this.setState({}))
             .catch(err => console.log(err));
     }
 
     render(){
-        console.log("From side-bar");
-        console.log(this.props.location);
-        let renderProductList = null;
-        if(this.products){
-            renderProductList = this.products.map(product =>
-                <Menu.Item key={product._id}>
-                    <NavLink to={product._id} className="nav-text">
-                        {product.name}
+        let renderSeasonList = null;
+        if(this.seasons){
+            renderSeasonList = this.seasons.map(season =>
+                <Menu.Item key={season._id}>
+                    <NavLink to={season.name} className="nav-text">
+                        {season.name}
                     </NavLink>
                 </Menu.Item>
             );
-        }
-        return (
+        }return (
             <Sider width={280}
                    style={{
                        background: '#fff',
@@ -50,11 +50,7 @@ class SideBar extends Component{
                     <SubMenu key="sub2"
                              title={<span>Season</span>}
                     >
-                        <Menu.Item key="5">
-                            <NavLink to="/season1" className="nav-text">
-                                    Season 1
-                            </NavLink>
-                        </Menu.Item>
+                        {renderSeasonList}
                     </SubMenu>
                 </Menu>
             </Sider>

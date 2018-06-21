@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { makeData } from "../Data";
-import ProductCard from "./product-card";
+import ProductCard from "./products/product-card";
 
 // Import React Table
 import ReactTable from "react-table";

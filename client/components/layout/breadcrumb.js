@@ -14,12 +14,11 @@ const Apps = () => (
 );
 
 const breadcrumbNameMap = {
-    '/season1/collection1/:id': 'Products',
-    '/season1':'Season 1',
-    '/season2':'Season 2',
-    '/season1/collection1/colors': 'Colors',
-    '/season1/collection1/budget': 'Budget',
-    '/season1/collection1': 'Collection1'
+    '/2018-06-20/collection1/:id': 'Products',
+    '/2018-06-20':'2018-06-20',
+    '/2018-06-20/collection1/colors': 'Colors',
+    '/2018-06-20/collection1/budget': 'Budget',
+    '/2018-06-20/collection1': 'Collection1'
 };
 const Home = withRouter((props) => {
     const { location } = props;

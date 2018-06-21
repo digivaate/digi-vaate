@@ -51,7 +51,7 @@ class CompanySideBar extends Component{
                              title={<span>Collection</span>}
                     >
                         <Menu.Item key="5">
-                            <NavLink to="/season1/collection1" className="nav-text">
+                            <NavLink to="/2018-06-20/collection1" className="nav-text">
                                 Collection 1
                             </NavLink>
                         </Menu.Item>

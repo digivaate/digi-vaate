@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { makeDataMC } from "../Data";
+import { makeDataMC } from "../../Data";
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
