@@ -83,6 +83,7 @@ class ColorPage extends React.Component {
                 name: this.colorsCollection.name,
                 value: this.colorsCollection.hexCode
             };
+            this.props.createColor(newColor);
             axios.post('http://localhost:3000/api/color',newColor)
                 .then(function (response) {
                     console.log(response);

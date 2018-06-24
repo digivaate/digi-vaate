@@ -13,7 +13,6 @@ class ColorIndexPage extends Component{
         return(
             <div>
                 <h1>Colors</h1>
-                <ColorPage/>
                 <br/>
                 <ColorCollection />
             </div>

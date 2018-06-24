@@ -8,7 +8,7 @@ class ColorCollection extends Component{
     constructor(props){
         super(props);
         this.state ={
-            fetchColors: false
+            fetchColors: null
         };
         this.loadColors = this.loadColors.bind(this);
     }
@@ -17,10 +17,6 @@ class ColorCollection extends Component{
 
     componentDidMount(){
         this.loadColors();
-    }
-
-    componentDidUpdate(){
-        this.loadColors()
     }
 
     loadColors(){
@@ -34,10 +30,16 @@ class ColorCollection extends Component{
             .catch(err => console.log(err));
     }
 
+    createColor(newColor){
+        this.colorCard.push(newColor);
+        this.setState({})
+    }
+
     render(){
         if(this.colorCard.length === 0){
             return (
                 <div>
+                    <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
                     <Button onClick={this.loadColors}>Refresh</Button>
                     <Card title="Color Collection">
                     </Card>
@@ -75,6 +77,7 @@ class ColorCollection extends Component{
             });
             return (
                 <div>
+                    <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
                     <Card title="Color Collection">
                         {colorCard}
                     </Card>
