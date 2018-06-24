@@ -15,6 +15,7 @@ const breadcrumbNameMap = {
     '/2018-06-20':'2018-06-20',
     '/2018-06-20/collection1/colors': 'Colors',
     '/2018-06-20/collection1/budget': 'Budget',
+    '/2018-06-20/collection1/materials': 'Materials',
     '/2018-06-20/collection1': 'Collection1'
 };
 console.log(breadcrumbNameMap);

@@ -19,6 +19,9 @@ class ColorCollection extends Component{
         this.loadColors();
     }
 
+    componentDidUpdate(){
+        this.loadColors()
+    }
 
     loadColors(){
         axios.get('http://localhost:3000/api/color')
@@ -72,7 +75,6 @@ class ColorCollection extends Component{
             });
             return (
                 <div>
-                    <Button onClick={this.loadColors}> Refresh</Button>
                     <Card title="Color Collection">
                         {colorCard}
                     </Card>

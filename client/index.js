@@ -8,6 +8,7 @@ import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
 import ColorIndexPage from './components/colors/index'
 import ProductCard from './components/products/product-card'
+import MaterialList from './components/materials/material-list'
 import ProductsDisplay from './components/products/products-display'
 import SingleProduct from './components/products/single-product'
 import SeasonSideBar from './components/layout/season-side-bar'
@@ -41,6 +42,7 @@ class App extends React.Component {
                                             <Route path="/2018-06-20/collection1" exact component={SingleCollection} />
                                             <Route path="/2018-06-20/collection1/budget" exact component={BudgetPlanningTable} />
                                             <Route path="/2018-06-20/collection1/colors" exact component={ColorIndexPage} />
+                                            <Route path="/2018-06-20/collection1/materials" exact component={MaterialList} />
                                             <Route path="/2018-06-20/collection1/products" exact component={ProductsDisplay} />
                                             <Route path="/2018-06-20/collection1/products/:id" exact component={SingleProduct} />
                                         </Switch>

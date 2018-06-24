@@ -70,15 +70,25 @@ class ProductsDisplay extends Component{
 
             );
         }
-            return (
-                <div>
-                    {singleProduct}
-                    <h1>Products</h1>
-                    <Row gutter={40}>
-                        {renderProductList}
-                    </Row>
-                </div>
-            )
+        if(renderProductList){
+            if(renderProductList.length === 0){
+                return (
+                    <div>
+                        <h1>Products</h1>
+                        <p>No products yet...</p>
+                    </div>
+                )
+            }
+        }
+        return (
+            <div>
+                {singleProduct}
+                <h1>Products</h1>
+                <Row gutter={40}>
+                    {renderProductList}
+                </Row>
+            </div>
+        )
     }
 }
 

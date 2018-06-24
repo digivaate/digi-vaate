@@ -55,6 +55,11 @@ class CollectionSideBar extends Component{
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item key="3">
+                        <NavLink to="/2018-06-20/collection1/materials" className="nav-text">
+                            Materials
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="4">
                         <NavLink to="/2018-06-20/collection1/budget" className="nav-text">
                             Budget
                         </NavLink>

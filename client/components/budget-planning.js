@@ -285,7 +285,7 @@ class BudgetPlanningTable extends Component {
 
         return (
             <div>
-                <h1> Week 3 Budget Plan </h1>
+                <h1> Budget Plan </h1>
                 <Button onClick={() => this.addNewRow()}> Add new row </Button>
                 <Button onClick={() => this.removeRow()}> Remove row </Button>
                 <Button onClick={() => this.refreshTable()}> Refresh </Button>
