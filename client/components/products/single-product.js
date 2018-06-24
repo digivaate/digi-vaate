@@ -7,14 +7,12 @@ class SingleProduct extends Component{
     state = {
         loadedProduct: null
     };
+
     componentDidMount(){
-        console.log(this.props);
         this.loadProduct();
 
     }
     componentDidUpdate(){
-        console.log("---");
-        console.log(this.props);
         this.loadProduct()
     }
     loadProduct(){
@@ -23,7 +21,6 @@ class SingleProduct extends Component{
                 axios.get("http://localhost:3000/api/product/"+ this.props.match.params.id)
                     .then(response => {
                         this.setState({loadedProduct: response.data});
-                        console.log(response.data)
                     })
             }
         }
@@ -45,7 +42,6 @@ class SingleProduct extends Component{
             )
         }
         else{
-            console.log(this.state.loadedProduct);
             return "Loading........"
         }
 

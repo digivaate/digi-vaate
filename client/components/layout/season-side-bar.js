@@ -9,14 +9,14 @@ const {  Sider } = Layout;
 import axios from'axios';
 
 
-class CompanySideBar extends Component{
+class SeasonSideBar extends Component{
     constructor(props){
         super(props);
     }
 
     componentDidMount() {
-        axios.get('api/product')
-            .then(response => this.products = response.data)
+        axios.get('http://localhost:3000/api/season')
+            .then(response => this.collections = response.data)
             .then(() => this.setState({}))
             .catch(err => console.log(err));
     }
@@ -24,12 +24,12 @@ class CompanySideBar extends Component{
     render(){
         console.log("From side-bar");
         console.log(this.props.location);
-        let renderProductList = null;
-        if(this.products){
-            renderProductList = this.products.map(product =>
-                <Menu.Item key={product._id}>
-                    <NavLink to={product._id} className="nav-text">
-                        {product.name}
+        let renderCollectionList = null;
+        if(this.seasons){
+            renderCollectionList = this.collections.map(collection =>
+                <Menu.Item key={collection._id}>
+                    <NavLink to={collection.name} className="nav-text">
+                        {collection.name}
                     </NavLink>
                 </Menu.Item>
             );
@@ -62,4 +62,4 @@ class CompanySideBar extends Component{
     }
 }
 
-export default CompanySideBar;
+export default SeasonSideBar;

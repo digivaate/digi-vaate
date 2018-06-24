@@ -10,6 +10,7 @@ class ColorIndexPage extends Component{
     render(){
         return(
             <div>
+                <h1>Colors</h1>
                 <ColorPage/>
                 <br/>
                 <ColorCollection />

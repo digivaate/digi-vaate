@@ -1,46 +1,84 @@
 import React,{ Component } from "react";
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col,Icon,Avatar } from 'antd';
+import {Redirect} from 'react-router-dom'
 import axios from 'axios';
+
+const { Meta } = Card;
 
 
 class ProductsDisplay extends Component{
     constructor(props){
         super(props);
         this.state ={
-            isFetched: false
-        }
+            isFetched: false,
+            isSelected:false,
+            productName:null
+        };
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     componentDidMount() {
-        axios.get('api/product')
+        axios.get('http://localhost:3000/api/product')
             .then(response => this.products = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
     }
 
-    render(){
+    handleSelect(productName){
+        this.setState({
+            isSelected:true,
+            productName: productName
+        })
+    }
+
+    render() {
         let renderProductList = null;
-        if(this.products){
-            renderProductList = this.products.map(product =>
-                <Col span={6} key={product._id}>
-                    <Card title={product.name}
-                          hoverable
-                          extra={<a href="#">Edit</a>}
-                          style={{
-                              width: 250,
-                          }}>
-                        <p>Card content</p>
-                    </Card>
-                </Col>
+        let singleProduct = null;
+        if (this.state.isSelected) {
+            singleProduct = <Redirect to={{
+                pathname: this.props.match.url + "/" + this.state.productName
+            }}/>
+        }
+        if (this.products) {
+            renderProductList = this.products.map(product =>{
+                return(
+                    <Col span={6} key={product._id}>
+                        <div style={{
+                            height: 290
+                        }}>
+                        <Card
+                              hoverable
+                              style={{
+                                  width: 250,
+                              }}
+                              cover={<img alt="example" height="160" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
+                              actions={[
+                                  <div onClick = {() => this.handleSelect(product._id)}>
+                                  <Icon type="edit" />
+                                  </div>,
+                                  <Icon type="delete" />
+                              ]}
+                        >
+                            <Meta
+                                title={product.name}
+                            />
+                        </Card>
+                        </div>
+                    </Col>
+                )
+            }
+
             );
         }
-        return (
-            <div>
-                <Row gutter={32}>
-                    {renderProductList}
-                </Row>
-            </div>
-        )
+            return (
+                <div>
+                    {singleProduct}
+                    <h1>Products</h1>
+                    <Row gutter={40}>
+                        {renderProductList}
+                    </Row>
+                </div>
+            )
     }
 }
 

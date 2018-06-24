@@ -22,8 +22,6 @@ class CollectionSideBar extends Component{
     }
 
     render(){
-        console.log("From side-bar");
-        console.log(this.props);
         let renderProductList = null;
         if(this.products){
             renderProductList = this.products.map(product =>
@@ -34,7 +32,6 @@ class CollectionSideBar extends Component{
                 </Menu.Item>
             );
         }
-        console.log(renderProductList);
         return (
             <Sider width={280}
                    style={{
@@ -45,20 +42,19 @@ class CollectionSideBar extends Component{
                    }}>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
                     style={{ height: '100%',borderRight: 0  }}
                 >
-                    <SubMenu key="sub1"
-                             title={<span>Products</span>}
-                    >
-                        {renderProductList}
-                    </SubMenu>
-                    <Menu.Item key="3">
+                    <Menu.Item key="1">
+                        <NavLink to="/2018-06-20/collection1/products" className="nav-text">
+                            Products
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="2">
                         <NavLink to="/2018-06-20/collection1/colors" className="nav-text">
                             Colors
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="4">
+                    <Menu.Item key="3">
                         <NavLink to="/2018-06-20/collection1/budget" className="nav-text">
                             Budget
                         </NavLink>

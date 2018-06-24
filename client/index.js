@@ -10,9 +10,10 @@ import ColorIndexPage from './components/colors/index'
 import ProductCard from './components/products/product-card'
 import ProductsDisplay from './components/products/products-display'
 import SingleProduct from './components/products/single-product'
-import CompanySideBar from './components/layout/season-side-bar'
+import SeasonSideBar from './components/layout/season-side-bar'
 import CollectionSideBar from './components/layout/collection-side-bar'
 import SingleSeason from './components/seasons/single-season'
+import SingleCollection from './components/collections/single_collection'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { Layout, Breadcrumb } from 'antd';
@@ -30,17 +31,18 @@ class App extends React.Component {
                     <Content style={{ marginTop : 160 }}>
                         <Layout>
                             <Route path="/" exact component={SideBar}/>
-                            <Route path="/2018-06-20" exact component={CompanySideBar} />
+                            <Route path="/2018-06-20" exact component={SeasonSideBar} />
                             <Route path="/2018-06-20/collection1" component={CollectionSideBar} />
                             <Layout style={{ padding: '0 24px 24px',backgroundColor:'white' }}>
                                 <Content style={{ padding: '0 24px',margin: 0 }}>
                                     <div style={{ background: '#fff', padding: 24 }}>
                                         <Switch>
-                                            <Route path="/2018-06-20/collection1/budget" component={BudgetPlanningTable} />
-                                            <Route path="/2018-06-20/collection1/colors" component={ColorIndexPage} />
-                                            <Route path="/product" component={ProductCard} />
-                                            <Route path="/2018-06-20" component={SingleSeason} />
-                                            <Route path="/2018-06-20/collection1/:id" component={SingleProduct} />
+                                            <Route path="/2018-06-20" exact component={SingleSeason} />
+                                            <Route path="/2018-06-20/collection1" exact component={SingleCollection} />
+                                            <Route path="/2018-06-20/collection1/budget" exact component={BudgetPlanningTable} />
+                                            <Route path="/2018-06-20/collection1/colors" exact component={ColorIndexPage} />
+                                            <Route path="/2018-06-20/collection1/products" exact component={ProductsDisplay} />
+                                            <Route path="/2018-06-20/collection1/products/:id" exact component={SingleProduct} />
                                         </Switch>
                                     </div>
                                 </Content>

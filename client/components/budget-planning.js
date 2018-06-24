@@ -69,8 +69,6 @@ class BudgetPlanningTable extends Component {
             .then(response => this.products = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
-        console.log('AAAAA');
-        console.log(this.products);
     }
 
     productSelect(cellInfo){
