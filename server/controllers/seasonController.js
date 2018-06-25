@@ -22,19 +22,6 @@ exports.find_by_id = (req, res) => {
         });
 };
 
-exports.get_collections = (req, res) => {
-    models.Collection.findAll({
-        where: { seasonId: req.params.id}
-    })
-        .then(doc => {
-            res.send(doc);
-        })
-        .catch(err => {
-            console.error('Error: ' + err);
-            res.status(500).json({ error: err });
-        });
-}
-
 exports.create = (req, res) => {
     models.Season.create(req.body, {
         include: [{
@@ -53,8 +40,8 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
     models.Season.findById(req.params.id)
-        .then(season => {
-            season.updateAttributes(req.body);
+        .then(ent => {
+            ent.updateAttributes(req.body);
         });
 };
 
