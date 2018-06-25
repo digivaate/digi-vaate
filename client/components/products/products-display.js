@@ -16,10 +16,18 @@ class ProductsDisplay extends Component{
         };
         this.handleSelect = this.handleSelect.bind(this);
     }
-
+    collections = [];
+    products = [];
     componentDidMount() {
-        axios.get('http://localhost:3000/api/product')
-            .then(response => this.products = response.data)
+        axios.get('http://localhost:3000/api/collection')
+            .then(response => {
+                this.collections = response.data;
+                for(let i = 0; i < this.collections.length; i++){
+                    if(this.props.match.params.id === this.collections[i].name){
+                        this.products = this.collections[i].products;
+                    }
+                }
+            })
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
     }
@@ -34,6 +42,7 @@ class ProductsDisplay extends Component{
     render() {
         let renderProductList = null;
         let singleProduct = null;
+        console.log(this.products);
         if (this.state.isSelected) {
             singleProduct = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.productName
@@ -42,7 +51,7 @@ class ProductsDisplay extends Component{
         if (this.products) {
             renderProductList = this.products.map(product =>{
                 return(
-                    <Col span={6} key={product._id}>
+                    <Col span={6} key={product.id}>
                         <div style={{
                             height: 290
                         }}>
@@ -53,7 +62,7 @@ class ProductsDisplay extends Component{
                               }}
                               cover={<img alt="example" height="160" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
                               actions={[
-                                  <div onClick = {() => this.handleSelect(product._id)}>
+                                  <div onClick = {() => this.handleSelect(product.id)}>
                                   <Icon type="edit" />
                                   </div>,
                                   <Icon type="delete" />

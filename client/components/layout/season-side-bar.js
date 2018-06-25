@@ -14,35 +14,25 @@ class SeasonSideBar extends Component{
         super(props);
     }
     collections = null;
-    currentSeason = null;
     componentDidMount() {
         axios.get('http://localhost:3000/api/season')
             .then(response => {
-                for(let i = 0 ; i < response.data.length ; i++){
-                    if(this.props.match.params.id === response.data[i].name){
+                for(let i = 0 ; i < response.data.length ; i++) {
+                    if (this.props.match.params.id === response.data[i].name) {
                         this.collections = response.data[i].collections;
-                        for(let j = 0 ; j < this.collections.length ; j++){
-                            axios.get('http://localhost:3000/api/collection/'+ this.collections[j])
-                                .then(response => {
-                                        this.collections[j] = response.data
-                                    }
-                                )
-                                .then(() => this.setState({}))
-                        }
                     }
                 }
             })
+            .then(()=>this.setState({}))
             .catch(err => console.log(err));
 
     }
 
     render(){
-        console.log("***");
-        console.log(this.collections);
         let renderCollectionList = null;
         if(this.collections){
             renderCollectionList = this.collections.map(collection =>
-                <Menu.Item key={collection._id}>
+                <Menu.Item key={collection.id}>
                     <NavLink to={`/${this.props.match.params.id}/${collection.name}`} className="nav-text">
                         {collection.name}
                     </NavLink>
@@ -59,7 +49,6 @@ class SeasonSideBar extends Component{
                    }}>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
                     style={{ height: '100%',borderRight: 0  }}
                 >
                     <SubMenu key="sub2"

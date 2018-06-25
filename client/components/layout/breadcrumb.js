@@ -28,37 +28,37 @@ let breadcrumbNameMap = {
 axios.get('http://localhost:3000/api/season')
     .then(response => {
         seasons = response.data;
-        console.log("From BC");
-        console.log(seasons);
         for(let i=0;i<seasons.length;i++){
-            collections[i] = seasons[i].collections;
+            collections = seasons[i].collections;
             seasonsMap[i] = seasons[i].name;
-            breadcrumbNameMap["/"+seasonsMap[i]] = seasonsMap[i]
+            breadcrumbNameMap["/"+seasonsMap[i]] = seasonsMap[i];
+            for(let j=0;j<collections.length;j++){
+                collectionsMap[j] = collections[j].name;
+                breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]] = collectionsMap[j];
+                breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]+"/products"] = "Products";
+                breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]+"/colors"] = "Colors";
+                breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]+"/materials"] = "Materials";
+                breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]+"/budget"] = "Budget";
+            }
         }
-        console.log(collections)
+        console.log(collectionsMap);
+        console.log(breadcrumbNameMap)
         }
-    );
+    )
 
 axios.get('http://localhost:3000/api/collection')
     .then(response => {
         collections = response.data;
         for(let i=0;i<collections.length;i++){
             collectionsMap[i] = collections[i].name;
-            breadcrumbNameMap["/"+collectionsMap[i]] = collectionsMap[i]
+            products = collections[i].products;
+            for(let j=0;j<products.length;j++) {
+                productsMap[j] = products[j].id;
+                breadcrumbNameMap["/"+seasonsMap[j]+"/" + collectionsMap[j]+"/products/"+productsMap[j]] = products[j].name
+            }
         }
         console.log(collections)
-        }
-    );
-
-axios.get('http://localhost:3000/api/product')
-    .then(response => {
-        products = response.data;
-        for(let i=0;i<products.length;i++){
-            productsMap[i] = products[i].name;
-            breadcrumbNameMap["/"+productsMap[i]] = productsMap[i]
-        }
-        console.log(products);
-        console.log(breadcrumbNameMap);
+        console.log(breadcrumbNameMap)
         }
     );
 
