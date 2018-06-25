@@ -17,8 +17,12 @@ const sequelize = new Sequelize(
     });
 
 const models = {
+    Material: sequelize.import('./materialModel'),
+    Color: sequelize.import('./colorModel'),
+    Product: sequelize.import('./productModel'),
     Collection: sequelize.import('./collectionModel'),
-    Season: sequelize.import('./seasonModel')
+    Season: sequelize.import('./seasonModel'),
+    Company: sequelize.import('./companyModel'),
 };
 
 Object.keys(models).forEach((modelName) => {

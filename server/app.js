@@ -6,7 +6,8 @@ import morgan from 'morgan';
 import models from './models/models';
 
 //synchronise sequelize models with database
-models.sequelize.sync();
+models.sequelize.sync({force: true})
+    .catch(err => console.error('Postgre sync error: ' + err));
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -17,9 +18,10 @@ app.use(express.static(path.resolve(__dirname, '../client/')));
 
 //Back-end routes
 app.use('/api/collection', require('./routes/collectionRoute'));
-//app.use('/api/color', require('./routes/colorRoute'));
-//app.use('/api/material', require('./routes/materialRoute'));
-//app.use('/api/product', require('./routes/productRoute'));
+app.use('/api/color', require('./routes/colorRoute'));
+app.use('/api/company', require('./routes/companyRoute'));
+app.use('/api/material', require('./routes/materialRoute'));
+app.use('/api/product', require('./routes/productRoute'));
 app.use('/api/season', require('./routes/seasonRoute'));
 
 

@@ -2,6 +2,7 @@ export default (sequelize, DataTypes) => {
     const Season = sequelize.define('seasons', {
         name: {
             type: DataTypes.STRING,
+            allowNull: false
         }
     });
 

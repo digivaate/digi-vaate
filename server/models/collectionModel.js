@@ -7,7 +7,15 @@ export default (sequelize, DataTypes) => {
     });
 
     Collection.associate = (models) => {
-
+        Collection.hasMany(models.Product, {
+            as: 'products'
+        });
+        Collection.hasMany(models.Color, {
+            as: 'colors'
+        });
+        Collection.hasMany(models.Material, {
+            as: 'materials'
+        });
     };
     return Collection;
 };

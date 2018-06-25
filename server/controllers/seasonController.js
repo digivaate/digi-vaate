@@ -47,9 +47,9 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
     models.Season.findById(req.params.id)
-        .then(season => {
-            if (season) {
-                season.destroy();
+        .then(ent => {
+            if (ent) {
+                ent.destroy();
                 res.send({status: 'deleted'});
             } else {
                 res.status(500).json({

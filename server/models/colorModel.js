@@ -1,5 +1,18 @@
-const mongoose = require('mongoose');
+export default (sequelize, DataTypes) => {
+    const Color = sequelize.define('colors', {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    });
 
+    Color.associate = (models) => {
+
+    };
+    return Color;
+};
+
+/*
 const colorSchema = mongoose.Schema({
     _id: {type: mongoose.Schema.Types.ObjectId},
     name: {type: String, required: true },
@@ -15,3 +28,4 @@ const colorSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Color', colorSchema);
+*/
