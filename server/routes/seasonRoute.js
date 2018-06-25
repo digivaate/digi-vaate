@@ -4,9 +4,8 @@ const router = express.Router();
 
 router.get('/', SeasonController.find_all);
 router.get('/:id', SeasonController.find_by_id);
-router.get('/:id/products', SeasonController.find_all_products);
 router.post('/', SeasonController.create);
-router.patch('/:id', SeasonController.edit);
+router.patch('/:id', SeasonController.update);
 router.delete('/:id', SeasonController.delete);
 
 module.exports = router;

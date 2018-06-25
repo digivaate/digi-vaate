@@ -1,85 +1,59 @@
-const Color = require('../models/colorModel');
-const mongoose = require('mongoose');
+import models from '../models/models';
 
 exports.find_all = (req, res) => {
-    Color.find()
-        .exec()
-        .then(docs => {
-            res.status(200).json(docs);
+    models.Color.findAll()
+        .then(doc => {
+            res.send(doc);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: err })
+            console.error('Error: ' + err);
+            res.send({ error: err })
         });
 };
 
 exports.find_by_id = (req, res) => {
-    Color.findById(req.params.id)
-        .select('-__v')
-        .exec()
+    models.Color.findById(req.params.id, { include: [{ all: true }] })
         .then(doc => {
-            console.log('From database', doc);
-            if (doc) {
-                res.status(200).json(doc);
-            } else {
-                res.status(404).json({message: 'No valid entry found'});
-            }
+            res.send(doc);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: err })
+            console.error('Error: ' + err);
+            res.status(500).json({ error: err });
         });
 };
 
 exports.create = (req, res) => {
-    const color = new Color({
-        _id: mongoose.Types.ObjectId(),
-        name: req.body.name,
-        value: req.body.value
-    });
-    color.save()
-        .then(result => {
-            res.status(201).json({
-                message: 'Product stored',
-                created: result
-            });
+    models.Color.create(req.body)
+        .then(doc => {
+            res.send(doc);
         })
         .catch(err => {
-            res.status(500).json({
-                message: 'Create failed',
-                error: err
-            });
+            console.error('Error: ' + err);
+            res.status(500).json({ error: err });
         });
 };
 
-exports.edit = (req, res) => {
-    const id = req.params.id;
-    const updateOps = {};
-    for (let ops in req.body) {
-        if (req.body.hasOwnProperty(ops)) {
-            updateOps[ops] = req.body[ops];
-        }
-    }
-    Color.update({ _id: id }, { $set: updateOps})
-        .exec()
-        .then(result => {
-            res.status(200).json(result);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err});
+exports.update = (req, res) => {
+    models.Color.findById(req.params.id)
+        .then(ent => {
+            ent.updateAttributes(req.body);
         });
 };
 
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    Color.remove({ _id: id})
-        .exec()
-        .then(result => {
-            res.status(200).json(result);
+    models.Color.findById(req.params.id)
+        .then(ent => {
+            if (ent) {
+                ent.destroy();
+                res.send({status: 'deleted'});
+            } else {
+                res.status(500).json({
+                    error: 'Not existing or already deleted'
+                });
+            }
         })
         .catch(err => {
-            console.log(err);
+            console.error('Error: ' + err);
             res.status(500).json({ error: err });
         });
 };

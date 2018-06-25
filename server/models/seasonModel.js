@@ -1,5 +1,20 @@
-const mongoose = require('mongoose');
+export default (sequelize, DataTypes) => {
+    const Season = sequelize.define('seasons', {
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    });
 
+    Season.associate = (models) => {
+        Season.hasMany(models.Collection, {
+            as: 'collections'
+        });
+    };
+    return Season;
+};
+
+/*
 const seasonSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, default: getDateTime()},
@@ -10,7 +25,7 @@ const seasonSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Season', seasonSchema);
-
+*/
 function getDateTime() {
     const date = new Date();
     const year = date.getFullYear();

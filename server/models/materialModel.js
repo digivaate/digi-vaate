@@ -1,3 +1,17 @@
+export default (sequelize, DataTypes) => {
+    const Material = sequelize.define('materials', {
+        name: {
+            type: DataTypes.STRING,
+        }
+    });
+
+    Material.associate = (models) => {
+
+    };
+    return Material;
+};
+
+/*
 const mongoose = require('mongoose');
 
 const materialSchema = new mongoose.Schema({
@@ -17,3 +31,4 @@ const materialSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Material', materialSchema);
+*/

@@ -1,5 +1,22 @@
-const mongoose = require('mongoose');
+export default (sequelize, DataTypes) => {
+    const Product = sequelize.define('products', {
+        name: {
+            type: DataTypes.STRING,
+        }
+    });
 
+    Product.associate = (models) => {
+        Product.hasMany(models.Material, {
+            as: 'materials'
+        });
+        Product.hasMany(models.Color, {
+            as: 'color'
+        });
+    };
+    return Product;
+};
+
+/*
 const productSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true},
@@ -17,3 +34,4 @@ const productSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Product', productSchema);
+*/

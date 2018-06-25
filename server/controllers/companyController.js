@@ -1,7 +1,7 @@
 import models from '../models/models';
 
 exports.find_all = (req, res) => {
-    models.Material.findAll()
+    models.Company.findAll()
         .then(doc => {
             res.send(doc);
         })
@@ -12,7 +12,7 @@ exports.find_all = (req, res) => {
 };
 
 exports.find_by_id = (req, res) => {
-    models.Material.findById(req.params.id, { include: [{ all: true }] })
+    models.Company.findById(req.params.id, { include: [{ all: true }] })
         .then(doc => {
             res.send(doc);
         })
@@ -23,7 +23,13 @@ exports.find_by_id = (req, res) => {
 };
 
 exports.create = (req, res) => {
-    models.Material.create(req.body)
+    models.Company.create(req.body/* ,{
+        include: [{
+            model: models.Collection,
+            as: 'collections'
+        }]
+    }*/
+    )
         .then(doc => {
             res.send(doc);
         })
@@ -34,14 +40,14 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    models.Material.findById(req.params.id)
+    models.Company.findById(req.params.id)
         .then(ent => {
             ent.updateAttributes(req.body);
         });
 };
 
 exports.delete = (req, res) => {
-    models.Material.findById(req.params.id)
+    models.Company.findById(req.params.id)
         .then(ent => {
             if (ent) {
                 ent.destroy();
