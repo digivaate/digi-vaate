@@ -18,7 +18,6 @@ class SideBar extends Component{
         axios.get('http://localhost:3000/api/season')
             .then(response => {
                 this.seasons = response.data;
-                console.log(this.seasons)
             })
             .then(() => this.setState({}))
             .catch(err => console.log(err));
@@ -28,7 +27,7 @@ class SideBar extends Component{
         let renderSeasonList = null;
         if(this.seasons){
             renderSeasonList = this.seasons.map(season =>
-                <Menu.Item key={season._id}>
+                <Menu.Item key={season.id}>
                     <NavLink to={season.name} className="nav-text">
                         {season.name}
                     </NavLink>
@@ -44,7 +43,6 @@ class SideBar extends Component{
                    }}>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
                     style={{ height: '100%',borderRight: 0  }}
                 >
                     <SubMenu key="sub2"

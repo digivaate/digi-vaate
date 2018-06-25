@@ -12,12 +12,10 @@ class SingleProduct extends Component{
         this.loadProduct();
 
     }
-    componentDidUpdate(){
-        this.loadProduct()
-    }
+
     loadProduct(){
         if(this.props.match.params.id){
-            if ( !this.state.loadedProduct || (this.state.loadedProduct._id !== this.props.match.params.id) ) {
+            if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.id) ) {
                 axios.get("http://localhost:3000/api/product/"+ this.props.match.params.id)
                     .then(response => {
                         this.setState({loadedProduct: response.data});
