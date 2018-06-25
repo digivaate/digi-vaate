@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import models from './models/models';
 
 //synchronise sequelize models with database
-models.sequelize.sync({force: true})
+models.sequelize.sync()
     .catch(err => console.error('Postgre sync error: ' + err));
 
 app.use(bodyParser.urlencoded({extended: false}));
