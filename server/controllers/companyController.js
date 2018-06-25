@@ -1,7 +1,7 @@
 import models from '../models/models';
 
 exports.find_all = (req, res) => {
-    models.Company.findAll()
+    models.Company.findAll({ include: [{ all: true }] })
         .then(doc => {
             res.send(doc);
         })
