@@ -49,15 +49,21 @@ axios.get('http://localhost:3000/api/season')
 axios.get('http://localhost:3000/api/collection')
     .then(response => {
         collections = response.data;
-        for(let i=0;i<collections.length;i++){
-            collectionsMap[i] = collections[i].name;
-            products = collections[i].products;
-            for(let j=0;j<products.length;j++) {
-                productsMap[j] = products[j].id;
-                breadcrumbNameMap["/"+seasonsMap[j]+"/" + collectionsMap[j]+"/products/"+productsMap[j]] = products[j].name
+        for(let k=0; k < seasons.length; k++){
+            for(let i=0;i<collections.length;i++){
+                if(seasons[k].id == collections[i].seasonId) {
+                    collectionsMap[i] = collections[i].name;
+                    products = collections[i].products;
+                    for (let j = 0; j < products.length; j++) {
+                        productsMap[j] = products[j].id;
+                        breadcrumbNameMap["/" + seasonsMap[k] + "/" + collectionsMap[i] + "/products/" + productsMap[j]] = products[j].name
+                    }
+                }
             }
         }
-        console.log(collections)
+
+        console.log(seasonsMap);
+        console.log(collectionsMap);
         console.log(breadcrumbNameMap)
         }
     );
