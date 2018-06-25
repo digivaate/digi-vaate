@@ -22,7 +22,7 @@ class SingleCollection extends Component{
     render(){
         return (
             <div>
-                <p>Collection 1</p>
+                <p>Collection view</p>
             </div>
         )
     }

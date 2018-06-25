@@ -13,22 +13,37 @@ class SeasonSideBar extends Component{
     constructor(props){
         super(props);
     }
-
+    collections = null;
+    currentSeason = null;
     componentDidMount() {
         axios.get('http://localhost:3000/api/season')
-            .then(response => this.collections = response.data)
-            .then(() => this.setState({}))
+            .then(response => {
+                for(let i = 0 ; i < response.data.length ; i++){
+                    if(this.props.match.params.id === response.data[i].name){
+                        this.collections = response.data[i].collections;
+                        for(let j = 0 ; j < this.collections.length ; j++){
+                            axios.get('http://localhost:3000/api/collection/'+ this.collections[j])
+                                .then(response => {
+                                        this.collections[j] = response.data
+                                    }
+                                )
+                                .then(() => this.setState({}))
+                        }
+                    }
+                }
+            })
             .catch(err => console.log(err));
+
     }
 
     render(){
-        console.log("From side-bar");
-        console.log(this.props.location);
+        console.log("***");
+        console.log(this.collections);
         let renderCollectionList = null;
-        if(this.seasons){
+        if(this.collections){
             renderCollectionList = this.collections.map(collection =>
                 <Menu.Item key={collection._id}>
-                    <NavLink to={collection.name} className="nav-text">
+                    <NavLink to={`/${this.props.match.params.id}/${collection.name}`} className="nav-text">
                         {collection.name}
                     </NavLink>
                 </Menu.Item>
@@ -50,11 +65,7 @@ class SeasonSideBar extends Component{
                     <SubMenu key="sub2"
                              title={<span>Collection</span>}
                     >
-                        <Menu.Item key="5">
-                            <NavLink to="/2018-06-20/collection1" className="nav-text">
-                                Collection 1
-                            </NavLink>
-                        </Menu.Item>
+                        {renderCollectionList}
                     </SubMenu>
                 </Menu>
             </Sider>

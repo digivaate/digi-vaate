@@ -51,7 +51,7 @@ class MaterialList extends Component{
                                     style={{
                                         width: 250,
                                     }}
-                                    cover={<img alt="example" height="160" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
+                                    cover={<img alt="example" height="160" src="https://4.imimg.com/data4/TE/WS/ANDROID-25878983/product-500x500.jpeg" />}
                                     actions={[
                                         <div onClick = {() => this.handleSelect(material._id)}>
                                             <Icon type="edit" />

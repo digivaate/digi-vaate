@@ -22,7 +22,7 @@ class SingleSeason extends Component{
     render(){
         return (
             <div>
-                <p>Season 1</p>
+                <p>Season view</p>
             </div>
         )
     }

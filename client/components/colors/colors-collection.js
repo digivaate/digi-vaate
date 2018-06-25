@@ -58,7 +58,7 @@ class ColorCollection extends Component{
                             borderRadius: '4px'
                         }}
                         actions={[<Icon type="setting"/>, <Icon type="edit"/>, <Icon type="ellipsis"/>]}
-                        key={element.name}
+                        key={element._id}
                     >
                         <Meta
                             title={element.name}

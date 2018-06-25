@@ -10,7 +10,7 @@ let collectionsMap = [];
 let products = [];
 let productsMap = [];
 
-const breadcrumbNameMap = {
+/*const breadcrumbNameMap = {
     '/2018-06-20/collection1/products': 'Products',
     '/2018-06-20':'2018-06-20',
     '/2018-06-20/collection1/colors': 'Colors',
@@ -18,19 +18,24 @@ const breadcrumbNameMap = {
     '/2018-06-20/collection1/materials': 'Materials',
     '/2018-06-20/collection1': 'Collection1'
 };
-console.log(breadcrumbNameMap);
+console.log(breadcrumbNameMap);*/
 
 
 
 
-/*let breadcrumbNameMap = {};
+let breadcrumbNameMap = {
+};
 axios.get('http://localhost:3000/api/season')
     .then(response => {
         seasons = response.data;
+        console.log("From BC");
+        console.log(seasons);
         for(let i=0;i<seasons.length;i++){
+            collections[i] = seasons[i].collections;
             seasonsMap[i] = seasons[i].name;
             breadcrumbNameMap["/"+seasonsMap[i]] = seasonsMap[i]
         }
+        console.log(collections)
         }
     );
 
@@ -56,7 +61,7 @@ axios.get('http://localhost:3000/api/product')
         console.log(breadcrumbNameMap);
         }
     );
-*/
+
 
 const Home = withRouter((props) => {
     const { location } = props;
