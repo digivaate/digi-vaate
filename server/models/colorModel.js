@@ -7,7 +7,8 @@ export default (sequelize, DataTypes) => {
     });
 
     Color.associate = (models) => {
-
+        Color.belongsToMany(models.Product, {through: 'color_product'});
+        Color.belongsToMany(models.Collection, {through: 'color_collection'});
     };
     return Color;
 };

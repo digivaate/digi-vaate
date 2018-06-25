@@ -34,9 +34,10 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    models.Season.findById(req.params.id)
+    models.Product.findById(req.params.id)
         .then(ent => {
             ent.updateAttributes(req.body);
+            ent.setColors(req.body.colors);
             res.send(ent);
         })
         .catch(err => {

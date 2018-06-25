@@ -25,6 +25,7 @@ exports.find_by_id = (req, res) => {
 exports.create = (req, res) => {
     models.Color.create(req.body)
         .then(doc => {
+            doc.setProducts(req.body.products);
             res.send(doc);
         })
         .catch(err => {
@@ -34,9 +35,10 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    models.Season.findById(req.params.id)
+    models.Color.findById(req.params.id)
         .then(ent => {
             ent.updateAttributes(req.body);
+            ent.setProducts(req.body.products);
             res.send(ent);
         })
         .catch(err => {

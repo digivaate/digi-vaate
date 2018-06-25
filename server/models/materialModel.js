@@ -2,11 +2,13 @@ export default (sequelize, DataTypes) => {
     const Material = sequelize.define('materials', {
         name: {
             type: DataTypes.STRING,
+            allowNull: false
         }
     });
 
     Material.associate = (models) => {
-
+        Material.belongsToMany(models.Product, {through: 'material_product'});
+        Material.belongsToMany(models.Collection, {through: 'material_collection'});
     };
     return Material;
 };
