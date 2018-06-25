@@ -42,6 +42,11 @@ exports.update = (req, res) => {
     models.Season.findById(req.params.id)
         .then(ent => {
             ent.updateAttributes(req.body);
+            res.send(ent);
+        })
+        .catch(err => {
+            console.error('Error: ' + err);
+            res.status(500).json({ error: err });
         });
 };
 

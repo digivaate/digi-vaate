@@ -40,9 +40,14 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    models.Company.findById(req.params.id)
+    models.Season.findById(req.params.id)
         .then(ent => {
             ent.updateAttributes(req.body);
+            res.send(ent);
+        })
+        .catch(err => {
+            console.error('Error: ' + err);
+            res.status(500).json({ error: err });
         });
 };
 
