@@ -3,6 +3,15 @@ export default (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        value: {type: String,
+            validate: {
+                validator: (v) => {
+                    //Hexadecimal value
+                    return /^#(?:[0-9a-f]{3}){1,2}$/i.test(v);
+                },
+                message: '{VALUE} is not a valid phone number!'
+            }
         }
     });
 
