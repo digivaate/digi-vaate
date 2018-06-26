@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import { API_ROOT } from '../../api-config';
 import axios from 'axios';
 
 class SingleCollection extends Component{
@@ -10,7 +11,7 @@ class SingleCollection extends Component{
     }
 
     componentDidMount(){
-        axios.get('http://localhost:3000/api/collection')
+        axios.get(`${API_ROOT}/collection`)
             .then(response => {
                 this.setState({
                     isFetched:true

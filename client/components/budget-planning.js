@@ -7,6 +7,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { Select, Button, Divider } from 'antd';
 import axios from 'axios';
+import { API_ROOT } from '../api-config';
+
 
 
 const Option = Select.Option;
@@ -58,14 +60,14 @@ class BudgetPlanningTable extends Component {
     }
 
     refreshTable(){
-        axios.get('api/product')
+        axios.get(`${API_ROOT}/product`)
             .then(response => this.products = response.data)
             .then(() => this.setState({isFetched: true,data: this.state.data }))
             .catch(err => console.log(err));
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3000/api/product')
+        axios.get(`${API_ROOT}/product`)
             .then(response => this.products = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));

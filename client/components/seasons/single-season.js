@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
+import { API_ROOT } from '../../api-config';
+
 
 class SingleSeason extends Component{
     constructor(props){
@@ -10,7 +12,7 @@ class SingleSeason extends Component{
     }
 
     componentDidMount(){
-        axios.get('http://localhost:3000/api/season')
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.setState({
                     isFetched:true

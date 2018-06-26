@@ -7,6 +7,7 @@ import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
 import axios from'axios';
+import { API_ROOT } from '../../api-config';
 
 
 class SideBar extends Component{
@@ -15,7 +16,7 @@ class SideBar extends Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3000/api/season')
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.seasons = response.data;
             })

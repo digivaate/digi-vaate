@@ -1,6 +1,7 @@
 import React from 'react';
 import ColorPicker from './color_picker'
 import { Button, Modal, Form, Input, message } from 'antd';
+import { API_ROOT } from '../../api-config';
 import axios from 'axios';
 const FormItem = Form.Item;
 
@@ -84,7 +85,7 @@ class ColorPage extends React.Component {
                 value: this.colorsCollection.hexCode
             };
             this.props.createColor(newColor);
-            axios.post('http://localhost:3000/api/color',newColor)
+            axios.post(`${API_ROOT}/color`,newColor)
                 .then(function (response) {
                     console.log(response);
                 })

@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import { API_ROOT } from '../../api-config';
 import { HashRouter as Router, Route, Switch, Link, withRouter } from 'react-router-dom';
 import { Breadcrumb, Alert } from 'antd';
 import axios from 'axios'
@@ -50,7 +51,7 @@ class BreadCrumbDigi extends Component{
     breadcrumbNameMap = {};
 
     componentDidMount(){
-        axios.get('http://localhost:3000/api/company')
+        axios.get(`${API_ROOT}/company`)
             .then(response => {
                 this.companies = response.data;
                 for(let i=0;i<this.companies.length;i++) {
@@ -58,7 +59,7 @@ class BreadCrumbDigi extends Component{
                 }
             });
 
-        axios.get('http://localhost:3000/api/season')
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.seasons = response.data;
                     for(let i=0;i<this.seasons.length;i++){
@@ -77,7 +78,7 @@ class BreadCrumbDigi extends Component{
                 }
             );
 
-        axios.get('http://localhost:3000/api/collection')
+        axios.get(`${API_ROOT}/collection`)
             .then(response => {
                 this.collections = response.data;
                     for(let k=0; k < this.seasons.length; k++){

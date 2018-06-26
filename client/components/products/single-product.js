@@ -1,6 +1,7 @@
 import React,{ Component } from "react";
 import axios from 'axios';
 import { Card } from 'antd';
+import { API_ROOT } from '../../api-config';
 
 
 class SingleProduct extends Component{
@@ -16,7 +17,7 @@ class SingleProduct extends Component{
     loadProduct(){
         if(this.props.match.params.id){
             if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.id) ) {
-                axios.get("http://localhost:3000/api/product/"+ this.props.match.params.id)
+                axios.get(`${API_ROOT}/product/`+ this.props.match.params.id)
                     .then(response => {
                         this.setState({loadedProduct: response.data});
                     })

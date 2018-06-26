@@ -7,6 +7,7 @@ import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
 import axios from'axios';
+import { API_ROOT } from '../../api-config';
 
 
 class CollectionSideBar extends Component{
@@ -15,7 +16,7 @@ class CollectionSideBar extends Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3000/api/product')
+        axios.get(`${API_ROOT}/product`)
             .then(response => this.products = response.data)
             .then(() => this.setState({}))
             .catch(err => console.log(err));

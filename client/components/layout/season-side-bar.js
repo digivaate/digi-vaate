@@ -7,6 +7,8 @@ import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
 import axios from'axios';
+import { API_ROOT } from '../../api-config';
+
 
 
 class SeasonSideBar extends Component{
@@ -15,7 +17,7 @@ class SeasonSideBar extends Component{
     }
     collections = null;
     componentDidMount() {
-        axios.get('http://localhost:3000/api/season')
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 for(let i = 0 ; i < response.data.length ; i++) {
                     if (this.props.match.params.id === response.data[i].name) {

@@ -2,6 +2,7 @@ import React,{ Component } from "react";
 import { Card, Row, Col,Icon,Avatar } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
+import { API_ROOT } from '../../api-config';
 
 const { Meta } = Card;
 
@@ -18,7 +19,7 @@ class MaterialList extends Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3000/api/material')
+        axios.get(`${API_ROOT}/material`)
             .then(response => this.materials = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));

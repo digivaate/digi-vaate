@@ -2,7 +2,7 @@ import React,{ Component } from "react";
 import { Card, Row, Col,Icon,Avatar } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
-
+import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
 
 
@@ -19,7 +19,7 @@ class ProductsDisplay extends Component{
     collections = [];
     products = [];
     componentDidMount() {
-        axios.get('http://localhost:3000/api/collection')
+        axios.get(`${API_ROOT}/collection`)
             .then(response => {
                 this.collections = response.data;
                 for(let i = 0; i < this.collections.length; i++){

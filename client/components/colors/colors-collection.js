@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import ColorPage from './create-color';
+import { API_ROOT } from '../../api-config';
 import { Card, Icon, Button } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
@@ -20,7 +21,7 @@ class ColorCollection extends Component{
     }
 
     loadColors(){
-        axios.get('http://localhost:3000/api/color')
+        axios.get(`${API_ROOT}/color`)
             .then(response => {
                 this.colorCard = response.data;
                 this.setState({
