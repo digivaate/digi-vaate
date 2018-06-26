@@ -20,7 +20,8 @@ export default class Controller {
             }
         }
         this.model.findAll({
-            where: params
+            where: params,
+            include: [{ all: true }]
         })
             .then(ent => {
                 res.send(ent);
