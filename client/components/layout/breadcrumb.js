@@ -3,28 +3,130 @@ import { HashRouter as Router, Route, Switch, Link, withRouter } from 'react-rou
 import { Breadcrumb, Alert } from 'antd';
 import axios from 'axios'
 
-let seasons = [];
+const Home = withRouter((props) => {
+    const { location } = props;
+    const pathSnippets = location.pathname.split('/').filter(i => i);
+    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+        const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+        return (
+            <Breadcrumb.Item key={url}>
+                <Link to={url}>
+                    {props.breadcrumbMap[url]}
+                </Link>
+            </Breadcrumb.Item>
+        );
+    });
+    const breadcrumbItems = [(
+        <Breadcrumb.Item key="companyName"
+        >
+            <Link to="/">{props.companiesMap}</Link>
+        </Breadcrumb.Item>
+    )].concat(extraBreadcrumbItems);
+    return (
+        <Breadcrumb separator={">"}
+                    style={{
+                        marginLeft: '18%',
+                        marginTop: '3%',
+                        fontSize:'20px',
+                    }}
+        >
+            {breadcrumbItems}
+        </Breadcrumb>
+    );
+});
+
+class BreadCrumbDigi extends Component{
+    constructor(props){
+        super(props);
+    }
+    seasons = [];
+    seasonsMap = [];
+    collections = [];
+    collectionsMap = [];
+    products = [];
+    productsMap = [];
+    companies = [];
+    companiesMap = [];
+    breadcrumbNameMap = {};
+
+    componentDidMount(){
+        axios.get('http://localhost:3000/api/company')
+            .then(response => {
+                this.companies = response.data;
+                for(let i=0;i<this.companies.length;i++) {
+                    this.companiesMap = this.companies[i].name;
+                }
+            });
+
+        axios.get('http://localhost:3000/api/season')
+            .then(response => {
+                this.seasons = response.data;
+                    for(let i=0;i<this.seasons.length;i++){
+                        this.collections = this.seasons[i].collections;
+                        this.seasonsMap[i] = this.seasons[i].name;
+                        this.breadcrumbNameMap["/"+this.seasonsMap[i]] = this.seasonsMap[i];
+                        for(let j=0;j<this.collections.length;j++){
+                            this.collectionsMap[j] = this.collections[j].name;
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]] = this.collectionsMap[j];
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/products"] = "Products";
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/colors"] = "Colors";
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/materials"] = "Materials";
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/budget"] = "Budget";
+                        }
+                    }
+                }
+            );
+
+        axios.get('http://localhost:3000/api/collection')
+            .then(response => {
+                this.collections = response.data;
+                    for(let k=0; k < this.seasons.length; k++){
+                        for(let i=0;i<this.collections.length;i++){
+                            if(this.seasons[k].id == this.collections[i].seasonId) {
+                                this.collectionsMap[i] = this.collections[i].name;
+                                this.products = this.collections[i].products;
+                                for (let j = 0; j < this.products.length; j++) {
+                                    this.productsMap[j] = this.products[j].id;
+                                    this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name
+                                }
+                            }
+                        }
+                    }
+                this.setState({})
+            });
+    }
+    render(){
+        return(
+            <Home
+                breadcrumbMap={this.breadcrumbNameMap}
+                companiesMap={this.companiesMap}
+            />
+        )
+    }
+}
+
+export default BreadCrumbDigi;
+/*let seasons = [];
 let seasonsMap = [];
 let collections = [];
 let collectionsMap = [];
 let products = [];
 let productsMap = [];
-
-/*const breadcrumbNameMap = {
-    '/2018-06-20/collection1/products': 'Products',
-    '/2018-06-20':'2018-06-20',
-    '/2018-06-20/collection1/colors': 'Colors',
-    '/2018-06-20/collection1/budget': 'Budget',
-    '/2018-06-20/collection1/materials': 'Materials',
-    '/2018-06-20/collection1': 'Collection1'
-};
-console.log(breadcrumbNameMap);*/
-
-
-
+let companies = [];
+let companiesMap = [];
 
 let breadcrumbNameMap = {
 };
+
+axios.get('http://localhost:3000/api/company')
+    .then(response => {
+        companies = response.data;
+        for(let i=0;i<companies.length;i++) {
+            companiesMap = companies[i].name;
+        }
+        console.log(companiesMap)
+    });
+
 axios.get('http://localhost:3000/api/season')
     .then(response => {
         seasons = response.data;
@@ -41,10 +143,8 @@ axios.get('http://localhost:3000/api/season')
                 breadcrumbNameMap["/"+seasonsMap[i]+"/"+collectionsMap[j]+"/budget"] = "Budget";
             }
         }
-        console.log(collectionsMap);
-        console.log(breadcrumbNameMap)
         }
-    )
+    );
 
 axios.get('http://localhost:3000/api/collection')
     .then(response => {
@@ -61,10 +161,6 @@ axios.get('http://localhost:3000/api/collection')
                 }
             }
         }
-
-        console.log(seasonsMap);
-        console.log(collectionsMap);
-        console.log(breadcrumbNameMap)
         }
     );
 
@@ -85,7 +181,7 @@ const Home = withRouter((props) => {
     const breadcrumbItems = [(
         <Breadcrumb.Item key="companyName"
         >
-            <Link to="/">Company Name</Link>
+            <Link to="/">{companiesMap}</Link>
         </Breadcrumb.Item>
     )].concat(extraBreadcrumbItems);
     return (
@@ -102,3 +198,4 @@ const Home = withRouter((props) => {
 });
 
 export default Home;
+    */

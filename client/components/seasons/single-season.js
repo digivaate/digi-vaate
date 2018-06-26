@@ -12,7 +12,6 @@ class SingleSeason extends Component{
     componentDidMount(){
         axios.get('http://localhost:3000/api/season')
             .then(response => {
-                console.log(response.data);
                 this.setState({
                     isFetched:true
                 })

@@ -24,7 +24,6 @@ const { Content } = Layout;
 
 class App extends React.Component {
     render(){
-        console.log(this.props.location);
         return(
             <BrowserRouter>
                 <Layout className="layout" style={{backgroundColor:'white'}}>

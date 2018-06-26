@@ -22,16 +22,6 @@ class CollectionSideBar extends Component{
     }
 
     render(){
-        let renderProductList = null;
-        if(this.products){
-            renderProductList = this.products.map(product =>
-                <Menu.Item key={product.id}>
-                    <NavLink to={product.id} className="nav-text">
-                        {product.name}
-                    </NavLink>
-                </Menu.Item>
-            );
-        }
         return (
             <Sider width={280}
                    style={{

@@ -12,7 +12,6 @@ class SingleCollection extends Component{
     componentDidMount(){
         axios.get('http://localhost:3000/api/collection')
             .then(response => {
-                console.log(response.data);
                 this.setState({
                     isFetched:true
                 })

@@ -42,7 +42,6 @@ class ProductsDisplay extends Component{
     render() {
         let renderProductList = null;
         let singleProduct = null;
-        console.log(this.products);
         if (this.state.isSelected) {
             singleProduct = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.productName
