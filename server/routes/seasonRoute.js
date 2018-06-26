@@ -1,5 +1,5 @@
 const express = require('express');
-const SeasonController = require('../controllers/seasonController');
+import SeasonController from '../controllers/seasonController';
 const router = express.Router();
 
 router.get('/', SeasonController.find_by_attribute);

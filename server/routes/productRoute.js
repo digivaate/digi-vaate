@@ -1,9 +1,8 @@
 const express = require('express');
-const ProductController = require('../controllers/productController');
+import ProductController from '../controllers/productController';
 const router = express.Router();
 
-router.get('/', ProductController.find_all);
-router.get('/:id', ProductController.find_by_id);
+router.get('/', ProductController.find_by_attribute);
 router.post('/', ProductController.create);
 router.patch('/:id', ProductController.update);
 router.delete('/:id', ProductController.delete);

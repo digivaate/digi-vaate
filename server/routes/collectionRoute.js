@@ -1,9 +1,8 @@
 const express = require('express');
-const CollectionController = require('../controllers/collectionController');
+import CollectionController from '../controllers/collectionController';
 const router = express.Router();
 
-router.get('/', CollectionController.find_all);
-router.get('/:id', CollectionController.find_by_id);
+router.get('/', CollectionController.find_by_attribute);
 router.post('/', CollectionController.create);
 router.patch('/:id', CollectionController.update);
 router.delete('/:id', CollectionController.delete);

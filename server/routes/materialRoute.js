@@ -1,9 +1,8 @@
 const express = require('express');
-const MaterialController = require('../controllers/materialController');
+import MaterialController from '../controllers/materialController';
 const router = express.Router();
 
-router.get('/', MaterialController.find_all);
-router.get('/:id', MaterialController.find_by_id);
+router.get('/', MaterialController.find_by_attribute);
 router.post('/', MaterialController.create);
 router.patch('/:id', MaterialController.update);
 router.delete('/:id', MaterialController.delete);
