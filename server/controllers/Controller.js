@@ -10,7 +10,6 @@ export default class Controller {
 
     find_by_attribute(req, res) {
         const params = {};
-        console.log(this.model);
         for(let attr in req.query) {
             if (attr in this.model.rawAttributes && req.query.hasOwnProperty(attr)) {
                 params[attr] = req.query[attr];
@@ -30,7 +29,7 @@ export default class Controller {
             })
             .catch(err => {
                 console.error(err);
-                res.stat(500).json(err);
+                res.status(500).json(err);
             });
     }
 
@@ -46,17 +45,32 @@ export default class Controller {
     };
 
     update(req, res) {
-        this.model.findById(req.params.id)
+        const params = {};
+        for (let attr in req.query) {
+            if (attr in this.model.rawAttributes && req.query.hasOwnProperty(attr)) {
+                params[attr] = req.query[attr];
+            } else {
+                res.status(500).json({
+                    error: 'No attribute ' + attr + ' found'
+                });
+                return;
+            }
+        }
+        this.model.findAll({ where: params })
             .then(ent => {
-                this.setRelations(ent, req.body);
-                return ent.updateAttributes(req.body);
-            })
-            .then(updated => {
-                res.send(updated);
+                const updatedEnts = [];
+                ent.forEach(ent => {
+                    this.setRelations(ent, req.body);
+                    updatedEnts.push(ent.updateAttributes(req.body));
+                });
+                Promise.all(updatedEnts)
+                    .then(updated => {
+                        res.send(updated);
+                    });
             })
             .catch(err => {
-                console.error('Error: ' + err);
-                res.status(500).json({ error: err });
+                console.error(err);
+                res.status(500).json(err);
             });
     };
 

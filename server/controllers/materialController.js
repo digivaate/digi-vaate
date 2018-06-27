@@ -4,7 +4,7 @@ import Controller from './Controller';
 class MaterialController extends Controller {
     constructor() { super(models.Material); }
     setRelations(entity, jsonBody){
-        entity.setProducts(jsonBody.products);
+        if (jsonBody.products) entity.setProducts(jsonBody.products);
     }
 }
 
