@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', CollectionController.find_by_attribute);
 router.post('/', CollectionController.create);
-router.patch('/:id', CollectionController.update);
+router.patch('/', CollectionController.update);
 router.delete('/:id', CollectionController.delete);
 
 module.exports = router;

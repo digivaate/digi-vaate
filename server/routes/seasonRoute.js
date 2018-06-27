@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', SeasonController.find_by_attribute);
 router.get('/products', SeasonController.getAllProducts);
 router.post('/', SeasonController.create);
-router.patch('/:id', SeasonController.update);
+router.patch('/', SeasonController.update);
 router.delete('/:id', SeasonController.delete);
 
 module.exports = router;

@@ -93,6 +93,6 @@ export default class Controller {
     };
 
     setRelations(entity, jsonBody) {
-
+        //is used if there is relations set in the model
     }
 }
