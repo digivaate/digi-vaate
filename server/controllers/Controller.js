@@ -60,13 +60,7 @@ export default class Controller {
     };
 */
     create(req, res) {
-        this.model.create(req.body ,{
-        include: [{
-            model: this.models.Collection,
-            as: 'collections'
-        }]
-    }
-        )
+        this.model.create(req.body)
             .then(doc => {
                 res.send(doc);
             })
