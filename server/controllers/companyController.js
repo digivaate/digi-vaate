@@ -1,6 +1,8 @@
 import models from '../models/models';
 import Controller from './Controller';
 
-let companyController = new Controller(models.Company);
+class CompanyController extends Controller {
+    constructor(model) { super(model); }
+}
 
-export default companyController;
+export default new CompanyController(models.Company);

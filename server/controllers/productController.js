@@ -1,6 +1,12 @@
 import models from '../models/models';
 import Controller from './Controller';
 
-let productController = new Controller(models.Product);
+class ProductController extends Controller {
+    constructor(model) { super(model); }
+    setRelations(entity, jsonBody){
+        entity.setColors(jsonBody.colors);
+        entity.setMaterials(jsonBody.materials);
+    }
+}
 
-export default productController;
+export default new ProductController(models.Product);

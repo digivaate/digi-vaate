@@ -73,8 +73,10 @@ export default class Controller {
     update(req, res) {
         this.model.findById(req.params.id)
             .then(ent => {
-                ent.updateAttributes(req.body);
                 res.send(ent);
+                this.setRelations(ent, req.body);
+                //ent.setColors(req.body.colors);
+                return ent.updateAttributes(req.body);
             })
             .catch(err => {
                 console.error('Error: ' + err);
@@ -100,4 +102,7 @@ export default class Controller {
             });
     };
 
+    setRelations(entity, jsonBody) {
+
+    }
 }

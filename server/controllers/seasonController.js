@@ -1,6 +1,9 @@
 import models from '../models/models';
 import Controller from './Controller';
 
-let seasonController = new Controller(models.Season);
+class SeasonController extends Controller {
+    constructor(model) { super(model); }
+}
 
-export default seasonController;
+
+export default new SeasonController(models.Season);

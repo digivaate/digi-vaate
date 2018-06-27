@@ -1,6 +1,8 @@
 import models from '../models/models';
 import Controller from './Controller';
 
-let collectionController = new Controller(models.Collection);
+class CollectionController extends Controller {
+    constructor(model) { super(model); }
+}
 
-export default collectionController;
+export default new CollectionController(models.Collection);

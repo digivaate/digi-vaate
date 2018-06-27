@@ -1,6 +1,11 @@
 import models from '../models/models';
 import Controller from './Controller';
 
-let colorController = new Controller(models.Color);
+class ColorController extends Controller {
+    constructor(model) { super(model); }
+    setRelations(entity, jsonBody){
+        entity.setProducts(jsonBody.products);
+    }
+}
 
-export default colorController;
+export default new ColorController(models.Color);
