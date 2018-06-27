@@ -9,19 +9,13 @@ export default class Controller {
     }
 
     find_by_attribute(req, res) {
-        const params = {};
-        for(let attr in req.query) {
-            if (attr in this.model.rawAttributes && req.query.hasOwnProperty(attr)) {
-                params[attr] = req.query[attr];
-            } else {
-                res.status(500).json({
-                    error: 'No attribute ' + attr + ' found'
-                });
-                return;
-            }
+        const properties = this.collectProperties(req.query);
+        if (properties.error) {
+            res.stat(500).json(properties.error);
+            return;
         }
         this.model.findAll({
-            where: params,
+            where: properties,
             include: [{ all: true }]
         })
             .then(ent => {
@@ -45,27 +39,21 @@ export default class Controller {
     };
 
     update(req, res) {
-        const params = {};
-        for (let attr in req.query) {
-            if (attr in this.model.rawAttributes && req.query.hasOwnProperty(attr)) {
-                params[attr] = req.query[attr];
-            } else {
-                res.status(500).json({
-                    error: 'No attribute ' + attr + ' found'
-                });
-                return;
-            }
+        const properties = this.collectProperties(req.query);
+        if (properties.error) {
+            res.status(500).json(properties);
+            return;
         }
-        this.model.findAll({ where: params })
-            .then(ent => {
+        this.model.findAll({ where: properties })
+            .then(ents => {
                 const updatedEnts = [];
-                ent.forEach(ent => {
+                ents.forEach(ent => {
                     this.setRelations(ent, req.body);
                     updatedEnts.push(ent.updateAttributes(req.body));
                 });
                 Promise.all(updatedEnts)
-                    .then(updated => {
-                        res.send(updated);
+                    .then(resolved => {
+                        res.send(resolved);
                     });
             })
             .catch(err => {
@@ -75,22 +63,39 @@ export default class Controller {
     };
 
     delete(req, res) {
-        this.model.findById(req.params.id)
-            .then(ent => {
-                if (ent) {
-                    ent.destroy();
-                    res.send({status: 'deleted'});
-                } else {
-                    res.status(500).json({
-                        error: 'Not existing or already deleted'
-                    });
-                }
+        const properties = this.collectProperties(req.query);
+        if (properties.error) {
+            res.stat(500).json(properties);
+            return;
+        }
+        this.model.findAll({ where: properties })
+            .then(ents => {
+                const deletedEnts = [];
+                ents.forEach(ent => {
+                    deletedEnts.push(ent.destroy());
+                });
+                Promise.all(deletedEnts)
+                    .then( res.send({status: 'deleted'}) );
             })
             .catch(err => {
                 console.error('Error: ' + err);
                 res.status(500).json({ error: err });
             });
     };
+
+    collectProperties(query) {
+        const properties = {};
+        for (let attr in query) {
+            if (attr in this.model.rawAttributes) {
+                if (query.hasOwnProperty(attr)) {
+                    properties[attr] = query[attr];
+                }
+            } else {
+                return {error: 'No attribute ' + attr + ' found'}
+            }
+        }
+        return properties;
+    }
 
     setRelations(entity, jsonBody) {
         //is used if there is relations set in the model
