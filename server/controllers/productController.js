@@ -2,11 +2,11 @@ import models from '../models/models';
 import Controller from './Controller';
 
 class ProductController extends Controller {
-    constructor(model) { super(model); }
+    constructor() { super(models.Product); }
     setRelations(entity, jsonBody){
-        entity.setColors(jsonBody.colors);
-        entity.setMaterials(jsonBody.materials);
+        if (jsonBody.colors) { entity.setColors(jsonBody.colors); }
+        if (jsonBody.materials) { entity.setMaterials(jsonBody.materials); }
     }
 }
 
-export default new ProductController(models.Product);
+export default new ProductController();

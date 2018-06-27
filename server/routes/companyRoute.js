@@ -3,6 +3,7 @@ import CompanyController from '../controllers/companyController';
 const router = express.Router();
 
 router.get('/', CompanyController.find_by_attribute);
+router.get('/products', CompanyController.getAllProducts);
 router.post('/', CompanyController.create);
 router.patch('/:id', CompanyController.update);
 router.delete('/:id', CompanyController.delete);

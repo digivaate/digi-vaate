@@ -2,7 +2,6 @@
 export default class Controller {
     constructor(model) {
         this.model = model;
-        console.log(this.model);
         this.find_by_attribute = this.find_by_attribute.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
@@ -35,30 +34,6 @@ export default class Controller {
             });
     }
 
-    /*
-    find_all = (req, res) => {
-        this.model.findAll({ include: [{ all: true }] })
-            .then(doc => {
-                res.send(doc);
-            })
-            .catch(err => {
-                console.error('Error: ' + err);
-                res.send({ error: err })
-            });
-    };
-    */
-    /*
-    find_by_id = (req, res) => {
-        this.model.findById(req.params.id, { include: [{ all: true }] })
-            .then(doc => {
-                res.send(doc);
-            })
-            .catch(err => {
-                console.error('Error: ' + err);
-                res.status(500).json({ error: err });
-            });
-    };
-*/
     create(req, res) {
         this.model.create(req.body)
             .then(doc => {
@@ -73,10 +48,11 @@ export default class Controller {
     update(req, res) {
         this.model.findById(req.params.id)
             .then(ent => {
-                res.send(ent);
                 this.setRelations(ent, req.body);
-                //ent.setColors(req.body.colors);
                 return ent.updateAttributes(req.body);
+            })
+            .then(updated => {
+                res.send(updated);
             })
             .catch(err => {
                 console.error('Error: ' + err);
