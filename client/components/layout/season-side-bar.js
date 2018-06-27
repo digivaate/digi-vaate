@@ -17,13 +17,9 @@ class SeasonSideBar extends Component{
     }
     collections = null;
     componentDidMount() {
-        axios.get(`${API_ROOT}/season`)
+        axios.get(`${API_ROOT}/season?name=${this.props.match.params.id}`)
             .then(response => {
-                for(let i = 0 ; i < response.data.length ; i++) {
-                    if (this.props.match.params.id === response.data[i].name) {
-                        this.collections = response.data[i].collections;
-                    }
-                }
+                this.collections = response.data[0].collections;
             })
             .then(()=>this.setState({}))
             .catch(err => console.log(err));

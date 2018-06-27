@@ -18,7 +18,7 @@ class NavBar extends Component{
                         zIndex: 1,
                         width: '100%',
                         opacity: 1,
-                        height:'150px',
+                        height:'130px',
                         backgroundColor:'white',
                         borderBottom:'1px groove'
                     }}>
@@ -31,7 +31,7 @@ class NavBar extends Component{
                 <Menu
                     mode="horizontal"
                     style={{
-                        lineHeight: '75px',
+                        lineHeight: '70px',
                         fontColor:'black',
                         float:'right',
                         border:'none'

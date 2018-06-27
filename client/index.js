@@ -18,6 +18,7 @@ import SingleCollection from './components/collections/single_collection'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { Layout, Breadcrumb } from 'antd';
+import { BackTop } from 'antd';
 const { Content } = Layout;
 
 
@@ -28,7 +29,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <Layout className="layout" style={{backgroundColor:'white'}}>
                     <NavBar />
-                    <Content style={{ marginTop : 160 }}>
+                    <Content style={{ marginTop : 140 }}>
                         <Layout>
                             <Route path="/" exact component={SideBar}/>
                             <Route path="/:id" exact component={SeasonSideBar} />
@@ -36,6 +37,7 @@ class App extends React.Component {
                             <Layout style={{ padding: '0 24px 24px',backgroundColor:'white' }}>
                                 <Content style={{ padding: '0 24px',margin: 0 }}>
                                     <div style={{ background: '#fff', padding: 24 }}>
+                                        <BackTop />
                                         <Switch>
                                             <Route path="/:id" exact component={SingleSeason} />
                                             <Route path="/:id/:id" exact component={SingleCollection} />

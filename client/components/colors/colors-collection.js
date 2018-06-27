@@ -41,7 +41,6 @@ class ColorCollection extends Component{
             return (
                 <div>
                     <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
-                    <Button onClick={this.loadColors}>Refresh</Button>
                     <Card title="Color Collection">
                     </Card>
                 </div>

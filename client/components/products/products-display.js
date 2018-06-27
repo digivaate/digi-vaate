@@ -1,10 +1,10 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Avatar } from 'antd';
+import { Card, Row, Col,Icon,Modal } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
-
+const confirm = Modal.confirm;
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -15,18 +15,15 @@ class ProductsDisplay extends Component{
             productName:null
         };
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
     collections = [];
     products = [];
     componentDidMount() {
-        axios.get(`${API_ROOT}/collection`)
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.id}`)
             .then(response => {
                 this.collections = response.data;
-                for(let i = 0; i < this.collections.length; i++){
-                    if(this.props.match.params.id === this.collections[i].name){
-                        this.products = this.collections[i].products;
-                    }
-                }
+                this.products = this.collections[0].products;
             })
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
@@ -37,6 +34,21 @@ class ProductsDisplay extends Component{
             isSelected:true,
             productName: productName
         })
+    }
+
+    handleDelete(productName){
+        confirm({
+            title: 'Are you sure remove this product from collection?',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                console.log('Ok');
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
     }
 
     render() {
@@ -61,10 +73,12 @@ class ProductsDisplay extends Component{
                               }}
                               cover={<img alt="example" height="160" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
                               actions={[
-                                  <div onClick = {() => this.handleSelect(product.id)}>
+                                  <div onClick = {() => this.handleSelect(product.name)}>
                                   <Icon type="edit" />
                                   </div>,
+                                  <div onClick = {() => this.handleDelete(product.name)}>
                                   <Icon type="delete" />
+                                  </div>
                               ]}
                         >
                             <Meta

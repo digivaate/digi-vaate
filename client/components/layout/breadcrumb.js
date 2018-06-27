@@ -27,7 +27,7 @@ const Home = withRouter((props) => {
         <Breadcrumb separator={">"}
                     style={{
                         marginLeft: '18%',
-                        marginTop: '3%',
+                        marginTop: '1.5%',
                         fontSize:'20px',
                     }}
         >
@@ -57,6 +57,7 @@ class BreadCrumbDigi extends Component{
                 for(let i=0;i<this.companies.length;i++) {
                     this.companiesMap = this.companies[i].name;
                 }
+                this.setState({})
             });
 
         axios.get(`${API_ROOT}/season`)
@@ -75,6 +76,8 @@ class BreadCrumbDigi extends Component{
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/budget"] = "Budget";
                         }
                     }
+
+                this.setState({})
                 }
             );
 
@@ -87,7 +90,7 @@ class BreadCrumbDigi extends Component{
                                 this.collectionsMap[i] = this.collections[i].name;
                                 this.products = this.collections[i].products;
                                 for (let j = 0; j < this.products.length; j++) {
-                                    this.productsMap[j] = this.products[j].id;
+                                    this.productsMap[j] = this.products[j].name;
                                     this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name
                                 }
                             }
