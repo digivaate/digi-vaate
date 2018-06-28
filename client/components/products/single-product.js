@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Tag,Button,Icon } from 'antd';
+import { Card, Col,Row,Divider,Tag,Button,Icon,Modal } from 'antd';
 import { API_ROOT } from '../../api-config';
 import './products.css'
 
@@ -9,11 +9,13 @@ class SingleProduct extends Component{
     state = {
         loadedProduct: null,
         productColors:null,
-        productMaterials:null
+        productMaterials:null,
+        colorOptions:null
     };
 
     componentDidMount(){
         this.loadProduct();
+        this.loadColors();
     }
 
     loadProduct(){
@@ -30,11 +32,52 @@ class SingleProduct extends Component{
             }
         }
     }
+    loadColors(){
+        axios.get(`${API_ROOT}/color`)
+            .then(response => {
+                this.setState({
+                    colorOptions: response.data
+                })
+            })
+    }
+
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+    handleOk = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+    handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
 
     render(){
-        if(this.state.loadedProduct){
+        if(this.state.loadedProduct && this.state.colorOptions){
+            let renderColorOptions = <p> No colors available </p>;
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
+            if(this.state.colorOptions.length >0){
+                renderColorOptions = this.state.colorOptions.map(color =>
+                <Row>
+                    <Col span={3}>
+                    <Card key={color.id} hoverable className="product-color" style={{
+                            backgroundColor: color.value,
+                    }}/>
+                    </Col>
+                    <Col span={6}>
+                        <p>{color.name}</p>
+                    </Col>
+                </Row>
+                )
+            }
             if(this.state.productColors.length > 0){
                 renderProductColors = this.state.productColors.map(color =>
                     (
@@ -74,7 +117,20 @@ class SingleProduct extends Component{
                                 <Row gutter={8}>
                                     <h4>Colors</h4>
                                     {renderProductColors}
-                                    <Button className="add-color-btn"><Icon type="plus"/></Button>
+                                    <Button className="add-color-btn"
+                                            onClick={this.showModal}
+                                    >
+                                        <Icon type="plus"/>
+                                    </Button>
+                                    <Modal
+                                        title="Add new color"
+                                        visible={this.state.visible}
+                                        onOk={this.handleOk}
+                                        onCancel={this.handleCancel}
+                                        bodyStyle={{maxHeight:300,overflow:'auto'}}
+                                    >
+                                        {renderColorOptions}
+                                    </Modal>
                                 </Row>
                                 <Divider/>
                                 <Row gutter={8}>

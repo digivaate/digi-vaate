@@ -6,6 +6,7 @@ import {NavLink} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
+const MenuItemGroup = Menu.ItemGroup;
 import axios from'axios';
 import { API_ROOT } from '../../api-config';
 import "./layout.css"
@@ -46,11 +47,10 @@ class SeasonSideBar extends Component{
                     mode="inline"
                     className="side-bar-menu"
                 >
-                    <SubMenu key="sub2"
-                             title={<span>Collection</span>}
-                    >
+                    <MenuItemGroup key="g1" title="Collection">
+
                         {renderCollectionList}
-                    </SubMenu>
+                    </MenuItemGroup>
                 </Menu>
             </Sider>
         )

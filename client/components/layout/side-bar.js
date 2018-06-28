@@ -5,6 +5,7 @@ import "react-table/react-table.css";
 import {NavLink} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
+const MenuItemGroup = Menu.ItemGroup;
 const {  Sider } = Layout;
 import axios from'axios';
 import { API_ROOT } from '../../api-config';
@@ -42,11 +43,9 @@ class SideBar extends Component{
                     className="side-bar-menu"
                     mode="inline"
                 >
-                    <SubMenu key="sub2"
-                             title={<span>Season</span>}
-                    >
+                    <MenuItemGroup key="g1" title="Season">
                         {renderSeasonList}
-                    </SubMenu>
+                    </MenuItemGroup>
                 </Menu>
             </Sider>
         )
