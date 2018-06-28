@@ -10,7 +10,7 @@ export default class Controller {
     }
 
     find_by_attribute(req, res) {
-        const properties = this.collectProperties(req.query);
+        const properties = this.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
@@ -40,7 +40,7 @@ export default class Controller {
     };
 
     update(req, res) {
-        const properties = this.collectProperties(req.query);
+        const properties = this.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -64,7 +64,7 @@ export default class Controller {
     };
 
     delete(req, res) {
-        const properties = this.collectProperties(req.query);
+        const properties = this.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties);
             return;
@@ -84,10 +84,10 @@ export default class Controller {
             });
     };
 
-    collectProperties(query) {
+    collectProperties(query, model) {
         const properties = {};
         for (let attr in query) {
-            if (attr in this.model.rawAttributes) {
+            if (attr in model.rawAttributes) {
                 if (query.hasOwnProperty(attr)) {
                     properties[attr] = query[attr];
                 }

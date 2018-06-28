@@ -5,25 +5,29 @@ class CompanyController extends Controller {
     constructor() { super(models.Company); }
 
     getAllProducts(req, res) {
-        const properties = Controller.prototype.collectProperties.call(req.query);
+        const properties = super.collectProperties(req.query, models.Company);
         if (properties.error) {
-            res.stat(500).json(properties);
+            res.status(500).json(properties);
             return;
         }
-        models.Collection.findAll({
+        models.Company.findOne({
             where: properties,
             include: [{
-                model: models.Collection,
-                as: 'collections',
+                model: models.Season,
+                as: 'seasons',
                 include: [{
-                    model: models.Product,
-                    as: 'products'
+                    model: models.Collection,
+                    as: 'collections',
+                    include: [{
+                        model: models.Product,
+                        as: 'products'
+                    }]
                 }]
             }]
         })
-            .then(ent => {
+            .then(comp => {
                 const products = [];
-                ent.forEach(season => {
+                comp.seasons.forEach(season => {
                     season.collections.forEach(collection => {
                         collection.products.forEach(product => {
                             products.push(product);

@@ -5,22 +5,26 @@ class SeasonController extends Controller {
     constructor() { super(models.Season); }
 
     getAllProducts(req, res) {
-        const properties = Controller.prototype.collectProperties.call(req.query);
+
+        const properties = super.collectProperties(req.query, models.Season);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        models.Collection.findAll({
+        models.Season.findOne({
             where: properties,
             include: [{
-                model: models.Product,
-                as: 'products'
+                model: models.Collection,
+                as: 'collections',
+                include: [{
+                    model: models.Product,
+                    as: 'products'
+                }]
             }]
         })
-            .then(collections => {
-                console.log(collections);
+            .then(season => {
                 const products = [];
-                collections.forEach(collection => {
+                season.collections.forEach(collection => {
                     collection.products.forEach(prod => {
                         products.push(prod);
                     });
