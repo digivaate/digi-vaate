@@ -5,9 +5,9 @@ class SeasonController extends Controller {
     constructor() { super(models.Season); }
 
     getAllProducts(req, res) {
-        const properties = this.collectProperties(req.query);
+        const properties = Controller.prototype.collectProperties.call(req.query);
         if (properties.error) {
-            res.stat(500).json(properties);
+            res.status(500).json(properties);
             return;
         }
         models.Collection.findAll({
@@ -29,7 +29,7 @@ class SeasonController extends Controller {
             })
             .catch(err => {
                 console.error('Error finding all products: ' + err);
-                res.stat(500).json({ error: err });
+                res.status(500).json({ error: err });
             })
     }
 }
