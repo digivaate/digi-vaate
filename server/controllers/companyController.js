@@ -5,10 +5,13 @@ class CompanyController extends Controller {
     constructor() { super(models.Company); }
 
     getAllProducts(req, res) {
-        models.Season.findAll({
-            where: {
-                companyId: req.query.id
-            },
+        const properties = this.collectProperties(req.query);
+        if (properties.error) {
+            res.stat(500).json(properties);
+            return;
+        }
+        models.Collection.findAll({
+            where: properties,
             include: [{
                 model: models.Collection,
                 as: 'collections',

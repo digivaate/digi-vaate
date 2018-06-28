@@ -5,10 +5,13 @@ class SeasonController extends Controller {
     constructor() { super(models.Season); }
 
     getAllProducts(req, res) {
+        const properties = this.collectProperties(req.query);
+        if (properties.error) {
+            res.stat(500).json(properties);
+            return;
+        }
         models.Collection.findAll({
-            where: {
-                seasonId: req.query.id
-            },
+            where: properties,
             include: [{
                 model: models.Product,
                 as: 'products'
