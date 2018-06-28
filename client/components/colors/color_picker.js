@@ -1,6 +1,7 @@
 import React from 'react';
 import reactCSS from 'reactcss';
 import { SketchPicker,PhotoshopPicker } from 'react-color';
+import './colors.css'
 
 class ColorPicker extends React.Component {
     state = {
@@ -35,7 +36,6 @@ class ColorPicker extends React.Component {
     };
 
     render() {
-
         const styles = reactCSS({
             'default': {
                 color: {

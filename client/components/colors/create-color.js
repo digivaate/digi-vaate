@@ -4,7 +4,7 @@ import { Button, Modal, Form, Input, message } from 'antd';
 import { API_ROOT } from '../../api-config';
 import axios from 'axios';
 const FormItem = Form.Item;
-
+import './colors.css'
 const ColorCreateForm = Form.create()(
     class extends React.Component {
         hexCodeValues = "";
@@ -29,14 +29,14 @@ const ColorCreateForm = Form.create()(
                             {getFieldDecorator('name', {
                                 rules: [{ required: true, message: 'Please input the name of color!' }],
                             })(
-                                <Input style={{width: '50%'}}/>
+                                <Input className="color-input"/>
                             )}
                         </FormItem>
                         <FormItem label="Color code">
                             {getFieldDecorator('colorCode', {
                                 rules: [{ required: true, message: 'Please input the code of color!' }],
                             })(
-                                <Input style={{width: '50%'}}/>
+                                <Input className="color-input"/>
                             )}
                         </FormItem>
                         <FormItem className="collection-create-form_last-form-item">

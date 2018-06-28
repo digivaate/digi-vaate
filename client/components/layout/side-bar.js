@@ -36,15 +36,11 @@ class SideBar extends Component{
             );
         }return (
             <Sider width={280}
-                   style={{
-                       background: '#fff',
-                       borderRight: '1px groove',
-                       height:'700px',
-                       borderColor:'grey'
-                   }}>
+                   className="side-bar-sider"
+            >
                 <Menu
+                    className="side-bar-menu"
                     mode="inline"
-                    style={{ height: '100%',borderRight: 0  }}
                 >
                     <SubMenu key="sub2"
                              title={<span>Season</span>}

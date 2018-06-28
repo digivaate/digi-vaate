@@ -1,0 +1,44 @@
+/* single-product.js */
+.product-color{
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+}
+
+.product-material{
+    border:1px solid;
+    width:60px;
+    height:30px;
+    border-radius:2px;
+    text-align:center
+}
+
+.product-description{
+    width: 350px;
+    height: 150px;
+}
+
+.product-card-information{
+    width: 600px;
+    height: 500px;
+}
+
+.add-color-btn{
+    width: 40px;
+    height: 40px;
+}
+
+
+/* products-display.js */
+.product-card-wrapper{
+    height:290px;
+}
+
+.product-card-display{
+    width:250px;
+}
+
+.product-img{
+    height:160px;
+}
+

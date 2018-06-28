@@ -5,6 +5,7 @@ import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
 const confirm = Modal.confirm;
+import "./products.css"
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -63,15 +64,11 @@ class ProductsDisplay extends Component{
             renderProductList = this.products.map(product =>{
                 return(
                     <Col span={6} key={product.id}>
-                        <div style={{
-                            height: 290
-                        }}>
+                        <div className="product-card-wrapper">
                         <Card
                               hoverable
-                              style={{
-                                  width: 250,
-                              }}
-                              cover={<img alt="example" height="160" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
+                              className="product-card-display"
+                              cover={<img alt="example" className="product-img" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
                               actions={[
                                   <div onClick = {() => this.handleSelect(product.name)}>
                                   <Icon type="edit" />

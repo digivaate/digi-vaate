@@ -1,7 +1,8 @@
 import React,{ Component } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Tag } from 'antd';
+import { Card, Col,Row,Divider,Tag,Button,Icon } from 'antd';
 import { API_ROOT } from '../../api-config';
+import './products.css'
 
 
 class SingleProduct extends Component{
@@ -38,11 +39,8 @@ class SingleProduct extends Component{
                 renderProductColors = this.state.productColors.map(color =>
                     (
                         <Col span={2} key={color.id}>
-                        <Card hoverable style={{
+                        <Card hoverable className="product-color" style={{
                             backgroundColor: color.value,
-                            width:40,
-                            height:40,
-                            borderRadius:'2px'
                         }}/>
                         </Col>
                     )
@@ -51,8 +49,12 @@ class SingleProduct extends Component{
             if(this.state.productMaterials.length > 0){
                 renderProductMaterials = this.state.productMaterials.map(material =>
                     (
-                        <Col span={4}>
-                        <Tag closable>{material.name}</Tag>
+                        <Col key={material.id} span={4}>
+                            <div
+                                className="product-material"
+                            >
+                            <p>{material.name}</p>
+                            </div>
                         </Col>
                     )
                 )
@@ -63,15 +65,16 @@ class SingleProduct extends Component{
                     <Row>
                         <Col span={8}>
                             <img alt="example" height="350" width="330" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />
-                            <Card style={{ width: 350, height: 150 }}>
+                            <Card className="product-description">
                                 <p>Some description of product</p>
                             </Card>
                         </Col>
                         <Col span={16}>
-                            <Card title="Product information" style={{ width: 600,height:500 }}>
+                            <Card title="Product information" className="product-card-information">
                                 <Row gutter={8}>
                                     <h4>Colors</h4>
                                     {renderProductColors}
+                                    <Button className="add-color-btn"><Icon type="plus"/></Button>
                                 </Row>
                                 <Divider/>
                                 <Row gutter={8}>

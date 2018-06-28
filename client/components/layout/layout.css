@@ -1,0 +1,42 @@
+/* nav-bar.js */
+.header{
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    opacity: 1;
+    height:130px;
+    background-color:white;
+    border-bottom:1px groove;
+}
+
+.nav-bar-menu{
+    line-height: 70px;
+    font-color:black;
+    float:right;
+    border:none;
+}
+
+/*
+side-bar.js
+season-side-bar.js
+collection-side-bar.js
+*/
+.side-bar-sider{
+    background-color: #fff;
+    border-right: 1px groove;
+    height:700px;
+    width: 280px;
+    border-color:grey;
+}
+
+.side-bar-menu{
+    height: 100%;
+    border-right: 0
+}
+
+/* breadcrumb.js */
+.bread-crumb{
+    margin-left: 18%;
+    margin-top: 1.5%;
+    font-size:20px;
+}

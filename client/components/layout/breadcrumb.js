@@ -2,7 +2,8 @@ import React,{Component} from 'react'
 import { API_ROOT } from '../../api-config';
 import { HashRouter as Router, Route, Switch, Link, withRouter } from 'react-router-dom';
 import { Breadcrumb, Alert } from 'antd';
-import axios from 'axios'
+import axios from 'axios';
+import "./layout.css"
 
 const Home = withRouter((props) => {
     const { location } = props;
@@ -25,11 +26,7 @@ const Home = withRouter((props) => {
     )].concat(extraBreadcrumbItems);
     return (
         <Breadcrumb separator={">"}
-                    style={{
-                        marginLeft: '18%',
-                        marginTop: '1.5%',
-                        fontSize:'20px',
-                    }}
+                    className="bread-crumb"
         >
             {breadcrumbItems}
         </Breadcrumb>

@@ -4,6 +4,7 @@ import { API_ROOT } from '../../api-config';
 import { Card, Icon, Button } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
+import './colors.css'
 
 class ColorCollection extends Component{
     constructor(props){
@@ -50,12 +51,9 @@ class ColorCollection extends Component{
             const colorCard = this.colorCard.map(element => {
                 return(
                     <Card.Grid
+                        className="single-color-card"
                         style={{
-                            width: '150px',
-                            height: '150px',
-                            textAlign: 'center',
                             backgroundColor: element.value,
-                            borderRadius: '4px'
                         }}
                         actions={[<Icon type="setting"/>, <Icon type="edit"/>, <Icon type="ellipsis"/>]}
                         key={element.id}
@@ -63,14 +61,7 @@ class ColorCollection extends Component{
                         <Meta
                             title={element.name}
                             description={element.value}
-                            style={{
-                                width: '100%',
-                                height: '60%',
-                                textAlign: 'center',
-                                backgroundColor: 'white',
-                                marginTop: '60px',
-                                borderRadius: '4px'
-                            }}
+                            className="color-card-description"
                         />
                     </Card.Grid>
                 )
