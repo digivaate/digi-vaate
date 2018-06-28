@@ -6,6 +6,7 @@ export default class Controller {
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
         this.create = this.create.bind(this);
+        this.collectProperties = this.collectProperties.bind(this);
     }
 
     find_by_attribute(req, res) {
