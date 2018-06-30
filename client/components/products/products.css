@@ -32,7 +32,7 @@
 
 /* products-display.js */
 .product-card-wrapper{
-    height:290px;
+    height:360px;
 }
 
 .product-card-display{
@@ -43,3 +43,16 @@
     height:160px;
 }
 
+.products-display-color{
+    width: 25px;
+    height: 25px;
+    border-radius: 2px;
+}
+
+.products-display-material{
+    border:1px solid;
+    width:40px;
+    height:25px;
+    border-radius:2px;
+    text-align:center
+}

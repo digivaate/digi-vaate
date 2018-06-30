@@ -66,9 +66,9 @@ class SingleProduct extends Component{
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             if(this.state.colorOptions.length >0){
                 renderColorOptions = this.state.colorOptions.map(color =>
-                <Row>
+                <Row key={color.id}>
                     <Col span={3}>
-                    <Card key={color.id} hoverable className="product-color" style={{
+                    <Card hoverable className="product-color" style={{
                             backgroundColor: color.value,
                     }}/>
                     </Col>

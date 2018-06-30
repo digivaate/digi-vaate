@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal } from 'antd';
+import { Card, Row, Col,Icon,Modal,Divider } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -13,7 +13,8 @@ class ProductsDisplay extends Component{
         this.state ={
             isFetched: false,
             isSelected:false,
-            productName:null
+            productName:null,
+            isColorFetched:true
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -25,6 +26,15 @@ class ProductsDisplay extends Component{
             .then(response => {
                 this.collections = response.data;
                 this.products = this.collections[0].products;
+                for(let i=0 ; i < this.products.length; i++){
+                    axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
+                        .then(response =>{
+                            this.products[i].colors = response.data[0].colors;
+                            this.products[i].materials = response.data[0].materials;
+                            }
+                        )
+                        .then(()=>this.setState({isColorFetched:true}));
+                }
             })
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
@@ -54,6 +64,8 @@ class ProductsDisplay extends Component{
 
     render() {
         let renderProductList = null;
+        let renderProductColors = null;
+        let renderProductMaterials = null;
         let singleProduct = null;
         if (this.state.isSelected) {
             singleProduct = <Redirect to={{
@@ -62,24 +74,67 @@ class ProductsDisplay extends Component{
         }
         if (this.products) {
             renderProductList = this.products.map(product =>{
+                    if(product.colors) {
+                        if(product.colors.length > 0){
+                            renderProductColors = product.colors.map(color =>
+                                <Col key={color.id} span={3}>
+                                    <Card className="products-display-color" style={{
+                                        backgroundColor: color.value,
+                                    }}/>
+                                </Col>
+                            )
+                        }
+                        else {
+                            renderProductColors = <p>No colors</p>;
+                        }
+                    }
+
+                    if(product.materials){
+                        if(product.materials.length > 0){
+                            renderProductMaterials = product.materials.map(material =>
+                                <Col key={material.id} span={6}>
+                                    <div
+                                    >
+                                        <p>{material.name}</p>
+                                    </div>
+                                </Col>
+                            )
+                        }
+                        else {
+                            renderProductMaterials = <p>No materials</p>
+                        }
+                    }
+
                 return(
                     <Col span={6} key={product.id}>
                         <div className="product-card-wrapper">
                         <Card
-                              hoverable
-                              className="product-card-display"
-                              cover={<img alt="example" className="product-img" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
-                              actions={[
-                                  <div onClick = {() => this.handleSelect(product.name)}>
-                                  <Icon type="edit" />
-                                  </div>,
-                                  <div onClick = {() => this.handleDelete(product.name)}>
-                                  <Icon type="delete" />
-                                  </div>
-                              ]}
+                            hoverable
+                            bodyStyle={{height:130}}
+                            className="product-card-display"
+                            cover={<img alt="example" className="product-img" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
+                            actions={[
+                                <div onClick = {() => this.handleSelect(product.name)}>
+                                    <Icon type="edit" />
+                                </div>,
+                                <div onClick = {() => this.handleDelete(product.name)}>
+                                    <Icon type="delete" />
+                                </div>
+                            ]}
                         >
                             <Meta
                                 title={product.name}
+                                description={
+                                    <div>
+                                    <Row gutter={16}>
+                                        { renderProductColors }
+                                    </Row>
+                                    <Row gutter={16}>
+                                        <hr />
+                                        {renderProductMaterials}
+                                    </Row>
+                                    </div>
+                                }
                             />
                         </Card>
                         </div>
