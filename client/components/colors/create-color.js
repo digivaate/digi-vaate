@@ -23,6 +23,8 @@ const ColorCreateForm = Form.create()(
                     okText="Create"
                     onCancel={onCancel}
                     onOk={onCreate}
+                    width={800}
+                    bodyStyle={{height:350}}
                 >
                     <Form layout="vertical">
                         <FormItem label="Name">
@@ -39,7 +41,7 @@ const ColorCreateForm = Form.create()(
                                 <Input className="color-input"/>
                             )}
                         </FormItem>
-                        <FormItem className="collection-create-form_last-form-item">
+                        <FormItem className="collection-create-form_last-form-item" style={{marginLeft: 210,top:-200}}>
                             {getFieldDecorator('hexCodeFromPicker')(
                                 <ColorPicker sendHexCode={hexCode => this.sendHexCode(hexCode)}/>
                             )}

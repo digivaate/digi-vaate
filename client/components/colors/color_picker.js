@@ -1,38 +1,38 @@
 import React from 'react';
 import reactCSS from 'reactcss';
-import { SketchPicker,PhotoshopPicker } from 'react-color';
+import {message} from 'antd';
+import {PhotoshopPicker } from 'react-color';
 import './colors.css'
 
 class ColorPicker extends React.Component {
-    state = {
-        displayColorPicker: false,
-        color: {
-            r: 0,
-            g: 0,
-            b: 0,
-            a: 1,
-        },
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            displayColorPicker: true,
+            color: {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: 1,
+            },
+        };
+        this.rgbToHex = this.rgbToHex.bind(this);
+        this.handleAccept = this.handleAccept.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-    handleClick = () => {
-        this.setState({ displayColorPicker: !this.state.displayColorPicker })
-    };
 
-    handleClose = () => {
-        this.setState({ displayColorPicker: false });
+    handleAccept(){
+        message.success('Color picked !',0.5);
         this.props.sendHexCode(this.rgbToHex(this.state.color.r,this.state.color.g,this.state.color.b))
-    };
+    }
 
-    handleChange = (color) => {
+    handleChange(color){
         this.setState({ color: color.rgb })
     };
 
-    rgbToHex = (r, g, b) => {
+    rgbToHex(r, g, b){
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    };
-
-    acceptHandle = () => {
-        console.log('Ok');
     };
 
     render() {
@@ -53,11 +53,9 @@ class ColorPicker extends React.Component {
                     cursor: 'pointer',
                 },
                 popover: {
-                    position: 'absolute',
-                    zIndex: '2',
+                    position: 'relative',
                 },
                 cover: {
-                    position: 'fixed',
                     top: '0px',
                     right: '0px',
                     bottom: '0px',
@@ -68,16 +66,12 @@ class ColorPicker extends React.Component {
 
         return (
             <div>
-                <div style={ styles.swatch } onClick={ this.handleClick }>
-                    <div style={ styles.color } />
-                </div>
-                <p>Hex code: {this.rgbToHex(this.state.color.r,this.state.color.g,this.state.color.b)}</p>
-                <p>RGB: r:{this.state.color.r},g:{this.state.color.g},b:{this.state.color.b}</p>
                 { this.state.displayColorPicker ? <div style={ styles.popover }>
                         <div style={ styles.cover } onClick={ this.handleClose }/>
                         <PhotoshopPicker
                             color={ this.state.color }
                             onChange={ this.handleChange }
+                            onAccept={this.handleAccept}
                         />
                     </div> : null }
             </div>
