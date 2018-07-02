@@ -1,8 +1,9 @@
 import React,{ Component } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Tag,Button,Icon,Modal } from 'antd';
+import { Card, Col,Row,Divider,Tag,Button,Icon,Modal,Select } from 'antd';
 import { API_ROOT } from '../../api-config';
 import './products.css'
+const Option = Select.Option;
 
 
 class SingleProduct extends Component{
@@ -16,6 +17,10 @@ class SingleProduct extends Component{
     componentDidMount(){
         this.loadProduct();
         this.loadColors();
+    }
+
+    handleChange(value) {
+        console.log(`Selected: ${value}`);
     }
 
     loadProduct(){
@@ -62,23 +67,18 @@ class SingleProduct extends Component{
     render(){
         if(this.state.loadedProduct && this.state.colorOptions){
             let renderColorOptions = <p> No colors available </p>;
+            let renderDefaultColors = null;
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             if(this.state.colorOptions.length >0){
                 renderColorOptions = this.state.colorOptions.map(color =>
-                <Row key={color.id}>
-                    <Col span={3}>
-                    <Card hoverable className="product-color" style={{
-                            backgroundColor: color.value,
-                    }}/>
-                    </Col>
-                    <Col span={6}>
-                        <p>{color.name}</p>
-                    </Col>
-                </Row>
+                    <Option key={color.name} style={{color: color.value}}>
+                        {color.name}
+                        </Option>
                 )
             }
             if(this.state.productColors.length > 0){
+                renderDefaultColors = this.state.productColors.map(color => color.name);
                 renderProductColors = this.state.productColors.map(color =>
                     (
                         <Col span={2} key={color.id}>
@@ -107,7 +107,7 @@ class SingleProduct extends Component{
                     <h1>{this.state.loadedProduct.name}</h1>
                     <Row>
                         <Col span={8}>
-                            <img alt="example" height="350" width="330" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />
+                            <img alt="example" height="350" width="376" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />
                             <Card className="product-description">
                                 <p>Some description of product</p>
                             </Card>
@@ -129,7 +129,16 @@ class SingleProduct extends Component{
                                         onCancel={this.handleCancel}
                                         bodyStyle={{maxHeight:300,overflow:'auto'}}
                                     >
-                                        {renderColorOptions}
+                                        <Select
+                                            mode="tags"
+                                            size={'default'}
+                                            placeholder="Please select"
+                                            defaultValue={renderDefaultColors}
+                                            onChange={this.handleChange}
+                                            style={{ width: '100%' }}
+                                        >
+                                            {renderColorOptions}
+                                        </Select>
                                     </Modal>
                                 </Row>
                                 <Divider/>
