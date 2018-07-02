@@ -1,14 +1,4 @@
 /* nav-bar.js */
-.header{
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-    opacity: 1;
-    height:130px;
-    background-color:white;
-    border-bottom:1px groove;
-}
-
 .nav-bar-menu{
     line-height: 70px;
     font-color:black;
@@ -21,17 +11,10 @@ side-bar.js
 season-side-bar.js
 collection-side-bar.js
 */
-.side-bar-sider{
-    background-color: #fff;
-    border-right: 1px groove;
-    height:700px;
-    width: 280px;
-    border-color:grey;
-}
 
 .side-bar-menu{
     height: 100%;
-    border-right: 0
+    border-right: 0;
 }
 
 /* breadcrumb.js */
@@ -40,3 +23,49 @@ collection-side-bar.js
     margin-top: 1.5%;
     font-size:20px;
 }
+
+/*This is the main container for header sider/nav content and footer*/
+.App {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: 118px auto 50px;
+    grid-template-areas:
+            'header header'
+            'nav content'
+            'footer footer';
+}
+
+.content {
+    grid-area: content;
+    overflow-y: scroll;
+    margin-top: 30px;
+    margin-left: 50px;
+    background-color: white;
+}
+
+.header {
+    grid-area: header;
+    /* Removes antd height*/
+    height: auto;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    opacity: 1;
+    background-color:white;
+    border-bottom:1px groove;
+}
+.sider {
+    grid-area: nav;
+    background-color: #fff;
+    border-right: 1px groove;
+    height:550px;
+    width: 200px;
+    border-color:grey;
+}
+.footer {
+    grid-area: footer;
+    /* Removes antd padding*/
+    padding: 0;
+}
+

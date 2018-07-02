@@ -25,8 +25,8 @@ class CollectionSideBar extends Component{
 
     render(){
         return (
-            <Sider width={280}
-                   className="side-bar-sider"
+            <Sider
+                   className="sider"
             >
                 <Menu
                     mode="inline"

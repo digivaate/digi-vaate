@@ -4,6 +4,7 @@ import { render } from "react-dom";
 import "react-table/react-table.css";
 import { Layout, Menu } from 'antd';
 const { Content, Footer } = Layout;
+import './layout.css'
 
 class FooterArea extends Component{
     constructor(props){
@@ -12,7 +13,7 @@ class FooterArea extends Component{
 
     render(){
         return (
-            <Footer style={{ textAlign: 'center' }}>
+            <Footer className="footer">
             </Footer>
         )
     }

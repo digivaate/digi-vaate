@@ -13,7 +13,7 @@ class NavBar extends Component{
 
     render(){
         return(
-            <Header className="header">
+            <div className="header">
                 <div className="ant-row">
                     <Col className="gutter-row" span={6}>
                         <div className="gutter-box">
@@ -32,7 +32,7 @@ class NavBar extends Component{
                 <div className="ant-row">
                     <BreadCrumbDisplay/>
                 </div>
-            </Header>
+            </div>
         )
     }
 }

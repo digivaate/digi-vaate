@@ -36,8 +36,8 @@ class SideBar extends Component{
                 </Menu.Item>
             );
         }return (
-            <Sider width={280}
-                   className="side-bar-sider"
+            <Sider
+                   className="sider"
             >
                 <Menu
                     className="side-bar-menu"
