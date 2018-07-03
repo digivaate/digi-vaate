@@ -1,26 +1,30 @@
 import React,{ Component } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Tag,Button,Icon,Modal,Select } from 'antd';
+import { Card, Col,Row,Divider,Tag,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
 import './products.css'
 const Option = Select.Option;
 
-
 class SingleProduct extends Component{
-    state = {
-        loadedProduct: null,
-        productColors:null,
-        productMaterials:null,
-        colorOptions:null
-    };
+    constructor(props){
+        super(props);
+        this.state ={
+            loadedProduct: null,
+            productColors:null,
+            productMaterials:null,
+            colorOptions:null,
+            updateColors:null
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+    }
+
+    updatedColors = [];
 
     componentDidMount(){
         this.loadProduct();
         this.loadColors();
-    }
-
-    handleChange(value) {
-        console.log(`Selected: ${value}`);
     }
 
     loadProduct(){
@@ -46,19 +50,40 @@ class SingleProduct extends Component{
             })
     }
 
-    showModal = () => {
+    handleChange(value){
+        for(let i = 0; i < value.length;i++){
+            for(let j = 0; j < this.state.colorOptions.length; j ++){
+                if(value[i] == this.state.colorOptions[j].name){
+                    value[i] = this.state.colorOptions[j].id
+                }
+            }
+        }
+        this.updatedColors = value;
+        console.log(this.updatedColors);
+    }
+    showModal = (e) => {
         this.setState({
             visible: true,
         });
     };
-    handleOk = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+
+    handleOk(){
+        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{colors:this.updatedColors})
+            .then(response => {
+                message.success("Colors updated!",1);
+                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                    .then(response => {
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                            visible:false
+                        });
+                    })
+            })
     };
-    handleCancel = (e) => {
-        console.log(e);
+
+    handleCancel = (e) =>{
         this.setState({
             visible: false,
         });
@@ -67,7 +92,7 @@ class SingleProduct extends Component{
     render(){
         if(this.state.loadedProduct && this.state.colorOptions){
             let renderColorOptions = <p> No colors available </p>;
-            let renderDefaultColors = null;
+            let renderDefaultColors = [];
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             if(this.state.colorOptions.length >0){
@@ -120,7 +145,7 @@ class SingleProduct extends Component{
                                     <Button className="add-color-btn"
                                             onClick={this.showModal}
                                     >
-                                        <Icon type="plus"/>
+                                        <Icon type="edit"/>
                                     </Button>
                                     <Modal
                                         title="Add new color"
