@@ -14,7 +14,7 @@ class HeaderBar extends Component{
         return(
             <div className={'header'}>
                 <h1 className={'logo'}>DigiVaate</h1>
-                <BreadCrumbDisplay classname={'bread-crumb'}/>
+                <BreadCrumbDisplay className={'bread-crumb'}/>
             </div>
         )
     }

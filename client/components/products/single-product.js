@@ -11,20 +11,27 @@ class SingleProduct extends Component{
         this.state ={
             loadedProduct: null,
             productColors:null,
-            productMaterials:null,
             colorOptions:null,
-            updateColors:null
+            updateColors:null,
+            productMaterials:null,
+            materialOptions:null,
+            updateMaterials:null
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        this.handleColorChange = this.handleColorChange.bind(this);
+        this.handleColorOk = this.handleColorOk.bind(this);
+        this.handleColorCancel = this.handleColorCancel.bind(this);
+        this.handleMaterialChange = this.handleMaterialChange.bind(this);
+        this.handleMaterialOk = this.handleMaterialOk.bind(this);
+        this.handleMaterialCancel = this.handleMaterialCancel.bind(this);
     }
 
     updatedColors = [];
+    updatedMaterials = [];
 
     componentDidMount(){
         this.loadProduct();
         this.loadColors();
+        this.loadMaterials();
     }
 
     loadProduct(){
@@ -41,6 +48,9 @@ class SingleProduct extends Component{
             }
         }
     }
+
+
+    /*Edit color*/
     loadColors(){
         axios.get(`${API_ROOT}/color`)
             .then(response => {
@@ -50,10 +60,10 @@ class SingleProduct extends Component{
             })
     }
 
-    handleChange(value){
+    handleColorChange(value){
         for(let i = 0; i < value.length;i++){
             for(let j = 0; j < this.state.colorOptions.length; j ++){
-                if(value[i] === this.state.colorOptions[j].name){
+                if(value[i] == this.state.colorOptions[j].name){
                     value[i] = this.state.colorOptions[j].id
                 }
             }
@@ -61,13 +71,13 @@ class SingleProduct extends Component{
         this.updatedColors = value;
         console.log(this.updatedColors);
     }
-    showModal = (e) => {
+    showColorModal = (e) => {
         this.setState({
-            visible: true,
+            colorVisible: true,
         });
     };
 
-    handleOk(){
+    handleColorOk(){
         axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{colors:this.updatedColors})
             .then(response => {
                 message.success("Colors updated!",1);
@@ -77,29 +87,91 @@ class SingleProduct extends Component{
                             loadedProduct: response.data[0],
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
-                            visible:false
                         });
                     })
+                    .then(() => this.setState({colorVisible:false}))
             })
     };
 
-    handleCancel = (e) =>{
+    handleColorCancel = (e) =>{
         this.setState({
-            visible: false,
+            colorVisible: false,
         });
     };
 
+    /*Edit material*/
+
+    loadMaterials(){
+        axios.get(`${API_ROOT}/material`)
+            .then(response => {
+                this.setState({
+                    materialOptions: response.data
+                })
+            })
+    }
+
+    showMaterialModal = (e) => {
+        this.setState({
+            materialVisible:true
+        })
+    };
+
+    handleMaterialCancel = (e) =>{
+        this.setState({
+            materialVisible: false,
+        });
+    };
+
+    handleMaterialChange(value){
+        for(let i = 0; i < value.length;i++){
+            for(let j = 0; j < this.state.materialOptions.length; j ++){
+                if(value[i] == this.state.materialOptions[j].name){
+                    value[i] = this.state.materialOptions[j].id
+                }
+            }
+        }
+        this.updatedMaterials = value;
+        console.log(this.updatedMaterials);
+    }
+
+    handleMaterialOk(){
+        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{materials:this.updatedMaterials})
+            .then(response => {
+                message.success("Materials updated!",1);
+                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                    .then(response => {
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                        });
+                    })
+                    .then(() => this.setState({materialVisible:false}))
+            })
+    };
+
+
+
     render(){
-        if(this.state.loadedProduct && this.state.colorOptions){
+        if(this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions){
             let renderColorOptions = <p> No colors available </p>;
             let renderDefaultColors = [];
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
+            let renderMaterialOptions = <p> No materials available </p>;
+            let renderDefaultMaterials = [];
+            if(this.state.materialOptions.length > 0){
+                renderMaterialOptions = this.state.materialOptions.map(material =>
+                    <Option key={material.name}>
+                        {material.name}
+                    </Option>
+                )
+            }
             if(this.state.colorOptions.length >0){
                 renderColorOptions = this.state.colorOptions.map(color =>
                     <Option key={color.name} style={{color: color.value}}>
                         {color.name}
-                        </Option>
+                    </Option>
                 )
             }
             if(this.state.productColors.length > 0){
@@ -107,21 +179,22 @@ class SingleProduct extends Component{
                 renderProductColors = this.state.productColors.map(color =>
                     (
                         <Col span={2} key={color.id}>
-                        <Card hoverable className="product-color" style={{
-                            backgroundColor: color.value,
-                        }}/>
+                            <Card hoverable className="product-color" style={{
+                                backgroundColor: color.value,
+                            }}/>
                         </Col>
                     )
                 )
             }
             if(this.state.productMaterials.length > 0){
+                renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
                 renderProductMaterials = this.state.productMaterials.map(material =>
                     (
                         <Col key={material.id} span={4}>
                             <div
                                 className="product-material"
                             >
-                            <p>{material.name}</p>
+                                <p>{material.name}</p>
                             </div>
                         </Col>
                     )
@@ -143,15 +216,15 @@ class SingleProduct extends Component{
                                     <h4>Colors</h4>
                                     {renderProductColors}
                                     <Button className="add-color-btn"
-                                            onClick={this.showModal}
+                                            onClick={this.showColorModal}
                                     >
                                         <Icon type="edit"/>
                                     </Button>
                                     <Modal
-                                        title="Add new color"
-                                        visible={this.state.visible}
-                                        onOk={this.handleOk}
-                                        onCancel={this.handleCancel}
+                                        title="Edit color"
+                                        visible={this.state.colorVisible}
+                                        onOk={this.handleColorOk}
+                                        onCancel={this.handleColorCancel}
                                         bodyStyle={{maxHeight:300,overflow:'auto'}}
                                     >
                                         <Select
@@ -159,7 +232,7 @@ class SingleProduct extends Component{
                                             size={'default'}
                                             placeholder="Please select"
                                             defaultValue={renderDefaultColors}
-                                            onChange={this.handleChange}
+                                            onChange={this.handleColorChange}
                                             style={{ width: '100%' }}
                                         >
                                             {renderColorOptions}
@@ -170,6 +243,29 @@ class SingleProduct extends Component{
                                 <Row gutter={8}>
                                     <h4>Materials</h4>
                                     {renderProductMaterials}
+                                    <Button className="add-color-btn"
+                                            onClick={this.showMaterialModal}
+                                    >
+                                        <Icon type="edit"/>
+                                    </Button>
+                                    <Modal
+                                        title="Edit material"
+                                        visible={this.state.materialVisible}
+                                        onOk={this.handleMaterialOk}
+                                        onCancel={this.handleMaterialCancel}
+                                        bodyStyle={{maxHeight:300,overflow:'auto'}}
+                                    >
+                                        <Select
+                                            mode="tags"
+                                            size={'default'}
+                                            placeholder="Please select"
+                                            defaultValue={renderDefaultMaterials}
+                                            onChange={this.handleMaterialChange}
+                                            style={{ width: '100%' }}
+                                        >
+                                            {renderMaterialOptions}
+                                        </Select>
+                                    </Modal>
                                 </Row>
                                 <Divider/>
                             </Card>
