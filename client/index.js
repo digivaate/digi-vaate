@@ -25,7 +25,7 @@ class App extends React.Component {
     render(){
         return(
             <BrowserRouter>
-                <div className="App" style={{backgroundColor:'white'}}>
+                <div className="App" {/*style={{backgroundColor:'white'}*/}>
                     <NavBar />
                     <div className="sider">
                         <Route path="/" exact component={SideBar}/>
@@ -33,16 +33,16 @@ class App extends React.Component {
                         <Route path="/:id/:id" component={CollectionSideBar} />
                     </div>
                     <div className="content">
-                        <div style={{padding: '0 24px',margin: 0, backgroundColor:'white'}}>
+                        <div {/*style={{padding: '0 24px',margin: 0, backgroundColor:'white'}*/}>
                         <BackTop />
                         <Switch>
-                            <Route path="/:id" exact component={SingleSeason} />
-                            <Route path="/:id/:id" exact component={SingleCollection} />
-                            <Route path="/:id/:id/budget" exact component={BudgetPlanningTable} />
-                            <Route path="/:id/:id/colors" exact component={ColorIndexPage} />
-                            <Route path="/:id/:id/materials" exact component={MaterialList} />
-                            <Route path="/:id/:id/products" exact component={ProductsDisplay} />
-                            <Route path="/:id/:id/products/:id" exact component={SingleProduct} />
+                            <Route path="/:seasonId" exact component={SingleSeason} />
+                            <Route path="/:seasonId/:collectionId" exact component={SingleCollection} />
+                            <Route path="/:seasonId/:collectionId/budget" exact component={BudgetPlanningTable} />
+                            <Route path="/:seasonId/:collectionId/colors" exact component={ColorIndexPage} />
+                            <Route path="/:seasonId/:collectionId/materials" exact component={MaterialList} />
+                            <Route path="/:seasonId/:collectionId/products" exact component={ProductsDisplay} />
+                            <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
                         </Switch>
                         </div>
                     </div>
@@ -54,4 +54,3 @@ class App extends React.Component {
 }
 
 render(<App />, document.getElementById("root"));
-
