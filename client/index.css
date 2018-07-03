@@ -18,3 +18,42 @@ body {
     word-wrap: break-word;
     background-color: #e8e8e8;
 }
+
+/*Main layout of app*/
+.App {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: 4em auto 50px;
+    grid-template-areas:
+            'header header'
+            'nav content'
+            'footer footer';
+}
+
+.content {
+    grid-area: content;
+    overflow-y: scroll;
+    padding: 2em;
+}
+
+.header {
+    grid-area: header;
+    z-index: 1;
+    border-bottom:1px groove;
+    /*content*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.sider {
+    grid-area: nav;
+    border-right: 1px groove;
+}
+.footer {
+    grid-area: footer;
+}
+
+.ant-layout-sider {
+    border-right: 1px groove;
+}

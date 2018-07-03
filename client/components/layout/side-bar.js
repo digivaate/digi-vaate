@@ -36,7 +36,7 @@ class SideBar extends Component{
                 </Menu.Item>
             );
         }return (
-            <Sider className="sider">
+            <Sider>
                 <Menu className="side-bar-menu" mode="inline">
                     <MenuItemGroup key="g1" title="Season">
                         {renderSeasonList}

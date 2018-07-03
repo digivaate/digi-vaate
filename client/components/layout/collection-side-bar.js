@@ -25,7 +25,7 @@ class CollectionSideBar extends Component{
 
     render(){
         return (
-            <Sider className="sider">
+            <Sider>
                 <Menu mode="inline" className="side-bar-menu">
                     <Menu.Item key="1">
                         <NavLink to={`${this.props.match.url}/products`} className="nav-text">

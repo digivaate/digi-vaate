@@ -3,7 +3,7 @@ import 'antd/dist/antd.css'
 import { render } from "react-dom";
 import "react-table/react-table.css";
 import BudgetPlanningTable from './components/budget-planning'
-import NavBar from './components/layout/nav-bar'
+import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
 import ColorIndexPage from './components/colors/index'
@@ -14,7 +14,6 @@ import SeasonSideBar from './components/layout/season-side-bar'
 import CollectionSideBar from './components/layout/collection-side-bar'
 import SingleSeason from './components/seasons/single-season'
 import SingleCollection from './components/collections/single_collection'
-import './components/layout/layout.css'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
@@ -26,7 +25,7 @@ class App extends React.Component {
         return(
             <BrowserRouter>
                 <div className="App">
-                    <NavBar />
+                    <HeaderBar />
                     <div className="sider">
                         <Route path="/" exact component={SideBar}/>
                         <Route path="/:seasonId" exact component={SeasonSideBar} />

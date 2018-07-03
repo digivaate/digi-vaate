@@ -40,7 +40,7 @@ class SeasonSideBar extends Component{
             );
         }
         return (
-            <Sider className="sider">
+            <Sider>
                 <Menu mode="inline" className="side-bar-menu">
                     <MenuItemGroup key="g1" title="Collection">
                         {renderCollectionList}
