@@ -53,7 +53,7 @@ class SingleProduct extends Component{
     handleChange(value){
         for(let i = 0; i < value.length;i++){
             for(let j = 0; j < this.state.colorOptions.length; j ++){
-                if(value[i] == this.state.colorOptions[j].name){
+                if(value[i] === this.state.colorOptions[j].name){
                     value[i] = this.state.colorOptions[j].id
                 }
             }

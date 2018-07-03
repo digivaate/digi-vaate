@@ -52,9 +52,7 @@ class ColorCollection extends Component{
                 return(
                     <Card.Grid
                         className="single-color-card"
-                        style={{
-                            backgroundColor: element.value,
-                        }}
+                        style={{backgroundColor: element.value}}
                         actions={[<Icon type="setting"/>, <Icon type="edit"/>, <Icon type="ellipsis"/>]}
                         key={element.id}
                     >

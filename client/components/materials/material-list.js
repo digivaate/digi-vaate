@@ -44,25 +44,17 @@ class MaterialList extends Component{
             renderMaterialList = this.materials.map(material =>{
                     return(
                         <Col span={6} key={material._id}>
-                            <div style={{
-                                height: 290
-                            }}>
+                            <div style={{height: 290}}>
                                 <Card
                                     hoverable
-                                    style={{
-                                        width: 250,
-                                    }}
-                                    cover={<img alt="example" height="160" src="https://4.imimg.com/data4/TE/WS/ANDROID-25878983/product-500x500.jpeg" />}
+                                    cover={<img alt="example" src="https://4.imimg.com/data4/TE/WS/ANDROID-25878983/product-500x500.jpeg" />}
                                     actions={[
                                         <div onClick = {() => this.handleSelect(material._id)}>
                                             <Icon type="edit" />
                                         </div>,
                                         <Icon type="delete" />
-                                    ]}
-                                >
-                                    <Meta
-                                        title={material.name}
-                                    />
+                                    ]}>
+                                    <Meta title={material.name} />
                                 </Card>
                             </div>
                         </Col>
@@ -85,7 +77,7 @@ class MaterialList extends Component{
             <div>
                 {singleMaterial}
                 <h1>Materials</h1>
-                <Row gutter={40}>
+                <Row gutter={5}>
                     {renderMaterialList}
                 </Row>
             </div>

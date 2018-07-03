@@ -19,15 +19,12 @@ const Home = withRouter((props) => {
         );
     });
     const breadcrumbItems = [(
-        <Breadcrumb.Item key="companyName"
-        >
+        <Breadcrumb.Item key="companyName">
             <Link to="/">{props.companiesMap}</Link>
         </Breadcrumb.Item>
     )].concat(extraBreadcrumbItems);
     return (
-        <Breadcrumb separator={">"}
-                    className="bread-crumb"
-        >
+        <Breadcrumb separator={">"} className="bread-crumb">
             {breadcrumbItems}
         </Breadcrumb>
     );
@@ -83,7 +80,7 @@ class BreadCrumbDigi extends Component{
                 this.collections = response.data;
                     for(let k=0; k < this.seasons.length; k++){
                         for(let i=0;i<this.collections.length;i++){
-                            if(this.seasons[k].id == this.collections[i].seasonId) {
+                            if(this.seasons[k].id === this.collections[i].seasonId) {
                                 this.collectionsMap[i] = this.collections[i].name;
                                 this.products = this.collections[i].products;
                                 for (let j = 0; j < this.products.length; j++) {

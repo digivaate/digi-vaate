@@ -26,7 +26,6 @@ class SeasonSideBar extends Component{
             })
             .then(()=>this.setState({}))
             .catch(err => console.log(err));
-
     }
 
     render(){
@@ -41,15 +40,9 @@ class SeasonSideBar extends Component{
             );
         }
         return (
-            <Sider
-                   className="sider"
-            >
-                <Menu
-                    mode="inline"
-                    className="side-bar-menu"
-                >
+            <Sider className="sider">
+                <Menu mode="inline" className="side-bar-menu">
                     <MenuItemGroup key="g1" title="Collection">
-
                         {renderCollectionList}
                     </MenuItemGroup>
                 </Menu>

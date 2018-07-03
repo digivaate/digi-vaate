@@ -101,11 +101,11 @@ class ProductCard extends Component{
                 <label>
                     Name
                     <Input
-                        style={{ width: '20%' }}
                         type="text"
                         name = "styleName"
                         value={this.state.styleName}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange}
+                    />
                 </label>
                 <h4>{this.state.styleName}</h4>
                 <Row gutter={8}>
@@ -123,7 +123,8 @@ class ProductCard extends Component{
                         type="text"
                         name = "coverPercentage"
                         value={this.state.coverPercentage}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange}
+                    />
                 </label>
                 <br/>
                 <br/>
@@ -134,7 +135,8 @@ class ProductCard extends Component{
                         type="text"
                         name = "taxPercent"
                         value={this.state.taxPercent}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange}
+                    />
                 </label>
                 <br/>
                 <br/>

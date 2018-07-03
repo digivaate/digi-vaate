@@ -5,6 +5,7 @@ import { API_ROOT } from '../../api-config';
 import axios from 'axios';
 const FormItem = Form.Item;
 import './colors.css'
+
 const ColorCreateForm = Form.create()(
     class extends React.Component {
         hexCodeValues = "";

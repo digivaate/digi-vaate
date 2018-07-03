@@ -20,10 +20,7 @@ class NavBar extends Component{
                             <h1>DigiVaate</h1>
                         </div>
                     </Col>
-                <Menu
-                    className="nav-bar-menu"
-                    mode="horizontal"
-                >
+                <Menu className="nav-bar-menu" mode="horizontal">
                     <Menu.Item key="1">Nav1</Menu.Item>
                     <Menu.Item key="2">Nav2</Menu.Item>
                     <Menu.Item key="3">Nav3</Menu.Item>
