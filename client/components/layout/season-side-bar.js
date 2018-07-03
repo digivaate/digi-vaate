@@ -19,8 +19,9 @@ class SeasonSideBar extends Component{
     }
     collections = null;
     componentDidMount() {
-        axios.get(`${API_ROOT}/season?name=${this.props.match.params.id}`)
+        axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
+                console.log(response);
                 this.collections = response.data[0].collections;
             })
             .then(()=>this.setState({}))
@@ -33,7 +34,7 @@ class SeasonSideBar extends Component{
         if(this.collections){
             renderCollectionList = this.collections.map(collection =>
                 <Menu.Item key={collection.id}>
-                    <NavLink to={`/${this.props.match.params.id}/${collection.name}`} className="nav-text">
+                    <NavLink to={`/${this.props.match.params.seasonId}/${collection.name}`} className="nav-text">
                         {collection.name}
                     </NavLink>
                 </Menu.Item>

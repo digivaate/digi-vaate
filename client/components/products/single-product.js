@@ -24,9 +24,9 @@ class SingleProduct extends Component{
     }
 
     loadProduct(){
-        if(this.props.match.params.id){
-            if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.id) ) {
-                axios.get(`${API_ROOT}/product?name=${this.props.match.params.id}`)
+        if(this.props.match.params.productId){
+            if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId) ) {
+                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],

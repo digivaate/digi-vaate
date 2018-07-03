@@ -25,15 +25,15 @@ class App extends React.Component {
     render(){
         return(
             <BrowserRouter>
-                <div className="App" {/*style={{backgroundColor:'white'}*/}>
+                <div className="App">
                     <NavBar />
                     <div className="sider">
                         <Route path="/" exact component={SideBar}/>
-                        <Route path="/:id" exact component={SeasonSideBar} />
-                        <Route path="/:id/:id" component={CollectionSideBar} />
+                        <Route path="/:seasonId" exact component={SeasonSideBar} />
+                        <Route path="/:seasonId/:collectionId" component={CollectionSideBar} />
                     </div>
                     <div className="content">
-                        <div {/*style={{padding: '0 24px',margin: 0, backgroundColor:'white'}*/}>
+                        <div>
                         <BackTop />
                         <Switch>
                             <Route path="/:seasonId" exact component={SingleSeason} />

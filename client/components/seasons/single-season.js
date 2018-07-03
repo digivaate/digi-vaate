@@ -13,7 +13,7 @@ class SingleSeason extends Component{
     }
     products=[];
     componentDidMount(){
-        axios.get(`${API_ROOT}/season/products?name=${this.props.match.params.id}`)
+        axios.get(`${API_ROOT}/season/products?name=${this.props.match.params.seasonId}`)
             .then(response => {
                 this.products = response.data;
                 console.log(this.products);

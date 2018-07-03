@@ -22,7 +22,7 @@ class ProductsDisplay extends Component{
     collections = [];
     products = [];
     componentDidMount() {
-        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.id}`)
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
                 this.collections = response.data;
                 this.products = this.collections[0].products;
