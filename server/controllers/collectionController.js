@@ -8,6 +8,28 @@ class CollectionController extends Controller {
         if (jsonBody.materials) entity.setMaterials(jsonBody.materials);
         if (jsonBody.colors) entity.setColors(jsonBody.colors);
     }
+
+    find_by_attribute(req, res) {
+        const properties = this.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.stat(500).json(properties.error);
+            return;
+        }
+        this.model.findAll({
+            where: properties,
+            include: [{
+                all: true,
+                include: [{ all: true }]
+            }]
+        })
+            .then(ent => {
+                res.send(ent);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
+    }
 }
 
 export default new CollectionController();
