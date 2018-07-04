@@ -12,5 +12,6 @@
     <orderEntry type="library" name="@types/mongoose" level="application" />
     <orderEntry type="library" name="@types/react" level="application" />
     <orderEntry type="library" name="@types/react-table" level="application" />
+    <orderEntry type="library" name="@types/multer" level="application" />
   </component>
 </module>
