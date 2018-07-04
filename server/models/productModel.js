@@ -3,6 +3,18 @@ export default (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        coverPercent: {
+            type: DataTypes.FLOAT
+        },
+        resellerProfitPercent: {
+            type: DataTypes.FLOAT
+        },
+        taxPercent: {
+            type: DataTypes.FLOAT
+        },
+        subcCostTotal: {
+            type: DataTypes.FLOAT
         }
     });
 

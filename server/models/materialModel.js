@@ -3,7 +3,10 @@ export default (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        },
+        consumption: DataTypes.FLOAT,
+        unitPrice: DataTypes.FLOAT,
+        freight: DataTypes.FLOAT
     });
 
     Material.associate = (models) => {
