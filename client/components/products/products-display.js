@@ -126,7 +126,7 @@ class ProductsDisplay extends Component{
                                 title={product.name}
                                 description={
                                     <div>
-                                    <Row gutter={16}>
+                                    <Row gutter={8}>
                                         { renderProductColors }
                                     </Row>
                                     <Row gutter={16}>
