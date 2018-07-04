@@ -18,7 +18,8 @@
     "build": "webpack --mode production",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
-    "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\""
+    "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\"",
+    "cleardb": "babel-node server/resetdb.js"
   },
   "dependencies": {
     "antd": "^3.6.1",

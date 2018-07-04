@@ -3,6 +3,10 @@ export default (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        budget: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     });
 

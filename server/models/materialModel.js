@@ -6,7 +6,13 @@ export default (sequelize, DataTypes) => {
         },
         consumption: DataTypes.FLOAT,
         unitPrice: DataTypes.FLOAT,
-        freight: DataTypes.FLOAT
+        freight: DataTypes.FLOAT,
+        weight: DataTypes.BIGINT, //grams
+        width: DataTypes.FLOAT, //meters
+        minQuality: DataTypes.INTEGER,
+        instructions: DataTypes.STRING,
+        manufacturer: DataTypes.STRING,
+        composition: DataTypes.STRING
     });
 
     Material.associate = (models) => {

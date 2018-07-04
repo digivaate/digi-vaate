@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.FLOAT
         },
         taxPercent: {
-            type: DataTypes.FLOAT
+            type: DataTypes.INTEGER
         },
         subcCostTotal: {
             type: DataTypes.FLOAT
