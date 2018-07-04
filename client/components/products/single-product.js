@@ -154,11 +154,11 @@ class SingleProduct extends Component{
 
     render(){
         if(this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions){
-            let renderColorOptions = <p> No colors available </p>;
+            let renderColorOptions = [];
             let renderDefaultColors = [];
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
-            let renderMaterialOptions = <p> No materials available </p>;
+            let renderMaterialOptions = [];
             let renderDefaultMaterials = [];
             if(this.state.materialOptions.length > 0){
                 renderMaterialOptions = this.state.materialOptions.map(material =>

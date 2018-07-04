@@ -45,10 +45,10 @@ export function makeDataSC(len = 1){
 export const newRow = () => {
     return{
         unitPriceWithoutTax:0,
-        amountFirstDelivery: 0,
+        amountProduct: 0,
         consumerPriceCommercial: 0,
         styleName:'',
-        coverPercentage : 0,
+        coverPercent : 0,
         coverAmount: 0,
         purchasePrice: 0,
     };

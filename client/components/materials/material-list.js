@@ -43,7 +43,7 @@ class MaterialList extends Component{
         if (this.materials) {
             renderMaterialList = this.materials.map(material =>{
                     return(
-                        <Col span={6} key={material._id}>
+                        <Col span={6} key={material.id}>
                             <div style={{height: 290}}>
                                 <Card
                                     hoverable

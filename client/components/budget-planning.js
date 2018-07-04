@@ -67,8 +67,9 @@ class BudgetPlanningTable extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/product`)
-            .then(response => this.products = response.data)
+        console.log(this.props.match.params.collectionId);
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+            .then(response => this.products = response.data[0].products)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
     }
@@ -77,34 +78,39 @@ class BudgetPlanningTable extends Component {
         if (!this.products) {
             return "No product yet!";
         }
+        console.log(this.products)
         const options = this.products.map(d => <Option key={d.name} value={d.name}>{d.name}</Option>);
         return (
             <Select defaultValue="Choose product"
                     onChange={(value) => {
                         for(let i = 0; i< this.products.length; i++){
                             let materialCost = [];
-                            for (let j = 0; j < this.products[i].materialCosts.length; j++) {
-                                materialCost.push(parseFloat((parseFloat(this.products[i].materialCosts[j].consumption) * parseFloat(this.products[i].materialCosts[j].unitPrice) + parseFloat(this.products[i].materialCosts[j].freight)).toFixed(2)));
+                            for (let j = 0; j < this.products[i].materials.length; j++) {
+                                materialCost.push(parseFloat((parseFloat(this.products[i].materials[j].consumption) * parseFloat(this.products[i].materials[j].unitPrice) + parseFloat(this.products[i].materials[j].freight)).toFixed(2)));
                             }
-                            if(this.products[i].materialCosts.length > 0) {
-                                if(this.products[i].materialCosts[0].consumption < 100){
+                            if(this.products[i].materials.length > 0) {
+                                if(this.products[i].materials[0].consumption < 100){
                                     materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2))
                                 }
                             }
 
                             this.products[i].materialCostTotal = materialCost.reduce((a,b) => a+b,0);
 
+                            /*
                             let subcCost = [];
                             for (let j = 0; j < this.products[i].subcCosts.length; j++) {
                                 subcCost.push(parseFloat((parseFloat(this.products[i].subcCosts[j].amount)).toFixed(2)));
                             }
+
                             this.products[i].subcCostTotal = subcCost.reduce((a,b) => a+b,0);
+                            */
                             this.products[i].coverAmount = parseFloat(((this.products[i].materialCostTotal + this.products[i].subcCostTotal)*(this.products[i].coverPercent/100)/(1-(this.products[i].coverPercent/100))).toFixed(2));
                             this.products[i].purchasePrice = parseFloat((this.products[i].materialCostTotal + this.products[i].subcCostTotal).toFixed(2));
                             this.products[i].unitPriceWithoutTax = parseFloat((this.products[i].coverAmount + this.products[i].purchasePrice).toFixed(2));
-                            console.log(this.products);
-                            console.log(this.products[i].materialCostTotal);
-                            console.log(this.products[i].subcCostTotal);
+                            console.log(this.products[0]);
+                            console.log(this.products[0].materialCostTotal);
+                            console.log(this.products[0].subcCostTotal);
+
                             if(value === this.products[i].name){
                                 const {data} = this.state;
                                 data[cellInfo.index].styleName = value;
@@ -113,10 +119,10 @@ class BudgetPlanningTable extends Component {
                                         if (element.styleName === value){
                                             return {
                                                 unitPriceWithoutTax: this.products[i].unitPriceWithoutTax,
-                                                amountFirstDelivery: 0,
+                                                amountProduct: 0,
                                                 consumerPriceCommercial: this.products[i].commercialPrice,
                                                 styleName: this.products[i].name,
-                                                coverPercentage : this.products[i].coverPercent,
+                                                coverPercent : this.products[i].coverPercent,
                                                 coverAmount: this.products[i].coverAmount,
                                                 purchasePrice: this.products[i].purchasePrice
                                             }
@@ -140,19 +146,19 @@ class BudgetPlanningTable extends Component {
         const {data} = this.state;
 
         // First delivery sum calculation
-        const sumOfAmountFirstDelivery = function(){
+        const sumOfAmountProduct = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat(data[i].amountFirstDelivery));
+                componentValue.push(parseFloat(data[i].amountProduct));
             }
-            return componentValue.reduce((a,b) => a+b,0)
+            return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
-        const sumOfMoneyFirstDelivery = function(){
+        const sumOfTotalSale = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].unitPriceWithoutTax) * parseFloat(data[i].amountFirstDelivery)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].unitPriceWithoutTax) * parseFloat(data[i].amountProduct)).toFixed(2)));
             }
-            return componentValue.reduce((a,b) => a+b,0)
+            return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
 
         // Total of cover price and purchase price
@@ -160,24 +166,24 @@ class BudgetPlanningTable extends Component {
         const sumOfCoverAmount = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery) * parseFloat(data[i].coverAmount)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amountProduct) * parseFloat(data[i].coverAmount)).toFixed(2)));
             }
-            return componentValue.reduce((a,b) => a+b,0)
+            return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
 
         const sumOfPurchasePrice = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery) * parseFloat(data[i].purchasePrice)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amountProduct) * parseFloat(data[i].purchasePrice)).toFixed(2)));
             }
-            return componentValue.reduce((a,b) => a+b,0)
+            return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
 
         // Total unit sum calculation
         const sumOfEstimatedTotalUnit = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amountProduct)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -185,7 +191,7 @@ class BudgetPlanningTable extends Component {
         const sumOfEstimatedTotalSale = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountFirstDelivery)*parseFloat(data[i].unitPriceWithoutTax)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amountProduct)*parseFloat(data[i].unitPriceWithoutTax)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -211,28 +217,28 @@ class BudgetPlanningTable extends Component {
                 accessor: "unitPriceWithoutTax",
             },
             {
-                Header: "Amount 1st delivery",
+                Header: "Product amount",
                 headerClassName: "wordwrapEdit",
-                accessor: "amountFirstDelivery",
+                accessor: "amountProduct",
                 Cell: this.renderEditable,
-                Footer: sumOfAmountFirstDelivery
+                Footer: sumOfAmountProduct
             },
             {
-                Header: "Total money of 1st delivery",
+                Header: "Total sale",
                 headerClassName: "wordwrap",
-                id: "totalMoney1",
+                id: "totalSale",
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amountFirstDelivery)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amountProduct)).toFixed(2))
                         }}
                     />,
-                Footer: sumOfMoneyFirstDelivery
+                Footer: sumOfTotalSale
             },
             {
                 Header: "Cover %",
                 headerClassName: "wordwrap",
-                accessor: "coverPercentage",
+                accessor: "coverPercent",
             },
             {
                 Header: "Cover amount",
@@ -241,7 +247,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amountFirstDelivery) * parseFloat(d.coverAmount)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.amountProduct) * parseFloat(d.coverAmount)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfCoverAmount
@@ -253,34 +259,10 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amountFirstDelivery) * parseFloat(d.purchasePrice)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.amountProduct) * parseFloat(d.purchasePrice)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfPurchasePrice
-            },
-            {
-                Header: "Estimated total unit",
-                headerClassName: "wordwrap",
-                id: "estimatedTotalUnit",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat(d.amountFirstDelivery)
-                        }}
-                    />,
-                Footer: sumOfEstimatedTotalUnit
-            },
-            {
-                Header: "Estimated total sale",
-                headerClassName: "wordwrap",
-                id: "estimatedTotalSale",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amountFirstDelivery)*parseFloat(d.unitPriceWithoutTax)).toFixed(2))
-                        }}
-                    />,
-                Footer: sumOfEstimatedTotalSale
             }
         ];
 
