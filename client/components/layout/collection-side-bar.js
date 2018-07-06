@@ -47,6 +47,11 @@ class CollectionSideBar extends Component{
                             Budget
                         </NavLink>
                     </Menu.Item>
+                    <Menu.Item key="5">
+                        <NavLink to={`${this.props.match.url}/themes`} className="nav-text">
+                            Themes
+                        </NavLink>
+                    </Menu.Item>
                 </Menu>
             </Sider>
         )
