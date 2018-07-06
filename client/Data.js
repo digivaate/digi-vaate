@@ -1,6 +1,9 @@
 import React from "react";
 import "./index.css";
 
+
+
+
 const range = len => {
     const arr = [];
     for (let i = 0; i < len; i++) {
@@ -44,10 +47,10 @@ export function makeDataSC(len = 1){
 
 export const newRow = () => {
     return{
+        productName: '',
         unitPriceWithoutTax:0,
         amountProduct: 0,
         consumerPriceCommercial: 0,
-        styleName:'',
         coverPercent : 0,
         coverAmount: 0,
         purchasePrice: 0,

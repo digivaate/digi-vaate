@@ -46,7 +46,7 @@ function createEntices() {
             coverPercent: 30.5,
             resellerProfitPercent: 25.5,
             taxPercent: 24,
-            subcCostsTotal: 20
+            subcCostTotal: 20
         }).then(res => products.push(res)),
 
         Models.Company.create({
