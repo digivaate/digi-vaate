@@ -45,6 +45,7 @@ class SingleProduct extends Component{
                             productMaterials:response.data[0].materials
                         });
                     })
+                    .then(() => this.updatedColors = this.state.productColors)
             }
         }
     }
@@ -61,6 +62,7 @@ class SingleProduct extends Component{
     }
 
     handleColorChange(value){
+        this.setState(prevState => prevState);
         for(let i = 0; i < value.length;i++){
             for(let j = 0; j < this.state.colorOptions.length; j ++){
                 if(value[i] == this.state.colorOptions[j].name){
@@ -69,28 +71,34 @@ class SingleProduct extends Component{
             }
         }
         this.updatedColors = value;
-        console.log(this.updatedColors);
     }
+
     showColorModal = (e) => {
         this.setState({
             colorVisible: true,
         });
     };
 
-    handleColorOk(){
-        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{colors:this.updatedColors})
-            .then(response => {
-                message.success("Colors updated!",1);
-                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
-                    .then(response => {
-                        this.setState({
-                            loadedProduct: response.data[0],
-                            productColors: response.data[0].colors,
-                            productMaterials: response.data[0].materials,
-                        });
-                    })
-                    .then(() => this.setState({colorVisible:false}))
-            })
+    handleColorOk(event){
+        if(this.updatedColors.length > 8) {
+            message.error('Maximum 8 colors!')
+        }
+
+        if(this.updatedColors.length <= 8) {
+            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors})
+                .then(response => {
+                    message.success("Colors updated!", 1);
+                    axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                        .then(response => {
+                            this.setState({
+                                loadedProduct: response.data[0],
+                                productColors: response.data[0].colors,
+                                productMaterials: response.data[0].materials,
+                            });
+                        })
+                        .then(() => this.setState({colorVisible: false}))
+                })
+        }
     };
 
     handleColorCancel = (e) =>{
@@ -131,7 +139,6 @@ class SingleProduct extends Component{
             }
         }
         this.updatedMaterials = value;
-        console.log(this.updatedMaterials);
     }
 
     handleMaterialOk(){
@@ -227,6 +234,7 @@ class SingleProduct extends Component{
                                         onCancel={this.handleColorCancel}
                                         bodyStyle={{maxHeight:300,overflow:'auto'}}
                                     >
+                                        <p>Number of colors: {this.updatedColors.length}/8</p>
                                         <Select
                                             mode="tags"
                                             size={'default'}
