@@ -91,11 +91,10 @@ class SingleProduct extends Component{
                     axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
                         .then(response => {
                             this.setState({
-                                loadedProduct: response.data[0],
-                                productColors: response.data[0].colors,
-                                productMaterials: response.data[0].materials,
+                                productColors: response.data[0].colors
                             });
                         })
+                        .then(() => this.setState(prevState => prevState))
                         .then(() => this.setState({colorVisible: false}))
                 })
         }
@@ -148,11 +147,10 @@ class SingleProduct extends Component{
                 axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
                     .then(response => {
                         this.setState({
-                            loadedProduct: response.data[0],
-                            productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                         });
                     })
+                    .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({materialVisible:false}))
             })
     };
