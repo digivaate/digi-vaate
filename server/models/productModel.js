@@ -4,6 +4,9 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        imagePath: {
+            type: DataTypes.STRING,
+        },
         coverPercent: {
             type: DataTypes.FLOAT
         },

@@ -5,7 +5,7 @@ class CompanyController extends Controller {
     constructor() { super(models.Company); }
 
     getAllProducts(req, res) {
-        const properties = super.collectProperties(req.query, models.Company);
+        const properties = Controller.collectProperties(req.query, models.Company);
         if (properties.error) {
             res.status(500).json(properties);
             return;

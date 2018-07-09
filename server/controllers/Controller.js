@@ -6,11 +6,11 @@ export default class Controller {
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
         this.create = this.create.bind(this);
-        this.collectProperties = this.collectProperties.bind(this);
+        Controller.collectProperties = Controller.collectProperties.bind(this);
     }
 
     find_by_attribute(req, res) {
-        const properties = this.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
@@ -40,7 +40,7 @@ export default class Controller {
     };
 
     update(req, res) {
-        const properties = this.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -64,7 +64,7 @@ export default class Controller {
     };
 
     delete(req, res) {
-        const properties = this.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties);
             return;
@@ -84,7 +84,7 @@ export default class Controller {
             });
     };
 
-    collectProperties(query, model) {
+    static collectProperties(query, model) {
         const properties = {};
         for (let attr in query) {
             if (attr in model.rawAttributes) {

@@ -1,8 +1,8 @@
-import models from '../models/models';
+import Models from '../models/models';
 import Controller from './Controller';
 
 class CollectionController extends Controller {
-    constructor() { super(models.Collection); }
+    constructor() { super(Models.Collection); }
 
     setRelations(entity, jsonBody){
         if (jsonBody.materials) entity.setMaterials(jsonBody.materials);
@@ -10,7 +10,7 @@ class CollectionController extends Controller {
     }
 
     find_by_attribute(req, res) {
-        const properties = this.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;

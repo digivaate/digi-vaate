@@ -1,4 +1,5 @@
 import multer from 'multer';
+import path from 'path';
 
 //initialize multer
 const storage = multer.diskStorage({
@@ -6,16 +7,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname + '-' + Date.now() + path.extname(file.originalname));
+        cb(null, + req.query.id + '-' + Date.now() + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage: storage });
 
-
-//file upload
-app.post('/upload',upload.single('image'), (req, res, next) => {
-    if (err) { console.error('File upload error: ' + err); }
-
-    console.log(req.file);
-    res.send('test');
-});
+export default multer({ storage: storage });

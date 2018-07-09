@@ -6,7 +6,7 @@ class SeasonController extends Controller {
 
     getAllProducts(req, res) {
 
-        const properties = super.collectProperties(req.query, models.Season);
+        const properties = Controller.collectProperties(req.query, models.Season);
         if (properties.error) {
             res.status(500).json(properties);
             return;
