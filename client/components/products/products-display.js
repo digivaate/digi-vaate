@@ -31,6 +31,7 @@ class ProductsDisplay extends Component{
                         .then(response =>{
                             this.products[i].colors = response.data[0].colors;
                             this.products[i].materials = response.data[0].materials;
+                            this.products[i].imgPath = response.data[0].imagePath;
                             }
                         )
                         .then(()=>this.setState({isColorFetched:true}));
@@ -112,7 +113,7 @@ class ProductsDisplay extends Component{
                             hoverable
                             bodyStyle={{height:130}}
                             className="product-card-display"
-                            cover={<img alt="example" className="product-img" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />}
+                            cover={<img alt="example" className="product-img" src={`http://localhost:8080/${product.imgPath}`} />}
                             actions={[
                                 <div onClick = {() => this.handleSelect(product.name)}>
                                     <Icon type="edit" />

@@ -1,9 +1,9 @@
 import React,{ Component } from "react";
 import axios from 'axios';
 import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
-import {NavLink} from 'react-router-dom';
 import { API_ROOT } from '../../api-config';
 import './products.css'
+import FormData from 'form-data';
 const Option = Select.Option;
 
 class SingleProduct extends Component{
@@ -28,7 +28,7 @@ class SingleProduct extends Component{
         this.handleMaterialCancel = this.handleMaterialCancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleNameOk = this.handleNameOk.bind(this);
-
+        this.onFileChange = this.onFileChange.bind(this);
     }
 
     updatedColors = [];
@@ -167,7 +167,7 @@ class SingleProduct extends Component{
                             productMaterials: response.data[0].materials,
                         });
                     })
-                })
+                },100)
             })
     };
 
@@ -202,9 +202,25 @@ class SingleProduct extends Component{
                             productName:response.data[0].name,
                             nameVisible: false
                         });
-                        window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`
+                        window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`;
                         //this.props.history.replace(`${this.state.productName}`)
                     })
+            })
+    }
+
+    //Edit product image
+    onFileChange(e){
+        let file = e.target.files[0];
+        const data = new FormData();
+        data.append('image', file, file.name);
+        axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data)
+            .then(() => {
+                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                    .then(response => {
+                        this.setState({
+                            productImg: response.data[0].imagePath
+                        })
+                    });
             })
     }
 
@@ -265,6 +281,7 @@ class SingleProduct extends Component{
                         >
                             <Icon type="edit"/>
                         </Button>
+                        <input type="file" name="file" onChange={this.onFileChange}/>
                         <Modal
                             title="Edit name"
                             visible={this.state.nameVisible}
