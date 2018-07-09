@@ -1,6 +1,7 @@
 import React,{ Component } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Tag,Button,Icon,Modal,Select,message } from 'antd';
+import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
+import {NavLink} from 'react-router-dom';
 import { API_ROOT } from '../../api-config';
 import './products.css'
 const Option = Select.Option;
@@ -10,6 +11,8 @@ class SingleProduct extends Component{
         super(props);
         this.state ={
             loadedProduct: null,
+            productName:'',
+            productImg:null,
             productColors:null,
             colorOptions:null,
             updateColors:null,
@@ -23,6 +26,9 @@ class SingleProduct extends Component{
         this.handleMaterialChange = this.handleMaterialChange.bind(this);
         this.handleMaterialOk = this.handleMaterialOk.bind(this);
         this.handleMaterialCancel = this.handleMaterialCancel.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleNameOk = this.handleNameOk.bind(this);
+
     }
 
     updatedColors = [];
@@ -35,14 +41,17 @@ class SingleProduct extends Component{
     }
 
     loadProduct(){
+        console.log(this.props);
         if(this.props.match.params.productId){
             if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId) ) {
                 axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
+                            productImg: response.data[0].imagePath,
                             productColors: response.data[0].colors,
-                            productMaterials:response.data[0].materials
+                            productMaterials:response.data[0].materials,
+                            productName:response.data[0].name
                         });
                     })
                     .then(() => this.updatedColors = this.state.productColors)
@@ -71,6 +80,8 @@ class SingleProduct extends Component{
             }
         }
         this.updatedColors = value;
+        console.log("---");
+        console.log(this.updatedColors);
     }
 
     showColorModal = (e) => {
@@ -86,16 +97,19 @@ class SingleProduct extends Component{
 
         if(this.updatedColors.length <= 8) {
             axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors})
-                .then(response => {
+                .then(() => this.setState(prevState => prevState))
+                .then(() => this.setState({colorVisible: false}))
+                .then(() => {
+                    setTimeout(() => {
                     message.success("Colors updated!", 1);
-                    axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                         .then(response => {
+                            console.log(response.data[0].colors);
                             this.setState({
                                 productColors: response.data[0].colors
                             });
                         })
-                        .then(() => this.setState(prevState => prevState))
-                        .then(() => this.setState({colorVisible: false}))
+                    },100)
                 })
         }
     };
@@ -142,20 +156,57 @@ class SingleProduct extends Component{
 
     handleMaterialOk(){
         axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{materials:this.updatedMaterials})
+            .then(() => this.setState(prevState => prevState))
+            .then(() => this.setState({materialVisible:false}))
             .then(response => {
+                setTimeout(() =>{
                 message.success("Materials updated!",1);
-                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
                         this.setState({
                             productMaterials: response.data[0].materials,
                         });
                     })
-                    .then(() => this.setState(prevState => prevState))
-                    .then(() => this.setState({materialVisible:false}))
+                })
             })
     };
 
+    /*Edit name*/
+    showNameModal = (e) => {
+        this.setState({
+            nameVisible:true
+        })
+    };
 
+    handleNameCancel = (e) =>{
+        this.setState({
+            nameVisible: false,
+        });
+    };
+
+    handleChange(event){
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    handleNameOk(){
+        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`,{name:this.state.productName})
+            .then(response => {
+                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                    .then(response => {
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productColors: response.data[0].colors,
+                            productMaterials:response.data[0].materials,
+                            productName:response.data[0].name,
+                            nameVisible: false
+                        });
+                        window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`
+                        //this.props.history.replace(`${this.state.productName}`)
+                    })
+            })
+    }
 
     render(){
         if(this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions){
@@ -207,10 +258,31 @@ class SingleProduct extends Component{
             }
             return(
                 <div>
-                    <h1>{this.state.loadedProduct.name}</h1>
+                    <Row type="flex">
+                        <h1>{this.state.loadedProduct.name}</h1>
+                        <Button className="edit-btn"
+                                onClick={this.showNameModal}
+                        >
+                            <Icon type="edit"/>
+                        </Button>
+                        <Modal
+                            title="Edit name"
+                            visible={this.state.nameVisible}
+                            onOk={this.handleNameOk}
+                            onCancel={this.handleNameCancel}
+                            bodyStyle={{maxHeight:300,overflow:'auto'}}
+                        >
+                            <Input
+                                placeholder="Product name"
+                                name = "productName"
+                                value={this.state.productName}
+                                onChange={this.handleChange}
+                            />
+                        </Modal>
+                    </Row>
                     <Row>
                         <Col span={8}>
-                            <img alt="example" height="350" width="376" src="https://cdn.shopify.com/s/files/1/0444/2549/products/Covent-Garden_760x.jpg?v=1529297676%27" />
+                            <img alt="example" height="350" width="376" src={`http://localhost:8080/${this.state.productImg}`} />
                             <Card className="product-description">
                                 <p>Some description of product</p>
                             </Card>
@@ -220,7 +292,7 @@ class SingleProduct extends Component{
                                 <Row gutter={8}>
                                     <h4>Colors</h4>
                                     {renderProductColors}
-                                    <Button className="add-color-btn"
+                                    <Button className="edit-btn"
                                             onClick={this.showColorModal}
                                     >
                                         <Icon type="edit"/>
@@ -249,7 +321,7 @@ class SingleProduct extends Component{
                                 <Row gutter={8}>
                                     <h4>Materials</h4>
                                     {renderProductMaterials}
-                                    <Button className="add-color-btn"
+                                    <Button className="edit-btn"
                                             onClick={this.showMaterialModal}
                                     >
                                         <Icon type="edit"/>

@@ -23,10 +23,12 @@
     height: 500px;
 }
 
-.add-color-btn{
+.edit-btn{
     width: 40px;
     height: 40px;
     border-style: dotted;
+    padding-right: 4px;
+    padding-left: 4px;
 }
 
 
