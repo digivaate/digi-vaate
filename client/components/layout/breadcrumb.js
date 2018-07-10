@@ -102,7 +102,6 @@ class BreadCrumbDigi extends Component{
                     }
                 this.setState({})
             });
-        console.log(this.breadcrumbNameMap)
     }
     render(){
         return(

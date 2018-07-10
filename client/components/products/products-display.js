@@ -55,10 +55,11 @@ class ProductsDisplay extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                console.log('Ok');
+                axios.delete(`${API_ROOT}/product?name=${productName}`);
+                window.location.reload();
             },
             onCancel() {
-                console.log('Cancel');
+                console.log(productName);
             },
         });
     }

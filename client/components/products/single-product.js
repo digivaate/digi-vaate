@@ -222,7 +222,6 @@ class SingleProduct extends Component{
                             productImg: response.data[0].imagePath
                         });
                     });
-                window.location.reload();
             })
     }
 
