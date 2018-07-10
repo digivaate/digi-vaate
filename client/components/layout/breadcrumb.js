@@ -40,6 +40,8 @@ class BreadCrumbDigi extends Component{
     collectionsMap = [];
     products = [];
     productsMap = [];
+    materials=[];
+    materialsMap = [];
     companies = [];
     companiesMap = [];
     breadcrumbNameMap = {};
@@ -86,13 +88,21 @@ class BreadCrumbDigi extends Component{
                                 this.products = this.collections[i].products;
                                 for (let j = 0; j < this.products.length; j++) {
                                     this.productsMap[j] = this.products[j].name;
-                                    this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name
+                                    this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name;
+                                    if(this.collections[i].id === this.products[j].collectionId){
+                                        this.materials = this.products[j].materials
+                                        for(let m = 0; m< this.materials.length; m++){
+                                            this.materialsMap[m] = this.materials[m].name;
+                                            this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/materials/" + this.materialsMap[m]] = this.materials[m].name
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 this.setState({})
             });
+        console.log(this.breadcrumbNameMap)
     }
     render(){
         return(

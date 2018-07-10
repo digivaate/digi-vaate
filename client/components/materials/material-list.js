@@ -49,7 +49,7 @@ class MaterialList extends Component{
                                     hoverable
                                     cover={<img alt="example" src="https://4.imimg.com/data4/TE/WS/ANDROID-25878983/product-500x500.jpeg" />}
                                     actions={[
-                                        <div onClick = {() => this.handleSelect(material._id)}>
+                                        <div onClick = {() => this.handleSelect(material.name)}>
                                             <Icon type="edit" />
                                         </div>,
                                         <Icon type="delete" />
