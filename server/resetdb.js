@@ -7,16 +7,17 @@ let colors = [];
 let collections = [];
 let seasons = [];
 let companies = [];
+let theme = [];
 
 let promises = [];
 
 db.sync({force: true})
-    .then(createEntices)
+    .then(createEntities)
     .then(addRelations)
     .then(close)
     .catch(err => console.error(err));
 
-function createEntices() {
+function createEntities() {
     promises = [
         Models.Color.create({
             name: 'white',
@@ -61,7 +62,11 @@ function createEntices() {
 
         Models.Collection.create({
             name: 'winter sports'
-        }).then(res => collections.push(res))
+        }).then(res => collections.push(res)),
+
+        Models.Theme.create({
+            name: 'winter theme'
+        }).then(res => theme.push(res))
     ];
 
     return Promise.all(promises);
@@ -73,7 +78,8 @@ function addRelations() {
         products[0].setMaterials(1),
         products[0].updateAttributes({ collectionId: 1 }),
         collections[0].updateAttributes({ seasonId: 1}),
-        seasons[0].updateAttributes({ companyId: 1})
+        collections[0].setTheme(1),
+        seasons[0].updateAttributes({ companyId: 1}),
     ];
     return Promise.all(promises);
 }

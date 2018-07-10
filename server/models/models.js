@@ -23,6 +23,7 @@ const models = {
     Collection: sequelize.import('./collectionModel'),
     Season: sequelize.import('./seasonModel'),
     Company: sequelize.import('./companyModel'),
+    Theme: sequelize.import('./themeModel')
 };
 
 Object.keys(models).forEach((modelName) => {

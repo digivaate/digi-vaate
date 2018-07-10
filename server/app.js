@@ -23,7 +23,7 @@ app.use('/api/company', require('./routes/companyRoute'));
 app.use('/api/material', require('./routes/materialRoute'));
 app.use('/api/product', require('./routes/productRoute'));
 app.use('/api/season', require('./routes/seasonRoute'));
-
+app.use('/api/theme', require('./routes/themeRoute'));
 
 //Error handling
 app.use((req, res, next) => {

@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
         Collection.belongsToMany(models.Color, {through: 'color_collection'});
         Collection.belongsToMany(models.Material, {through: 'material_collection'});
         Collection.hasMany(models.Product, {as: 'products'});
+        Collection.hasOne(models.Theme);
     };
     return Collection;
 };

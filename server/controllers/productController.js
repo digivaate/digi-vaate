@@ -38,13 +38,14 @@ class ProductController extends Controller {
             res.stat(500).json(properties.error);
             return;
         }
-        //save the file path for entity
         Models.Product.findAll({ where: properties })
             .then(ents => {
+                //delete file if exist
                 if (fs.existsSync('./uploads/' + ents[0].imagePath)) {
                     fs.unlinkSync('./uploads/' + ents[0].imagePath);
                 }
                 const updatedEnts = [];
+                //remove filepath from all the products
                 ents.forEach(ent => {
                     ent.imagePath = null;
                     updatedEnts.push( ent.save() );
