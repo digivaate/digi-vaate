@@ -72,30 +72,36 @@ class ColorPage extends React.Component {
     };
     handleCreate = () => {
         const form = this.formRef.props.form;
-        console.log(form);
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-            values.hexCode = "";
-            this.colorsCollection = values;
-            this.colorsCollection.hexCode = this.hexCodeValues;
-            form.resetFields();
-            this.setState({ visible: false });
-            message.success('Successfully created',1);
-            const newColor = {
-                name: this.colorsCollection.name,
-                value: this.colorsCollection.hexCode
-            };
-            this.props.createColor(newColor);
-            axios.post(`${API_ROOT}/color`,newColor)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                });
-        });
+        if(this.hexCodeValues === ""){
+            message.error('Click OK to select color',2)
+        }
+        if(this.hexCodeValues !== ""){
+            form.validateFields((err, values) => {
+                if (err) {
+                    return;
+                }
+                values.hexCode = "";
+                this.colorsCollection = values;
+                this.colorsCollection.hexCode = this.hexCodeValues;
+                form.resetFields();
+                this.setState({ visible: false });
+                message.success('Successfully created',1);
+                const newColor = {
+                    name: this.colorsCollection.name,
+                    value: this.colorsCollection.hexCode
+                };
+                this.props.createColor(newColor);
+                axios.post(`${API_ROOT}/color`,newColor)
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                    });
+            });
+            this.hexCodeValues = "";
+        }
     };
+
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     };
