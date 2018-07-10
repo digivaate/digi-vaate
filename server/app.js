@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 //Log requests
 app.use(morgan('dev'));
 //Serve front end
-app.use(express.static(path.resolve(__dirname, '../uploads/')));
+app.use('/api', express.static(path.resolve(__dirname, '../uploads/')));
 
 //Back-end routes
 app.use('/api/collection', require('./routes/collectionRoute'));
