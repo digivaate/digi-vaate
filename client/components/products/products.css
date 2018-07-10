@@ -20,7 +20,7 @@
 
 .product-card-information{
     width: 600px;
-    height: 500px;
+    height: 540px;
 }
 
 .edit-btn{
@@ -31,6 +31,41 @@
     padding-left: 4px;
 }
 
+.img-container{
+    border:1px solid #e8e8e8;
+    width: 376px;
+    height:390px;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.upload-btn-wrapper:hover{
+    cursor: pointer;
+}
+
+.btn-upload {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
 
 /* products-display.js */
 .product-card-wrapper{

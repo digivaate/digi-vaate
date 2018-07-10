@@ -113,7 +113,7 @@ class ProductsDisplay extends Component{
                             hoverable
                             bodyStyle={{height:130}}
                             className="product-card-display"
-                            cover={<img alt="example" className="product-img" src={`http://localhost:8080/${product.imgPath}`} />}
+                            cover={<img alt="example" className="product-img" src={`${API_ROOT}/${product.imgPath}`} />}
                             actions={[
                                 <div onClick = {() => this.handleSelect(product.name)}>
                                     <Icon type="edit" />

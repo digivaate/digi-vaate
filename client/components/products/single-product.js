@@ -217,10 +217,12 @@ class SingleProduct extends Component{
             .then(() => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
+                        console.log(response.data[0].imagePath);
                         this.setState({
                             productImg: response.data[0].imagePath
-                        })
+                        });
                     });
+                window.location.reload();
             })
     }
 
@@ -275,13 +277,12 @@ class SingleProduct extends Component{
             return(
                 <div>
                     <Row type="flex">
-                        <h1>{this.state.loadedProduct.name}</h1>
+                        <h1>{this.state.loadedProduct.name}&nbsp;</h1>
                         <Button className="edit-btn"
                                 onClick={this.showNameModal}
                         >
                             <Icon type="edit"/>
                         </Button>
-                        <input type="file" name="file" onChange={this.onFileChange}/>
                         <Modal
                             title="Edit name"
                             visible={this.state.nameVisible}
@@ -299,7 +300,13 @@ class SingleProduct extends Component{
                     </Row>
                     <Row>
                         <Col span={8}>
-                            <img alt="example" height="350" width="376" src={`http://localhost:8080/${this.state.productImg}`} />
+                            <div className="img-container">
+                                <div className="upload-btn-wrapper">
+                                    <input type="file" name="file" onChange={this.onFileChange}/>
+                                    <button className="btn-upload"><Icon type="upload"/></button>
+                                </div>
+                                <img alt="example" height="300" width="370" src={`${API_ROOT}/${this.state.productImg}`} />
+                            </div>
                             <Card className="product-description">
                                 <p>Some description of product</p>
                             </Card>
