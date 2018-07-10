@@ -1,6 +1,6 @@
 import Models from '../models/models';
 import Controller from './Controller';
-import multer from '../multer';
+import fs from 'fs';
 
 class ProductController extends Controller {
     constructor() { super(Models.Product); }
@@ -11,7 +11,6 @@ class ProductController extends Controller {
 
     //saves the file path to entity that is saved to the server in the previous function
     uploadImage(req, res, next) {
-        console.log(req.query);
         const properties = Controller.collectProperties(req.query, Models.Product);
         if (properties.error) {
             res.stat(500).json(properties.error);
@@ -29,6 +28,30 @@ class ProductController extends Controller {
                 Promise.all(updatedEnts)
                     .then(resolved => {
                         res.send(resolved);
+                    });
+            });
+    }
+
+    deleteImage(req, res, next) {
+        const properties = Controller.collectProperties(req.query, Models.Product);
+        if (properties.error) {
+            res.stat(500).json(properties.error);
+            return;
+        }
+        //save the file path for entity
+        Models.Product.findAll({ where: properties })
+            .then(ents => {
+                if (fs.existsSync('./uploads/' + ents[0].imagePath)) {
+                    fs.unlinkSync('./uploads/' + ents[0].imagePath);
+                }
+                const updatedEnts = [];
+                ents.forEach(ent => {
+                    ent.imagePath = null;
+                    updatedEnts.push( ent.save() );
+                });
+                Promise.all(updatedEnts)
+                    .then(resolved => {
+                        next();
                     });
             });
     }
