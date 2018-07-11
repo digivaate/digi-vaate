@@ -4,6 +4,7 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        imagePath: DataTypes.STRING,
         consumption: DataTypes.FLOAT,
         unitPrice: DataTypes.FLOAT,
         freight: DataTypes.FLOAT,
