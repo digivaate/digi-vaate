@@ -42,6 +42,19 @@ function createEntities() {
             composition: 'composition description'
         }).then(res => materials.push(res)),
 
+        Models.Material.create({
+            name: 'wool',
+            consumption: 4,
+            unitPrice: 2,
+            freight: 1,
+            weight: 100,
+            width: 0.8,
+            minQuality: 3,
+            instructions: 'instructions',
+            manufacturer: 'manufacturer name',
+            composition: 'composition description'
+        }).then(res => materials.push(res)),
+
         Models.Product.create({
             name: 'Jacket',
             coverPercent: 30.5,
@@ -92,9 +105,10 @@ function addRelations() {
     promises = [
         products[0].setColors([1,2]),
         products[0].setMaterials(1),
-        products[0].updateAttributes({ collectionId: 1 }),
+        products[1].addMaterial(1),
         collections[0].updateAttributes({ seasonId: 1}),
         collections[0].setTheme(1),
+        collections[0].addProduct(products[0]),
         seasons[0].updateAttributes({ companyId: 1}),
         seasons[0].addProduct(products[1]),
         companies[0].addProduct(products[2])
