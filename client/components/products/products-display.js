@@ -28,12 +28,12 @@ class ProductsDisplay extends Component{
                 this.products = this.collections[0].products;
                 for(let i=0 ; i < this.products.length; i++){
                     axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-                        .then(response =>{
+                        .then(response => {
                             this.products[i].colors = response.data[0].colors;
                             this.products[i].materials = response.data[0].materials;
                             this.products[i].imgPath = response.data[0].imagePath;
-                            }
-                        )
+
+                        })
                         .then(()=>this.setState({isColorFetched:true}));
                 }
             })
@@ -69,6 +69,7 @@ class ProductsDisplay extends Component{
         let renderProductColors = null;
         let renderProductMaterials = null;
         let singleProduct = null;
+        let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif"
         if (this.state.isSelected) {
             singleProduct = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.productName
@@ -76,6 +77,9 @@ class ProductsDisplay extends Component{
         }
         if (this.products) {
             renderProductList = this.products.map(product =>{
+                if(product.imgPath !== null){
+                    imgUrl = `${API_ROOT}/${product.imgPath}`
+                }
                     if(product.colors) {
                         if(product.colors.length > 0){
                             renderProductColors = product.colors.map(color =>
@@ -114,7 +118,7 @@ class ProductsDisplay extends Component{
                             hoverable
                             bodyStyle={{height:130}}
                             className="product-card-display"
-                            cover={<img alt="example" className="product-img" src={`${API_ROOT}/${product.imgPath}`} />}
+                            cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
                             actions={[
                                 <div onClick = {() => this.handleSelect(product.name)}>
                                     <Icon type="edit" />

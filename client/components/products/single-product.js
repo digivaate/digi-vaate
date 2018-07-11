@@ -41,7 +41,6 @@ class SingleProduct extends Component{
     }
 
     loadProduct(){
-        console.log(this.props);
         if(this.props.match.params.productId){
             if ( !this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId) ) {
                 axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
@@ -80,8 +79,6 @@ class SingleProduct extends Component{
             }
         }
         this.updatedColors = value;
-        console.log("---");
-        console.log(this.updatedColors);
     }
 
     showColorModal = (e) => {
@@ -227,12 +224,16 @@ class SingleProduct extends Component{
 
     render(){
         if(this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions){
+            let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif"
             let renderColorOptions = [];
             let renderDefaultColors = [];
             let renderProductColors = <p>This product does not have any colors yet</p>;
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             let renderMaterialOptions = [];
             let renderDefaultMaterials = [];
+            if(this.state.productImg !== null){
+                imgUrl = `${API_ROOT}/${this.state.productImg}`
+            }
             if(this.state.materialOptions.length > 0){
                 renderMaterialOptions = this.state.materialOptions.map(material =>
                     <Option key={material.name}>
@@ -304,7 +305,7 @@ class SingleProduct extends Component{
                                     <input type="file" name="file" onChange={this.onFileChange}/>
                                     <button className="btn-upload"><Icon type="upload"/></button>
                                 </div>
-                                <img alt="example" height="300" width="370" src={`${API_ROOT}/${this.state.productImg}`} />
+                                <img alt="example" height="300" width="370" src={`${imgUrl}`} />
                             </div>
                             <Card className="product-description">
                                 <p>Some description of product</p>

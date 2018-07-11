@@ -1,3 +1,10 @@
+/*single-material.js */
+.img-container{
+    border:1px solid #e8e8e8;
+    width: 376px;
+    height:390px;
+}
+
 .upload-btn-wrapper {
     position: relative;
     overflow: hidden;
@@ -28,31 +35,15 @@
     opacity: 0;
 }
 
-.btn {
-    position: absolute;
-    top: 0;
-    left: 98%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #555;
-    color: white;
-    font-size: 10px;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 50px;
-    text-align: center;
-    display:none
+/*material-list.js*/
+.material-card-wrapper{
+    height:360px;
 }
 
-div.show-image:hover .btn{
-    display:block;
+.material-card-display{
+    width:265px;
 }
 
-.btn:hover {
-    background-color: black;
-}
-
-div.show-image:hover img{
-    opacity:0.8;
+.material-img{
+    height:160px;
 }

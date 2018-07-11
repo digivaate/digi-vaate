@@ -45,15 +45,17 @@ class ThemeList extends Component{
 
     handleDelete(theme){
         axios.delete(`${API_ROOT}/theme/${this.state.themeId}/image/${theme}`)
-        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
-            .then(response => {
-                this.theme = response.data[0].theme;
-            })
-            .then(() => this.setState({
-                themeImg: this.theme.imagePaths,
-                themeName:this.theme.name,
-                themeId: this.theme.id
-            }))
+        setTimeout(() => {
+            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+                .then(response => {
+                    this.theme = response.data[0].theme;
+                })
+                .then(() => this.setState({
+                    themeImg: this.theme.imagePaths,
+                    themeName:this.theme.name,
+                    themeId: this.theme.id
+                }))
+        },100)
     }
 
 

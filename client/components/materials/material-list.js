@@ -35,6 +35,7 @@ class MaterialList extends Component{
     render() {
         let renderMaterialList = null;
         let singleMaterial= null;
+        let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
         if (this.state.isSelected) {
             singleMaterial = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.materialName
@@ -42,12 +43,17 @@ class MaterialList extends Component{
         }
         if (this.materials) {
             renderMaterialList = this.materials.map(material =>{
+                if(material.imagePath !== null){
+                    imgUrl = `${API_ROOT}/${material.imagePath}`
+                }
                     return(
                         <Col span={6} key={material.id}>
-                            <div style={{height: 290}}>
+                            <div className="material-card-wrapper">
                                 <Card
                                     hoverable
-                                    cover={<img alt="example" src="https://4.imimg.com/data4/TE/WS/ANDROID-25878983/product-500x500.jpeg" />}
+                                    bodyStyle={{height:90}}
+                                    className="material-card-display"
+                                    cover={<img alt="example" className="material-img" src={`${imgUrl}`} />}
                                     actions={[
                                         <div onClick = {() => this.handleSelect(material.name)}>
                                             <Icon type="edit" />

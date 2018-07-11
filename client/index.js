@@ -15,6 +15,7 @@ import CollectionSideBar from './components/layout/collection-side-bar'
 import SingleSeason from './components/seasons/single-season'
 import SingleCollection from './components/collections/single_collection'
 import ThemeList from './components/themes/theme-list'
+import SingleMaterial from './components/materials/single-material'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
@@ -44,6 +45,8 @@ class App extends React.Component {
                             <Route path="/:seasonId/:collectionId/products" exact component={ProductsDisplay} />
                             <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
                             <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
+                            <Route path="/:seasonId/:collectionId/materials/:materialId" exact component={SingleMaterial} />
+
                         </Switch>
                         </div>
                     </div>
