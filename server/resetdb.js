@@ -50,6 +50,22 @@ function createEntities() {
             subcCostTotal: 20
         }).then(res => products.push(res)),
 
+        Models.Product.create({
+            name: 'T-shirt',
+            coverPercent: 20.5,
+            resellerProfitPercent: 20.5,
+            taxPercent: 20,
+            subcCostTotal: 10
+        }).then(res => products.push(res)),
+
+        Models.Product.create({
+            name: 'Hoodie',
+            coverPercent: 10.5,
+            resellerProfitPercent: 50.5,
+            taxPercent: 24,
+            subcCostTotal: 30
+        }).then(res => products.push(res)),
+
         Models.Company.create({
             name: 'Lumi',
             taxPercent: 24
@@ -80,6 +96,8 @@ function addRelations() {
         collections[0].updateAttributes({ seasonId: 1}),
         collections[0].setTheme(1),
         seasons[0].updateAttributes({ companyId: 1}),
+        seasons[0].addProduct(products[1]),
+        companies[0].addProduct(products[2])
     ];
     return Promise.all(promises);
 }

@@ -12,27 +12,38 @@ class CompanyController extends Controller {
         }
         models.Company.findOne({
             where: properties,
-            include: [{
+            include: [{all: true},
+                {
                 model: models.Season,
                 as: 'seasons',
-                include: [{
-                    model: models.Collection,
-                    as: 'collections',
-                    include: [{
+                include: [
+                    {
                         model: models.Product,
                         as: 'products'
-                    }]
+                    },{
+                        model: models.Collection,
+                        as: 'collections',
+                        include: [{
+                            model: models.Product,
+                            as: 'products'
+                        }]
                 }]
             }]
         })
             .then(comp => {
                 const products = [];
                 comp.seasons.forEach(season => {
+                    season.products.forEach(prod => {
+                        products.push(prod);
+                    });
                     season.collections.forEach(collection => {
                         collection.products.forEach(product => {
                             products.push(product);
                         });
                     });
+                });
+                comp.products.forEach(prod => {
+                    products.push(prod);
                 });
                 res.send(products);
             })

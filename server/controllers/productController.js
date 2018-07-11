@@ -9,6 +9,20 @@ class ProductController extends Controller {
         if (jsonBody.materials) { entity.setMaterials(jsonBody.materials); }
     }
 
+    clearOtherRelations(req, res, next) {
+        if (req.body.companyId) {
+            req.body.seasonId = null;
+            req.body.collectionId = null;
+        } else if (req.body.seasonId) {
+            req.body.companyId = null;
+            req.body.collectionId = null;
+        } else if (req.body.collectionId) {
+            req.body.seasonId = null;
+            req.body.companyId = null;
+        }
+        next();
+    }
+
     //saves the file path to entity that is saved to the server in the previous function
     uploadImage(req, res, next) {
         const properties = Controller.collectProperties(req.query, Models.Product);
@@ -45,7 +59,7 @@ class ProductController extends Controller {
                     fs.unlinkSync('./uploads/' + ents[0].imagePath);
                 }
                 const updatedEnts = [];
-                //remove filepath from all the products
+                //remove file path from all the products
                 ents.forEach(ent => {
                     ent.imagePath = null;
                     updatedEnts.push( ent.save() );

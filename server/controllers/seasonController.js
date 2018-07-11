@@ -13,7 +13,8 @@ class SeasonController extends Controller {
         }
         models.Season.findOne({
             where: properties,
-            include: [{
+            include: [{all: true},
+                {
                 model: models.Collection,
                 as: 'collections',
                 include: [{
@@ -28,6 +29,9 @@ class SeasonController extends Controller {
                     collection.products.forEach(prod => {
                         products.push(prod);
                     });
+                });
+                season.products.forEach(prod => {
+                    products.push(prod);
                 });
                 res.send(products);
             })
