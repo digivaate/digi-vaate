@@ -13,8 +13,10 @@ class ThemeController extends Controller {
                 if (ent.imagePaths === null) {
                     ent.imagePaths = [req.file.filename];
                 } else {
-                    let newArr = ent.imagePaths.concat(req.file.filename);
-                    ent.set('imagePaths', newArr);
+                    //arrays have to be set to persist them
+                    ent.imagePaths.push(req.file.filename);
+                    ent.set('imagePaths', ent.imagePaths);
+                    console.log(ent);
                 }
                 return ent.save();
             })
@@ -36,7 +38,9 @@ class ThemeController extends Controller {
                     }
                     const index = ent.imagePaths.indexOf(req.params.imageName);
                     if (index > -1) {
+                        //arrays have to be set to persist them
                         ent.imagePaths.splice(index, 1);
+                        ent.set('imagePaths', ent.imagePaths);
                     }
                 }
                 return ent.save();
