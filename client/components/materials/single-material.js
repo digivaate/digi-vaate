@@ -5,13 +5,21 @@ import { API_ROOT } from '../../api-config';
 import './materials.css'
 import FormData from 'form-data';
 const Option = Select.Option;
-
+const { TextArea } = Input;
 class SingleMaterial extends Component{
     constructor(props){
         super(props);
         this.state ={
             key: 'tab1',
             loadedMaterial:null,
+            name:'',
+            freight:0,
+            consumption:0,
+            minQuality:0,
+            unitPrice:0,
+            manufacturer:'',
+            instructions:'',
+            composition:''
         }
     }
 
@@ -20,7 +28,15 @@ class SingleMaterial extends Component{
         axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
             .then(response => {
                 this.setState({
-                    loadedMaterial: response.data[0]
+                    loadedMaterial: response.data[0],
+                    name: response.data[0].name,
+                    freight: response.data[0].freight,
+                    consumption:response.data[0].consumption,
+                    minQuality:response.data[0].minQuality,
+                    unitPrice:response.data[0].unitPrice,
+                    manufacturer:response.data[0].manufacturer,
+                    instructions:response.data[0].instructions,
+                    composition:response.data[0].composition
                 })
             })
     }
@@ -33,7 +49,6 @@ class SingleMaterial extends Component{
             .then(() => {
                 axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
                     .then(response => {
-                        console.log(response.data[0].imagePath);
                         this.setState({
                             loadedMaterial: response.data[0]
                         });
@@ -42,17 +57,93 @@ class SingleMaterial extends Component{
     };
 
     onTabChange = (key, type) => {
-        console.log(key, type);
         this.setState({ [type]: key });
     };
 
     handleEdit = () => {
-        console.log('Click');
+        this.setState({ visible: true })
+    };
+
+    handleCancel = (e) =>{
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleOk = () =>{
+        const materialChanges = {
+            freight: this.state.freight,
+            consumption:this.state.consumption,
+            minQuality:this.state.minQuality,
+            unitPrice:this.state.unitPrice,
+            manufacturer:this.state.manufacturer,
+            instructions:this.state.instructions,
+            composition:this.state.composition
+        };
+        axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,materialChanges)
+            .then(res => {
+                axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
+                    .then(response => {
+                        message.success("Material updated!",1);
+                        this.setState({
+                            loadedMaterial: response.data[0],
+                            name:response.data[0].name,
+                            freight: response.data[0].freight,
+                            consumption:response.data[0].consumption,
+                            minQuality:response.data[0].minQuality,
+                            unitPrice:response.data[0].unitPrice,
+                            manufacturer:response.data[0].manufacturer,
+                            instructions:response.data[0].instructions,
+                            composition:response.data[0].composition,
+                            visible:false
+                        });
+                    });
+            })
+    };
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
+    //Edit material name
+    showNameModal = (e) => {
+        this.setState({
+            nameVisible:true
+        })
+    };
+
+    handleNameCancel = (e) =>{
+        this.setState({
+            nameVisible: false,
+        });
+    };
+
+    handleNameOk = () =>{
+        axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,{name:this.state.name})
+            .then(res => {
+                axios.get(`${API_ROOT}/material?name=${this.state.name}`)
+                    .then(response => {
+                        this.setState({
+                            loadedMaterial: response.data[0],
+                            name:response.data[0].name,
+                            freight: response.data[0].freight,
+                            consumption:response.data[0].consumption,
+                            minQuality:response.data[0].minQuality,
+                            unitPrice:response.data[0].unitPrice,
+                            manufacturer:response.data[0].manufacturer,
+                            instructions:response.data[0].instructions,
+                            composition:response.data[0].composition,
+                            visible:false
+                        });
+                        window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/materials/${this.state.name}`                    });
+            })
     };
 
     render(){
         if(this.state.loadedMaterial){
-            let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif"
+            let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
             const tabList = [{
                 key: 'tab1',
                 tab: 'Price',
@@ -82,10 +173,30 @@ class SingleMaterial extends Component{
             if(this.state.loadedMaterial.imagePath !== null){
                 imgUrl = `${API_ROOT}/${this.state.loadedMaterial.imagePath}`;
             }
-            console.log(this.state.loadedMaterial);
             return (
                 <div>
-                    <h1>{this.state.loadedMaterial.name}</h1>
+                    <Row type="flex">
+                        <h1>{this.state.loadedMaterial.name}&nbsp;</h1>
+                        <Button className="edit-btn"
+                                onClick={this.showNameModal}
+                        >
+                            <Icon type="edit"/>
+                        </Button>
+                        <Modal
+                            title="Edit name"
+                            visible={this.state.nameVisible}
+                            onOk={this.handleNameOk}
+                            onCancel={this.handleNameCancel}
+                            bodyStyle={{maxHeight:300,overflow:'auto'}}
+                        >
+                            <Input
+                                placeholder="Material name"
+                                name = "name"
+                                value={this.state.name}
+                                onChange={this.handleChange}
+                            />
+                        </Modal>
+                    </Row>
                     <Row>
                         <Col span={8}>
                             <div className="img-container">
@@ -105,6 +216,84 @@ class SingleMaterial extends Component{
                                 defaultActiveTabKey = "tab1"
                                 onTabChange={(key) => { this.onTabChange(key, 'key'); }}
                             >
+                                <Modal
+                                    visible={this.state.visible}
+                                    title="Edit material"
+                                    okText="Update"
+                                    onCancel={this.handleCancel}
+                                    onOk={this.handleOk}
+                                >
+                                    <Row>
+                                        <Col span={12}>
+                                            Freight:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.freight}
+                                                name="freight"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                        <Col span={12}>
+                                            Consumption:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.consumption}
+                                                name="consumption"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                    </Row>
+                                    <br/>
+                                    <Row>
+                                        <Col span={12}>
+                                            Min Quality:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.minQuality}
+                                                name="minQuality"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                        <Col span={12}>
+                                            Unit Price:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.unitPrice}
+                                                name="unitPrice"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                    </Row>
+                                    <br/>
+                                    <Row>
+                                        Manufacturer:
+                                        <Input
+                                            value={this.state.manufacturer}
+                                            name="manufacturer"
+                                            onChange={this.handleChange}
+                                        />
+                                    </Row>
+                                    <br/>
+                                    <Row>
+                                        Instruction:
+                                        <TextArea
+                                            value={this.state.instructions}
+                                            name="instructions"
+                                            onChange={this.handleChange}
+                                            row={4}
+                                        />
+                                    </Row>
+                                    <br/>
+                                    <Row>
+                                        Composition:
+                                        <TextArea
+                                            value={this.state.composition}
+                                            name="composition"
+                                            onChange={this.handleChange}
+                                            row={4}
+                                        />
+                                    </Row>
+                                </Modal>
                                 {contentList[this.state.key]}
                             </Card>
                         </Col>

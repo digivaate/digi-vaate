@@ -35,6 +35,14 @@
     opacity: 0;
 }
 
+.edit-btn{
+    width: 40px;
+    height: 40px;
+    border-style: dotted;
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
 /*material-list.js*/
 .material-card-wrapper{
     height:360px;

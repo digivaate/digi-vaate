@@ -69,7 +69,6 @@ class ProductsDisplay extends Component{
         let renderProductColors = null;
         let renderProductMaterials = null;
         let singleProduct = null;
-        let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif"
         if (this.state.isSelected) {
             singleProduct = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.productName
@@ -77,6 +76,7 @@ class ProductsDisplay extends Component{
         }
         if (this.products) {
             renderProductList = this.products.map(product =>{
+                let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imgPath !== null){
                     imgUrl = `${API_ROOT}/${product.imgPath}`
                 }
