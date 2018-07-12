@@ -25,7 +25,8 @@ class CompanyController extends Controller {
                         as: 'collections',
                         include: [{
                             model: models.Product,
-                            as: 'products'
+                            as: 'products',
+                            include: [{all: true}]
                         }]
                 }]
             }]

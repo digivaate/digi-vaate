@@ -30,6 +30,29 @@ class CollectionController extends Controller {
                 res.status(500).json(err);
             });
     }
+
+    getAllProducts(req, res, next) {
+        const properties = Controller.collectProperties(req.query, Models.Collection);
+        if (properties.error) {
+            res.status(500).json(properties);
+            return;
+        }
+        Models.Collection.findOne({
+            where: properties,
+            include: [{
+                model: Models.Product,
+                as: 'products',
+                include: [{all: true}]
+            }]
+        })
+            .then(ent => {
+                res.send(ent.products);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
+    }
 }
 
 export default new CollectionController();

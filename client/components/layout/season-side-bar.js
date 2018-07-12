@@ -21,11 +21,10 @@ class SeasonSideBar extends Component{
     componentDidMount() {
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
-                console.log(response);
                 this.collections = response.data[0].collections;
             })
             .then(()=>this.setState({}))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     render(){

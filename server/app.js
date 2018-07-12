@@ -33,11 +33,11 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res) => {
-   res.json({
-       error: {
-           message: error.message
-       }
-   });
+    res.json({
+        error: {
+            message: error.message
+        }
+    });
 });
 
 module.exports = app;

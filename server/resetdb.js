@@ -90,7 +90,7 @@ function createEntities() {
         }).then(res => seasons.push(res)),
 
         Models.Collection.create({
-            name: 'winter sports'
+            name: 'sports'
         }).then(res => collections.push(res)),
 
         Models.Theme.create({

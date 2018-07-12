@@ -6,6 +6,7 @@ import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
 const confirm = Modal.confirm;
 import "./products.css"
+import SingleProduct from "./single-product";
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -22,8 +23,10 @@ class ProductsDisplay extends Component{
     collections = [];
     products = [];
     componentDidMount() {
+        /*
         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
+                console.log(response);
                 this.collections = response.data;
                 this.products = this.collections[0].products;
                 for(let i=0 ; i < this.products.length; i++){
@@ -38,7 +41,15 @@ class ProductsDisplay extends Component{
                 }
             })
             .then(() => this.setState({isFetched: true}))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
+        */
+
+        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+            .then(res => {
+                console.log(res.data);
+                this.products = res.data;
+                this.setState({isFetched: true});
+            });
     }
 
     handleSelect(productName){
@@ -70,15 +81,18 @@ class ProductsDisplay extends Component{
         let renderProductMaterials = null;
         let singleProduct = null;
         if (this.state.isSelected) {
+            /*
             singleProduct = <Redirect to={{
                 pathname: this.props.match.url + "/" + this.state.productName
             }}/>
+            */
+            return <SingleProduct productId={this.state.productName}/>
         }
         if (this.products) {
             renderProductList = this.products.map(product =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
-                if(product.imgPath !== null){
-                    imgUrl = `${API_ROOT}/${product.imgPath}`
+                if(product.imagePath !== null){
+                    imgUrl = `${API_ROOT}/${product.imagePath}`
                 }
                     if(product.colors) {
                         if(product.colors.length > 0){

@@ -19,6 +19,7 @@ import SingleMaterial from './components/materials/single-material'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
+import ProductCard from "./components/products/product-card";
 
 
 
@@ -37,16 +38,31 @@ class App extends React.Component {
                         <div>
                         <BackTop />
                         <Switch>
-                            <Route path="/:seasonId" exact component={SingleSeason} />
+                            <Route path='/' exact render={(props) =>
+                                <ProductsDisplay
+                                    {...props}
+                                    requestPath={`/company/products?name=Lumi`}
+                                />}
+                            />
+                            <Route path="/:seasonId" exact component={(props) =>
+                                <ProductsDisplay
+                                    {...props}
+                                    requestPath={`/season/products?name=${props.match.params.seasonId}`}
+                                />}
+                            />
                             <Route path="/:seasonId/:collectionId" exact component={SingleCollection} />
                             <Route path="/:seasonId/:collectionId/budget" exact component={BudgetPlanningTable} />
                             <Route path="/:seasonId/:collectionId/colors" exact component={ColorIndexPage} />
                             <Route path="/:seasonId/:collectionId/materials" exact component={MaterialList} />
-                            <Route path="/:seasonId/:collectionId/products" exact component={ProductsDisplay} />
+                            <Route path="/:seasonId/:collectionId/products" exact render={(props) =>
+                                <ProductsDisplay
+                                    {...props}
+                                    requestPath={`/collection/products?name=${props.match.params.collectionId}`}
+                                />}
+                            />
                             <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
                             <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
                             <Route path="/:seasonId/:collectionId/materials/:materialId" exact component={SingleMaterial} />
-
                         </Switch>
                         </div>
                     </div>
