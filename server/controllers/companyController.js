@@ -52,7 +52,7 @@ class CompanyController extends Controller {
                 comp.products.forEach(prod => {
                     products.push(prod);
                 });
-                res.send(comp);
+                res.send(products);
             })
             .catch(err => {
                 console.error(err);
