@@ -13,14 +13,19 @@ class SeasonController extends Controller {
         }
         models.Season.findOne({
             where: properties,
-            include: [{all: true},
+            include: [
                 {
-                model: models.Collection,
-                as: 'collections',
-                include: [{
                     model: models.Product,
                     as: 'products',
                     include: [{all: true}]
+                },
+                {
+                    model: models.Collection,
+                    as: 'collections',
+                    include: [{
+                        model: models.Product,
+                        as: 'products',
+                        include: [{all: true}]
                 }]
             }]
         })
