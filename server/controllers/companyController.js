@@ -12,14 +12,20 @@ class CompanyController extends Controller {
         }
         models.Company.findOne({
             where: properties,
-            include: [{all: true},
+            include: [
+                {
+                    model: models.Product,
+                    as: 'products',
+                    include: [{all: true}]
+                },
                 {
                 model: models.Season,
                 as: 'seasons',
                 include: [
                     {
                         model: models.Product,
-                        as: 'products'
+                        as: 'products',
+                        include: [{all: true}]
                     },{
                         model: models.Collection,
                         as: 'collections',
@@ -46,7 +52,7 @@ class CompanyController extends Controller {
                 comp.products.forEach(prod => {
                     products.push(prod);
                 });
-                res.send(products);
+                res.send(comp);
             })
             .catch(err => {
                 console.error(err);
