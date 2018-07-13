@@ -94,7 +94,7 @@ class SingleProduct extends Component {
         }
 
         if (this.updatedColors.length <= 8) {
-            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors})
+            axios.patch(`${API_ROOT}/product?name=${this.props.productId}`, {colors: this.updatedColors})
                 .then(() => this.setState(prevState => prevState))
                 .then(() => this.setState({colorVisible: false}))
                 .then(() => {
@@ -153,7 +153,7 @@ class SingleProduct extends Component {
     }
 
     handleMaterialOk() {
-        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials})
+        axios.patch(`${API_ROOT}/product?name=${this.props.productId}`, {materials: this.updatedMaterials})
             .then(() => this.setState(prevState => prevState))
             .then(() => this.setState({materialVisible: false}))
             .then(response => {
@@ -200,7 +200,7 @@ class SingleProduct extends Component {
                             productName: response.data[0].name,
                             nameVisible: false
                         });
-                        window.location.href = `http://localhost:3000/${this.props.seasonId}/${this.props.collectionId}/products/${this.state.productName}`;
+                        //window.location.href = `http://localhost:3000/${this.props.seasonId}/${this.props.collectionId}/products/${this.state.productName}`;
                         //this.props.history.replace(`${this.state.productName}`)
                     })
             })

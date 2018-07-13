@@ -44,7 +44,7 @@ class App extends React.Component {
                                     requestPath={`/company/products?name=Lumi`}
                                 />}
                             />
-                            <Route path="/:seasonId" exact component={(props) =>
+                            <Route path="/:seasonId" exact render={(props) =>
                                 <ProductsDisplay
                                     {...props}
                                     requestPath={`/season/products?name=${props.match.params.seasonId}`}
@@ -61,7 +61,9 @@ class App extends React.Component {
                                 />}
                             />
                             <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
+                            /*
                             <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
+                             */
                             <Route path="/:seasonId/:collectionId/materials/:materialId" exact component={SingleMaterial} />
                         </Switch>
                         </div>
