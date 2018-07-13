@@ -36,15 +36,53 @@ class SingleProduct extends Component {
     updatedMaterials = [];
 
     componentDidMount() {
+        console.log("Binggo");
+        console.log(this.props);
         this.loadProduct();
         this.loadColors();
         this.loadMaterials();
     }
 
     loadProduct() {
-        if (this.props.productId) {
+        if (this.props.match.params) {
+            const { location } = this.props;
+            const pathSnippets = location.pathname.split('/').filter(i => i);
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${this.props.productId}`)
+                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
+                    .then(response => {
+                        console.log(response);
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productImg: response.data[0].imagePath,
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                            productName: response.data[0].name
+                        });
+                    })
+                    .then(() => this.updatedColors = this.state.productColors)
+            }
+        }
+        else if (this.props.match.params.seasonId) {
+            const { location } = this.props;
+            const pathSnippets = location.pathname.split('/').filter(i => i);
+            if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
+                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
+                    .then(response => {
+                        console.log(response);
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productImg: response.data[0].imagePath,
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                            productName: response.data[0].name
+                        });
+                    })
+                    .then(() => this.updatedColors = this.state.productColors)
+            }
+        }
+        else if(this.props.match.params.productId){
+            if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
+                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
@@ -94,7 +132,7 @@ class SingleProduct extends Component {
         }
 
         if (this.updatedColors.length <= 8) {
-            axios.patch(`${API_ROOT}/product?name=${this.props.productId}`, {colors: this.updatedColors})
+            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors})
                 .then(() => this.setState(prevState => prevState))
                 .then(() => this.setState({colorVisible: false}))
                 .then(() => {
@@ -153,7 +191,7 @@ class SingleProduct extends Component {
     }
 
     handleMaterialOk() {
-        axios.patch(`${API_ROOT}/product?name=${this.props.productId}`, {materials: this.updatedMaterials})
+        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials})
             .then(() => this.setState(prevState => prevState))
             .then(() => this.setState({materialVisible: false}))
             .then(response => {
@@ -189,7 +227,7 @@ class SingleProduct extends Component {
     }
 
     handleNameOk() {
-        axios.patch(`${API_ROOT}/product?name=${this.props.productId}`, {name: this.state.productName})
+        axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {name: this.state.productName})
             .then(response => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {

@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { Card, Row, Col,Icon,Modal,Divider } from 'antd';
-import {Redirect} from 'react-router-dom'
+import {Redirect,Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
@@ -81,12 +81,11 @@ class ProductsDisplay extends Component{
         let renderProductMaterials = null;
         let singleProduct = null;
         if (this.state.isSelected) {
-            /*
+            let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
             singleProduct = <Redirect to={{
-                pathname: this.props.match.url + "/" + this.state.productName
+                pathname: url + this.state.productName
             }}/>
-            */
-            return <SingleProduct productId={this.state.productName}/>
+            //return <SingleProduct productId={this.state.productName}/>
         }
         if (this.products) {
             renderProductList = this.products.map(product =>{
