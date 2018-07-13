@@ -89,19 +89,28 @@ class BreadCrumbDigi extends Component{
                                 for (let j = 0; j < this.products.length; j++) {
                                     this.productsMap[j] = this.products[j].name;
                                     this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name;
-                                    if(this.collections[i].id === this.products[j].collectionId){
-                                        this.materials = this.products[j].materials
-                                        for(let m = 0; m< this.materials.length; m++){
-                                            this.materialsMap[m] = this.materials[m].name;
-                                            this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/materials/" + this.materialsMap[m]] = this.materials[m].name
-                                        }
-                                    }
                                 }
                             }
                         }
                     }
                 this.setState({})
             });
+        axios.get(`${API_ROOT}/material`)
+            .then(response => {
+                this.materials = response.data;
+                for(let k=0; k < this.seasons.length; k++){
+                    for(let i=0;i<this.collections.length;i++){
+                        if(this.seasons[k].id === this.collections[i].seasonId){
+                            this.collectionsMap[i] = this.collections[i].name;
+                            for (let j = 0; j < this.materials.length; j++){
+                                this.materialsMap[j] = this.materials[j].name;
+                                this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/materials/" + this.materialsMap[j]] = this.materials[j].name;
+                            }
+                        }
+                    }
+                }
+
+            })
     }
     render(){
         return(
