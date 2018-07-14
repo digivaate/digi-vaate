@@ -42,30 +42,12 @@ class SingleProduct extends Component {
     }
 
     loadProduct() {
-        if (this.props.match.params) {
+        if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
                 axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                     .then(response => {
-                        this.setState({
-                            loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
-                            productColors: response.data[0].colors,
-                            productMaterials: response.data[0].materials,
-                            productName: response.data[0].name
-                        });
-                    })
-                    .then(() => this.updatedColors = this.state.productColors)
-            }
-        }
-        else if (this.props.match.params.seasonId) {
-            const { location } = this.props;
-            const pathSnippets = location.pathname.split('/').filter(i => i);
-            if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
-                    .then(response => {
-                        console.log(response);
                         this.setState({
                             loadedProduct: response.data[0],
                             productImg: response.data[0].imagePath,
@@ -129,26 +111,7 @@ class SingleProduct extends Component {
         }
 
         if (this.updatedColors.length <= 8) {
-            if (this.props.match.params) {
-                const { location } = this.props;
-                const pathSnippets = location.pathname.split('/').filter(i => i);
-                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {colors: this.updatedColors})
-                    .then(() => this.setState(prevState => prevState))
-                    .then(() => this.setState({colorVisible: false}))
-                    .then(() => {
-                        setTimeout(() => {
-                            message.success("Colors updated!", 1);
-                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
-                                .then(response => {
-                                    console.log(response.data[0].colors);
-                                    this.setState({
-                                        productColors: response.data[0].colors
-                                    });
-                                })
-                        }, 100)
-                    })
-            }
-            else if (this.props.match.params.seasonId) {
+            if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
                 const { location } = this.props;
                 const pathSnippets = location.pathname.split('/').filter(i => i);
                 axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {colors: this.updatedColors})
@@ -228,25 +191,7 @@ class SingleProduct extends Component {
     }
 
     handleMaterialOk() {
-        if (this.props.match.params) {
-            const { location } = this.props;
-            const pathSnippets = location.pathname.split('/').filter(i => i);
-            axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {materials: this.updatedMaterials})
-                .then(() => this.setState(prevState => prevState))
-                .then(() => this.setState({materialVisible: false}))
-                .then(response => {
-                    setTimeout(() => {
-                        message.success("Materials updated!", 1);
-                        axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
-                            .then(response => {
-                                this.setState({
-                                    productMaterials: response.data[0].materials,
-                                });
-                            })
-                    }, 100)
-                })
-        }
-        else if (this.props.match.params.seasonId) {
+        if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
             axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {materials: this.updatedMaterials})
@@ -302,7 +247,7 @@ class SingleProduct extends Component {
     }
 
     handleNameOk() {
-        if (this.props.match.params) {
+        if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
             console.log(pathSnippets[pathSnippets.length-1]);
@@ -311,25 +256,6 @@ class SingleProduct extends Component {
                     axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                         .then(response => {
                             console.log(response.data);
-                            this.setState({
-                                loadedProduct: response.data[0],
-                                productColors: response.data[0].colors,
-                                productMaterials: response.data[0].materials,
-                                productName: response.data[0].name,
-                                nameVisible: false
-                            });
-                            //window.location.href = `http://localhost:3000/${this.props.seasonId}/${this.props.collectionId}/products/${this.state.productName}`;
-                            //this.props.history.replace(`${this.state.productName}`)
-                        })
-                })
-        }
-        else if (this.props.match.params.seasonId) {
-            const { location } = this.props;
-            const pathSnippets = location.pathname.split('/').filter(i => i);
-            axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {name: this.state.productName})
-                .then(response => {
-                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
-                        .then(response => {
                             this.setState({
                                 loadedProduct: response.data[0],
                                 productColors: response.data[0].colors,
@@ -538,7 +464,5 @@ class SingleProduct extends Component {
 
     }
 }
-
-
 export default SingleProduct;
 
