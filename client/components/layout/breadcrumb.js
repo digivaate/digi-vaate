@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import { API_ROOT } from '../../api-config';
-import { HashRouter as Router, Route, Switch, Link, withRouter } from 'react-router-dom';
-import { Breadcrumb, Alert } from 'antd';
+import { HashRouter as Router, Link, withRouter } from 'react-router-dom';
+import { Breadcrumb } from 'antd';
 import axios from 'axios';
 import "./layout.css"
 
@@ -36,6 +36,8 @@ class BreadCrumbDigi extends Component{
     }
     seasons = [];
     seasonsMap = [];
+    seasonProducts = [];
+    seasonProductsMap = [];
     collections = [];
     collectionsMap = [];
     products = [];
@@ -44,25 +46,39 @@ class BreadCrumbDigi extends Component{
     materialsMap = [];
     companies = [];
     companiesMap = [];
+    companiesProduct = [];
+    companiesProductsMap = [];
     breadcrumbNameMap = {};
 
     componentDidMount(){
+        //Breadcrumbs for all company stuffs
         axios.get(`${API_ROOT}/company`)
             .then(response => {
                 this.companies = response.data;
                 for(let i=0;i<this.companies.length;i++) {
-                    this.companiesMap = this.companies[i].name;
+                    this.companiesMap[i] = this.companies[i].name;
+                }
+                for(let j=0; j<this.companiesMap.length; j++){
+                    axios.get(`${API_ROOT}/company/products?name=${this.companiesMap[j]}`)
+                        .then(response => {
+                            this.companiesProduct = response.data;
+                            for(let m = 0 ; m<this.companiesProduct.length; m++){
+                                this.companiesProductsMap[m] = this.companiesProduct[m].name;
+                                this.breadcrumbNameMap["/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
+                            }
+                        })
                 }
                 this.setState({})
             });
 
+        //Breadcrumb for all season stuffs
         axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.seasons = response.data;
                     for(let i=0;i<this.seasons.length;i++){
                         this.collections = this.seasons[i].collections;
                         this.seasonsMap[i] = this.seasons[i].name;
-                        this.breadcrumbNameMap["/"+this.seasonsMap[i]] = this.seasonsMap[i];
+                        this.breadcrumbNameMap["/"+this.seasonsMap[i]] = this.seasonsMap[i]
                         for(let j=0;j<this.collections.length;j++){
                             this.collectionsMap[j] = this.collections[j].name;
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]] = this.collectionsMap[j];
@@ -73,11 +89,23 @@ class BreadCrumbDigi extends Component{
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/themes"] = "Themes";
                         }
                     }
+                    for(let n=0; n<this.seasonsMap.length; n++){
+                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`)
+                            .then(response => {
+                                this.seasonProducts = response.data;
+                                for(let m = 0 ; m<this.seasonProducts.length; m++){
+                                    this.seasonProductsMap[m] = this.seasonProducts[m].name;
+                                    this.breadcrumbNameMap["/"+this.seasonsMap[n]+"/"+this.seasonProductsMap[m]] = this.seasonProductsMap[m];
+                                }
+                            })
+                    }
+
 
                 this.setState({})
                 }
             );
 
+        //Breadcrumb for all collection stuffs
         axios.get(`${API_ROOT}/collection`)
             .then(response => {
                 this.collections = response.data;
@@ -116,7 +144,7 @@ class BreadCrumbDigi extends Component{
         return(
             <Home
                 breadcrumbMap={this.breadcrumbNameMap}
-                companiesMap={this.companiesMap}
+                companiesMap={this.companiesMap[0]}
             />
         )
     }

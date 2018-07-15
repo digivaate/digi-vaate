@@ -49,15 +49,23 @@ class App extends React.Component {
     }
     render(){
         let productsCompanyRoute = null;
+        let productsCompanyRouteSideBar = null;
         let productsSeasonRoute = null;
+        let productsSeasonRouteSideBar = null;
         if(this.productsCompany.length > 0){
             productsCompanyRoute = this.productsCompany.map(product =>
                 <Route path={`/${product}`} exact component={SingleProduct}/>
+            );
+            productsCompanyRouteSideBar = this.productsCompany.map(product =>
+                <Route path={`/${product}`} exact component={SideBar}/>
             );
         }
         if(this.productsSeason.length > 0){
             productsSeasonRoute = this.productsSeason.map(product =>
                 <Route path={`/:seasonId/${product}`} exact component={SingleProduct}/>
+            );
+            productsSeasonRouteSideBar =  this.productsSeason.map(product =>
+                <Route path={`/:seasonId/${product}`} exact component={SeasonSideBar}/>
             );
         }
 
@@ -66,9 +74,13 @@ class App extends React.Component {
                 <div className="App">
                     <HeaderBar />
                     <div className="sider">
-                        <Route path="/" exact component={SideBar}/>
-                        <Route path="/:seasonId" exact component={SeasonSideBar} />
-                        <Route path="/:seasonId/:collectionId" component={CollectionSideBar} />
+                        <Switch>
+                            <Route path="/" exact component={SideBar}/>
+                            {productsCompanyRouteSideBar}
+                            <Route path="/:seasonId" exact component={SeasonSideBar} />
+                            {productsSeasonRouteSideBar}
+                            <Route path="/:seasonId/:collectionId" component={CollectionSideBar} />
+                        </Switch>
                     </div>
                     <div className="content">
                         <div>

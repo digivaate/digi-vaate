@@ -46,7 +46,6 @@ class ProductsDisplay extends Component{
 
         axios.get(`${API_ROOT}/${this.props.requestPath}`)
             .then(res => {
-                console.log(res.data)
                 this.products = res.data;
                 this.setState({isFetched: true});
             });
