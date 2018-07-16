@@ -30,11 +30,13 @@ class BudgetPlanningTable extends Component {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={e => {
+                    if (cellInfo.column.id === 'amount' && e.target.innerHTML !== cellInfo.original.amount) {
+                        this.updateProdAmount(cellInfo.original.productName, e.target.innerHTML);
+                    }
                     const data = [...this.state.data];
                     data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
                     console.log(cellInfo.column.id, cellInfo.index);
                     this.setState({ data });
-
                 }}
                 dangerouslySetInnerHTML={{
                     __html: this.state.data[cellInfo.index][cellInfo.column.id]
@@ -42,26 +44,17 @@ class BudgetPlanningTable extends Component {
             />
         );
     }
-/*
-    addNewRow(){
-        this.setState({
-            data: this.state.data.concat(makeData())
-        })
+
+    //Update amount of individual product to database
+    updateProdAmount(id, amount) {
+        //name is used as identifier this time
+        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.error('Unable to patch amount:' + err));
     }
 
-    removeRow(){
-        this.setState({
-            data: this.state.data.slice(0,this.state.data.length-1)
-        })
-    }
-
-    refreshTable(){
-        axios.get(`${API_ROOT}/product`)
-            .then(response => this.products = response.data)
-            .then(() => this.setState({isFetched: true,data: this.state.data }))
-            .catch(err => console.log(err));
-    }
-*/
     componentDidMount() {
         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
@@ -88,12 +81,13 @@ class BudgetPlanningTable extends Component {
                             if (element.productName === this.products[i].name) {
                                 return {
                                     unitPriceWithoutTax: this.products[i].unitPriceWithoutTax,
-                                    amountProduct: 0,
+                                    amount: 0,
                                     consumerPriceCommercial: this.products[i].commercialPrice,
                                     productName: this.products[i].name,
                                     coverPercent: this.products[i].coverPercent,
                                     coverAmount: this.products[i].coverAmount,
-                                    purchasePrice: this.products[i].purchasePrice
+                                    purchasePrice: this.products[i].purchasePrice,
+                                    amount: this.products[i].amount
                                 }
                             }
                             else {
@@ -109,92 +103,24 @@ class BudgetPlanningTable extends Component {
             .then(() => this.setState({
                 data: this.state.data.slice(0,this.state.data.length-1)
             }))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
-    /*productSelect(cellInfo){
-        if (!this.products) {
-            return "No product yet!";
-        }
-        console.log(this.products)
-        const options = this.products.map(d => <Option key={d.name} value={d.name}>{d.name}</Option>);
-        return (
-            <Select defaultValue="Choose product"
-                    onChange={(value) => {
-                        for(let i = 0; i< this.products.length; i++){
-                            let materialCost = [];
-                            for (let j = 0; j < this.products[i].materials.length; j++) {
-                                materialCost.push(parseFloat((parseFloat(this.products[i].materials[j].consumption) * parseFloat(this.products[i].materials[j].unitPrice) + parseFloat(this.products[i].materials[j].freight)).toFixed(2)));
-                            }
-                            if(this.products[i].materials.length > 0) {
-                                if(this.products[i].materials[0].consumption < 100){
-                                    materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2))
-                                }
-                            }
-
-                            this.products[i].materialCostTotal = materialCost.reduce((a,b) => a+b,0);
-
-                            //
-                            let subcCost = [];
-                            for (let j = 0; j < this.products[i].subcCosts.length; j++) {
-                                subcCost.push(parseFloat((parseFloat(this.products[i].subcCosts[j].amount)).toFixed(2)));
-                            }
-                            //
-                            this.products[i].subcCostTotal = subcCost.reduce((a,b) => a+b,0);
-
-                            this.products[i].coverAmount = parseFloat(((this.products[i].materialCostTotal + this.products[i].subcCostTotal)*(this.products[i].coverPercent/100)/(1-(this.products[i].coverPercent/100))).toFixed(2));
-                            this.products[i].purchasePrice = parseFloat((this.products[i].materialCostTotal + this.products[i].subcCostTotal).toFixed(2));
-                            this.products[i].unitPriceWithoutTax = parseFloat((this.products[i].coverAmount + this.products[i].purchasePrice).toFixed(2));
-                            console.log(this.products[0]);
-                            console.log(this.products[0].materialCostTotal);
-                            console.log(this.products[0].subcCostTotal);
-
-                            if(value === this.products[i].name){
-                                const {data} = this.state;
-                                data[cellInfo.index].styleName = value;
-                                this.setState({
-                                    data: this.state.data.map(element => {
-                                        if (element.styleName === value){
-                                            return {
-                                                unitPriceWithoutTax: this.products[i].unitPriceWithoutTax,
-                                                amountProduct: 0,
-                                                consumerPriceCommercial: this.products[i].commercialPrice,
-                                                styleName: this.products[i].name,
-                                                coverPercent : this.products[i].coverPercent,
-                                                coverAmount: this.products[i].coverAmount,
-                                                purchasePrice: this.products[i].purchasePrice
-                                            }
-                                        }
-                                        else{
-                                            return element
-                                        }
-                                    }),
-                                });
-                            }
-                        }
-
-                    }}
-                    style={{ width: 130 }}>
-                {options}
-            </Select>
-        )
-    }
-*/
     render() {
         const {data} = this.state;
 
         // First delivery sum calculation
-        const sumOfAmountProduct = function(){
+        const sumOfAmounts = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat(data[i].amountProduct));
+                componentValue.push(parseFloat(data[i].amount));
             }
             return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
         const sumOfTotalSale = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].unitPriceWithoutTax) * parseFloat(data[i].amountProduct)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].unitPriceWithoutTax) * parseFloat(data[i].amount)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
@@ -204,7 +130,7 @@ class BudgetPlanningTable extends Component {
         const sumOfCoverAmount = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountProduct) * parseFloat(data[i].coverAmount)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amount) * parseFloat(data[i].coverAmount)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
@@ -212,7 +138,7 @@ class BudgetPlanningTable extends Component {
         const sumOfPurchasePrice = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountProduct) * parseFloat(data[i].purchasePrice)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amount) * parseFloat(data[i].purchasePrice)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
         };
@@ -221,7 +147,7 @@ class BudgetPlanningTable extends Component {
         const sumOfEstimatedTotalUnit = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountProduct)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amount)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -229,7 +155,7 @@ class BudgetPlanningTable extends Component {
         const sumOfEstimatedTotalSale = function(){
             let componentValue = [];
             for (let i = 0; i < data.length; i++) {
-                componentValue.push(parseFloat((parseFloat(data[i].amountProduct)*parseFloat(data[i].unitPriceWithoutTax)).toFixed(2)));
+                componentValue.push(parseFloat((parseFloat(data[i].amount)*parseFloat(data[i].unitPriceWithoutTax)).toFixed(2)));
             }
             return componentValue.reduce((a,b) => a+b,0)
         };
@@ -258,9 +184,9 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Product amount",
                 headerClassName: "wordwrapEdit",
-                accessor: "amountProduct",
+                accessor: "amount",
                 Cell: this.renderEditable,
-                Footer: sumOfAmountProduct
+                Footer: sumOfAmounts
             },
             {
                 Header: "Total sale",
@@ -269,7 +195,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amountProduct)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amount)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfTotalSale
@@ -286,7 +212,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amountProduct) * parseFloat(d.coverAmount)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.coverAmount)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfCoverAmount
@@ -298,7 +224,7 @@ class BudgetPlanningTable extends Component {
                 accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amountProduct) * parseFloat(d.purchasePrice)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
                         }}
                     />,
                 Footer: sumOfPurchasePrice
