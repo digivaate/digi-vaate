@@ -99,9 +99,20 @@ class App extends React.Component {
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
                                     />}
                                 />
+                                <Route path={'/:seasonId/budget'} exact component={(props) =>
+                                    <BudgetPlanningTable
+                                        {...props}
+                                        requestPath={`/season/products?name=${props.match.params.seasonId}`}
+                                    />}
+                                />
                                 {productsSeasonRoute}
                                 <Route path="/:seasonId/:collectionId" exact component={SingleCollection} />
-                                <Route path="/:seasonId/:collectionId/budget" exact component={BudgetPlanningTable} />
+                                <Route path="/:seasonId/:collectionId/budget" exact component={(props) =>
+                                    <BudgetPlanningTable
+                                        {...props}
+                                        requestPath={`/collection/products?name=${props.match.params.collectionId}`}
+                                    />}
+                                />
                                 <Route path="/:seasonId/:collectionId/colors" exact component={ColorIndexPage} />
                                 <Route path="/:seasonId/:collectionId/materials" exact component={MaterialList} />
                                 <Route path="/:seasonId/:collectionId/products" exact component={(props) =>

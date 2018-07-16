@@ -16,8 +16,7 @@ class BudgetPlanningTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: makeData(),
-            productIndex: 0,
+            data: [],
             isFetched: false
         };
         this.renderEditable = this.renderEditable.bind(this);
@@ -56,59 +55,42 @@ class BudgetPlanningTable extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+        axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(response => {
-                this.products = response.data[0].products;
-                for(let i = 0; i< this.products.length; i++) {
+                const dataCollected = [];
+                this.products = response.data;
+                this.products.forEach(product => {
                     let materialCost = [];
-                    for (let j = 0; j < this.products[i].materials.length; j++) {
-                        materialCost.push(parseFloat((parseFloat(this.products[i].materials[j].consumption) * parseFloat(this.products[i].materials[j].unitPrice) + parseFloat(this.products[i].materials[j].freight)).toFixed(2)));
-                    }
-                    if (this.products[i].materials.length > 0) {
-                        if (this.products[i].materials[0].consumption < 100) {
-                            materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2))
-                        }
+                    product.materials.forEach(material => {
+                        materialCost.push(parseFloat((parseFloat(material.consumption) * parseFloat(material.unitPrice) + parseFloat(material.freight)).toFixed(2)));
+                    });
+
+                    if (product.materials.length > 0 && product.materials[0].consumption < 100) {
+                            materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2));
                     }
 
-                    this.products[i].materialCostTotal = materialCost.reduce((a, b) => a + b, 0);
-                    this.products[i].coverAmount = parseFloat(((this.products[i].materialCostTotal + this.products[i].subcCostTotal) * (this.products[i].coverPercent / 100) / (1 - (this.products[i].coverPercent / 100))).toFixed(2));
-                    this.products[i].purchasePrice = parseFloat((this.products[i].materialCostTotal + this.products[i].subcCostTotal).toFixed(2));
-                    this.products[i].unitPriceWithoutTax = parseFloat((this.products[i].coverAmount + this.products[i].purchasePrice).toFixed(2));
-                    const {data} = this.state;
-                    data[i].productName = this.products[i].name;
-                    this.setState({
-                        data: this.state.data.map(element => {
-                            if (element.productName === this.products[i].name) {
-                                return {
-                                    unitPriceWithoutTax: this.products[i].unitPriceWithoutTax,
-                                    amount: 0,
-                                    consumerPriceCommercial: this.products[i].commercialPrice,
-                                    productName: this.products[i].name,
-                                    coverPercent: this.products[i].coverPercent,
-                                    coverAmount: this.products[i].coverAmount,
-                                    purchasePrice: this.products[i].purchasePrice,
-                                    amount: this.products[i].amount
-                                }
-                            }
-                            else {
-                                return element
-                            }
-                        })
+                    product.materialCostTotal = materialCost.reduce((a, b) => a + b, 0);
+                    product.coverAmount = parseFloat(((product.materialCostTotal + product.subcCostTotal) * (product.coverPercent / 100) / (1 - (product.coverPercent / 100))).toFixed(2));
+                    product.purchasePrice = parseFloat((product.materialCostTotal + product.subcCostTotal).toFixed(2));
+                    product.unitPriceWithoutTax = parseFloat((product.coverAmount + product.purchasePrice).toFixed(2));
+
+                    dataCollected.push({
+                        unitPriceWithoutTax: product.unitPriceWithoutTax,
+                        consumerPriceCommercial: product.commercialPrice,
+                        productName: product.name,
+                        coverPercent: product.coverPercent,
+                        coverAmount: product.coverAmount,
+                        purchasePrice: product.purchasePrice,
+                        amount: product.amount
                     });
-                    this.setState({
-                        data: this.state.data.concat(makeData())
-                    })
-                }
+                });
+                this.setState({ data: dataCollected })
             })
-            .then(() => this.setState({
-                data: this.state.data.slice(0,this.state.data.length-1)
-            }))
             .catch(err => console.error(err));
-    }
+    };
 
     render() {
         const {data} = this.state;
-
         // First delivery sum calculation
         const sumOfAmounts = function(){
             let componentValue = [];
