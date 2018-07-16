@@ -5,8 +5,10 @@ import fs from 'fs';
 class ProductController extends Controller {
     constructor() { super(Models.Product); }
     setRelations(entity, jsonBody){
-        if (jsonBody.colors) { entity.setColors(jsonBody.colors); }
-        if (jsonBody.materials) { entity.setMaterials(jsonBody.materials); }
+        const promises = [];
+        if (jsonBody.colors) { promises.push(entity.setColors(jsonBody.colors)); }
+        if (jsonBody.materials) { promises.push(entity.setMaterials(jsonBody.materials)); }
+        return Promise.all(promises);
     }
 
     clearOtherRelations(req, res, next) {
