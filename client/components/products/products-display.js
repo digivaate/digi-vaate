@@ -1,12 +1,15 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider } from 'antd';
+import { Card, Row, Col,Icon,Modal,Divider,Button,Form,message } from 'antd';
 import {Redirect,Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
+import FormData from 'form-data';
 const { Meta } = Card;
 const confirm = Modal.confirm;
+const FormItem = Form.Item;
 import "./products.css"
-import SingleProduct from "./single-product";
+import ProductCreateForm from './product-card';
+
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -15,7 +18,12 @@ class ProductsDisplay extends Component{
             isFetched: false,
             isSelected:false,
             productName:null,
-            isColorFetched:true
+            isColorFetched:true,
+            visible: false,
+            materialOptions: null,
+            colorOptions:null,
+            productLevel: null,
+            productLevelId:null,
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -23,6 +31,40 @@ class ProductsDisplay extends Component{
     collections = [];
     products = [];
     componentDidMount() {
+        const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
+        const { location } = this.props;
+        const pathSnippetsName = location.pathname.split('/').filter(i => i);
+        if(pathSnippetsLevel[0] === "company"){
+            axios.get(`${API_ROOT}/company?name=Lumi`)
+                .then(response => {
+                    this.setState({
+                        productLevel: pathSnippetsLevel[0],
+                        productLevelId: response.data[0].id
+                    });
+                })
+
+        }
+        if(pathSnippetsLevel[0] === "season"){
+            axios.get(`${API_ROOT}/season?name=${pathSnippetsName[0]}`)
+                .then(response => {
+                    this.setState({
+                        productLevel: pathSnippetsLevel[0],
+                        productLevelId: response.data[0].id
+                    });
+                })
+
+        }
+        if(pathSnippetsLevel[0] === "collection"){
+            axios.get(`${API_ROOT}/collection?name=${pathSnippetsName[1]}`)
+                .then(response => {
+                    this.setState({
+                        productLevel: pathSnippetsLevel[0],
+                        productLevelId: response.data[0].id
+                    });
+                })
+
+        }
+
         /*
         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
@@ -49,6 +91,20 @@ class ProductsDisplay extends Component{
                 this.products = res.data;
                 this.setState({isFetched: true});
             });
+
+        axios.get(`${API_ROOT}/color`)
+            .then(res => {
+                this.setState({
+                    colorOptions: res.data
+                })
+            });
+
+        axios.get(`${API_ROOT}/material`)
+            .then(res => {
+                this.setState({
+                    materialOptions: res.data
+                })
+            });
     }
 
     handleSelect(productName){
@@ -73,6 +129,76 @@ class ProductsDisplay extends Component{
             },
         });
     }
+
+    createNewProduct = () => {
+        this.setState({ visible: true })
+    };
+
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            for (let i = 0; i < values.colors.length; i++) {
+                for (let j = 0; j < this.state.colorOptions.length; j++) {
+                    if (values.colors[i] === this.state.colorOptions[j].name) {
+                        values.colors[i] = this.state.colorOptions[j].id
+                    }
+                }
+            }
+
+            for (let i = 0; i < values.materials.length; i++) {
+                for (let j = 0; j < this.state.materialOptions.length; j++) {
+                    if (values.materials[i] === this.state.materialOptions[j].name) {
+                        values.materials[i] = this.state.materialOptions[j].id
+                    }
+                }
+            }
+
+            if(this.state.productLevel === "company"){
+                values.companyId = this.state.productLevelId
+            }
+            else if(this.state.productLevel === "season"){
+                values.seasonId = this.state.productLevelId
+            }
+            else if(this.state.productLevel === "collection"){
+                values.collectionId = this.state.productLevelId
+            }
+            //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
+            console.log('Received values of form: ', values);
+            let file = values.imagePath[0].originFileObj;
+            const data = new FormData();
+            data.append('image', file, file.name);
+            values.imagePath = null;
+            console.log('Received values of form: ', values);
+            axios.post(`${API_ROOT}/product`,values)
+                .then(response => {
+                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`,data)
+                        .then(() => {
+                            message.success("Product created",1);
+                            axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                                .then(res => {
+                                    this.products = res.data;
+                                    this.setState({visible:false});
+                                });
+                        });
+                })
+                .then(() => this.setState(prevState => prevState));
+            form.resetFields();
+        });
+    };
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    };
+
+
 
     render() {
         let renderProductList = null;
@@ -176,6 +302,20 @@ class ProductsDisplay extends Component{
             <div>
                 {singleProduct}
                 <h1>Products</h1>
+                <Button type="primary"
+                        size="large"
+                        onClick={this.createNewProduct}
+                >
+                    Create new product
+                </Button>
+                <ProductCreateForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                />
+                <br/>
+                <br/>
                 <Row gutter={40}>
                     {renderProductList}
                 </Row>

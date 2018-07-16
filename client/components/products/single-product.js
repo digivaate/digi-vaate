@@ -292,6 +292,7 @@ class SingleProduct extends Component {
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
+        console.log(file);
         axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data)
             .then(() => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)

@@ -1,9 +1,11 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Avatar,Modal } from 'antd';
+import MaterialCreateForm from './newMaterial'
+import { Card, Row, Col,Icon,Avatar,Button,Form,message,Modal } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
+const FormItem = Form.Item;
 const { Meta } = Card;
 
 
@@ -13,7 +15,8 @@ class MaterialList extends Component{
         this.state ={
             isFetched: false,
             isSelected:false,
-            materialName:null
+            materialName:null,
+            visible: false
         };
     }
 
@@ -45,6 +48,41 @@ class MaterialList extends Component{
                 console.log(productName);
             },
         });
+    };
+
+    createNewMaterial = () => {
+        this.setState({ visible: true })
+    };
+
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
+            console.log('Received values of form: ', values);
+            axios.post(`${API_ROOT}/material`,values)
+                .then(response => {
+                    message.success("Product created",1);
+                    axios.get(`${API_ROOT}/material`)
+                        .then(response => this.materials = response.data)
+                        .then(() => this.setState({visible: false}))
+                        .catch(err => console.log(err));
+                    })
+                .then(() => this.setState(prevState => prevState));
+
+        });
+        form.resetFields();
+    };
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
     };
 
     render() {
@@ -100,6 +138,20 @@ class MaterialList extends Component{
             <div>
                 {singleMaterial}
                 <h1>Materials</h1>
+                <Button type="primary"
+                        size="large"
+                        onClick={this.createNewMaterial}
+                >
+                    Create new material
+                </Button>
+                <MaterialCreateForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                />
+                <br/>
+                <br/>
                 <Row gutter={5}>
                     {renderMaterialList}
                 </Row>
