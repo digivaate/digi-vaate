@@ -24,6 +24,7 @@
   "dependencies": {
     "antd": "^3.6.1",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "form-data": "^2.3.2",
