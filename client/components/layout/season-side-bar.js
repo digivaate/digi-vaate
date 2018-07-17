@@ -2,7 +2,7 @@ import React,{ Component } from "react";
 import 'antd/dist/antd.css'
 import { render } from "react-dom";
 import "react-table/react-table.css";
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const {  Sider } = Layout;
@@ -16,21 +16,24 @@ import "./layout.css"
 class SeasonSideBar extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            collections: null,
+        }
     }
-    collections = null;
     componentDidMount() {
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
-                this.collections = response.data[0].collections;
+                this.setState({
+                    collections: response.data[0].collections
+                });
             })
-            .then(()=>this.setState({}))
             .catch(err => console.error(err));
     }
 
     render(){
         let renderCollectionList = null;
-        if(this.collections){
-            renderCollectionList = this.collections.map(collection =>
+        if(this.state.collections){
+            renderCollectionList = this.state.collections.map(collection =>
                 <Menu.Item key={collection.id}>
                     <NavLink to={`/${this.props.match.params.seasonId}/${collection.name}`} className="nav-text">
                         {collection.name}
@@ -41,7 +44,19 @@ class SeasonSideBar extends Component{
         return (
             <Sider>
                 <Menu mode="inline" className="side-bar-menu">
-                    <MenuItemGroup key="g1" title="Collection">
+                    <MenuItemGroup>
+                        <Menu.Item key={'products'}>
+                            <Link to={`${this.props.match.url}/products`} className={'nav-text'}>
+                                Products
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key={'budget'}>
+                            <Link to={`${this.props.match.url}/budget`} className={'nav-text'}>
+                                Budget
+                            </Link>
+                        </Menu.Item>
+                    </MenuItemGroup>
+                    <MenuItemGroup key="g1" title="Collections">
                         {renderCollectionList}
                     </MenuItemGroup>
                 </Menu>

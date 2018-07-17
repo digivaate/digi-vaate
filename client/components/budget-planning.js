@@ -29,11 +29,12 @@ class BudgetPlanningTable extends Component {
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={e => {
-                    if (cellInfo.column.id === 'amount' && e.target.innerHTML !== cellInfo.original.amount) {
-                        this.updateProdAmount(cellInfo.original.productName, e.target.innerHTML);
+                    const value = parseInt(e.target.innerHTML);
+                    if (cellInfo.column.id === 'amount' && value !== cellInfo.original.amount) {
+                        this.updateProdAmount(cellInfo.original.productName, value);
                     }
                     const data = [...this.state.data];
-                    data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                    data[cellInfo.index][cellInfo.column.id] = value;
                     console.log(cellInfo.column.id, cellInfo.index);
                     this.setState({ data });
                 }}
@@ -156,6 +157,7 @@ class BudgetPlanningTable extends Component {
                 headerClassName: "wordwrapEdit",
                 accessor: 'productName',
                 width: 140,
+                Footer: 'Total:'
             },
             {
                 Header: "Consumer Price",
