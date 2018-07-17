@@ -84,12 +84,16 @@ class BudgetPlanningTable extends Component {
                         amount: product.amount
                     });
                 });
-                this.setState({ data: dataCollected })
+                this.setState({
+                    data: dataCollected,
+                    pageSize: dataCollected.length
+                })
             })
             .catch(err => console.error(err));
     };
 
     render() {
+
         const {data} = this.state;
         // First delivery sum calculation
         const sumOfAmounts = function(){
@@ -213,16 +217,17 @@ class BudgetPlanningTable extends Component {
             }
         ];
 
-
         return (
             <div>
                 <h1> Budget Plan </h1>
                 <ReactTable
-                    sortable = {false}
+                    sortable = {true}
+                    showPagination={false}
                     data={data}
                     columns={columns}
-                    defaultPageSize={10}
                     className="highlight"
+                    defaultPageSize={this.state.pageSize}
+                    key={this.state.pageSize}
                 />
                 <br />
             </div>
