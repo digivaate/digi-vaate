@@ -30,6 +30,7 @@ class ProductsDisplay extends Component{
     }
     collections = [];
     products = [];
+    uploadImage = {};
     componentDidMount() {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
         const { location } = this.props;
@@ -170,16 +171,11 @@ class ProductsDisplay extends Component{
             else if(this.state.productLevel === "collection"){
                 values.collectionId = this.state.productLevelId
             }
-            //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
-            console.log('Received values of form: ', values);
-            let file = values.imagePath[0].originFileObj;
-            const data = new FormData();
-            data.append('image', file, file.name);
             values.imagePath = null;
             console.log('Received values of form: ', values);
             axios.post(`${API_ROOT}/product`,values)
                 .then(response => {
-                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`,data)
+                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`,this.uploadImage)
                         .then(() => {
                             message.success("Product created",1);
                             axios.get(`${API_ROOT}/${this.props.requestPath}`)
@@ -209,7 +205,7 @@ class ProductsDisplay extends Component{
             let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
             singleProduct = <Redirect to={{
                 pathname: url + this.state.productName
-            }}/>
+            }}/>;
             //return <SingleProduct productId={this.state.productName}/>
         }
         if (this.products) {
@@ -313,6 +309,7 @@ class ProductsDisplay extends Component{
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    uploadImage={(data) => this.uploadImage = data}
                 />
                 <br/>
                 <br/>

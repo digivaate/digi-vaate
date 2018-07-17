@@ -23,6 +23,7 @@ const ProductCreateForm = Form.create()(
                 uploading: false,
             }
         }
+
         componentDidMount(){
             this.loadColors();
             this.loadMaterials();
@@ -36,6 +37,7 @@ const ProductCreateForm = Form.create()(
                     })
                 })
         };
+
         loadMaterials = () => {
             axios.get(`${API_ROOT}/material`)
                 .then(response => {
@@ -45,14 +47,12 @@ const ProductCreateForm = Form.create()(
                 })
         };
 
-        normFile = (e) => {
-            console.log('Upload event:', e);
-            if (Array.isArray(e)) {
-                return e;
-            }
-            return e && e.fileList;
+        onFileChange = (e) => {
+            let file = e.target.files[0];
+            const data = new FormData();
+            data.append('image', file, file.name);
+            this.props.uploadImage(data);
         };
-
 
         render() {
             let renderColorOptions = [];
@@ -167,27 +167,8 @@ const ProductCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem
-                            label="Picture"
-                        >
-                            <div className="dropbox">
-                                {getFieldDecorator('imagePath', {
-                                    getValueFromEvent: this.normFile,
-                                })(
-                                    <Upload.Dragger
-                                        name="files"
-                                        beforeUpload={this.beforeUpload}
-                                    >
-                                        <p className="ant-upload-drag-icon">
-                                            <Icon type="inbox" />
-                                        </p>
-                                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                                        <p className="ant-upload-hint">Support for a single or bulk upload.</p>
-                                    </Upload.Dragger>
-                                )}
-                            </div>
-                        </FormItem>
                     </Form>
+                    <input type="file" onChange={this.onFileChange}/>
                 </Modal>
             );
         }
