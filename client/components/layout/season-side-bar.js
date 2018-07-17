@@ -21,6 +21,7 @@ class SeasonSideBar extends Component{
         }
     }
     componentDidMount() {
+        console.log(this.props)
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
                 this.setState({
@@ -44,18 +45,16 @@ class SeasonSideBar extends Component{
         return (
             <Sider>
                 <Menu mode="inline" className="side-bar-menu">
-                    <MenuItemGroup>
-                        <Menu.Item key={'products'}>
-                            <Link to={`${this.props.match.url}/products`} className={'nav-text'}>
+                    <Menu.Item key="products">
+                        <NavLink to={`/${this.props.match.params.seasonId}/products`} className={'nav-text'}>
                                 Products
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key={'budget'}>
-                            <Link to={`${this.props.match.url}/budget`} className={'nav-text'}>
-                                Budget
-                            </Link>
-                        </Menu.Item>
-                    </MenuItemGroup>
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="budget">
+                        <NavLink to={`/${this.props.match.params.seasonId}/budget`} className={'nav-text'}>
+                            Budget
+                        </NavLink>
+                    </Menu.Item>
                     <MenuItemGroup key="g1" title="Collections">
                         {renderCollectionList}
                     </MenuItemGroup>
