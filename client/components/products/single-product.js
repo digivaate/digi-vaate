@@ -19,7 +19,9 @@ class SingleProduct extends Component {
             updateColors: null,
             productMaterials: null,
             materialOptions: null,
-            updateMaterials: null
+            updateMaterials: null,
+            collectionName:'None',
+            seasonName:'None',
         };
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOk = this.handleColorOk.bind(this);
@@ -48,6 +50,39 @@ class SingleProduct extends Component {
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
                 axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                     .then(response => {
+                        console.log(response.data)
+                        if(response.data[0].companyId){
+                            this.setState({
+                                collectionName: "None",
+                                seasonName:"None"
+                            });
+                        }
+                        if(response.data[0].seasonId){
+                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                                .then(res => {
+                                    this.setState({
+                                        collectionName: "None",
+                                        seasonName:res.data[0].name
+                                    });
+                                });
+                        }
+                        if(response.data[0].collectionId){
+                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
+                                .then(response => {
+                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                        .then(res => {
+                                            this.setState({
+                                                collectionName: res.data[0].name,
+                                            });
+                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                                .then(re => {
+                                                    this.setState({
+                                                        collectionName: re.data[0].name,
+                                                    });
+                                                })
+                                        });
+                                })
+                        }
                         this.setState({
                             loadedProduct: response.data[0],
                             productImg: response.data[0].imagePath,
@@ -391,7 +426,8 @@ class SingleProduct extends Component {
                                 <img alt="example" height="300" width="370" src={`${imgUrl}`}/>
                             </div>
                             <Card className="product-description">
-                                <p>Some description of product</p>
+                                <p>Season:{this.state.seasonName}</p>
+                                <p>Collection:{this.state.collectionName}</p>
                             </Card>
                         </Col>
                         <Col span={16}>

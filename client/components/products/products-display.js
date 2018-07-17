@@ -90,7 +90,84 @@ class ProductsDisplay extends Component{
         axios.get(`${API_ROOT}/${this.props.requestPath}`)
             .then(res => {
                 this.products = res.data;
+                for(let i = 0;i < this.products.length; i++){
+                    if(this.products[i].companyId){
+                        this.products[i].seasonName = "None";
+                        this.products[i].collectionName = "None";
+                    }
+                    if(this.products[i].seasonId){
+                        axios.get(`${API_ROOT}/season?id=${this.products[i].seasonId}`)
+                            .then(res => {
+                                this.products[i].seasonName = res.data[0].name;
+                                this.products[i].collectionName = "None";
+                                this.setState(prevState => prevState)
+                            });
+                    }
+                    if(this.products[i].collectionId){
+                        axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
+                            .then(response => {
+                                axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                    .then(res => {
+                                        this.products[i].collectionName = res.data[0].name;
+                                        this.setState(prevState => prevState)
+                                        axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                            .then(re => {
+                                                this.products[i].seasonName = re.data[0].name
+                                                this.setState(prevState => prevState)
+                                            })
+                                    });
+                            })
+                    }
+                }
+                /*if(pathSnippetsLevel[0] === "company"){
+                    for(let i = 0;i < this.products.length; i++){
+                        axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
+                            .then(response => {
+                                axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                    .then(res => {
+                                        this.products[i].collectionName = res.data[0].name;
+                                        this.setState(prevState => prevState)
+                                        axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                            .then(re => {
+                                                this.products[i].seasonName = re.data[0].name
+                                                this.setState(prevState => prevState)
+                                            })
+                                    });
+                            })
+                    }
+                }
+                else if(pathSnippetsLevel[0] === "season"){
+                    for(let i = 0;i < this.products.length; i++){
+                        axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
+                            .then(response => {
+                                axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                                    .then(res => {
+                                        this.products[i].seasonName = res.data[0].name;
+                                        this.products[i].collectionName = "None";
+                                        this.setState(prevState => prevState)
+                                    });
+                            })
+                    }
+                }
+                else if(pathSnippetsLevel[0] === "collection"){
+                    for(let i = 0;i < this.products.length; i++){
+                        axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
+                            .then(response => {
+                                axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                    .then(res => {
+                                        this.products[i].collectionName = res.data[0].name;
+                                        this.setState(prevState => prevState)
+                                        axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                            .then(re => {
+                                                this.products[i].seasonName = re.data[0].name
+                                                this.setState(prevState => prevState)
+                                            })
+                                    });
+                            })
+                    }
+                }
                 this.setState({isFetched: true});
+                */
             });
 
         axios.get(`${API_ROOT}/color`)
@@ -264,7 +341,7 @@ class ProductsDisplay extends Component{
                         <div className="product-card-wrapper">
                         <Card
                             hoverable
-                            bodyStyle={{height:130}}
+                            bodyStyle={{height:200}}
                             className="product-card-display"
                             cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
                             actions={[
@@ -280,6 +357,8 @@ class ProductsDisplay extends Component{
                                 title={product.name}
                                 description={
                                     <div>
+                                        <p>Season: {product.seasonName} </p>
+                                        <p>Collection: {product.collectionName}</p>
                                     <Row gutter={8}>
                                         { renderProductColors }
                                     </Row>
