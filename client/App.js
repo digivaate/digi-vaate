@@ -62,10 +62,10 @@ class App extends React.Component {
         }
         if(this.productsSeason.length > 0){
             productsSeasonRoute = this.productsSeason.map(product =>
-                <Route path={`/:seasonId/${product}`} exact component={SingleProduct}/>
+                <Route path={`/:seasonId/products/${product}`} exact component={SingleProduct}/>
             );
             productsSeasonRouteSideBar =  this.productsSeason.map(product =>
-                <Route path={`/:seasonId/${product}`} exact component={SeasonSideBar}/>
+                <Route path={`/:seasonId/products/${product}`} exact component={SeasonSideBar}/>
             );
         }
 

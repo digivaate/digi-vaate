@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider,Button,Form,message } from 'antd';
+import { Card, Row, Col,Icon,Modal,Divider,Button,Form,message,Spin } from 'antd';
 import {Redirect,Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -382,7 +382,7 @@ class ProductsDisplay extends Component{
                 return (
                     <div>
                         <h1>Products</h1>
-                        <p>No products yet...</p>
+                        <Spin/>
                     </div>
                 )
             }
