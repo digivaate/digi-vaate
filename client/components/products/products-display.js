@@ -30,7 +30,7 @@ class ProductsDisplay extends Component{
     }
     collections = [];
     products = [];
-    uploadImage = {};
+    uploadImage = null;
     componentDidMount() {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
         const { location } = this.props;
@@ -173,28 +173,42 @@ class ProductsDisplay extends Component{
             }
             values.imagePath = null;
             console.log('Received values of form: ', values);
-            axios.post(`${API_ROOT}/product`,values)
-                .then(response => {
-                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`,this.uploadImage)
-                        .then(() => {
-                            message.success("Product created",1);
-                            axios.get(`${API_ROOT}/${this.props.requestPath}`)
-                                .then(res => {
-                                    this.products = res.data;
-                                    this.setState({visible:false});
-                                });
-                        });
-                })
-                .then(() => this.setState(prevState => prevState));
-            form.resetFields();
+            if(this.uploadImage) {
+                axios.post(`${API_ROOT}/product`, values)
+                    .then(response => {
+                        axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
+                            .then(() => {
+                                message.success("Product created",1);
+                                axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                                    .then(res => {
+                                        this.products = res.data;
+                                        this.setState({visible: false});
+                                        this.uploadImage = null;
+                                    });
+                            });
+                    })
+                    .then(() => this.setState(prevState => prevState));
+                form.resetFields();
+            }
+            else if(!this.uploadImage){
+                axios.post(`${API_ROOT}/product`, values)
+                    .then(response => {
+                        message.success("Product created",1);
+                        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                            .then(res => {
+                                this.products = res.data;
+                                this.setState({visible: false});
+                            });
+                    })
+                    .then(() => this.setState(prevState => prevState));
+                form.resetFields();
+            }
         });
     };
 
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     };
-
-
 
     render() {
         let renderProductList = null;
