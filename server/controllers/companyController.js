@@ -16,7 +16,9 @@ class CompanyController extends Controller {
                 {
                     model: models.Product,
                     as: 'products',
-                    include: [{all: true}]
+                    include: [{all: true}],
+                    separate: true,
+                    order: [["name", "ASC"]],
                 },
                 {
                 model: models.Season,
@@ -25,14 +27,18 @@ class CompanyController extends Controller {
                     {
                         model: models.Product,
                         as: 'products',
-                        include: [{all: true}]
+                        include: [{all: true}],
+                        separate: true,
+                        order: [["name", "ASC"]],
                     },{
                         model: models.Collection,
                         as: 'collections',
                         include: [{
                             model: models.Product,
                             as: 'products',
-                            include: [{all: true}]
+                            include: [{all: true}],
+                            separate: true,
+                            order: [["name", "ASC"]],
                         }]
                 }]
             }]

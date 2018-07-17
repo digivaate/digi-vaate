@@ -42,7 +42,9 @@ class CollectionController extends Controller {
             include: [{
                 model: Models.Product,
                 as: 'products',
-                include: [{all: true}]
+                include: [{all: true}],
+                separate: true,
+                order: [["name", "ASC"]],
             }]
         })
             .then(ent => {

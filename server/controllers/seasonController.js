@@ -17,7 +17,9 @@ class SeasonController extends Controller {
                 {
                     model: models.Product,
                     as: 'products',
-                    include: [{all: true}]
+                    include: [{all: true}],
+                    separate: true,
+                    order: [["name", "ASC"]],
                 },
                 {
                     model: models.Collection,
@@ -25,7 +27,9 @@ class SeasonController extends Controller {
                     include: [{
                         model: models.Product,
                         as: 'products',
-                        include: [{all: true}]
+                        include: [{all: true}],
+                        separate: true,
+                        order: [["name", "ASC"]],
                 }]
             }]
         })
