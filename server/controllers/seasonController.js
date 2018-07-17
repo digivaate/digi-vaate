@@ -37,10 +37,12 @@ class SeasonController extends Controller {
                 const products = [];
                 season.collections.forEach(collection => {
                     collection.products.forEach(prod => {
+                        prod.dataValues.originName = 'collection: ' + collection.name;
                         products.push(prod);
                     });
                 });
                 season.products.forEach(prod => {
+                    prod.dataValues.originName = 'season: ' + season.name;
                     products.push(prod);
                 });
                 res.send(products);

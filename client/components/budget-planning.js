@@ -45,31 +45,19 @@ class BudgetPlanningTable extends Component {
         );
     }
 
-    //Update amount of individual product to database
-    updateProdAmount(id, amount) {
-        //name is used as identifier this time
-        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount })
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => console.error('Unable to patch amount:' + err));
-    }
-
     componentDidMount() {
+        const dataCollected = [];
         axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(response => {
-                const dataCollected = [];
                 this.products = response.data;
                 this.products.forEach(product => {
                     let materialCost = [];
                     product.materials.forEach(material => {
                         materialCost.push(parseFloat((parseFloat(material.consumption) * parseFloat(material.unitPrice) + parseFloat(material.freight)).toFixed(2)));
                     });
-
                     if (product.materials.length > 0 && product.materials[0].consumption < 100) {
                             materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2));
                     }
-
                     product.materialCostTotal = materialCost.reduce((a, b) => a + b, 0);
                     product.coverAmount = parseFloat(((product.materialCostTotal + product.subcCostTotal) * (product.coverPercent / 100) / (1 - (product.coverPercent / 100))).toFixed(2));
                     product.purchasePrice = parseFloat((product.materialCostTotal + product.subcCostTotal).toFixed(2));
@@ -82,13 +70,14 @@ class BudgetPlanningTable extends Component {
                         coverPercent: product.coverPercent,
                         coverAmount: product.coverAmount,
                         purchasePrice: product.purchasePrice,
-                        amount: product.amount
+                        amount: product.amount,
+                        originName: product.originName
                     });
                 });
                 this.setState({
                     data: dataCollected,
                     pageSize: dataCollected.length
-                })
+                });
             })
             .catch(err => console.error(err));
     };
@@ -147,8 +136,6 @@ class BudgetPlanningTable extends Component {
             return componentValue.reduce((a,b) => a+b,0)
         };
         */
-
-
 
         // columns of table
         const columns = [
@@ -219,6 +206,14 @@ class BudgetPlanningTable extends Component {
             }
         ];
 
+        if (this.props.showProdOrigin) {
+            columns.push({
+                Header: "Origin",
+                headerClassName: "wordwrapEdit",
+                accessor: 'originName',
+                width: 180
+            });
+        }
         return (
             <div>
                 <h1> Budget Plan </h1>
