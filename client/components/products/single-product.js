@@ -77,7 +77,7 @@ class SingleProduct extends Component {
                                             axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
                                                 .then(re => {
                                                     this.setState({
-                                                        collectionName: re.data[0].name,
+                                                        seasonName: re.data[0].name,
                                                     });
                                                 })
                                         });

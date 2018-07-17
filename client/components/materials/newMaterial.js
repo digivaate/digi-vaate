@@ -26,15 +26,8 @@ const MaterialCreateForm = Form.create()(
             let file = e.target.files[0];
             const data = new FormData();
             data.append('image', file, file.name);
-            return data;
+            this.props.uploadImage(data);
         };
-        normFile = (e) => {
-            console.log('Upload event:', e);
-            if (Array.isArray(e)) {
-                return e;
-            }
-            return e
-        }
 
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
@@ -42,7 +35,7 @@ const MaterialCreateForm = Form.create()(
             return (
                 <Modal
                     visible={visible}
-                    title="Create a product"
+                    title="Create a material"
                     okText="Create"
                     onCancel={onCancel}
                     onOk={onCreate}
@@ -134,6 +127,7 @@ const MaterialCreateForm = Form.create()(
                             {getFieldDecorator('composition')(<Input type="textarea" />)}
                         </FormItem>
                     </Form>
+                    <input type="file" onChange={this.onFileChange}/>
                 </Modal>
             );
         }

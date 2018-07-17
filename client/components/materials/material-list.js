@@ -20,6 +20,8 @@ class MaterialList extends Component{
         };
     }
 
+    uploadImage=null;
+
     componentDidMount() {
         axios.get(`${API_ROOT}/material`)
             .then(response => this.materials = response.data)
@@ -66,7 +68,41 @@ class MaterialList extends Component{
                 return;
             }
             //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
+            values.imagePath = null;
             console.log('Received values of form: ', values);
+            /*
+            if(this.uploadImage) {
+                axios.post(`${API_ROOT}/material`, values)
+                    .then(response => {
+                        axios.patch(`${API_ROOT}/material/${response.data[0].id}/image`, this.uploadImage)
+                            .then(() => {
+                                message.success("Material created",1);
+                                axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                                    .then(res => {
+                                        this.materials = res.data;
+                                        this.setState({visible: false});
+                                        this.uploadImage = null;
+                                    });
+                            });
+                    })
+                    .then(() => this.setState(prevState => prevState));
+                form.resetFields();
+            }
+            else if(!this.uploadImage){
+                axios.post(`${API_ROOT}/material`, values)
+                    .then(response => {
+                        message.success("Material created",1);
+                        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                            .then(res => {
+                                this.materials = res.data;
+                                this.setState({visible: false});
+                            });
+                    })
+                    .then(() => this.setState(prevState => prevState));
+                form.resetFields();
+            }
+            */
+        });
             axios.post(`${API_ROOT}/material`,values)
                 .then(response => {
                     message.success("Product created",1);
@@ -74,10 +110,8 @@ class MaterialList extends Component{
                         .then(response => this.materials = response.data)
                         .then(() => this.setState({visible: false}))
                         .catch(err => console.log(err));
-                    })
+                })
                 .then(() => this.setState(prevState => prevState));
-
-        });
         form.resetFields();
     };
 
@@ -149,6 +183,7 @@ class MaterialList extends Component{
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    uploadImage={(data) => this.uploadImage = data}
                 />
                 <br/>
                 <br/>
