@@ -81,7 +81,6 @@ class BreadCrumbDigi extends Component{
                         this.breadcrumbNameMap["/"+this.seasonsMap[i]] = this.seasonsMap[i]
                         for(let j=0;j<this.collections.length;j++){
                             this.collectionsMap[j] = this.collections[j].name;
-
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]] = this.collectionsMap[j];
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/products"] = "Products";
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/budget"] = "Budget";
@@ -100,6 +99,7 @@ class BreadCrumbDigi extends Component{
                                     this.seasonProductsMap[m] = this.seasonProducts[m].name;
                                     this.breadcrumbNameMap["/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProductsMap[m]] = this.seasonProductsMap[m];
                                 }
+                                this.setState({})
                             })
                     }
 

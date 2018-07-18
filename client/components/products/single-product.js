@@ -11,6 +11,7 @@ class SingleProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: null,
             loadedProduct: null,
             productName: '',
             productImg: null,
@@ -22,6 +23,8 @@ class SingleProduct extends Component {
             updateMaterials: null,
             collectionName:'None',
             seasonName:'None',
+            seasons: null,
+            collections:null
         };
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOk = this.handleColorOk.bind(this);
@@ -36,12 +39,35 @@ class SingleProduct extends Component {
 
     updatedColors = [];
     updatedMaterials = [];
+    treeData = [];
+    seasons = null;
+    collections = null;
 
     componentDidMount() {
         this.loadProduct();
         this.loadColors();
         this.loadMaterials();
+        this.loadSeason();
+        this.loadCollection();
     }
+
+    loadSeason = () => {
+        axios.get(`${API_ROOT}/season`)
+            .then(response => {
+                this.setState({
+                    seasons: response.data
+                })
+            })
+    };
+
+    loadCollection = () => {
+        axios.get(`${API_ROOT}/collection`)
+            .then(response => {
+                this.setState({
+                    collections: response.data
+                })
+            })
+    };
 
     loadProduct() {
         if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
@@ -50,7 +76,6 @@ class SingleProduct extends Component {
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
                 axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                     .then(response => {
-                        console.log(response.data)
                         if(response.data[0].companyId){
                             this.setState({
                                 collectionName: "None",
@@ -157,7 +182,6 @@ class SingleProduct extends Component {
                             message.success("Colors updated!", 1);
                             axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                                 .then(response => {
-                                    console.log(response.data[0].colors);
                                     this.setState({
                                         productColors: response.data[0].colors
                                     });
@@ -174,7 +198,6 @@ class SingleProduct extends Component {
                             message.success("Colors updated!", 1);
                             axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                                 .then(response => {
-                                    console.log(response.data[0].colors);
                                     this.setState({
                                         productColors: response.data[0].colors
                                     });
@@ -285,12 +308,10 @@ class SingleProduct extends Component {
         if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
-            console.log(pathSnippets[pathSnippets.length-1]);
             axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {name: this.state.productName})
                 .then(response => {
                     axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                         .then(response => {
-                            console.log(response.data);
                             this.setState({
                                 loadedProduct: response.data[0],
                                 productColors: response.data[0].colors,
@@ -327,12 +348,10 @@ class SingleProduct extends Component {
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        console.log(file);
         axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data)
             .then(() => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
-                        console.log(response.data[0].imagePath);
                         this.setState({
                             productImg: response.data[0].imagePath
                         });
@@ -340,8 +359,89 @@ class SingleProduct extends Component {
             })
     }
 
+    //Change location of product
+
+    handleChangeLocationCancel = (e) => {
+        this.setState({
+            changeLocationVisible: false,
+        });
+    };
+    changeLocation = () => {
+        this.setState({
+            changeLocationVisible: true
+        })
+    };
+
+    onChange = (value) => {
+        this.setState({ value });
+    };
+
+    handleChangeLocationOk = () => {
+        for(let i=0;i<this.seasons.length;i++){
+            if(this.state.value === this.seasons[i][1]){
+                if(this.state.value === this.state.seasonName && this.state.collectionName === "None"){
+                    message.error(`You are currently on ${this.state.seasonName}`,1.5)
+                }
+                else {
+                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
+                        .then(() => {
+                            message.success("Change successfully",1)
+                            setTimeout(() => {
+                                window.location.href = `${window.location.origin}/${this.state.value}/products/${this.state.loadedProduct.name}`
+                            },1300)
+                        })
+                }
+            }
+        }
+        for(let i=0;i<this.collections.length;i++){
+            if(this.state.value === this.collections[i][1]){
+                if(this.state.value === this.state.collectionName){
+                    message.error(`You are currently on ${this.state.collectionName}`,1.5)
+                }
+                else {
+                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`, {collectionId: this.collections[i][0]})
+                        .then(() => {
+                            for (let j = 0; j < this.seasons.length; j++) {
+                                if (this.collections[i][2] === this.seasons[j][0]) {
+                                    message.success("Change successfully", 1)
+                                    setTimeout(() => {
+                                        window.location.href = `${window.location.origin}/${this.seasons[j][1]}/${this.state.value}/products/${this.state.loadedProduct.name}`
+                                    }, 1300)
+                                }
+                            }
+                        })
+                }
+            }
+        }
+    };
+
     render() {
-        if (this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions) {
+        if (this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions && this.state.seasons && this.state.collections) {
+            this.seasons = this.state.seasons.map(season => {
+                return [season.id,season.name]
+            });
+            this.collections = this.state.collections.map(collection => {
+                return [collection.id,collection.name,collection.seasonId]
+            });
+            this.treeData = this.state.seasons.map(season => {
+                let collections = this.state.collections.map(collection => {
+                    if(collection.seasonId === season.id){
+                        return {
+                            title: "Collection: "+collection.name,
+                            value: collection.name,
+                            key: collection.name + collection.id
+                        }
+                    }
+
+                });
+                return {
+                    title: "Season: " + season.name,
+                    value: season.name,
+                    key: season.name + season.id,
+                    children: collections
+                }
+            });
+            let currentLocation = null;
             let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
             let renderColorOptions = [];
             let renderDefaultColors = [];
@@ -392,6 +492,27 @@ class SingleProduct extends Component {
                     )
                 )
             }
+            if(this.state.collectionName === "None" && this.state.seasonName === "None"){
+                currentLocation = (
+                    <div>
+                        <p>Current location:</p>
+                        <h3>Company</h3>
+                    </div>)
+            }
+            else if(this.state.collectionName === "None"){
+                currentLocation = (
+                    <div>
+                        <p>Current location:</p>
+                        <h3>Season {this.state.seasonName}</h3>
+                    </div>)
+            }
+            else {
+                currentLocation = (
+                    <div>
+                        <p>Current location:</p>
+                        <h3>Collection {this.state.collectionName}</h3>
+                    </div>)
+            }
             return (
                 <div>
                     <Row type="flex">
@@ -426,6 +547,26 @@ class SingleProduct extends Component {
                                 <img alt="example" height="300" width="370" src={`${imgUrl}`}/>
                             </div>
                             <Card className="product-description">
+                                <Button onClick={this.changeLocation}>Change</Button>
+                                <Modal
+                                    title="Change Location"
+                                    visible={this.state.changeLocationVisible}
+                                    onOk={this.handleChangeLocationOk}
+                                    onCancel={this.handleChangeLocationCancel}
+                                    bodyStyle={{maxHeight: 300, overflow: 'auto'}}
+                                >
+                                    {currentLocation}
+                                    <p>Change to:</p>
+                                    <TreeSelect
+                                        style={{ width: 300 }}
+                                        value={this.state.value}
+                                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                        treeData={this.treeData}
+                                        placeholder="Please select"
+                                        treeDefaultExpandAll
+                                        onChange={this.onChange}
+                                    />
+                                </Modal>
                                 <p>Season:{this.state.seasonName}</p>
                                 <p>Collection:{this.state.collectionName}</p>
                             </Card>
@@ -496,7 +637,7 @@ class SingleProduct extends Component {
             )
         }
         else {
-            return "Loading........"
+            return <Spin/>
         }
 
     }
