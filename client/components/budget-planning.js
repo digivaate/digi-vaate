@@ -1,17 +1,13 @@
 import React,{ Component } from "react";
-import { makeData } from "../Data";
-import ProductCard from "./products/product-card";
+import '../index.css'
+import {Link} from 'react-router-dom';
 
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { Select, Button, Divider } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../api-config';
 
-
-
-const Option = Select.Option;
 class BudgetPlanningTable extends Component {
     constructor(props) {
         super(props);
@@ -20,8 +16,19 @@ class BudgetPlanningTable extends Component {
             isFetched: false
         };
         this.renderEditable = this.renderEditable.bind(this);
+        this.goToProduct = this.goToProduct.bind(this);
+        this.linkToProduct = this.linkToProduct.bind(this);
     }
 
+    //Update amount of individual product to database
+    updateProdAmount(id, amount) {
+        //name is used as identifier this time
+        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.error('Unable to patch amount:' + err));
+    }
 
     renderEditable(cellInfo) {
         return (
@@ -43,6 +50,25 @@ class BudgetPlanningTable extends Component {
                 }}
             />
         );
+    }
+
+    //BREADCRUMB DOESN'T KEEP UP WITH THIS
+    linkToProduct(cellInfo) {
+        let seasonId = (this.props.match.params.seasonId ? this.props.match.params.seasonId : '');
+        let collectionId = (this.props.match.params.collectionId ? this.props.match.params.collectionId : '');
+        return (
+            <Link to={`/../${seasonId}/products/${cellInfo.value}`}>
+                {cellInfo.value}
+            </Link>
+        )
+    }
+
+    goToProduct(state, rowInfo) {
+        return {
+            onClick: () => {
+                window.location = `${this.props.match.url}/../products/${rowInfo.row.productName}`
+            }
+        }
     }
 
     componentDidMount() {
@@ -71,7 +97,8 @@ class BudgetPlanningTable extends Component {
                         coverAmount: product.coverAmount,
                         purchasePrice: product.purchasePrice,
                         amount: product.amount,
-                        originName: product.originName
+                        collectionName: product.collectionName,
+                        seasonName: product.seasonName
                     });
                 });
                 this.setState({
@@ -140,9 +167,10 @@ class BudgetPlanningTable extends Component {
         // columns of table
         const columns = [
             {
-                Header: "Product",
-                headerClassName: "wordwrapEdit",
+                Header: "Product name",
+                headerClassName: "wordwrap",
                 accessor: 'productName',
+                //Cell: this.linkToProduct,
                 width: 140,
                 Footer: 'Total:'
             },
@@ -206,13 +234,19 @@ class BudgetPlanningTable extends Component {
             }
         ];
 
-        if (this.props.showProdOrigin) {
+        if (this.props.showCollection) {
             columns.push({
-                Header: "Origin",
-                headerClassName: "wordwrapEdit",
-                accessor: 'originName',
-                width: 180
+                Header: "Collection",
+                headerClassName: "wordwrap",
+                accessor: 'collectionName'
             });
+        }
+        if (this.props.showSeason) {
+            columns.push({
+                Header: 'Season',
+                headerClassName: 'wordwrap',
+                accessor: 'seasonName'
+            })
         }
         return (
             <div>
@@ -225,6 +259,7 @@ class BudgetPlanningTable extends Component {
                     className="highlight"
                     defaultPageSize={this.state.pageSize}
                     key={this.state.pageSize}
+                    getTdProps={this.goToProduct}
                 />
                 <br />
             </div>
