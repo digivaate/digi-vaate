@@ -6,8 +6,8 @@ class ProductController extends Controller {
     constructor() { super(Models.Product); }
     setRelations(entity, jsonBody){
         const promises = [];
-        if (jsonBody.colors) { promises.push(entity.setColors(jsonBody.colors)); }
-        if (jsonBody.materials) { promises.push(entity.setMaterials(jsonBody.materials)); }
+        if (jsonBody.colors) promises.push( entity.setColors(jsonBody.colors) );
+        if (jsonBody.materials) promises.push( entity.setMaterials(jsonBody.materials) );
         return Promise.all(promises);
     }
 

@@ -29,12 +29,14 @@ export default class Controller {
     }
 
     create(req, res) {
+        let entity = null;
         this.model.create(req.body)
             .then(ent => {
+                entity = ent;
                 return this.setRelations(ent, req.body);
             })
-            .then(ent => {
-                res.send(ent);
+            .then(() => {
+                res.send(entity);
             })
             .catch(err => {
                 console.error('Error: ' + err);

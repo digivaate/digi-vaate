@@ -5,8 +5,10 @@ import fs from 'fs';
 class MaterialController extends Controller {
     constructor() { super(Models.Material); }
     setRelations(entity, jsonBody){
-        if (jsonBody.products) entity.setProducts(jsonBody.products);
-        if (jsonBody.collections) entity.setCollections(jsonBody.collections);
+        const promises = [];
+        if (jsonBody.products) promises.push( entity.setProducts(jsonBody.products) );
+        if (jsonBody.collections) promises.push( entity.setCollections(jsonBody.collections) );
+        return Promise.all(promises);
     }
 
     uploadImage(req, res, next) {
