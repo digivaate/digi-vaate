@@ -43,7 +43,6 @@ class ProductsDisplay extends Component{
                         productLevelId: response.data[0].id
                     });
                 })
-
         }
         if(pathSnippetsLevel[0] === "season"){
             axios.get(`${API_ROOT}/season?name=${pathSnippetsName[0]}`)
@@ -95,29 +94,10 @@ class ProductsDisplay extends Component{
                         this.products[i].seasonName = "None";
                         this.products[i].collectionName = "None";
                     }
-                    if(this.products[i].seasonId){
-                        axios.get(`${API_ROOT}/season?id=${this.products[i].seasonId}`)
-                            .then(res => {
-                                this.products[i].seasonName = res.data[0].name;
-                                this.products[i].collectionName = "None";
-                                this.setState(prevState => prevState)
-                            });
+                    else if(this.products[i].seasonId){
+                        this.products[i].collectionName = "None";
                     }
-                    if(this.products[i].collectionId){
-                        axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-                            .then(response => {
-                                axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
-                                    .then(res => {
-                                        this.products[i].collectionName = res.data[0].name;
-                                        this.setState(prevState => prevState)
-                                        axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                                            .then(re => {
-                                                this.products[i].seasonName = re.data[0].name
-                                                this.setState(prevState => prevState)
-                                            })
-                                    });
-                            })
-                    }
+                    this.setState(prevState => prevState)
                 }
                 /*if(pathSnippetsLevel[0] === "company"){
                     for(let i = 0;i < this.products.length; i++){
@@ -259,8 +239,17 @@ class ProductsDisplay extends Component{
                                 axios.get(`${API_ROOT}/${this.props.requestPath}`)
                                     .then(res => {
                                         this.products = res.data;
-                                        this.setState({visible: false});
+                                        for(let i = 0;i < this.products.length; i++){
+                                            if(this.products[i].companyId){
+                                                this.products[i].seasonName = "None";
+                                                this.products[i].collectionName = "None";
+                                            }
+                                            else if(this.products[i].seasonId){
+                                                this.products[i].collectionName = "None";
+                                            }
+                                        }
                                         this.uploadImage = null;
+                                        this.setState({visible: false});
                                     });
                             });
                     })
@@ -274,6 +263,16 @@ class ProductsDisplay extends Component{
                         axios.get(`${API_ROOT}/${this.props.requestPath}`)
                             .then(res => {
                                 this.products = res.data;
+                                for(let i = 0;i < this.products.length; i++){
+                                    if(this.products[i].companyId){
+                                        this.products[i].seasonName = "None";
+                                        this.products[i].collectionName = "None";
+                                    }
+                                    else if(this.products[i].seasonId){
+                                        this.products[i].collectionName = "None";
+                                    }
+                                }
+                                this.uploadImage = null;
                                 this.setState({visible: false});
                             });
                     })
@@ -300,6 +299,7 @@ class ProductsDisplay extends Component{
             //return <SingleProduct productId={this.state.productName}/>
         }
         if (this.products) {
+            console.log(this.products);
             renderProductList = this.products.map(product =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imagePath !== null){
