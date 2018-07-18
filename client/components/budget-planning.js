@@ -16,7 +16,6 @@ class BudgetPlanningTable extends Component {
             isFetched: false
         };
         this.renderEditable = this.renderEditable.bind(this);
-        this.goToProduct = this.goToProduct.bind(this);
         this.linkToProduct = this.linkToProduct.bind(this);
     }
 
@@ -52,23 +51,12 @@ class BudgetPlanningTable extends Component {
         );
     }
 
-    //BREADCRUMB DOESN'T KEEP UP WITH THIS
     linkToProduct(cellInfo) {
-        let seasonId = (this.props.match.params.seasonId ? this.props.match.params.seasonId : '');
-        let collectionId = (this.props.match.params.collectionId ? this.props.match.params.collectionId : '');
         return (
-            <Link to={`/../${seasonId}/products/${cellInfo.value}`}>
+            <a href={`${this.props.match.url}/../products/${cellInfo.value}`}>
                 {cellInfo.value}
-            </Link>
+            </a>
         )
-    }
-
-    goToProduct(state, rowInfo) {
-        return {
-            onClick: () => {
-                window.location = `${this.props.match.url}/../products/${rowInfo.row.productName}`
-            }
-        }
     }
 
     componentDidMount() {
@@ -170,7 +158,7 @@ class BudgetPlanningTable extends Component {
                 Header: "Product name",
                 headerClassName: "wordwrap",
                 accessor: 'productName',
-                //Cell: this.linkToProduct,
+                Cell: this.linkToProduct,
                 width: 140,
                 Footer: 'Total:'
             },
@@ -258,8 +246,7 @@ class BudgetPlanningTable extends Component {
                     columns={columns}
                     className="highlight"
                     defaultPageSize={this.state.pageSize}
-                    key={this.state.pageSize}
-                    getTdProps={this.goToProduct}
+                    //key={this.state.pageSize}
                 />
                 <br />
             </div>
