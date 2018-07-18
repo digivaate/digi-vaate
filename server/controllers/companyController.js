@@ -45,20 +45,21 @@ class CompanyController extends Controller {
         })
             .then(comp => {
                 const products = [];
+                comp.products.forEach(prod => {
+                    products.push(prod);
+                });
                 comp.seasons.forEach(season => {
                     season.products.forEach(prod => {
-                        prod.dataValues.originName = 'season:' + season.name;
+                        prod.dataValues.seasonName = season.name;
                         products.push(prod);
                     });
                     season.collections.forEach(collection => {
                         collection.products.forEach(prod => {
-                            prod.dataValues.originName = 'collection:' + season.name;
+                            prod.dataValues.seasonName = season.name;
+                            prod.dataValues.collectionName = collection.name;
                             products.push(prod);
                         });
                     });
-                });
-                comp.products.forEach(prod => {
-                    products.push(prod);
                 });
                 res.send(products);
             })
