@@ -20,8 +20,16 @@ class SeasonSideBar extends Component{
             collections: null,
         }
     }
+
+    componentDidUpdate(prevState){
+            console.log("From ComponentDidUpdate");
+            console.log(this.props);
+    }
+
+
     componentDidMount() {
-        console.log(this.props)
+        console.log("From DidMount");
+        console.log(this.props);
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
                 this.setState({
@@ -35,7 +43,7 @@ class SeasonSideBar extends Component{
         let renderCollectionList = null;
         if(this.state.collections){
             renderCollectionList = this.state.collections.map(collection =>
-                <Menu.Item key={collection.id}>
+                <Menu.Item className="collection-item" style={{paddingLeft:45}} key={collection.id}>
                     <NavLink to={`/${this.props.match.params.seasonId}/${collection.name}`} className="nav-text">
                         {collection.name}
                     </NavLink>
@@ -55,9 +63,12 @@ class SeasonSideBar extends Component{
                             Budget
                         </NavLink>
                     </Menu.Item>
-                    <MenuItemGroup key="g1" title="Collections">
-                        {renderCollectionList}
-                    </MenuItemGroup>
+                    <Menu.Item key="collections">
+                        <NavLink to={`/${this.props.match.params.seasonId}/collections`} className={'nav-text'}>
+                            Collections
+                        </NavLink>Collection
+                    </Menu.Item>
+                    {renderCollectionList}
                 </Menu>
             </Sider>
         )

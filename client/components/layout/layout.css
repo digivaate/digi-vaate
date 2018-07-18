@@ -20,8 +20,13 @@ collection-side-bar.js
 .logo {
     margin: 0.5em;
 }
+
+.collection-item{
+    padding-left:40px !important;
+}
 /* breadcrumb.js */
 .bread-crumb{
     font-size:20px;
     margin: 0.5em;
 }
+

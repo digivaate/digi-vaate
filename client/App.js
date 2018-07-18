@@ -14,10 +14,10 @@ import ProductsDisplay from './components/products/products-display'
 import SingleProduct from './components/products/single-product'
 import SeasonSideBar from './components/layout/season-side-bar'
 import CollectionSideBar from './components/layout/collection-side-bar'
-import SingleSeason from './components/seasons/single-season'
 import SingleCollection from './components/collections/single_collection'
 import ThemeList from './components/themes/theme-list'
 import SingleMaterial from './components/materials/single-material'
+import SingleSeason from './components/seasons/single-season'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
@@ -80,6 +80,7 @@ class App extends React.Component {
                             <Route path="/:seasonId" exact component={SeasonSideBar} />
                             <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
                             <Route path={'/:seasonId/products'} exact component={SeasonSideBar}/>
+                            <Route path="/:seasonId/collections" exact component={SeasonSideBar}/>
                             {productsSeasonRouteSideBar}
                             <Route path="/:seasonId/:collectionId" component={CollectionSideBar} />
                         </Switch>
@@ -108,6 +109,7 @@ class App extends React.Component {
                                         showProdOrigin={true}
                                     />}
                                 />
+                                <Route path="/:seasonId/collections" exact component={SingleSeason}/>
                                 {productsSeasonRoute}
                                 <Route path="/:seasonId/:collectionId" exact component={SingleCollection} />
                                 <Route path="/:seasonId/:collectionId/budget" exact component={(props) =>
