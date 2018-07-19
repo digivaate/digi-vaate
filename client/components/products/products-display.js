@@ -377,14 +377,12 @@ class ProductsDisplay extends Component{
                     <Col span={6} key={product.id}>
                         <div className="product-card-wrapper">
                         <Card
+                            onClick = {() => this.handleSelect(product.name)}
                             hoverable
                             bodyStyle={{height:200}}
                             className="product-card-display"
                             cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
                             actions={[
-                                <div onClick = {() => this.handleSelect(product.name)}>
-                                    <Icon type="edit" />
-                                </div>,
                                 <div onClick = {() => this.handleDelete(product.name)}>
                                     <Icon type="delete" />
                                 </div>
