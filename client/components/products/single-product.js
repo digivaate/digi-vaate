@@ -4,7 +4,7 @@ import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spi
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
-
+const { Meta } = Card;
 const Option = Select.Option;
 
 class SingleProduct extends Component {
@@ -24,7 +24,8 @@ class SingleProduct extends Component {
             collectionName:'None',
             seasonName:'None',
             seasons: null,
-            collections:null
+            collections:null,
+            editModeStatus:false
         };
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOk = this.handleColorOk.bind(this);
@@ -116,7 +117,10 @@ class SingleProduct extends Component {
                             productName: response.data[0].name
                         });
                     })
-                    .then(() => this.updatedColors = this.state.productColors)
+                    .then(() => {
+                        this.updatedColors = this.state.productColors;
+                        this.updatedMaterials = this.state.productMaterials;
+                    });
             }
         }
         else if(this.props.match.params.productId){
@@ -131,7 +135,10 @@ class SingleProduct extends Component {
                             productName: response.data[0].name
                         });
                     })
-                    .then(() => this.updatedColors = this.state.productColors)
+                    .then(() => {
+                        this.updatedColors = this.state.productColors;
+                        this.updatedMaterials = this.state.productMaterials;
+                    });
             }
         }
     }
@@ -238,6 +245,7 @@ class SingleProduct extends Component {
     };
 
     handleMaterialChange(value) {
+        this.setState(prevState => prevState);
         for (let i = 0; i < value.length; i++) {
             for (let j = 0; j < this.state.materialOptions.length; j++) {
                 if (value[i] === this.state.materialOptions[j].name) {
@@ -249,39 +257,45 @@ class SingleProduct extends Component {
     }
 
     handleMaterialOk() {
-        if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
-            const { location } = this.props;
-            const pathSnippets = location.pathname.split('/').filter(i => i);
-            axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {materials: this.updatedMaterials})
-                .then(() => this.setState(prevState => prevState))
-                .then(() => this.setState({materialVisible: false}))
-                .then(response => {
-                    setTimeout(() => {
-                        message.success("Materials updated!", 1);
-                        axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
-                            .then(response => {
-                                this.setState({
-                                    productMaterials: response.data[0].materials,
-                                });
-                            })
-                    }, 100)
-                })
+        if (this.updatedMaterials.length > 3) {
+            message.error('Maximum 3 materials!')
         }
-        else if(this.props.match.params.productId){
-            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials})
-                .then(() => this.setState(prevState => prevState))
-                .then(() => this.setState({materialVisible: false}))
-                .then(response => {
-                    setTimeout(() => {
-                        message.success("Materials updated!", 1);
-                        axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
-                            .then(response => {
-                                this.setState({
-                                    productMaterials: response.data[0].materials,
-                                });
-                            })
-                    }, 100)
-                })
+
+        if(this.updatedMaterials.length <= 3) {
+            if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
+                const {location} = this.props;
+                const pathSnippets = location.pathname.split('/').filter(i => i);
+                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, {materials: this.updatedMaterials})
+                    .then(() => this.setState(prevState => prevState))
+                    .then(() => this.setState({materialVisible: false}))
+                    .then(response => {
+                        setTimeout(() => {
+                            message.success("Materials updated!", 1);
+                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`)
+                                .then(response => {
+                                    this.setState({
+                                        productMaterials: response.data[0].materials,
+                                    });
+                                })
+                        }, 100)
+                    })
+            }
+            else if (this.props.match.params.productId) {
+                axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials})
+                    .then(() => this.setState(prevState => prevState))
+                    .then(() => this.setState({materialVisible: false}))
+                    .then(response => {
+                        setTimeout(() => {
+                            message.success("Materials updated!", 1);
+                            axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                                .then(response => {
+                                    this.setState({
+                                        productMaterials: response.data[0].materials,
+                                    });
+                                })
+                        }, 100)
+                    })
+            }
         }
     };
 
@@ -415,6 +429,13 @@ class SingleProduct extends Component {
         }
     };
 
+    //Activate Edit Mode
+    activateEditMode = () => {
+        this.setState({
+            editModeStatus: !this.state.editModeStatus
+        })
+    };
+
     render() {
         if (this.state.loadedProduct && this.state.colorOptions && this.state.materialOptions && this.state.seasons && this.state.collections) {
             this.seasons = this.state.seasons.map(season => {
@@ -441,6 +462,11 @@ class SingleProduct extends Component {
                     children: collections
                 }
             });
+            let editNameBtn = null;
+            let editColorBtn = null;
+            let editMaterialBtn = null;
+            let changeLocationBtn = null;
+            let changeImgBtn = null;
             let currentLocation = null;
             let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
             let renderColorOptions = [];
@@ -449,6 +475,29 @@ class SingleProduct extends Component {
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             let renderMaterialOptions = [];
             let renderDefaultMaterials = [];
+            if(this.state.editModeStatus === true){
+                editNameBtn =
+                    <Button className="edit-btn" onClick={this.showNameModal}>
+                        <Icon type="edit"/>
+                    </Button>;
+
+                editColorBtn =
+                    <Button className="edit-btn" onClick={this.showColorModal}>
+                        <Icon type="edit"/>
+                    </Button>;
+                editMaterialBtn =
+                    <Button className="edit-btn" onClick={this.showMaterialModal}>
+                        <Icon type="edit"/>
+                    </Button>;
+
+                changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;
+                changeImgBtn =
+                    <div className="upload-btn-wrapper">
+                        <input type="file" name="file" onChange={this.onFileChange}/>
+                        <button className="btn-upload"><Icon type="upload"/></button>
+                    </div>;
+
+            }
             if (this.state.productImg !== null) {
                 imgUrl = `${API_ROOT}/${this.state.productImg}`
             }
@@ -480,16 +529,25 @@ class SingleProduct extends Component {
             }
             if (this.state.productMaterials.length > 0) {
                 renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
-                renderProductMaterials = this.state.productMaterials.map(material =>
-                    (
-                        <Col key={material.id} span={4}>
-                            <div
-                                className="product-material"
-                            >
-                                <p>{material.name}</p>
-                            </div>
-                        </Col>
-                    )
+                renderProductMaterials = this.state.productMaterials.map(material => {
+                    let materialImgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+                    if (material.imagePath !== null) {
+                        materialImgUrl = `${API_ROOT}/${material.imagePath}`
+                    }
+                        return (
+                            <Col key={material.id} span={8}>
+                                <Card
+                                    hoverable
+                                    style={{width: 170, height: 160}}
+                                    cover={<img width="100" height="100" src={`${materialImgUrl}`}/>}
+                                >
+                                    <Meta
+                                        title={material.name}
+                                    />
+                                </Card>
+                            </Col>
+                        )
+                    }
                 )
             }
             if(this.state.collectionName === "None" && this.state.seasonName === "None"){
@@ -517,11 +575,7 @@ class SingleProduct extends Component {
                 <div>
                     <Row type="flex">
                         <h1>{this.state.loadedProduct.name}&nbsp;</h1>
-                        <Button className="edit-btn"
-                                onClick={this.showNameModal}
-                        >
-                            <Icon type="edit"/>
-                        </Button>
+                        {editNameBtn}
                         <Modal
                             title="Edit name"
                             visible={this.state.nameVisible}
@@ -540,14 +594,11 @@ class SingleProduct extends Component {
                     <Row>
                         <Col span={8}>
                             <div className="img-container">
-                                <div className="upload-btn-wrapper">
-                                    <input type="file" name="file" onChange={this.onFileChange}/>
-                                    <button className="btn-upload"><Icon type="upload"/></button>
-                                </div>
+                                {changeImgBtn}
                                 <img alt="example" height="300" width="370" src={`${imgUrl}`}/>
                             </div>
                             <Card className="product-description">
-                                <Button onClick={this.changeLocation}>Change</Button>
+                                {changeLocationBtn}
                                 <Modal
                                     title="Change Location"
                                     visible={this.state.changeLocationVisible}
@@ -572,15 +623,15 @@ class SingleProduct extends Component {
                             </Card>
                         </Col>
                         <Col span={16}>
-                            <Card title="Product information" className="product-card-information">
+                            <Card
+                                title="Product information"
+                                className="product-card-information"
+                                extra={<Button onClick={this.activateEditMode}>Edit</Button>}
+                            >
                                 <Row gutter={8}>
                                     <h4>Colors</h4>
                                     {renderProductColors}
-                                    <Button className="edit-btn"
-                                            onClick={this.showColorModal}
-                                    >
-                                        <Icon type="edit"/>
-                                    </Button>
+                                    {editColorBtn}
                                     <Modal
                                         title="Edit color"
                                         visible={this.state.colorVisible}
@@ -605,11 +656,7 @@ class SingleProduct extends Component {
                                 <Row gutter={8}>
                                     <h4>Materials</h4>
                                     {renderProductMaterials}
-                                    <Button className="edit-btn"
-                                            onClick={this.showMaterialModal}
-                                    >
-                                        <Icon type="edit"/>
-                                    </Button>
+                                    {editMaterialBtn}
                                     <Modal
                                         title="Edit material"
                                         visible={this.state.materialVisible}
@@ -617,6 +664,7 @@ class SingleProduct extends Component {
                                         onCancel={this.handleMaterialCancel}
                                         bodyStyle={{maxHeight: 300, overflow: 'auto'}}
                                     >
+                                        <p>Number of materials: {this.updatedMaterials.length}/3</p>
                                         <Select
                                             mode="tags"
                                             size={'default'}
@@ -629,7 +677,9 @@ class SingleProduct extends Component {
                                         </Select>
                                     </Modal>
                                 </Row>
-                                <Divider/>
+                                <br/>
+                                <br/>
+                                <p>Total materials cost: {this.state.loadedProduct.materialCosts}</p>
                             </Card>
                         </Col>
                     </Row>

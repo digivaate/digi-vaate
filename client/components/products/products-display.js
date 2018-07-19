@@ -285,6 +285,13 @@ class ProductsDisplay extends Component{
     };
 
     render() {
+        let showTotalProducts = (
+            this.products.length <= 1
+                ?
+                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> product</h2>
+                :
+                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> products</h2>
+        );
         let renderProductList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
@@ -338,14 +345,12 @@ class ProductsDisplay extends Component{
                             <Col span={6} key={product.id}>
                                 <div className="product-card-wrapper">
                                     <Card
+                                        onClick = {() => this.handleSelect(product.name)}
                                         hoverable
                                         bodyStyle={{height:200}}
                                         className="product-card-display"
                                         cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
                                         actions={[
-                                            <div onClick = {() => this.handleSelect(product.name)}>
-                                                <Icon type="edit" />
-                                            </div>,
                                             <div onClick = {() => this.handleDelete(product.name)}>
                                                 <Icon type="delete" />
                                             </div>
@@ -447,7 +452,7 @@ class ProductsDisplay extends Component{
                 />
                 <br/>
                 <br/>
-                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> products</h2>
+                {showTotalProducts}
                 <List
                     dataSource={renderProductList}
                     grid={{ gutter: 40, column: 4 }}
