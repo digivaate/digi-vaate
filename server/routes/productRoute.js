@@ -3,10 +3,12 @@ import ProductController from '../controllers/productController';
 const router = express.Router();
 import multer from '../multer';
 
-router.get('/', ProductController.find_by_attribute);
-router.post('/', ProductController.clearOtherRelations, ProductController.create);
-router.patch('/', ProductController.clearOtherRelations, ProductController.update);
-router.patch('/image',ProductController.deleteImage, multer.single('image'), ProductController.uploadImage);
-router.delete('/', ProductController.delete);
+const productController = new ProductController();
+
+router.get('/', productController.find_by_attribute);
+router.post('/', ProductController.clearOtherRelations, productController.create);
+router.patch('/', ProductController.clearOtherRelations, productController.update);
+router.patch('/image',productController.deleteImage, multer.single('image'), productController.uploadImage);
+router.delete('/', productController.delete);
 
 module.exports = router;

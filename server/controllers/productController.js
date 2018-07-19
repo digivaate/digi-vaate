@@ -11,7 +11,7 @@ class ProductController extends Controller {
         return Promise.all(promises);
     }
 
-    clearOtherRelations(req, res, next) {
+    static clearOtherRelations(req, res, next) {
         if (req.body.companyId) {
             req.body.seasonId = null;
             req.body.collectionId = null;
@@ -23,6 +23,36 @@ class ProductController extends Controller {
             req.body.companyId = null;
         }
         next();
+    }
+
+    static calcMaterialCosts(materials) {
+        let materialCosts = 0;
+        materials.forEach(material => {
+            materialCosts += material.unitPrice * material.consumption + material.freight;
+            console.log('Material costs: ' + materialCosts);
+        });
+        return materialCosts;
+    }
+
+    find_by_attribute(req, res) {
+        const properties = Controller.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.stat(500).json(properties.error);
+            return;
+        }
+        this.model.findAll({
+            where: properties,
+            include: [{ all: true }]
+        })
+            .then(ents => {
+                console.log(ents);
+                ents.forEach(ent => ent.dataValues.materialCosts = ProductController.calcMaterialCosts(ent.materials));
+                res.send(ents);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
     }
 
     //saves the file path to entity that is saved to the server in the previous function
@@ -74,4 +104,4 @@ class ProductController extends Controller {
     }
 }
 
-export default new ProductController();
+export default ProductController;
