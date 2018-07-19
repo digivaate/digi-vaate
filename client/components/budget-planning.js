@@ -51,6 +51,8 @@ class BudgetPlanningTable extends Component {
         );
     }
 
+
+
     linkToProduct(cellInfo) {
         return (
             <a href={`${this.props.match.url}/../products/${cellInfo.value}`}>
@@ -89,9 +91,26 @@ class BudgetPlanningTable extends Component {
                         seasonName: product.seasonName
                     });
                 });
+
+                //fetch budget if in season level
+                if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
+                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`)
+                        .then(res => {
+                            return res.data[0].budget;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            return null;
+                        })
+                } else {
+                    return null;
+                }
+            })
+            .then(budget => {
                 this.setState({
                     data: dataCollected,
-                    pageSize: dataCollected.length
+                    pageSize: dataCollected.length,
+                    budget: budget
                 });
             })
             .catch(err => console.error(err));
@@ -180,18 +199,6 @@ class BudgetPlanningTable extends Component {
                 Footer: sumOfAmounts
             },
             {
-                Header: "Total sale",
-                headerClassName: "wordwrap",
-                id: "totalSale",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amount)).toFixed(2))
-                        }}
-                    />,
-                Footer: sumOfTotalSale
-            },
-            {
                 Header: "Cover %",
                 headerClassName: "wordwrap",
                 accessor: "coverPercent",
@@ -213,12 +220,36 @@ class BudgetPlanningTable extends Component {
                 headerClassName: "wordwrap",
                 id: "purchasingPrice",
                 accessor: d =>
+                    <div>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
+                            }}
+                        />
+                        <div>
+
+                        </div>
+                    </div>,
+                Footer: () => {
+                        return(
+                            <div>
+                                <div>{sumOfPurchasePrice()}</div>
+                                <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
+                            </div>
+                        )
+                    }
+            },
+            {
+                Header: "Total sale",
+                headerClassName: "wordwrap",
+                id: "totalSale",
+                accessor: d =>
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
+                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amount)).toFixed(2))
                         }}
                     />,
-                Footer: sumOfPurchasePrice
+                Footer: sumOfTotalSale
             }
         ];
 
@@ -242,11 +273,12 @@ class BudgetPlanningTable extends Component {
                 <ReactTable
                     sortable = {true}
                     showPagination={false}
+                    resizable={false}
                     data={data}
                     columns={columns}
                     className="highlight"
                     defaultPageSize={this.state.pageSize}
-                    //key={this.state.pageSize}
+                    key={this.state.pageSize}
                 />
                 <br />
             </div>
