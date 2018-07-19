@@ -1,5 +1,6 @@
 import models from '../models/models';
 import Controller from './Controller';
+import ProductController from "./productController";
 
 class CompanyController extends Controller {
     constructor() { super(models.Company); }
@@ -61,6 +62,7 @@ class CompanyController extends Controller {
                         });
                     });
                 });
+                products.forEach(product => ProductController.addMaterialCosts(product));
                 res.send(products);
             })
             .catch(err => {

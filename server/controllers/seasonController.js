@@ -1,5 +1,6 @@
 import models from '../models/models';
 import Controller from './Controller';
+import ProductController from "./productController";
 
 class SeasonController extends Controller {
     constructor() { super(models.Season); }
@@ -46,6 +47,7 @@ class SeasonController extends Controller {
                     prod.dataValues.seasonName = season.name;
                     products.push(prod);
                 });
+                products.forEach(product => ProductController.addMaterialCosts(product));
                 res.send(products);
             })
             .catch(err => {

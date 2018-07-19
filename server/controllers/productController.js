@@ -25,13 +25,12 @@ class ProductController extends Controller {
         next();
     }
 
-    static calcMaterialCosts(materials) {
+    static addMaterialCosts(product) {
         let materialCosts = 0;
-        materials.forEach(material => {
+        product.dataValues.materials.forEach(material => {
             materialCosts += material.unitPrice * material.consumption + material.freight;
-            console.log('Material costs: ' + materialCosts);
         });
-        return materialCosts;
+        product.dataValues.materialCosts = materialCosts;
     }
 
     find_by_attribute(req, res) {

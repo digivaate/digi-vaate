@@ -1,5 +1,6 @@
 import Models from '../models/models';
 import Controller from './Controller';
+import ProductController from './productController';
 
 class CollectionController extends Controller {
     constructor() { super(Models.Collection); }
@@ -47,8 +48,9 @@ class CollectionController extends Controller {
                 order: [["name", "ASC"]],
             }]
         })
-            .then(ent => {
-                res.send(ent.products);
+            .then(collection => {
+                collection.products.forEach(product => ProductController.addMaterialCosts(product));
+                res.send(collection.products);
             })
             .catch(err => {
                 console.error(err);
