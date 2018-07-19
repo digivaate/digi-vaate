@@ -24,6 +24,10 @@ collection-side-bar.js
 .collection-item{
     padding-left:45px !important;
 }
+
+.season-item{
+    padding-left:45px !important;
+}
 /* breadcrumb.js */
 .bread-crumb{
     font-size:20px;

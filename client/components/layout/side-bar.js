@@ -9,6 +9,7 @@ const MenuItemGroup = Menu.ItemGroup;
 const {  Sider } = Layout;
 import axios from'axios';
 import { API_ROOT } from '../../api-config';
+import "./layout.css"
 
 
 class SideBar extends Component{
@@ -29,7 +30,7 @@ class SideBar extends Component{
         let renderSeasonList = null;
         if(this.seasons){
             renderSeasonList = this.seasons.map(season =>
-                <Menu.Item key={season.id}>
+                <Menu.Item className="season-item" style={{paddingLeft:45}} key={season.id}>
                     <NavLink to={season.name} className="nav-text">
                         {season.name}
                     </NavLink>
@@ -38,9 +39,17 @@ class SideBar extends Component{
         }return (
             <Sider>
                 <Menu className="side-bar-menu" mode="inline">
-                    <MenuItemGroup key="g1" title="Season">
-                        {renderSeasonList}
-                    </MenuItemGroup>
+                    <Menu.Item key="products">
+                        <NavLink to={"/products"}>
+                            Products
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="seasons">
+                        <NavLink to="/seasons">
+                            Seasons
+                        </NavLink>
+                    </Menu.Item>
+                    {renderSeasonList}
                 </Menu>
             </Sider>
         )

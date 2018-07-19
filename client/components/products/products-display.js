@@ -1,12 +1,10 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider,Button,Form,message,Spin } from 'antd';
-import {Redirect,Link} from 'react-router-dom'
+import { Card, Row, Col,Icon,Modal,Button,message,Spin } from 'antd';
+import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
-import FormData from 'form-data';
 const { Meta } = Card;
 const confirm = Modal.confirm;
-const FormItem = Form.Item;
 import "./products.css"
 import ProductCreateForm from './product-card';
 

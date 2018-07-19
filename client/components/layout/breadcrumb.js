@@ -64,7 +64,9 @@ class BreadCrumbDigi extends Component{
                             this.companiesProduct = response.data;
                             for(let m = 0 ; m<this.companiesProduct.length; m++){
                                 this.companiesProductsMap[m] = this.companiesProduct[m].name;
-                                this.breadcrumbNameMap["/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
+                                this.breadcrumbNameMap["/products"] = "Products";
+                                this.breadcrumbNameMap["/seasons"] = "Seasons";
+                                this.breadcrumbNameMap["/products/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
                             }
                         })
                 }

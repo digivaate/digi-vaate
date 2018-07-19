@@ -1,11 +1,11 @@
 import React,{ Component } from "react";
-import { Modal,Form,Input} from 'antd';
+import { Modal,Form,Input } from 'antd';
 const FormItem = Form.Item;
-import "./seasons.css"
+import "./company.css"
 
 
 
-const CollectionCreateForm = Form.create()(
+const SeasonCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
             super(props);
@@ -16,7 +16,7 @@ const CollectionCreateForm = Form.create()(
             return (
                 <Modal
                     visible={visible}
-                    title="Create a collection"
+                    title="Create a season"
                     okText="Create"
                     onCancel={onCancel}
                     onOk={onCreate}
@@ -24,11 +24,19 @@ const CollectionCreateForm = Form.create()(
                     <Form layout="vertical">
                         <FormItem label="Name">
                             {getFieldDecorator('name', {
-                                rules: [{ required: true, message: 'Please input the name of collection' }],
+                                rules: [{ required: true, message: 'Please input the name of season' }],
                             })(
                                 <Input />
                             )}
                         </FormItem>
+                        <FormItem label="Budget">
+                            {getFieldDecorator('budget', {
+                                rules: [{ required: true, message: 'Please input the budget of season' }],
+                            })(
+                                <Input />
+                            )}
+                        </FormItem>
+
 
                     </Form>
                 </Modal>
@@ -37,4 +45,4 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-export default CollectionCreateForm;
+export default SeasonCreateForm;

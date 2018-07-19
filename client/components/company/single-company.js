@@ -2,30 +2,30 @@ import React,{Component} from 'react';
 import { List,Button } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
-import './seasons.css'
-import CollectionCreateForm from './newCollection'
+import './company.css'
+import SeasonCreateForm from './newSeason'
 
 
-class SingleSeason extends Component{
+class SingleCompany extends Component{
     constructor(props){
         super(props);
         this.state={
             isFetched:false,
-            collections:null,
+            company:null,
             seasons:null
         }
     }
     componentDidMount(){
-        axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+        axios.get(`${API_ROOT}/company?name=Lumi`)
             .then(response => {
                 this.setState({
-                    collections: response.data[0].collections,
-                    seasons: response.data[0]
+                    seasons: response.data[0].seasons,
+                    company: response.data[0]
                 })
             })
     }
 
-    createNewCollection = () => {
+    createNewSeason = () => {
         this.setState({ visible: true })
     };
 
@@ -39,17 +39,17 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id})
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
                 .then(() => {
-                    axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+                    axios.get(`${API_ROOT}/company?name=Lumi`)
                         .then(response => {
                             this.setState({
-                                collections: response.data[0].collections,
-                                seasons: response.data[0],
+                                seasons: response.data[0].seasons,
+                                company: response.data[0],
                                 visible:false
                             })
                         })
-                })
+                });
             form.resetFields();
         });
     };
@@ -59,13 +59,13 @@ class SingleSeason extends Component{
     };
 
     render(){
-        let renderCollectionsOfSeason = [];
-        if(this.state.collections){
-            for(let i=0; i<this.state.collections.length; i++){
-                renderCollectionsOfSeason[i] = this.state.collections[i].name
+        let renderSeasonsOfCompany = [];
+        if(this.state.seasons){
+            for(let i=0; i<this.state.seasons.length; i++){
+                renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget
             }
         }
-        if(renderCollectionsOfSeason.length === 0){
+        if(renderSeasonsOfCompany.length === 0){
             return (
                 <div>
                     <h1>Collections of season</h1>
@@ -75,14 +75,14 @@ class SingleSeason extends Component{
         }
         return (
             <div>
-                <h1>Collections of season</h1>
+                <h1>Seasons of company</h1>
                 <Button type="primary"
                         size="large"
-                        onClick={this.createNewCollection}
+                        onClick={this.createNewSeason}
                 >
-                    New collection
+                    New season
                 </Button>
-                <CollectionCreateForm
+                <SeasonCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
@@ -93,7 +93,7 @@ class SingleSeason extends Component{
                 <List
                     size="small"
                     bordered
-                    dataSource={renderCollectionsOfSeason}
+                    dataSource={renderSeasonsOfCompany}
                     renderItem={item => (<List.Item>{item}</List.Item>)}
                 />
             </div>
@@ -101,4 +101,4 @@ class SingleSeason extends Component{
     }
 }
 
-export default SingleSeason;
+export default SingleCompany;

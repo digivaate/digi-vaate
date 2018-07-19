@@ -18,6 +18,7 @@ import SingleCollection from './components/collections/single_collection'
 import ThemeList from './components/themes/theme-list'
 import SingleMaterial from './components/materials/single-material'
 import SingleSeason from './components/seasons/single-season'
+import SingleCompany from './components/company/single-company'
 
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
@@ -54,10 +55,10 @@ class App extends React.Component {
         let productsSeasonRouteSideBar = null;
         if(this.productsCompany.length > 0){
             productsCompanyRoute = this.productsCompany.map(product =>
-                <Route path={`/${product}`} exact component={SingleProduct}/>
+                <Route path={`/products/${product}`} exact component={SingleProduct}/>
             );
             productsCompanyRouteSideBar = this.productsCompany.map(product =>
-                <Route path={`/${product}`} exact component={SideBar}/>
+                <Route path={`/products/${product}`} exact component={SideBar}/>
             );
         }
         if(this.productsSeason.length > 0){
@@ -76,6 +77,8 @@ class App extends React.Component {
                     <div className="sider">
                         <Switch>
                             <Route path="/" exact component={SideBar}/>
+                            <Route path="/products" component = {SideBar}/>
+                            <Route path="/seasons" component ={SideBar}/>
                             {productsCompanyRouteSideBar}
                             <Route path="/:seasonId" exact component={SeasonSideBar} />
                             <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
@@ -87,14 +90,14 @@ class App extends React.Component {
                     </div>
                     <div className="content">
                         <div>
-                            <BackTop />
                             <Switch>
-                                <Route path='/' exact component={(props) =>
+                                <Route path='/products' exact component={(props) =>
                                     <ProductsDisplay
                                         {...props}
                                         requestPath={`/company/products?name=Lumi`}
                                     />}
                                 />
+                                <Route path="/seasons" exact component={SingleCompany}/>
                                 {productsCompanyRoute}
                                 <Route path="/:seasonId/products" exact component={(props) =>
                                     <ProductsDisplay
