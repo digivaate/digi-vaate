@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,Spin } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,Spin,List } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -449,9 +449,19 @@ class ProductsDisplay extends Component{
                 />
                 <br/>
                 <br/>
-                <Row gutter={40}>
-                    {renderProductList}
-                </Row>
+                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> products</h2>
+                <List
+                    dataSource={renderProductList}
+                    grid={{ gutter: 40, column: 4 }}
+                    pagination={{
+                        pageSize: 28,
+                        hideOnSinglePage: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                    }}
+                    renderItem={item => <List.Item>{item}</List.Item>}
+                >
+                </List>
             </div>
         )
     }
