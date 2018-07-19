@@ -45,7 +45,7 @@ class ProductController extends Controller {
         })
             .then(ents => {
                 console.log(ents);
-                ents.forEach(ent => ent.dataValues.materialCosts = ProductController.calcMaterialCosts(ent.materials));
+                ents.forEach(ent => ProductController.addMaterialCosts(ent));
                 res.send(ents);
             })
             .catch(err => {
