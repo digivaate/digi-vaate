@@ -436,7 +436,6 @@ class ProductsDisplay extends Component{
             <div>
                 {singleProduct}
                 <h1>Products</h1>
-                {renderProductList}
                 <Button type="primary"
                         size="large"
                         onClick={this.createNewProduct}
@@ -453,6 +452,7 @@ class ProductsDisplay extends Component{
                 <br/>
                 <br/>
                 <Row gutter={40}>
+                    {renderProductList}
                 </Row>
             </div>
         )
