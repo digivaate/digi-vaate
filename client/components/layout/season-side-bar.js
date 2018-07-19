@@ -21,15 +21,7 @@ class SeasonSideBar extends Component{
         }
     }
 
-    componentDidUpdate(prevState){
-            console.log("From ComponentDidUpdate");
-            console.log(this.props);
-    }
-
-
     componentDidMount() {
-        console.log("From DidMount");
-        console.log(this.props);
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
                 this.setState({
