@@ -299,7 +299,6 @@ class ProductsDisplay extends Component{
             //return <SingleProduct productId={this.state.productName}/>
         }
         if (this.products) {
-            console.log(this.products);
             renderProductList = this.products.map(product =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imagePath !== null){
@@ -334,6 +333,46 @@ class ProductsDisplay extends Component{
                         else {
                             renderProductMaterials = <p>No materials</p>
                         }
+                    }
+
+                    if(this.state.productLevel === "collection"){
+                        return (
+                            <Col span={6} key={product.id}>
+                                <div className="product-card-wrapper">
+                                    <Card
+                                        hoverable
+                                        bodyStyle={{height:200}}
+                                        className="product-card-display"
+                                        cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
+                                        actions={[
+                                            <div onClick = {() => this.handleSelect(product.name)}>
+                                                <Icon type="edit" />
+                                            </div>,
+                                            <div onClick = {() => this.handleDelete(product.name)}>
+                                                <Icon type="delete" />
+                                            </div>
+                                        ]}
+                                    >
+                                        <Meta
+                                            title={product.name}
+                                            description={
+                                                <div>
+                                                    <br/>
+                                                    <br/>
+                                                    <Row gutter={8}>
+                                                        { renderProductColors }
+                                                    </Row>
+                                                    <Row gutter={16}>
+                                                        <hr />
+                                                        {renderProductMaterials}
+                                                    </Row>
+                                                </div>
+                                            }
+                                        />
+                                    </Card>
+                                </div>
+                            </Col>
+                        )
                     }
 
                 return(
@@ -382,6 +421,12 @@ class ProductsDisplay extends Component{
                 return (
                     <div>
                         <h1>Products</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewProduct}
+                        >
+                            Create new product
+                        </Button>
                         <Spin/>
                     </div>
                 )
@@ -407,7 +452,6 @@ class ProductsDisplay extends Component{
                 <br/>
                 <br/>
                 <Row gutter={40}>
-                    {renderProductList}
                 </Row>
             </div>
         )
