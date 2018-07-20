@@ -23,7 +23,13 @@ const models = {
     Collection: sequelize.import('./collectionModel'),
     Season: sequelize.import('./seasonModel'),
     Company: sequelize.import('./companyModel'),
-    Theme: sequelize.import('./themeModel')
+    Theme: sequelize.import('./themeModel'),
+    MaterialProduct: sequelize.define('material_product', {
+        consumption: {
+            type: Sequelize.FLOAT,
+            defaultValue: 0
+        }
+    })
 };
 
 Object.keys(models).forEach((modelName) => {

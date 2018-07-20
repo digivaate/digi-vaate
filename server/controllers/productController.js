@@ -4,12 +4,6 @@ import fs from 'fs';
 
 class ProductController extends Controller {
     constructor() { super(Models.Product); }
-    setRelations(entity, jsonBody){
-        const promises = [];
-        if (jsonBody.colors) promises.push( entity.setColors(jsonBody.colors) );
-        if (jsonBody.materials) promises.push( entity.setMaterials(jsonBody.materials) );
-        return Promise.all(promises);
-    }
 
     static clearOtherRelations(req, res, next) {
         if (req.body.companyId) {
@@ -28,9 +22,23 @@ class ProductController extends Controller {
     static addMaterialCosts(product) {
         let materialCosts = 0;
         product.dataValues.materials.forEach(material => {
-            materialCosts += material.unitPrice * material.consumption + material.freight;
+            materialCosts += material.unitPrice * material.material_product.consumption + material.freight;
         });
         product.dataValues.materialCosts = materialCosts;
+    }
+
+    async setRelations(entity, jsonBody) {
+        const promises = [];
+        if (jsonBody.colors) promises.push(entity.setColors(jsonBody.colors));
+        if (jsonBody.materials) {
+            await entity.setMaterials([]);
+            jsonBody.materials.forEach(mat => {
+                promises.push(
+                    entity.addMaterial(mat.id, {through: {consumption: mat.consumption}})
+                )
+            });
+        }
+        return Promise.all(promises);
     }
 
     find_by_attribute(req, res) {
@@ -44,7 +52,6 @@ class ProductController extends Controller {
             include: [{ all: true }]
         })
             .then(ents => {
-                console.log(ents);
                 ents.forEach(ent => ProductController.addMaterialCosts(ent));
                 res.send(ents);
             })

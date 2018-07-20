@@ -104,8 +104,8 @@ function createEntities() {
 function addRelations() {
     promises = [
         products[0].setColors([1,2]),
-        products[0].setMaterials(1),
-        products[1].addMaterial(1),
+        products[0].addMaterial(1, {through: {consumption: 20}}),
+        products[1].addMaterial(1, {through: {consumption: 10}}),
         collections[0].updateAttributes({ seasonId: 1}),
         collections[0].setTheme(1),
         collections[0].addProduct(products[0]),
