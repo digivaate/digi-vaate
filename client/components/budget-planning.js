@@ -1,12 +1,11 @@
 import React,{ Component } from "react";
-import '../index.css'
-import {Link} from 'react-router-dom';
+import '../index.css';
+import { API_ROOT } from '../api-config';
+import axios from 'axios';
 
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import axios from 'axios';
-import { API_ROOT } from '../api-config';
 
 class BudgetPlanningTable extends Component {
     constructor(props) {
@@ -17,12 +16,12 @@ class BudgetPlanningTable extends Component {
         };
         this.renderEditable = this.renderEditable.bind(this);
         this.linkToProduct = this.linkToProduct.bind(this);
+        this.source = axios.CancelToken.source();
     }
-
     //Update amount of individual product to database
     updateProdAmount(id, amount) {
         //name is used as identifier this time
-        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount })
+        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount },{cancelToken: this.source.token})
             .then(res => {
                 console.log(res);
             })
@@ -63,10 +62,11 @@ class BudgetPlanningTable extends Component {
 
     componentDidMount() {
         const dataCollected = [];
-        axios.get(`${API_ROOT}${this.props.requestPath}`)
+        axios.get(`${API_ROOT}${this.props.requestPath}`, { cancelToken: this.source.token})
             .then(response => {
                 this.products = response.data;
                 this.products.forEach(product => {
+                    /*
                     let materialCost = [];
                     product.materials.forEach(material => {
                         materialCost.push(parseFloat((parseFloat(material.consumption) * parseFloat(material.unitPrice) + parseFloat(material.freight)).toFixed(2)));
@@ -75,8 +75,9 @@ class BudgetPlanningTable extends Component {
                             materialCost[0] = parseFloat((materialCost[0] * 1.3).toFixed(2));
                     }
                     product.materialCostTotal = materialCost.reduce((a, b) => a + b, 0);
-                    product.coverAmount = parseFloat(((product.materialCostTotal + product.subcCostTotal) * (product.coverPercent / 100) / (1 - (product.coverPercent / 100))).toFixed(2));
-                    product.purchasePrice = parseFloat((product.materialCostTotal + product.subcCostTotal).toFixed(2));
+                    */
+                    product.coverAmount = parseFloat(((product.materialCosts + product.subcCostTotal) * (product.coverPercent / 100) / (1 - (product.coverPercent / 100))).toFixed(2));
+                    product.purchasePrice = parseFloat((product.materialCosts + product.subcCostTotal).toFixed(2));
                     product.unitPriceWithoutTax = parseFloat((product.coverAmount + product.purchasePrice).toFixed(2));
 
                     dataCollected.push({
@@ -94,7 +95,7 @@ class BudgetPlanningTable extends Component {
 
                 //fetch budget if in season level
                 if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
-                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`)
+                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, {cancelToken: this.source.token})
                         .then(res => {
                             return res.data[0].budget;
                         })
@@ -107,17 +108,20 @@ class BudgetPlanningTable extends Component {
                 }
             })
             .then(budget => {
-                this.setState({
-                    data: dataCollected,
-                    pageSize: dataCollected.length,
-                    budget: budget
-                });
+                    this.setState({
+                        data: dataCollected,
+                        pageSize: dataCollected.length,
+                        budget: budget
+                    });
             })
             .catch(err => console.error(err));
     };
 
-    render() {
+    componentWillUnmount() {
+        this.source.cancel('Aborting table data fetching');
+    };
 
+    render() {
         const {data} = this.state;
         // First delivery sum calculation
         const sumOfAmounts = function(){
