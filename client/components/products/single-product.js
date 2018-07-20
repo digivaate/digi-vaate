@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect} from 'antd';
+import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect,Popover} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
@@ -275,6 +275,7 @@ class SingleProduct extends Component {
                                 .then(response => {
                                     this.setState({
                                         productMaterials: response.data[0].materials,
+                                        loadedProduct: response.data[0]
                                     });
                                 })
                         }, 100)
@@ -291,6 +292,7 @@ class SingleProduct extends Component {
                                 .then(response => {
                                     this.setState({
                                         productMaterials: response.data[0].materials,
+                                        loadedProduct: response.data[0]
                                     });
                                 })
                         }, 100)
@@ -465,8 +467,8 @@ class SingleProduct extends Component {
             let editNameBtn = null;
             let editColorBtn = null;
             let editMaterialBtn = null;
-            let changeLocationBtn = null;
-            let changeImgBtn = null;
+            let changeLocationBtn = <div style={{height:32}}></div>;
+            let changeImgBtn = <div style={{height:40}}></div>;
             let currentLocation = null;
             let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
             let renderColorOptions = [];
@@ -517,14 +519,23 @@ class SingleProduct extends Component {
             }
             if (this.state.productColors.length > 0) {
                 renderDefaultColors = this.state.productColors.map(color => color.name);
-                renderProductColors = this.state.productColors.map(color =>
-                    (
+                renderProductColors = this.state.productColors.map(color =>{
+                    const colorContent =(
+                        <div>
+                            <p>{color.name}</p>
+                            <p>{color.value}</p>
+                        </div>
+                    );
+                    return(
                         <Col span={2} key={color.id}>
-                            <Card hoverable className="product-color" style={{
-                                backgroundColor: color.value,
-                            }}/>
+                            <Popover content={colorContent}>
+                                <Card hoverable className="product-color" style={{
+                                    backgroundColor: color.value,
+                                }}/>
+                            </Popover>
                         </Col>
                     )
+                }
                 )
             }
             if (this.state.productMaterials.length > 0) {

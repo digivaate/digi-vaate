@@ -70,14 +70,13 @@ class MaterialList extends Component{
             //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
             values.imagePath = null;
             console.log('Received values of form: ', values);
-            /*
             if(this.uploadImage) {
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
-                        axios.patch(`${API_ROOT}/material/${response.data[0].id}/image`, this.uploadImage)
+                        axios.patch(`${API_ROOT}/material/${response.data.id}/image`, this.uploadImage)
                             .then(() => {
                                 message.success("Material created",1);
-                                axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                                axios.get(`${API_ROOT}/material`)
                                     .then(res => {
                                         this.materials = res.data;
                                         this.setState({visible: false});
@@ -92,7 +91,7 @@ class MaterialList extends Component{
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
                         message.success("Material created",1);
-                        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                        axios.get(`${API_ROOT}/material`)
                             .then(res => {
                                 this.materials = res.data;
                                 this.setState({visible: false});
@@ -101,18 +100,7 @@ class MaterialList extends Component{
                     .then(() => this.setState(prevState => prevState));
                 form.resetFields();
             }
-            */
         });
-            axios.post(`${API_ROOT}/material`,values)
-                .then(response => {
-                    message.success("Product created",1);
-                    axios.get(`${API_ROOT}/material`)
-                        .then(response => this.materials = response.data)
-                        .then(() => this.setState({visible: false}))
-                        .catch(err => console.log(err));
-                })
-                .then(() => this.setState(prevState => prevState));
-        form.resetFields();
     };
 
     saveFormRef = (formRef) => {
@@ -140,16 +128,16 @@ class MaterialList extends Component{
                                     hoverable
                                     bodyStyle={{height:90}}
                                     className="material-card-display"
-                                    cover={<img alt="example" className="material-img" src={`${imgUrl}`} />}
+                                    cover={<img onClick = {() => this.handleSelect(material.name)} alt="example" className="material-img" src={`${imgUrl}`} />}
                                     actions={[
-                                        <div onClick = {() => this.handleSelect(material.name)}>
-                                            <Icon type="edit" />
-                                        </div>,
                                         <div onClick = {() => this.handleDelete(material.name)}>
                                             <Icon type="delete" />
                                         </div>
                                     ]}>
-                                    <Meta title={material.name} />
+                                    <Meta
+                                        onClick = {() => this.handleSelect(material.name)}
+                                        title={material.name}
+                                    />
                                 </Card>
                             </div>
                         </Col>

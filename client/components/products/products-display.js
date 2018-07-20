@@ -345,11 +345,10 @@ class ProductsDisplay extends Component{
                             <Col span={6} key={product.id}>
                                 <div className="product-card-wrapper">
                                     <Card
-                                        onClick = {() => this.handleSelect(product.name)}
                                         hoverable
                                         bodyStyle={{height:200}}
                                         className="product-card-display"
-                                        cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
+                                        cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
                                         actions={[
                                             <div onClick = {() => this.handleDelete(product.name)}>
                                                 <Icon type="delete" />
@@ -357,6 +356,7 @@ class ProductsDisplay extends Component{
                                         ]}
                                     >
                                         <Meta
+                                            onClick = {() => this.handleSelect(product.name)}
                                             title={product.name}
                                             description={
                                                 <div>
@@ -382,7 +382,6 @@ class ProductsDisplay extends Component{
                     <Col span={6} key={product.id}>
                         <div className="product-card-wrapper">
                         <Card
-                            onClick = {() => this.handleSelect(product.name)}
                             hoverable
                             bodyStyle={{height:200}}
                             className="product-card-display"
@@ -393,12 +392,13 @@ class ProductsDisplay extends Component{
                                 </div>
                             ]}
                         >
-                            <Meta
+                            <div
+                                onClick = {() => this.handleSelect(product.name)}
                                 title={product.name}
-                                description={
-                                    <div>
-                                        <p>Season: {product.seasonName} </p>
-                                        <p>Collection: {product.collectionName}</p>
+                            >
+                                <div>
+                                    <p>Season: {product.seasonName} </p>
+                                    <p>Collection: {product.collectionName}</p>
                                     <Row gutter={8}>
                                         { renderProductColors }
                                     </Row>
@@ -406,9 +406,8 @@ class ProductsDisplay extends Component{
                                         <hr />
                                         {renderProductMaterials}
                                     </Row>
-                                    </div>
-                                }
-                            />
+                                </div>
+                            </div>
                         </Card>
                         </div>
                     </Col>
