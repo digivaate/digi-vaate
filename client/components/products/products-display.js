@@ -385,29 +385,30 @@ class ProductsDisplay extends Component{
                             hoverable
                             bodyStyle={{height:200}}
                             className="product-card-display"
-                            cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
+                            cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
                             actions={[
                                 <div onClick = {() => this.handleDelete(product.name)}>
                                     <Icon type="delete" />
                                 </div>
                             ]}
                         >
-                            <div
+                            <Meta
                                 onClick = {() => this.handleSelect(product.name)}
                                 title={product.name}
-                            >
-                                <div>
-                                    <p>Season: {product.seasonName} </p>
-                                    <p>Collection: {product.collectionName}</p>
-                                    <Row gutter={8}>
-                                        { renderProductColors }
-                                    </Row>
-                                    <Row gutter={16}>
-                                        <hr />
-                                        {renderProductMaterials}
-                                    </Row>
-                                </div>
-                            </div>
+                                description ={
+                                    <div>
+                                        <p>Season: {product.seasonName} </p>
+                                        <p>Collection: {product.collectionName}</p>
+                                        <Row gutter={8}>
+                                            { renderProductColors }
+                                        </Row>
+                                        <Row gutter={16}>
+                                            <hr />
+                                            {renderProductMaterials}
+                                        </Row>
+                                    </div>
+                                }
+                            />
                         </Card>
                         </div>
                     </Col>
