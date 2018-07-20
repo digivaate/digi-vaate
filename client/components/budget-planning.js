@@ -21,7 +21,7 @@ class BudgetPlanningTable extends Component {
     //Update amount of individual product to database
     updateProdAmount(id, amount) {
         //name is used as identifier this time
-        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount },{cancelToken: this.source.token})
+        axios.patch(`${API_ROOT}/product?name=${id}`, { amount: amount }, {cancelToken: this.source.token})
             .then(res => {
                 console.log(res);
             })
@@ -186,21 +186,35 @@ class BudgetPlanningTable extends Component {
                 Footer: 'Total:'
             },
             {
-                Header: "Consumer Price",
-                headerClassName: "wordwrap",
-                accessor: "consumerPriceCommercial",
-            },
-            {
-                Header: "Unit Price without Taxes",
-                headerClassName: "wordwrap",
-                accessor: "unitPriceWithoutTax",
-            },
-            {
                 Header: "Product amount",
                 headerClassName: "wordwrapEdit",
                 accessor: "amount",
                 Cell: this.renderEditable,
                 Footer: sumOfAmounts
+            },
+            {
+                Header: "Consumer Price",
+                headerClassName: "wordwrap",
+                accessor: "consumerPriceCommercial",
+            },
+            {
+                Header: "Purchasing budget",
+                headerClassName: "wordwrap",
+                id: "purchasingPrice",
+                accessor: d =>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
+                        }}
+                    />,
+                Footer: () => {
+                    return(
+                        <div>
+                            <div>{sumOfPurchasePrice()}</div>
+                            <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
+                        </div>
+                    )
+                }
             },
             {
                 Header: "Cover %",
@@ -220,28 +234,9 @@ class BudgetPlanningTable extends Component {
                 Footer: sumOfCoverAmount
             },
             {
-                Header: "Purchasing budget",
+                Header: "Unit Price without Taxes",
                 headerClassName: "wordwrap",
-                id: "purchasingPrice",
-                accessor: d =>
-                    <div>
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
-                            }}
-                        />
-                        <div>
-
-                        </div>
-                    </div>,
-                Footer: () => {
-                        return(
-                            <div>
-                                <div>{sumOfPurchasePrice()}</div>
-                                <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
-                            </div>
-                        )
-                    }
+                accessor: "unitPriceWithoutTax",
             },
             {
                 Header: "Total sale",

@@ -109,7 +109,7 @@ class App extends React.Component {
                                     <BudgetPlanningTable
                                         {...props}
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
-                                        showProdOrigin={true}
+                                        showCollection={true}
                                     />}
                                 />
                                 <Route path="/:seasonId/collections" exact component={SingleSeason}/>
