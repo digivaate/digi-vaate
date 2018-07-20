@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { List,Button } from 'antd';
+import { List,Button,Spin } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './seasons.css'
@@ -58,46 +58,66 @@ class SingleSeason extends Component{
         this.formRef = formRef;
     };
 
-    render(){
+    render() {
         let renderCollectionsOfSeason = [];
-        if(this.state.collections){
-            for(let i=0; i<this.state.collections.length; i++){
+        if (this.state.collections) {
+            for (let i = 0; i < this.state.collections.length; i++) {
                 renderCollectionsOfSeason[i] = this.state.collections[i].name
             }
+            if(this.state.collections.length > 0){
+                return (
+                    <div>
+                        <h1>Collections of season</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewCollection}
+                        >
+                            New collection
+                        </Button>
+                        <CollectionCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
+                        <br/>
+                        <br/>
+                        <List
+                            size="small"
+                            bordered
+                            dataSource={renderCollectionsOfSeason}
+                            renderItem={item => (<List.Item>{item}</List.Item>)}
+                        />
+                    </div>
+                )
+            }
+            else{
+                return (
+                    <div>
+                        <h1>Collections of season</h1>
+                        <h3>This season does not have any collections.</h3>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewCollection}
+                        >
+                            New collection
+                        </Button>
+                        <CollectionCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
+                        <br/>
+                        <br/>
+                    </div>
+                )
+            }
+
         }
-        if(renderCollectionsOfSeason.length === 0){
-            return (
-                <div>
-                    <h1>Collections of season</h1>
-                    <p>This season does not have any collections yet.</p>
-                </div>
-            )
+        else {
+            return <Spin/>
         }
-        return (
-            <div>
-                <h1>Collections of season</h1>
-                <Button type="primary"
-                        size="large"
-                        onClick={this.createNewCollection}
-                >
-                    New collection
-                </Button>
-                <CollectionCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                />
-                <br/>
-                <br/>
-                <List
-                    size="small"
-                    bordered
-                    dataSource={renderCollectionsOfSeason}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
-                />
-            </div>
-        )
     }
 }
 

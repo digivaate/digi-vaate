@@ -57,20 +57,6 @@ const MaterialCreateForm = Form.create()(
                         </FormItem>
                         <Row gutter={16}>
                             <Col span={12}>
-                                <FormItem label="Consumption">
-                                    {getFieldDecorator('consumption', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input the consumption',
-                                            }
-                                        ],
-                                    })(
-                                        <Input />
-                                    )}
-                                </FormItem>
-                            </Col>
-                            <Col span={12}>
                                 <FormItem label="Unit Price">
                                     {getFieldDecorator('unitPrice', {
                                         rules: [{ required: true, message: 'Please input the unit price' }],

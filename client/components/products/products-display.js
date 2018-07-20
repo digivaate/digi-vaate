@@ -377,7 +377,6 @@ class ProductsDisplay extends Component{
                             </Col>
                         )
                     }
-
                 return(
                     <Col span={6} key={product.id}>
                         <div className="product-card-wrapper">
@@ -413,14 +412,11 @@ class ProductsDisplay extends Component{
                         </div>
                     </Col>
                 )
-            }
-
-            );
-        }
-        if(renderProductList){
-            if(renderProductList.length === 0){
+            });
+            if(this.products.length > 0) {
                 return (
                     <div>
+                        {singleProduct}
                         <h1>Products</h1>
                         <Button type="primary"
                                 size="large"
@@ -428,45 +424,58 @@ class ProductsDisplay extends Component{
                         >
                             Create new product
                         </Button>
-                        <Spin/>
+                        <ProductCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            uploadImage={(data) => this.uploadImage = data}
+                        />
+                        <br/>
+                        <br/>
+                        {showTotalProducts}
+                        <List
+                            dataSource={renderProductList}
+                            grid={{gutter: 40, column: 4}}
+                            pagination={{
+                                pageSize: 28,
+                                hideOnSinglePage: true,
+                                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                            }}
+                            renderItem={item => <List.Item>{item}</List.Item>}
+                        >
+                        </List>
                     </div>
                 )
             }
+            else{
+                return (
+                    <div>
+                        {singleProduct}
+                        <h1>Products</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewProduct}
+                        >
+                            Create new product
+                        </Button>
+                        <ProductCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            uploadImage={(data) => this.uploadImage = data}
+                        />
+                        <br/>
+                        <br/>
+                        {showTotalProducts}
+                    </div>
+                )
+            }
+        } else {
+            return <Spin/>
         }
-        return (
-            <div>
-                {singleProduct}
-                <h1>Products</h1>
-                <Button type="primary"
-                        size="large"
-                        onClick={this.createNewProduct}
-                >
-                    Create new product
-                </Button>
-                <ProductCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                    uploadImage={(data) => this.uploadImage = data}
-                />
-                <br/>
-                <br/>
-                {showTotalProducts}
-                <List
-                    dataSource={renderProductList}
-                    grid={{ gutter: 40, column: 4 }}
-                    pagination={{
-                        pageSize: 28,
-                        hideOnSinglePage: true,
-                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
-
-                    }}
-                    renderItem={item => <List.Item>{item}</List.Item>}
-                >
-                </List>
-            </div>
-        )
     }
 }
 

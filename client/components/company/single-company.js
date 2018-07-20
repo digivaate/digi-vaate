@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { List,Button } from 'antd';
+import { List,Button,Spin } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
@@ -64,40 +64,61 @@ class SingleCompany extends Component{
             for(let i=0; i<this.state.seasons.length; i++){
                 renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget
             }
+            if(this.state.seasons.length > 0){
+                return (
+                    <div>
+                        <h1>Seasons of company</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewSeason}
+                        >
+                            New season
+                        </Button>
+                        <SeasonCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
+                        <br/>
+                        <br/>
+                        <List
+                            size="small"
+                            bordered
+                            dataSource={renderSeasonsOfCompany}
+                            renderItem={item => (<List.Item>{item}</List.Item>)}
+                        />
+                    </div>
+                )
+            }
+            else{
+                return (
+                    <div>
+                        <h1>Seasons of company</h1>
+                        <h3>This company does not have any seasons.</h3>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewSeason}
+                        >
+                            New season
+                        </Button>
+                        <SeasonCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
+                        <br/>
+                        <br/>
+                    </div>
+                )
+            }
+
         }
-        if(renderSeasonsOfCompany.length === 0){
-            return (
-                <div>
-                    <h1>Collections of season</h1>
-                    <p>This season does not have any collections yet.</p>
-                </div>
-            )
+        else {
+            return <Spin/>
         }
-        return (
-            <div>
-                <h1>Seasons of company</h1>
-                <Button type="primary"
-                        size="large"
-                        onClick={this.createNewSeason}
-                >
-                    New season
-                </Button>
-                <SeasonCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                />
-                <br/>
-                <br/>
-                <List
-                    size="small"
-                    bordered
-                    dataSource={renderSeasonsOfCompany}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
-                />
-            </div>
-        )
+
     }
 }
 
