@@ -212,19 +212,22 @@ class ProductsDisplay extends Component{
             for (let i = 0; i < values.materials.length; i++) {
                 for (let j = 0; j < this.state.materialOptions.length; j++) {
                     if (values.materials[i] === this.state.materialOptions[j].name) {
-                        values.materials[i] = this.state.materialOptions[j].id
+                        values.materials[i] = {id:this.state.materialOptions[j].id}
                     }
                 }
             }
 
             if(this.state.productLevel === "company"){
-                values.companyId = this.state.productLevelId
+                values.companyId = this.state.productLevelId;
+                this.props.newProductCompany(values.name);
             }
             else if(this.state.productLevel === "season"){
-                values.seasonId = this.state.productLevelId
+                values.seasonId = this.state.productLevelId;
+                this.props.newProductSeason(values.name);
             }
             else if(this.state.productLevel === "collection"){
-                values.collectionId = this.state.productLevelId
+                values.collectionId = this.state.productLevelId;
+                this.props.newProductCollection(values.name);
             }
             values.imagePath = null;
             console.log('Received values of form: ', values);

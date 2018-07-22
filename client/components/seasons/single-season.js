@@ -39,6 +39,7 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
+            this.props.sendNewCollection(values.name)
             axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id})
                 .then(() => {
                     axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)

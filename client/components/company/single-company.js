@@ -39,6 +39,7 @@ class SingleCompany extends Component{
             if (err) {
                 return;
             }
+            this.props.sendNewSeason(values.name);
             axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
                 .then(() => {
                     axios.get(`${API_ROOT}/company?name=Lumi`)

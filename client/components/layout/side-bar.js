@@ -17,6 +17,17 @@ class SideBar extends Component{
         super(props);
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.newSeason !== this.props.newSeason){
+            axios.get(`${API_ROOT}/season`)
+                .then(response => {
+                    this.seasons = response.data;
+                })
+                .then(() => this.setState({}))
+                .catch(err => console.log(err));
+        }
+    }
+
     componentDidMount() {
         axios.get(`${API_ROOT}/season`)
             .then(response => {
@@ -31,7 +42,7 @@ class SideBar extends Component{
         if(this.seasons){
             renderSeasonList = this.seasons.map(season =>
                 <Menu.Item className="season-item" style={{paddingLeft:45}} key={season.id}>
-                    <NavLink to={season.name} className="nav-text">
+                    <NavLink to={`/${season.name}`} className="nav-text">
                         {season.name}
                     </NavLink>
                 </Menu.Item>

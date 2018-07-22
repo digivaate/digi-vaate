@@ -262,10 +262,15 @@ class SingleProduct extends Component {
         }
 
         if(this.updatedMaterials.length <= 3) {
+            let objUpdateMaterials = this.updatedMaterials.map(updatedMaterial => {
+                return {
+                    id:updatedMaterial
+                }
+            });
             if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
                 const {location} = this.props;
                 const pathSnippets = location.pathname.split('/').filter(i => i);
-                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, {materials: this.updatedMaterials})
+                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, {materials: objUpdateMaterials})
                     .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({materialVisible: false}))
                     .then(response => {
@@ -447,16 +452,16 @@ class SingleProduct extends Component {
                 return [collection.id,collection.name,collection.seasonId]
             });
             this.treeData = this.state.seasons.map(season => {
-                let collections = this.state.collections.map(collection => {
-                    if(collection.seasonId === season.id){
-                        return {
-                            title: "Collection: "+collection.name,
+                let collections = this.state.collections.reduce((collections,collection) => {
+                    if(collection.seasonId === season.id) {
+                        collections.push({
+                            title: "Collection: " + collection.name,
                             value: collection.name,
                             key: collection.name + collection.id
-                        }
+                        });
                     }
-
-                });
+                    return collections
+                },[]);
                 return {
                     title: "Season: " + season.name,
                     value: season.name,

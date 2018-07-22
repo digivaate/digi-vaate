@@ -21,6 +21,18 @@ class SeasonSideBar extends Component{
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.newCollection !== this.props.newCollection){
+            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+                .then(response => {
+                    this.setState({
+                        collections: response.data[0].collections
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+    }
+
     componentDidMount() {
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
