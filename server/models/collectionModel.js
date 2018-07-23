@@ -3,6 +3,10 @@ export default (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        coverPercent: {
+            type: DataTypes.FLOAT,
+            defaultValue: 0,
         }
     });
 

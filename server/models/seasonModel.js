@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
         budget: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        coverPercent: {
+            type: DataTypes.FLOAT,
+            defaultValue: 0,
         }
     });
 
