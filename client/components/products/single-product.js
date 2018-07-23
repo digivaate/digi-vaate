@@ -297,16 +297,22 @@ class SingleProduct extends Component {
             for(let i = 0; i < this.displaySelectedMaterial.length; i++){
                 this.materialPairs.push([this.updatedMaterials[i],this.state[this.displaySelectedMaterial[i]]])
             }
-            let objUpdateMaterials = this.materialPairs.map(materialPair => {
-                return {
-                    id:materialPair[0],
-                    consumption: materialPair[1]
-                }
-            });
+            let objUpdateMaterials = null;
             if(typeof this.updatedMaterials[0] !== "number"){
-                objUpdateMaterials = this.updatedMaterials.map(updatedMaterial => {
+                for(let i = 0; i < this.displaySelectedMaterial.length; i++){
+                    this.materialPairs.push([this.updatedMaterials[i].id,this.state[this.displaySelectedMaterial[i]]])
+                }
+                objUpdateMaterials = this.materialPairs.map(materialPair => {
                     return {
-                        id:updatedMaterial.id,
+                        id:materialPair[0],
+                        consumption: materialPair[1]
+                    }
+                });
+            } else {
+                objUpdateMaterials = this.materialPairs.map(materialPair => {
+                    return {
+                        id:materialPair[0],
+                        consumption: materialPair[1]
                     }
                 });
             }
