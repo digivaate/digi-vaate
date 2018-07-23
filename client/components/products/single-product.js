@@ -18,7 +18,7 @@ class SingleProduct extends Component {
             productColors: null,
             colorOptions: null,
             updateColors: null,
-            productMaterials: null,
+            productMaterials: [],
             materialOptions: null,
             updateMaterials: null,
             collectionName:'None',
@@ -111,34 +111,26 @@ class SingleProduct extends Component {
                                         });
                                 })
                         }
+                        this.setState({
+                            loadedProduct: response.data[0],
+                            productImg: response.data[0].imagePath,
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                            productName: response.data[0].name,
+                        });
                         if(response.data[0].materials[0]){
                             this.setState({
-                                loadedProduct: response.data[0],
-                                productImg: response.data[0].imagePath,
-                                productColors: response.data[0].colors,
-                                productMaterials: response.data[0].materials,
-                                productName: response.data[0].name,
                                 [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
                             });
                         }
                         if(response.data[0].materials[0] && response.data[0].materials[1]){
                             this.setState({
-                                loadedProduct: response.data[0],
-                                productImg: response.data[0].imagePath,
-                                productColors: response.data[0].colors,
-                                productMaterials: response.data[0].materials,
-                                productName: response.data[0].name,
                                 [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
                                 [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
                             });
                         }
                         if(response.data[0].materials[0] && response.data[0].materials[1] && response.data[0].materials[2])
                             this.setState({
-                                loadedProduct: response.data[0],
-                                productImg: response.data[0].imagePath,
-                                productColors: response.data[0].colors,
-                                productMaterials: response.data[0].materials,
-                                productName: response.data[0].name,
                                 [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
                                 [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
                                 [response.data[0].materials[2].name]: response.data[0].materials[2].material_product.consumption,
@@ -148,7 +140,10 @@ class SingleProduct extends Component {
                     .then(() => {
                         this.updatedColors = this.state.productColors;
                         this.updatedMaterials = this.state.productMaterials;
-                        this.displaySelectedMaterial = this.state.productMaterials.map(material => material.name);
+                        if(this.state.productMaterials) {
+                            this.displaySelectedMaterial = this.state.productMaterials.map(material => material.name);
+                        }
+                        this.setState({})
                     });
             }
         }
@@ -822,7 +817,6 @@ class SingleProduct extends Component {
         else {
             return <Spin/>
         }
-
     }
 }
 export default SingleProduct;

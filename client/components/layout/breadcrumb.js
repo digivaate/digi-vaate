@@ -140,6 +140,7 @@ class BreadCrumbDigi extends Component{
                         }
                     }
                 }
+                this.setState({})
             })
     }
     render(){
