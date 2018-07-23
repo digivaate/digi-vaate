@@ -40,7 +40,7 @@ class SingleCompany extends Component{
                 return;
             }
             this.props.sendNewSeason(values.name);
-            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget, coverPercent:values.coverPercent})
                 .then(() => {
                     axios.get(`${API_ROOT}/company?name=Lumi`)
                         .then(response => {
@@ -63,7 +63,7 @@ class SingleCompany extends Component{
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
             for(let i=0; i<this.state.seasons.length; i++){
-                renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget
+                renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget + ", Cover percentage: " + this.state.seasons[i].coverPercent +"%"
             }
             if(this.state.seasons.length > 0){
                 return (

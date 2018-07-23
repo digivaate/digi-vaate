@@ -29,7 +29,11 @@ const CollectionCreateForm = Form.create()(
                                 <Input />
                             )}
                         </FormItem>
-
+                        <FormItem label="Cover Percentage">
+                            {getFieldDecorator('coverPercent')(
+                                <Input />
+                            )}
+                        </FormItem>
                     </Form>
                 </Modal>
             );

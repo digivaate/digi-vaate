@@ -39,8 +39,8 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
-            this.props.sendNewCollection(values.name)
-            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id})
+            this.props.sendNewCollection(values.name);
+            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id,coverPercent:values.coverPercent})
                 .then(() => {
                     axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
                         .then(response => {
@@ -63,7 +63,7 @@ class SingleSeason extends Component{
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
             for (let i = 0; i < this.state.collections.length; i++) {
-                renderCollectionsOfSeason[i] = this.state.collections[i].name
+                renderCollectionsOfSeason[i] = this.state.collections[i].name + ", Cover percentage: " + this.state.collections[i].coverPercent +"%"
             }
             if(this.state.collections.length > 0){
                 return (

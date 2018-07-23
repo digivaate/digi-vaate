@@ -105,8 +105,6 @@ class BreadCrumbDigi extends Component{
                                 this.setState({})
                             })
                     }
-
-
                 this.setState({})
                 }
             );
@@ -129,20 +127,30 @@ class BreadCrumbDigi extends Component{
                     }
                 this.setState({})
             });
-        axios.get(`${API_ROOT}/material`)
+
+        axios.get(`${API_ROOT}/collection`)
             .then(response => {
-                this.materials = response.data;
-                for(let k=0; k < this.seasons.length; k++){
-                    for(let i=0;i<this.collections.length;i++){
-                        for (let j = 0; j < this.materials.length; j++){
-                            this.materialsMap[j] = this.materials[j].name;
-                            this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/materials/" + this.materialsMap[j]] = this.materials[j].name;
+                this.collections = response.data;
+                axios.get(`${API_ROOT}/material`)
+                    .then(response => {
+                        this.materials = response.data;
+                        for(let k=0; k < this.seasons.length; k++){
+                            for(let i=0;i<this.collections.length;i++) {
+                                if (this.seasons[k].id === this.collections[i].seasonId) {
+                                    this.collectionsMap[i] = this.collections[i].name
+                                    for (let j = 0; j < this.materials.length; j++) {
+                                        this.materialsMap[j] = this.materials[j].name;
+                                        this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/materials/" + this.materialsMap[j]] = this.materials[j].name;
+                                    }
+                                }
+                            }
                         }
-                    }
-                }
-                this.setState({})
+                        this.setState({})
+                    })
             })
+
     }
+
     render(){
         return(
             <Home
