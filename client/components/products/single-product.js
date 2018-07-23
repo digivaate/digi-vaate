@@ -25,7 +25,7 @@ class SingleProduct extends Component {
             seasonName:'None',
             seasons: null,
             collections:null,
-            editModeStatus:false
+            editModeStatus:false,
         };
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleColorOk = this.handleColorOk.bind(this);
@@ -43,6 +43,8 @@ class SingleProduct extends Component {
     treeData = [];
     seasons = null;
     collections = null;
+    displaySelectedMaterial = [];
+    materialPairs = [];
 
     componentDidMount() {
         this.loadProduct();
@@ -109,17 +111,44 @@ class SingleProduct extends Component {
                                         });
                                 })
                         }
-                        this.setState({
-                            loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
-                            productColors: response.data[0].colors,
-                            productMaterials: response.data[0].materials,
-                            productName: response.data[0].name
-                        });
+                        if(response.data[0].materials[0]){
+                            this.setState({
+                                loadedProduct: response.data[0],
+                                productImg: response.data[0].imagePath,
+                                productColors: response.data[0].colors,
+                                productMaterials: response.data[0].materials,
+                                productName: response.data[0].name,
+                                [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                            });
+                        }
+                        if(response.data[0].materials[0] && response.data[0].materials[1]){
+                            this.setState({
+                                loadedProduct: response.data[0],
+                                productImg: response.data[0].imagePath,
+                                productColors: response.data[0].colors,
+                                productMaterials: response.data[0].materials,
+                                productName: response.data[0].name,
+                                [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                                [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                            });
+                        }
+                        if(response.data[0].materials[0] && response.data[0].materials[1] && response.data[0].materials[2])
+                            this.setState({
+                                loadedProduct: response.data[0],
+                                productImg: response.data[0].imagePath,
+                                productColors: response.data[0].colors,
+                                productMaterials: response.data[0].materials,
+                                productName: response.data[0].name,
+                                [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                                [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                                [response.data[0].materials[2].name]: response.data[0].materials[2].material_product.consumption,
+                            });
+
                     })
                     .then(() => {
                         this.updatedColors = this.state.productColors;
                         this.updatedMaterials = this.state.productMaterials;
+                        this.displaySelectedMaterial = this.state.productMaterials.map(material => material.name);
                     });
             }
         }
@@ -245,28 +274,48 @@ class SingleProduct extends Component {
     };
 
     handleMaterialChange(value) {
+        for(let i = 0; i<=value.length;i++){
+            if(value[i] !== this.displaySelectedMaterial[i]){
+                this.setState({
+                    [value[i]]:0
+                })
+            }
+        }
         this.setState(prevState => prevState);
+        this.displaySelectedMaterial = value;
+        let valueId = [];
         for (let i = 0; i < value.length; i++) {
             for (let j = 0; j < this.state.materialOptions.length; j++) {
                 if (value[i] === this.state.materialOptions[j].name) {
-                    value[i] = this.state.materialOptions[j].id
+                    valueId[i] = this.state.materialOptions[j].id
                 }
             }
         }
-        this.updatedMaterials = value;
+        this.updatedMaterials = valueId;
     }
 
     handleMaterialOk() {
         if (this.updatedMaterials.length > 3) {
             message.error('Maximum 3 materials!')
         }
-
         if(this.updatedMaterials.length <= 3) {
-            let objUpdateMaterials = this.updatedMaterials.map(updatedMaterial => {
+            for(let i = 0; i < this.displaySelectedMaterial.length; i++){
+                this.materialPairs.push([this.updatedMaterials[i],this.state[this.displaySelectedMaterial[i]]])
+            }
+            let objUpdateMaterials = this.materialPairs.map(materialPair => {
                 return {
-                    id:updatedMaterial
+                    id:materialPair[0],
+                    consumption: materialPair[1]
                 }
             });
+            if(typeof this.updatedMaterials[0] !== "number"){
+                objUpdateMaterials = this.updatedMaterials.map(updatedMaterial => {
+                    return {
+                        id:updatedMaterial.id,
+                    }
+                });
+            }
+            if(this.displaySelectedMaterial)
             if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
                 const {location} = this.props;
                 const pathSnippets = location.pathname.split('/').filter(i => i);
@@ -282,6 +331,7 @@ class SingleProduct extends Component {
                                         productMaterials: response.data[0].materials,
                                         loadedProduct: response.data[0]
                                     });
+                                    this.materialPairs = [];
                                 })
                         }, 100)
                     })
@@ -299,6 +349,7 @@ class SingleProduct extends Component {
                                         productMaterials: response.data[0].materials,
                                         loadedProduct: response.data[0]
                                     });
+                                    this.materialPairs = [];
                                 })
                         }, 100)
                     })
@@ -406,7 +457,7 @@ class SingleProduct extends Component {
                 else {
                     axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
                         .then(() => {
-                            message.success("Change successfully",1)
+                            message.success("Change successfully",1);
                             setTimeout(() => {
                                 window.location.href = `${window.location.origin}/${this.state.value}/products/${this.state.loadedProduct.name}`
                             },1300)
@@ -469,6 +520,9 @@ class SingleProduct extends Component {
                     children: collections
                 }
             });
+            let materialSelected1 = null;
+            let materialSelected2 = null;
+            let materialSelected3 = null;
             let editNameBtn = null;
             let editColorBtn = null;
             let editMaterialBtn = null;
@@ -482,6 +536,60 @@ class SingleProduct extends Component {
             let renderProductMaterials = <p>This product does not have any materials yet</p>;
             let renderMaterialOptions = [];
             let renderDefaultMaterials = [];
+            if(this.displaySelectedMaterial[0]){
+                materialSelected1 =
+                    <div>
+                        <Row>
+                            <Col span={8}>
+                                <h4>{this.displaySelectedMaterial[0]} consumption</h4>
+                            </Col>
+                            <Col span={16}>
+                                <Input
+                                    placeholder="Consumption"
+                                    name={this.displaySelectedMaterial[0]}
+                                    value={this.state[this.displaySelectedMaterial[0]]}
+                                    onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
+            }
+            if(this.displaySelectedMaterial[1]){
+                materialSelected2 =
+                    <div>
+                        <Row>
+                            <Col span={8}>
+                                <h4>{this.displaySelectedMaterial[1]} consumption</h4>
+                            </Col>
+                            <Col span={16}>
+                                <Input
+                                    placeholder="Consumption"
+                                    name={this.displaySelectedMaterial[1]}
+                                    value={this.state[this.displaySelectedMaterial[1]]}
+                                    onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
+            }
+            if(this.displaySelectedMaterial[2]){
+                materialSelected3 =
+                    <div>
+                        <Row>
+                            <Col span={8}>
+                                <h4>{this.displaySelectedMaterial[2]} consumption</h4>
+                            </Col>
+                            <Col span={16}>
+                                <Input
+                                    placeholder="Consumption"
+                                    name={this.displaySelectedMaterial[2]}
+                                    value={this.state[this.displaySelectedMaterial[2]]}
+                                    onChange={this.handleChange}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
+            }
             if(this.state.editModeStatus === true){
                 editNameBtn =
                     <Button className="edit-btn" onClick={this.showNameModal}>
@@ -670,9 +778,12 @@ class SingleProduct extends Component {
                                 </Row>
                                 <Divider/>
                                 <Row gutter={8}>
-                                    <h4>Materials</h4>
-                                    {renderProductMaterials}
+                                    <Row type="flex">
+                                    <h4>Materials&nbsp;&nbsp;</h4>
                                     {editMaterialBtn}
+                                    </Row>
+                                    <br/>
+                                    {renderProductMaterials}
                                     <Modal
                                         title="Edit material"
                                         visible={this.state.materialVisible}
@@ -691,6 +802,12 @@ class SingleProduct extends Component {
                                         >
                                             {renderMaterialOptions}
                                         </Select>
+                                        <Divider/>
+                                        {materialSelected1}
+                                        <br/>
+                                        {materialSelected2}
+                                        <br/>
+                                        {materialSelected3}
                                     </Modal>
                                 </Row>
                                 <br/>
