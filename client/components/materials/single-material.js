@@ -31,7 +31,6 @@ class SingleMaterial extends Component{
                     loadedMaterial: response.data[0],
                     name: response.data[0].name,
                     freight: response.data[0].freight,
-                    consumption:response.data[0].consumption,
                     minQuality:response.data[0].minQuality,
                     unitPrice:response.data[0].unitPrice,
                     manufacturer:response.data[0].manufacturer,
@@ -73,7 +72,6 @@ class SingleMaterial extends Component{
     handleOk = () =>{
         const materialChanges = {
             freight: this.state.freight,
-            consumption:this.state.consumption,
             minQuality:this.state.minQuality,
             unitPrice:this.state.unitPrice,
             manufacturer:this.state.manufacturer,
@@ -89,7 +87,6 @@ class SingleMaterial extends Component{
                             loadedMaterial: response.data[0],
                             name:response.data[0].name,
                             freight: response.data[0].freight,
-                            consumption:response.data[0].consumption,
                             minQuality:response.data[0].minQuality,
                             unitPrice:response.data[0].unitPrice,
                             manufacturer:response.data[0].manufacturer,
@@ -129,7 +126,6 @@ class SingleMaterial extends Component{
                             loadedMaterial: response.data[0],
                             name:response.data[0].name,
                             freight: response.data[0].freight,
-                            consumption:response.data[0].consumption,
                             minQuality:response.data[0].minQuality,
                             unitPrice:response.data[0].unitPrice,
                             manufacturer:response.data[0].manufacturer,
@@ -143,6 +139,7 @@ class SingleMaterial extends Component{
 
     render(){
         if(this.state.loadedMaterial){
+            let totalConsumption = this.state.loadedMaterial.products.reduce((sum,product) => sum + product.material_product.consumption,0);
             let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
             const tabList = [{
                 key: 'tab1',
@@ -157,11 +154,11 @@ class SingleMaterial extends Component{
 
             const contentList = {
                 tab1: <div>
-                    <p>consumption: {this.state.loadedMaterial.consumption}</p>
-                    <p>freight: {this.state.loadedMaterial.freight}</p>
-                    <p>manufacturer: {this.state.loadedMaterial.manufacturer}</p>
-                    <p>minQuality: {this.state.loadedMaterial.minQuality}</p>
-                    <p>unitPrice: {this.state.loadedMaterial.unitPrice}</p>
+                    <p>Total Consumption: {totalConsumption}</p>
+                    <p>Freight: {this.state.loadedMaterial.freight}</p>
+                    <p>Manufacturer: {this.state.loadedMaterial.manufacturer}</p>
+                    <p>Min Quality: {this.state.loadedMaterial.minQuality}</p>
+                    <p>Unit Price: {this.state.loadedMaterial.unitPrice}</p>
                 </div>,
                 tab2: <div>
                     <p>{this.state.loadedMaterial.instructions}</p>
