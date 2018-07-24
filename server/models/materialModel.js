@@ -4,11 +4,14 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        code: DataTypes.STRING,
         imagePath: DataTypes.STRING,
         unitPrice: DataTypes.FLOAT,
         freight: DataTypes.FLOAT,
-        weight: DataTypes.BIGINT, //grams
-        width: DataTypes.FLOAT, //meters
+        weight: DataTypes.FLOAT,
+        weightUnit: DataTypes.STRING,
+        width: DataTypes.FLOAT,
+        widthUnit: DataTypes.STRING,
         minQuality: DataTypes.INTEGER,
         instructions: DataTypes.STRING,
         manufacturer: DataTypes.STRING,

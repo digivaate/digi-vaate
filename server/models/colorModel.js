@@ -4,7 +4,12 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        value: {type: DataTypes.STRING}
+        code: {
+            type: DataTypes.STRING
+        },
+        value: {
+            type: DataTypes.STRING
+        }
     });
 
     Color.associate = (models) => {
