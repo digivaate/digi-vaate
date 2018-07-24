@@ -6,6 +6,7 @@ import axios from 'axios';
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import {Popover} from "antd";
 
 class BudgetPlanningTable extends Component {
     constructor(props) {
@@ -26,6 +27,10 @@ class BudgetPlanningTable extends Component {
                 console.log(res);
             })
             .catch(err => console.error('Unable to patch amount:' + err));
+    }
+
+    goesOverBudget() {
+
     }
 
     renderEditable(cellInfo) {
@@ -188,6 +193,7 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Product amount",
                 headerClassName: "wordwrapEdit",
+                className: 'alignRight',
                 accessor: "amount",
                 Cell: this.renderEditable,
                 Footer: sumOfAmounts
@@ -195,11 +201,16 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Consumer Price",
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 accessor: "consumerPriceCommercial",
             },
             {
-                Header: "Purchasing budget",
+                Header:
+                    <Popover content={(<p>Product amount multiplied by material costs</p>)}>
+                        <p>Purchasing price</p>
+                    </Popover>,
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 id: "purchasingPrice",
                 accessor: d =>
                     <div
@@ -219,11 +230,13 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Cover %",
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 accessor: "coverPercent",
             },
             {
                 Header: "Cover amount",
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 id: "coverAmount",
                 accessor: d =>
                     <div
@@ -236,11 +249,13 @@ class BudgetPlanningTable extends Component {
             {
                 Header: "Unit Price without Taxes",
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 accessor: "unitPriceWithoutTax",
             },
             {
                 Header: "Total sale",
                 headerClassName: "wordwrap",
+                className: 'alignRight',
                 id: "totalSale",
                 accessor: d =>
                     <div
