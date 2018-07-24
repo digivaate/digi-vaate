@@ -24,6 +24,7 @@ const models = {
     Season: sequelize.import('./seasonModel'),
     Company: sequelize.import('./companyModel'),
     Theme: sequelize.import('./themeModel'),
+    Size: sequelize.import('./sizeModel'),
     MaterialProduct: sequelize.define('material_product', {
         consumption: {
             type: Sequelize.FLOAT,

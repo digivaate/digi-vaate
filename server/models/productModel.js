@@ -28,6 +28,7 @@ export default (sequelize, DataTypes) => {
     Product.associate = (models) => {
         Product.belongsToMany(models.Material, {through: 'material_product'});
         Product.belongsToMany(models.Color, {through: 'color_product'});
+        Product.belongsToMany(models.Size, {through: 'size_product'});
     };
     return Product;
 };

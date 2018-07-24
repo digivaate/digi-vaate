@@ -8,6 +8,7 @@ let collections = [];
 let seasons = [];
 let companies = [];
 let theme = [];
+let size = [];
 
 let promises = [];
 
@@ -95,7 +96,16 @@ function createEntities() {
 
         Models.Theme.create({
             name: 'winter theme'
-        }).then(res => theme.push(res))
+        }).then(res => theme.push(res)),
+
+        Models.Size.create({
+            value: 'M'
+        }).then(res => size.push(res)),
+
+        Models.Size.create({
+            value: 'L'
+        }).then(res => size.push(res)),
+
     ];
 
     return Promise.all(promises);
@@ -111,7 +121,9 @@ function addRelations() {
         collections[0].addProduct(products[0]),
         seasons[0].updateAttributes({ companyId: 1}),
         seasons[0].addProduct(products[1]),
-        companies[0].addProduct(products[2])
+        companies[0].addProduct(products[2]),
+        products[0].addSize(1),
+        products[1].addSize(2)
     ];
     return Promise.all(promises);
 }
