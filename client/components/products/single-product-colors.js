@@ -45,6 +45,7 @@ class SingleProductColors extends Component{
         }
 
         if (this.updatedColors.length <= 8) {
+            this.props.newColors(this.updatedColors);
             this.setState({
                 productColors: this.updatedColors,
                 colorVisible: false

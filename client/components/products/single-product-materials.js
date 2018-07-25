@@ -12,7 +12,17 @@ class SingleProductMaterials extends Component{
         super(props);
         this.state = {
             materialVisible: false,
-            productMaterials: this.props.productMaterials,
+            productMaterials: this.props.productMaterials.map(material => {
+                return {
+                    id:material.id,
+                    consumption: parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
+                    name:material.name,
+                    imagePath: material.imagePath,
+                    unitPrice: material.unitPrice,
+                    freight:material.freight,
+                    materialCosts: material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
+                }
+            }),
             materialOptions: this.props.materialOptions,
             materialCosts: this.props.loadedProduct.materialCosts
         }
@@ -21,6 +31,7 @@ class SingleProductMaterials extends Component{
     displaySelectedMaterial = this.props.displaySelectedMaterial;
     updatedMaterials = this.props.updatedMaterials;
     materialPairs = [];
+
 
     componentDidMount(){
         axios.get(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`)
@@ -114,7 +125,8 @@ class SingleProductMaterials extends Component{
                         name:materialPair.name,
                         imagePath: materialPair.imagePath,
                         unitPrice: materialPair.unitPrice,
-                        freight:materialPair.freight
+                        freight:materialPair.freight,
+                        materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
                     }
                 });
             } else {
@@ -125,13 +137,15 @@ class SingleProductMaterials extends Component{
                         name:materialPair.name,
                         imagePath: materialPair.imagePath,
                         unitPrice: materialPair.unitPrice,
-                        freight:materialPair.freight
+                        freight:materialPair.freight,
+                        materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
                     }
                 });
             }
             if(this.displaySelectedMaterial){
                 let materialCost = objUpdateMaterials.map(material => material.unitPrice * material.consumption + material.freight);
                 let materialCosts = materialCost.reduce((a,b) => a+b,0);
+                this.props.newMaterials(objUpdateMaterials);
                 this.setState({
                     materialVisible:false,
                     productMaterials: objUpdateMaterials,
@@ -174,11 +188,18 @@ class SingleProductMaterials extends Component{
                         <Col key={material.id} span={8}>
                             <Card
                                 hoverable
-                                style={{width: 170, height: 160}}
-                                cover={<img width="100" height="100" src={`${materialImgUrl}`}/>}
+                                className="product-material-card"
+                                cover={<img width="100" height="120" src={`${materialImgUrl}`}/>}
                             >
                                 <Meta
                                     title={material.name}
+                                    description={
+                                        <div>
+                                            <p>Consumption:{material.consumption}</p>
+                                            <p>Unit price: {material.unitPrice}</p>
+                                            <p>Cost: {material.materialCosts}</p>
+                                        </div>
+                                    }
                                 />
                             </Card>
                         </Col>
@@ -278,7 +299,7 @@ class SingleProductMaterials extends Component{
                 </Row>
                 <br/>
                 <br/>
-                <p>Total materials cost: {this.state.materialCosts}</p>
+                <h3>Total materials cost: {this.state.materialCosts}</h3>
             </div>
         )
     }

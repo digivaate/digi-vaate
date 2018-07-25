@@ -32,6 +32,7 @@ class SingleProductName extends Component{
     };
 
     handleNameOk = () => {
+        this.props.newName(this.state.productName)
         this.setState({
             productName: this.state.productName,
             nameVisible:false

@@ -1,4 +1,4 @@
-/* single-product.js */
+/* single-product-index.js */
 .product-color{
     width: 40px;
     height: 40px;
@@ -15,12 +15,17 @@
 
 .product-description{
     width: 376px;
-    height: 150px;
+    height: 310px;
 }
 
 .product-card-information{
-    width: 600px;
-    height: 540px;
+    width: 750px;
+    height: 700px;
+}
+
+.product-material-card{
+    width: 210px;
+    height: 280px;
 }
 
 .edit-btn{
