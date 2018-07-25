@@ -54,8 +54,8 @@ class SingleProductSize extends Component{
         }
         if(this.state.sizes){
             sizesDisplay = this.state.sizes.map(size =>
-                <Card key={size.id} title={size.value} style={{ width: 300 }} hoverable>
-                    <p>Amount:</p>
+                <Card key={size.id}style={{ width: 100,textAlign:'center' }} hoverable>
+                    <p>{size.value}</p>
                 </Card>
             );
             return (

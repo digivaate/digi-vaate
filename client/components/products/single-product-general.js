@@ -18,6 +18,20 @@ class SingleProductGeneralInfo extends Component{
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps != this.props){
+            this.setState({
+                infoVisible: false,
+                loadedProduct: this.props.loadedProduct,
+                coverPercent: this.props.loadedProduct.coverPercent,
+                resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
+                taxPercent: this.props.loadedProduct.taxPercent,
+                amount: this.props.loadedProduct.amount,
+                subcCostTotal: this.props.loadedProduct.subcCostTotal,
+            })
+        }
+    }
+
     showInfoModal = () => {
         this.setState({
             infoVisible: true,

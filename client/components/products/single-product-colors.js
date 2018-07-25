@@ -17,6 +17,16 @@ class SingleProductColors extends Component{
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps != this.props){
+            this.setState({
+                colorVisible: false,
+                colorOptions: this.props.colorOptions,
+                productColors: this.props.productColors
+            })
+        }
+    }
+
     /*Edit color*/
     updatedColors = this.props.updatedColors;
 

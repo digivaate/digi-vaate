@@ -204,13 +204,61 @@ class SingleProduct extends Component {
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                self.loadProduct();
-                self.setState({})
+                axios.get(`${API_ROOT}/product?name=${self.state.loadedProduct.name}`)
+                    .then(response => {
+                        if (response.data[0].companyId) {
+                            self.setState({
+                                collectionName: "None",
+                                seasonName: "None"
+                            });
+                        }
+                        if (response.data[0].seasonId) {
+                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                                .then(res => {
+                                    self.setState({
+                                        collectionName: "None",
+                                        seasonName: res.data[0].name
+                                    });
+                                });
+                        }
+                        if (response.data[0].collectionId) {
+                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
+                                .then(response => {
+                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                        .then(res => {
+                                            self.setState({
+                                                collectionName: res.data[0].name,
+                                            });
+                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                                .then(re => {
+                                                    self.setState({
+                                                        seasonName: re.data[0].name,
+                                                    });
+                                                })
+                                        });
+                                })
+                        }
+                        self.setState({
+                            loadedProduct: response.data[0],
+                            productImg: response.data[0].imagePath,
+                            productColors: response.data[0].colors,
+                            productMaterials: response.data[0].materials,
+                            productName: response.data[0].name,
+                        });
+                    })
+                    .then(() => {
+                        self.updatedColors = self.state.productColors;
+                        self.updatedMaterials = self.state.productMaterials;
+                        if(self.state.productMaterials) {
+                            self.displaySelectedMaterial = self.state.productMaterials.map(material => material.name);
+                        }
+                        self.setState({})
+                    });
             },
             onCancel(){
             },
         },)
-    }
+    };
 
     saveInfo = () => {
         let newColorsPatch = this.state.productColors.map(color => color.id)
@@ -232,8 +280,7 @@ class SingleProduct extends Component {
             .then(res => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
-                        console.log(response.data[0].materials)
-                        message.success("Updated!",1.5)
+                        message.success("Updated!",1.5);
                         if (response.data[0].companyId) {
                             this.setState({
                                 collectionName: "None",
@@ -281,9 +328,9 @@ class SingleProduct extends Component {
                             this.displaySelectedMaterial = this.state.productMaterials.map(material => material.name);
                         }
                         this.setState({})
-                        if(this.props.match.params.productId !== this.state.productName){
-                            const { location } = this.props;
-                            const pathSnippets = location.pathname.split('/').filter(i => i);
+                        const { location } = this.props;
+                        const pathSnippets = location.pathname.split('/').filter(i => i);
+                        if(pathSnippets[pathSnippets.length-1] !== this.state.productName){
                             pathSnippets[pathSnippets.length-1] = this.state.productName
                             window.location.href=`/${pathSnippets.join("/")}`
                         }
@@ -342,7 +389,7 @@ class SingleProduct extends Component {
                     <Row>
                         <Col span={8}>
                             <SingleProductName
-                                singleProductName={this.state.loadedProduct.name}
+                                singleProductName={this.state.productName}
                                 editModeStatus = {this.state.editModeStatus}
                                 newName = {newName => this.receiveNewName(newName)}
                             />

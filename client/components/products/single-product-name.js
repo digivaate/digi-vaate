@@ -13,6 +13,15 @@ class SingleProductName extends Component{
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps != this.props){
+            this.setState({
+                nameVisible: false,
+                productName: this.props.singleProductName
+            })
+        }
+    }
+
     showNameModal = (e) => {
         this.setState({
             nameVisible: true
@@ -38,6 +47,7 @@ class SingleProductName extends Component{
             nameVisible:false
         })
     };
+
 
 
     render(){

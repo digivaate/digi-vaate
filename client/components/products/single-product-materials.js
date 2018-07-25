@@ -32,6 +32,27 @@ class SingleProductMaterials extends Component{
     updatedMaterials = this.props.updatedMaterials;
     materialPairs = [];
 
+    componentDidUpdate(prevProps){
+        if(prevProps != this.props){
+            this.setState({
+                materialVisible: false,
+                productMaterials: this.props.productMaterials.map(material => {
+                    return {
+                        id:material.id,
+                        consumption: parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
+                        name:material.name,
+                        imagePath: material.imagePath,
+                        unitPrice: material.unitPrice,
+                        freight:material.freight,
+                        materialCosts: material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
+                    }
+                }),
+                materialOptions: this.props.materialOptions,
+                materialCosts: this.props.loadedProduct.materialCosts
+            })
+        }
+    }
+
 
     componentDidMount(){
         axios.get(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`)
