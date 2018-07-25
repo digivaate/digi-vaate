@@ -50,17 +50,21 @@ export default class Controller {
             res.status(500).json(properties);
             return;
         }
+        const updatedEntities = [];
         this.model.findAll({ where: properties })
             .then(ents => {
                 const promises = [];
-                ents.forEach(ent => {
-                    this.setRelations(ent, req.body);
-                    promises.push(ent.updateAttributes(req.body));
+                ents.forEach( ent => {
+                    promises.push(this.setRelations(ent, req.body));
+                    updatedEntities.push(ent.updateAttributes(req.body));
                 });
-                return Promise.all(promises);
+                return Promise.all(promises.concat(updatedEntities));
             })
-            .then(resolved => {
-                res.send(resolved);
+            .then(() => {
+                return Promise.all(updatedEntities);
+            })
+            .then(ents => {
+                res.send(ents);
             })
             .catch(err => {
                 console.error(err);
