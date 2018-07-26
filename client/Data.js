@@ -1,8 +1,4 @@
 import React from "react";
-import "./index.css";
-
-
-
 
 const range = len => {
     const arr = [];

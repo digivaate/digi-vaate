@@ -4,25 +4,6 @@ body {
     font-size: 14px;
 }
 
-.ReactTable .rt-thead .rt-resizable-header {
-    overflow: hidden !important;
-}
-
-.wordwrap {
-    white-space: pre-line !important;
-    word-wrap: break-word;
-}
-
-.wordwrapEdit {
-    white-space: pre-line !important;
-    word-wrap: break-word;
-    background-color: #e8e8e8;
-}
-
-.alignRight {
-    text-align: right;
-}
-
 /*Main layout of app*/
 .App {
     height: 100vh;

@@ -4,7 +4,7 @@ import { render } from "react-dom";
 import "react-table/react-table.css";
 import axios from 'axios';
 import {API_ROOT} from './api-config';
-import BudgetPlanningTable from './components/budget-planning'
+import BudgetPlanningTable from './components/summary-table'
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'

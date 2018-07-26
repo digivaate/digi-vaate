@@ -1,4 +1,4 @@
-import React,{ Component } from "react";
+import React from "react";
 import '../index.css';
 import { API_ROOT } from '../api-config';
 import axios from 'axios';
@@ -8,12 +8,11 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import {Popover} from "antd";
 
-class BudgetPlanningTable extends Component {
+class BudgetPlanningTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
-            isFetched: false
+            data: []
         };
         this.renderEditable = this.renderEditable.bind(this);
         this.linkToProduct = this.linkToProduct.bind(this);
@@ -27,10 +26,6 @@ class BudgetPlanningTable extends Component {
                 console.log(res);
             })
             .catch(err => console.error('Unable to patch amount:' + err));
-    }
-
-    goesOverBudget() {
-
     }
 
     renderEditable(cellInfo) {
