@@ -49,18 +49,21 @@ const MaterialCreateForm = Form.create()(
                             )}
                         </FormItem>
                         <FormItem label="Manufacturer">
-                            {getFieldDecorator('manufacturer', {
-                                rules: [{ required: true, message: 'Please input the name of material' }],
-                            })(
+                            {getFieldDecorator('manufacturer')(
                                 <Input />
                             )}
                         </FormItem>
                         <Row gutter={16}>
                             <Col span={12}>
+                                <FormItem label="Code">
+                                    {getFieldDecorator('code')(
+                                        <Input />
+                                    )}
+                                </FormItem>
+                            </Col>
+                            <Col span={12}>
                                 <FormItem label="Unit Price">
-                                    {getFieldDecorator('unitPrice', {
-                                        rules: [{ required: true, message: 'Please input the unit price' }],
-                                    })(
+                                    {getFieldDecorator('unitPrice')(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -69,18 +72,14 @@ const MaterialCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Freight">
-                                    {getFieldDecorator('freight', {
-                                        rules: [{ required: true, message: 'Please input the freight' }],
-                                    })(
+                                    {getFieldDecorator('freight')(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Weight">
-                                    {getFieldDecorator('weight', {
-                                        rules: [{ required: true, message: 'Please input the weight' }],
-                                    })(
+                                    {getFieldDecorator('weight')(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -89,18 +88,14 @@ const MaterialCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Width">
-                                    {getFieldDecorator('width', {
-                                        rules: [{ required: true, message: 'Please input the width' }],
-                                    })(
+                                    {getFieldDecorator('width')(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Minimum Quality">
-                                    {getFieldDecorator('minQuality', {
-                                        rules: [{ required: true, message: 'Please input the minimum quality' }],
-                                    })(
+                                    {getFieldDecorator('minQuality')(
                                         <Input />
                                     )}
                                 </FormItem>

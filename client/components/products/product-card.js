@@ -94,23 +94,14 @@ const ProductCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Cover Percentage">
-                                    {getFieldDecorator('coverPercent', {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input the cover percentage',
-                                            }
-                                        ],
-                                    })(
+                                    {getFieldDecorator('coverPercent')(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Reseller Profit Percentage">
-                                    {getFieldDecorator('resellerProfitPercent', {
-                                        rules: [{ required: true, message: 'Please input the reseller profit percentage' }],
-                                    })(
+                                    {getFieldDecorator('resellerProfitPercent')(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -119,18 +110,14 @@ const ProductCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Tax Percentage">
-                                    {getFieldDecorator('taxPercent', {
-                                        rules: [{ required: true, message: 'Please input the tax percentage' }],
-                                    })(
+                                    {getFieldDecorator('taxPercent')(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Subcontracting cost">
-                                    {getFieldDecorator('subcCostTotal', {
-                                        rules: [{ required: true, message: 'Please input the subcontracting cost' }],
-                                    })(
+                                    {getFieldDecorator('subcCostTotal')(
                                         <Input />
                                     )}
                                 </FormItem>

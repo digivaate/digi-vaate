@@ -136,7 +136,12 @@ class MaterialList extends Component{
                                     ]}>
                                     <Meta
                                         onClick = {() => this.handleSelect(material.name)}
-                                        title={material.name}
+                                        title= {
+                                            <div>
+                                                <p>{material.name}</p>
+                                                <p>Code: {material.code ? material.code : "None"}</p>
+                                            </div>
+                                        }
                                     />
                                 </Card>
                             </div>

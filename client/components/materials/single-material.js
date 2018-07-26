@@ -19,7 +19,8 @@ class SingleMaterial extends Component{
             unitPrice:0,
             manufacturer:'',
             instructions:'',
-            composition:''
+            composition:'',
+            code: '',
         }
     }
 
@@ -35,7 +36,8 @@ class SingleMaterial extends Component{
                     unitPrice:response.data[0].unitPrice,
                     manufacturer:response.data[0].manufacturer,
                     instructions:response.data[0].instructions,
-                    composition:response.data[0].composition
+                    composition:response.data[0].composition,
+                    code: response.data[0].code
                 })
             })
     }
@@ -76,7 +78,8 @@ class SingleMaterial extends Component{
             unitPrice:this.state.unitPrice,
             manufacturer:this.state.manufacturer,
             instructions:this.state.instructions,
-            composition:this.state.composition
+            composition:this.state.composition,
+            code: this.state.code
         };
         axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,materialChanges)
             .then(res => {
@@ -92,6 +95,7 @@ class SingleMaterial extends Component{
                             manufacturer:response.data[0].manufacturer,
                             instructions:response.data[0].instructions,
                             composition:response.data[0].composition,
+                            code: response.data[0].code,
                             visible:false
                         });
                     });
@@ -131,6 +135,7 @@ class SingleMaterial extends Component{
                             manufacturer:response.data[0].manufacturer,
                             instructions:response.data[0].instructions,
                             composition:response.data[0].composition,
+                            code: response.data[0].code,
                             visible:false
                         });
                         window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/materials/${this.state.name}`                    });
@@ -154,6 +159,7 @@ class SingleMaterial extends Component{
 
             const contentList = {
                 tab1: <div>
+                    <p>Code: {this.state.loadedMaterial.code?this.state.loadedMaterial.code: "None"} </p>
                     <p>Total Consumption: {totalConsumption}</p>
                     <p>Freight: {this.state.loadedMaterial.freight}</p>
                     <p>Manufacturer: {this.state.loadedMaterial.manufacturer}</p>
@@ -220,6 +226,15 @@ class SingleMaterial extends Component{
                                     onCancel={this.handleCancel}
                                     onOk={this.handleOk}
                                 >
+                                    <Row>
+                                        Code:
+                                        <Input
+                                            className="input-style"
+                                            value={this.state.code}
+                                            name="code"
+                                            onChange={this.handleChange}
+                                        />
+                                    </Row>
                                     <Row>
                                         <Col span={12}>
                                             Freight:
