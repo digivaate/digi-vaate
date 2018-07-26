@@ -88,12 +88,12 @@ class ColorPage extends React.Component {
                 message.success('Successfully created',1);
                 const newColor = {
                     name: this.colorsCollection.name,
-                    value: this.colorsCollection.hexCode
+                    value: this.colorsCollection.hexCode,
+                    code: this.colorsCollection.colorCode
                 };
                 this.props.createColor(newColor);
                 axios.post(`${API_ROOT}/color`,newColor)
                     .then(function (response) {
-                        console.log(response);
                     })
                     .catch(function (error) {
                     });

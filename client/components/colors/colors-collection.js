@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ColorPage from './create-color';
 import { API_ROOT } from '../../api-config';
-import { Card, Icon, Button } from 'antd';
+import { Card, Icon, Button, Modal,Row,Col,Input } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
 import './colors.css'
@@ -10,7 +10,8 @@ class ColorCollection extends Component{
     constructor(props){
         super(props);
         this.state ={
-            fetchColors: null
+            fetchColors: null,
+            colorVisible:false,
         };
         this.loadColors = this.loadColors.bind(this);
     }
@@ -37,6 +38,35 @@ class ColorCollection extends Component{
         this.setState({})
     }
 
+    showColorModal = (name,code,id) => {
+        this.setState({
+            colorVisible: true,
+            id: id,
+            name: name,
+            code:code
+        });
+    };
+
+    handleColorOk = (event) => {
+        axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code})
+            .then(response => {
+                this.loadColors();
+            })
+            .then(() => this.setState({colorVisible:false}))
+    };
+
+    handleColorCancel = (e) => {
+        this.setState({
+            colorVisible: false,
+        });
+    };
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
     render(){
         if(this.colorCard.length === 0){
             return (
@@ -53,12 +83,16 @@ class ColorCollection extends Component{
                     <Card.Grid
                         className="single-color-card"
                         style={{backgroundColor: element.value}}
-                        actions={[<Icon type="setting"/>, <Icon type="edit"/>, <Icon type="ellipsis"/>]}
                         key={element.id}
+                        onClick = {() => this.showColorModal(element.name,element.code,element.id)}
                     >
                         <Meta
                             title={element.name}
-                            description={element.value}
+                            description={
+                                <div>
+                                    <p>Hex: {element.value}</p>
+                                    <p>Code: {element.code ? element.code: "None"}</p>
+                                </div>}
                             className="color-card-description"
                         />
                     </Card.Grid>
@@ -69,6 +103,35 @@ class ColorCollection extends Component{
                     <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
                     <Card title="Color Collection">
                         {colorCard}
+                        <Modal
+                            title="Edit color"
+                            visible={this.state.colorVisible}
+                            onOk={this.handleColorOk}
+                            onCancel={this.handleColorCancel}
+                            bodyStyle={{maxHeight: 300, overflow: 'auto'}}
+                        >
+                            <Row gutter={8}>
+                                <Col span={12}>
+                                    Name:
+                                    <Input
+                                        className="input-style"
+                                        value={this.state.name}
+                                        name="name"
+                                        onChange={this.handleChange}
+                                    />
+                                </Col>
+                                <Col span={12}>
+                                    Color code:
+                                    <Input
+                                        className="input-style"
+                                        value={this.state.code}
+                                        name="code"
+                                        onChange={this.handleChange}
+                                    />
+                                </Col>
+                            </Row>
+                            <p>List of products used this colors:</p>
+                        </Modal>
                     </Card>
                 </div>
             )
