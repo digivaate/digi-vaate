@@ -71,16 +71,21 @@ const MaterialCreateForm = Form.create()(
                         </Row>
                         <Row gutter={16}>
                             <Col span={12}>
-                                <FormItem label="Freight">
-                                    {getFieldDecorator('freight')(
+                                <FormItem label="Weight">
+                                    {getFieldDecorator('weight')(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
-                                <FormItem label="Weight">
-                                    {getFieldDecorator('weight')(
-                                        <Input />
+                                <FormItem label="Weight unit">
+                                    {getFieldDecorator('weightUnit')(
+                                        <Select style={{width:150}}>
+                                            <Option value="miligrams">miligrams</Option>
+                                            <Option value="grams">grams</Option>
+                                            <Option value="kilograms">kilograms</Option>
+                                            <Option value="pounds">pounds</Option>
+                                        </Select>
                                     )}
                                 </FormItem>
                             </Col>
@@ -89,6 +94,27 @@ const MaterialCreateForm = Form.create()(
                             <Col span={12}>
                                 <FormItem label="Width">
                                     {getFieldDecorator('width')(
+                                        <Input />
+                                    )}
+                                </FormItem>
+                            </Col>
+                            <Col span={12}>
+                                <FormItem label="Width unit">
+                                    {getFieldDecorator('widthUnit')(
+                                        <Select style={{width:150}}>
+                                            <Option value="milimeters">milimeters</Option>
+                                            <Option value="centimeters">centimeters</Option>
+                                            <Option value="kilograms">meters</Option>
+                                            <Option value="inches">inches</Option>
+                                        </Select>
+                                    )}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <FormItem label="Freight">
+                                    {getFieldDecorator('freight')(
                                         <Input />
                                     )}
                                 </FormItem>

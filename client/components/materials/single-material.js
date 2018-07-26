@@ -21,6 +21,10 @@ class SingleMaterial extends Component{
             instructions:'',
             composition:'',
             code: '',
+            widthUnit:'',
+            weightUnit:'',
+            width:0,
+            weight:0
         }
     }
 
@@ -37,7 +41,11 @@ class SingleMaterial extends Component{
                     manufacturer:response.data[0].manufacturer,
                     instructions:response.data[0].instructions,
                     composition:response.data[0].composition,
-                    code: response.data[0].code
+                    code: response.data[0].code,
+                    widthUnit:response.data[0].widthUnit,
+                    weightUnit:response.data[0].weightUnit,
+                    width:response.data[0].width,
+                    weight:response.data[0].weight
                 })
             })
     }
@@ -79,7 +87,11 @@ class SingleMaterial extends Component{
             manufacturer:this.state.manufacturer,
             instructions:this.state.instructions,
             composition:this.state.composition,
-            code: this.state.code
+            code: this.state.code,
+            widthUnit:this.state.widthUnit,
+            weightUnit:this.state.weightUnit,
+            width:this.state.width,
+            weight:this.state.weight
         };
         axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,materialChanges)
             .then(res => {
@@ -96,6 +108,10 @@ class SingleMaterial extends Component{
                             instructions:response.data[0].instructions,
                             composition:response.data[0].composition,
                             code: response.data[0].code,
+                            widthUnit:response.data[0].widthUnit,
+                            weightUnit:response.data[0].weightUnit,
+                            width:response.data[0].width,
+                            weight:response.data[0].weight,
                             visible:false
                         });
                     });
@@ -106,6 +122,18 @@ class SingleMaterial extends Component{
         this.setState({
             [event.target.name]: event.target.value
         });
+    };
+
+    handleWeightUnitChange = (value) => {
+        this.setState({
+            weightUnit: value
+        })
+    };
+
+    handleWidthUnitChange = (value) => {
+        this.setState({
+            widthUnit: value
+        })
     };
 
     //Edit material name
@@ -135,7 +163,10 @@ class SingleMaterial extends Component{
                             manufacturer:response.data[0].manufacturer,
                             instructions:response.data[0].instructions,
                             composition:response.data[0].composition,
-                            code: response.data[0].code,
+                            code: response.data[0].code,widthUnit:response.data[0].widthUnit,
+                            weightUnit:response.data[0].weightUnit,
+                            width:response.data[0].width,
+                            weight:response.data[0].weight,
                             visible:false
                         });
                         window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/materials/${this.state.name}`                    });
@@ -165,6 +196,8 @@ class SingleMaterial extends Component{
                     <p>Manufacturer: {this.state.loadedMaterial.manufacturer}</p>
                     <p>Min Quality: {this.state.loadedMaterial.minQuality}</p>
                     <p>Unit Price: {this.state.loadedMaterial.unitPrice}</p>
+                    <p>Width: {this.state.loadedMaterial.width} {this.state.loadedMaterial.widthUnit}</p>
+                    <p>Weight: {this.state.loadedMaterial.weight} {this.state.loadedMaterial.weightUnit}</p>
                 </div>,
                 tab2: <div>
                     <p>{this.state.loadedMaterial.instructions}</p>
@@ -212,7 +245,7 @@ class SingleMaterial extends Component{
                         </Col>
                         <Col span={16}>
                             <Card
-                                style={{ width: '100%',height:400 }}
+                                className="material-card-info"
                                 title="Material information"
                                 extra={<Button onClick={this.handleEdit}>Edit</Button>}
                                 tabList={tabList}
@@ -235,7 +268,8 @@ class SingleMaterial extends Component{
                                             onChange={this.handleChange}
                                         />
                                     </Row>
-                                    <Row>
+                                    <br/>
+                                    <Row gutter={8}>
                                         <Col span={12}>
                                             Freight:
                                             <Input
@@ -256,7 +290,7 @@ class SingleMaterial extends Component{
                                         </Col>
                                     </Row>
                                     <br/>
-                                    <Row>
+                                    <Row gutter={8}>
                                         <Col span={12}>
                                             Min Quality:
                                             <Input
@@ -274,6 +308,56 @@ class SingleMaterial extends Component{
                                                 name="unitPrice"
                                                 onChange={this.handleChange}
                                             />
+                                        </Col>
+                                    </Row>
+                                    <br/>
+                                    <Row gutter={8}>
+                                        <Col span={12}>
+                                            Width:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.width}
+                                                name="width"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                        <Col span={12}>
+                                            Width unit:
+                                            <br/>
+                                            <Select defaultValue={this.state.widthUnit}
+                                                    onChange={this.handleWidthUnitChange}
+                                                    style={{width:150}}
+                                            >
+                                                <Option value="milimeters">milimeters</Option>
+                                                <Option value="centimeters">centimeters</Option>
+                                                <Option value="kilograms">meters</Option>
+                                                <Option value="inches">inches</Option>
+                                            </Select>
+                                        </Col>
+                                    </Row>
+                                    <br/>
+                                    <Row gutter={8}>
+                                        <Col span={12}>
+                                            Weight:
+                                            <Input
+                                                className="input-style"
+                                                value={this.state.weight}
+                                                name="weight"
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                        <Col span={12}>
+                                            Weight unit:
+                                            <br/>
+                                            <Select defaultValue={this.state.weightUnit}
+                                                    onChange={this.handleWeightUnitChange}
+                                                    style={{width:150}}
+                                            >
+                                                <Option value="miligrams">miligrams</Option>
+                                                <Option value="grams">grams</Option>
+                                                <Option value="kilograms">kilograms</Option>
+                                                <Option value="pounds">pounds</Option>
+                                            </Select>
                                         </Col>
                                     </Row>
                                     <br/>
