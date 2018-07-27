@@ -92,11 +92,6 @@ class ColorPage extends React.Component {
                     code: this.colorsCollection.colorCode
                 };
                 this.props.createColor(newColor);
-                axios.post(`${API_ROOT}/color`,newColor)
-                    .then(function (response) {
-                    })
-                    .catch(function (error) {
-                    });
             });
             this.hexCodeValues = "";
         }
