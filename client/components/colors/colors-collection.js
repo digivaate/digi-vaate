@@ -4,19 +4,23 @@ import { API_ROOT } from '../../api-config';
 import { Card, Icon, Button, Modal,Row,Col,Input } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
+const confirm = Modal.confirm;
 import './colors.css'
 
 class ColorCollection extends Component{
     constructor(props){
         super(props);
         this.state ={
-            fetchColors: null,
             colorVisible:false,
+            id:null,
+            name: null,
+            code:null,
         };
         this.loadColors = this.loadColors.bind(this);
     }
 
     colorCard = [];
+
 
     componentDidMount(){
         this.loadColors();
@@ -26,16 +30,20 @@ class ColorCollection extends Component{
         axios.get(`${API_ROOT}/color`)
             .then(response => {
                 this.colorCard = response.data;
-                this.setState({
-                    fetchColors: true
-                });
+                this.setState(prevState => prevState);
             })
             .catch(err => console.log(err));
     }
 
     createColor(newColor){
-        this.colorCard.push(newColor);
-        this.setState({})
+        axios.post(`${API_ROOT}/color`,newColor)
+            .then((reponse) => {
+                axios.get(`${API_ROOT}/color`)
+                    .then(response => {
+                        this.colorCard = response.data;
+                        this.setState(prevState => prevState);
+                    })
+            })
     }
 
     showColorModal = (name,code,id) => {
@@ -58,6 +66,26 @@ class ColorCollection extends Component{
     handleColorCancel = (e) => {
         this.setState({
             colorVisible: false,
+        });
+    };
+
+    handleColorDelete = () => {
+        let self = this;
+        confirm({
+            title: 'Are you sure remove this product from collection?',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                axios.delete(`${API_ROOT}/color?id=${self.state.id}`)
+                    .then(response => {
+                        self.loadColors()
+                    })
+                    .then(() => self.setState({colorVisible:false}))
+            },
+            onCancel() {
+
+            },
         });
     };
 
@@ -110,6 +138,9 @@ class ColorCollection extends Component{
                             onCancel={this.handleColorCancel}
                             bodyStyle={{maxHeight: 300, overflow: 'auto'}}
                         >
+                            <Button type="danger" onClick={this.handleColorDelete}>Delete this color</Button>
+                            <br/>
+                            <br/>
                             <Row gutter={8}>
                                 <Col span={12}>
                                     Name:
