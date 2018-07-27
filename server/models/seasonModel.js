@@ -17,6 +17,7 @@ export default (sequelize, DataTypes) => {
     Season.associate = (models) => {
         Season.hasMany(models.Collection, {as: 'collections'});
         Season.hasMany(models.Product, {as: 'products'});
+        Season.hasMany(models.Color, {as: 'colors'});
     };
     return Season;
 };

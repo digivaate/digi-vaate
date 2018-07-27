@@ -3,7 +3,7 @@ import {API_ROOT} from "../api-config";
 import axios from "axios";
 import {Button, Popover, message} from "antd";
 import ReactTable from "react-table";
-import '../util';
+import '../utils';
 import 'react-table/react-table.css';
 import './summary-table.css';
 
@@ -102,10 +102,12 @@ class SummaryTable extends React.Component {
 
     //Other functions
     checkDataDifference() {
-        if (this.sumOfPurchasePrice() > this.state.budget) {
-            this.setState({ overBudget: true });
-        } else {
-            this.setState({ overBudget: false });
+        if (this.state.budget) {
+            if (this.sumOfPurchasePrice() > this.state.budget) {
+                this.setState({overBudget: true});
+            } else {
+                this.setState({overBudget: false});
+            }
         }
         this.setState({
             modified: !Object.compare(this.state.data, this.state.originalData)
@@ -165,6 +167,11 @@ class SummaryTable extends React.Component {
                 Cell: this.linkToProduct,
                 width: 140,
                 Footer: 'Total:'
+            },
+            {
+                Header: 'Material costs',
+                headerClassName: 'wordwrap',
+                accessor: 'materialCosts'
             },
             {
                 Header: "Product amount",

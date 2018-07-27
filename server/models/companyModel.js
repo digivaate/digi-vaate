@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
     Company.associate = (models) => {
         Company.hasMany(models.Season, { as: 'seasons' });
         Company.hasMany(models.Product, {as: 'products'});
+        Company.hasMany(models.Color, {as: 'colors'});
     };
     return Company;
 };
