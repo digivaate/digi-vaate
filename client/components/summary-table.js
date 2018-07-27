@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {API_ROOT} from "../api-config";
 import axios from "axios";
-import {Button, Popover} from "antd";
+import {Button, Popover, message} from "antd";
 import ReactTable from "react-table";
 import '../util';
 import 'react-table/react-table.css';
@@ -12,10 +12,12 @@ class SummaryTable extends React.Component {
         super(props);
         this.state = {
             data: [],
-            overBudget: false
+            overBudget: false,
+            modified: false
         };
         this.source = axios.CancelToken.source();
         this.saveData = this.saveData.bind(this);
+        this.resetData = this.resetData.bind(this);
         this.checkDataDifference = this.checkDataDifference.bind(this);
         this.createColumns = this.createColumns.bind(this);
         this.renderEditable = this.renderEditable.bind(this);
@@ -32,13 +34,16 @@ class SummaryTable extends React.Component {
             <div
                 contentEditable
                 suppressContentEditableWarning
-                style={ this.state.data[cellInfo.index].edited ? { color: 'orange', fontWeight: 'bold'} : {} }
+                style={ this.state.data[cellInfo.index].edited ? { color: '#EDAA00', fontWeight: 'bold'} : {} }
                 onBlur={e => {
                     console.log(cellInfo.column.id, cellInfo.index);
                     const value = parseInt(e.target.innerHTML);
                     const data = [...this.state.data];
                     //check if value is changed from original
-                    if (value !== this.state.originalData[cellInfo.index][cellInfo.column.id]) {
+                    if (isNaN(value)) {
+                        message.warning('Input needs to be number');
+                        e.target.innerHTML = this.state.data[cellInfo.index][cellInfo.column.id];
+                    } else if (value !== this.state.originalData[cellInfo.index][cellInfo.column.id]) {
                         data[cellInfo.index][cellInfo.column.id] = value;
                         data[cellInfo.index].edited = true;
                         this.checkDataDifference(cellInfo.index);
@@ -96,13 +101,15 @@ class SummaryTable extends React.Component {
     }
 
     //Other functions
-    checkDataDifference(index) {
+    checkDataDifference() {
         if (this.sumOfPurchasePrice() > this.state.budget) {
             this.setState({ overBudget: true });
         } else {
             this.setState({ overBudget: false });
         }
-        //return !Object.compare(this.state.data, this.state.originalData);
+        this.setState({
+            modified: !Object.compare(this.state.data, this.state.originalData)
+        });
     }
 
     saveData() {
@@ -124,7 +131,7 @@ class SummaryTable extends React.Component {
             const promises = [];
             changedProds.forEach(prod => {
                 promises.push(
-                    axios.patch(API_ROOT + '/product', {
+                    axios.patch(API_ROOT + '/product/?id=' + prod.id, {
                         amount: prod.amount
                     })
                 );
@@ -140,6 +147,13 @@ class SummaryTable extends React.Component {
                     this.setState({saving: false});
                 });
         }
+    }
+
+    resetData() {
+        this.setState({
+            data: JSON.parse(JSON.stringify(this.state.originalData)),
+            modified: false
+        });
     }
 
     createColumns() {
@@ -276,6 +290,7 @@ class SummaryTable extends React.Component {
             })
             .then(budget => {
                 this.setState({
+                    modified: false,
                     originalData: dataCollected,
                     data: JSON.parse(JSON.stringify(dataCollected)),
                     pageSize: dataCollected.length,
@@ -295,8 +310,8 @@ class SummaryTable extends React.Component {
                 <div className={'table-header'}>
                     <h1>Budget plan</h1>
                     <div>
-                        <Button onClick={() => {}}>Reset</Button>
-                        <Button onClick={this.saveData}>Save</Button>
+                        <Button onClick={this.resetData} disabled={!this.state.modified}>Reset</Button>
+                        <Button onClick={this.saveData} disabled={!this.state.modified}>Save</Button>
                     </div>
                 </div>
                 <ReactTable
