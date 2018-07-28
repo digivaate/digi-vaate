@@ -1,7 +1,7 @@
-import React,{Component} from 'react';
+import React,{Component,Fragment} from 'react';
 import ColorPage from './create-color';
 import { API_ROOT } from '../../api-config';
-import { Card, Icon, Button, Modal,Row,Col,Input } from 'antd';
+import { Card, Icon, Button, Modal,Row,Col,Input,List } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
 const confirm = Modal.confirm;
@@ -15,6 +15,8 @@ class ColorCollection extends Component{
             id:null,
             name: null,
             code:null,
+            hexCode:null,
+            productList:[]
         };
         this.loadColors = this.loadColors.bind(this);
     }
@@ -46,12 +48,14 @@ class ColorCollection extends Component{
             })
     }
 
-    showColorModal = (name,code,id) => {
+    showColorModal = (element) => {
         this.setState({
             colorVisible: true,
-            id: id,
-            name: name,
-            code:code
+            id: element.id,
+            name: element.name,
+            code:element.code,
+            productList: element.products,
+            hexCode: element.value
         });
     };
 
@@ -112,7 +116,7 @@ class ColorCollection extends Component{
                         className="single-color-card"
                         style={{backgroundColor: element.value}}
                         key={element.id}
-                        onClick = {() => this.showColorModal(element.name,element.code,element.id)}
+                        onClick = {() => this.showColorModal(element)}
                     >
                         <Meta
                             title={element.name}
@@ -126,6 +130,7 @@ class ColorCollection extends Component{
                     </Card.Grid>
                 )
             });
+
             return (
                 <div>
                     <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
@@ -161,7 +166,16 @@ class ColorCollection extends Component{
                                     />
                                 </Col>
                             </Row>
+                            <br/>
+                            <p>Hex code: {this.state.hexCode}</p>
                             <p>List of products used this colors:</p>
+                            <List
+                                size="small"
+                                bordered
+                                dataSource={this.state.productList}
+                                renderItem={item => {
+                                    return (<List.Item>{item.name}</List.Item>)}}
+                            />
                         </Modal>
                     </Card>
                 </div>
