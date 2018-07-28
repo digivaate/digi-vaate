@@ -15,15 +15,16 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
-            loadedProductOri: this.props.loadedProduct,
-            coverPercentOri: this.props.loadedProduct.coverPercent,
-            resellerProfitPercentOri: this.props.loadedProduct.resellerProfitPercent,
-            taxPercentOri: this.props.loadedProduct.taxPercent,
-            amountOri: this.props.loadedProduct.amount,
-            subcCostTotalOri: this.props.loadedProduct.subcCostTotal,
+            loadedProductOri: this.props.originalLoadedProduct,
+            coverPercentOri: this.props.originalLoadedProduct.coverPercent,
+            resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
+            taxPercentOri: this.props.originalLoadedProduct.taxPercent,
+            amountOri: this.props.originalLoadedProduct.amount,
+            subcCostTotalOri: this.props.originalLoadedProduct.subcCostTotal,
             saved:this.props.saved
         }
     }
+
 
     componentDidUpdate(prevProps){
         if((prevProps != this.props) && this.props.saved === true) {
@@ -35,12 +36,12 @@ class SingleProductGeneralInfo extends Component{
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
                 subcCostTotal: this.props.loadedProduct.subcCostTotal,
-                loadedProductOri: this.props.loadedProduct,
-                coverPercentOri: this.props.loadedProduct.coverPercent,
-                resellerProfitPercentOri: this.props.loadedProduct.resellerProfitPercent,
-                taxPercentOri: this.props.loadedProduct.taxPercent,
-                amountOri: this.props.loadedProduct.amount,
-                subcCostTotalOri: this.props.loadedProduct.subcCostTotal,
+                loadedProductOri: this.props.originalLoadedProduct,
+                coverPercentOri: this.props.originalLoadedProduct.coverPercent,
+                resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
+                taxPercentOri: this.props.originalLoadedProduct.taxPercent,
+                amountOri: this.props.originalLoadedProduct.amount,
+                subcCostTotalOri: this.props.originalLoadedProduct.subcCostTotal,
                 saved: !this.props.saved
             })
         }

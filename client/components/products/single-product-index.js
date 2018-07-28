@@ -424,6 +424,7 @@ class SingleProduct extends Component {
                 tab1:
                     <SingleProductGeneralInfo
                         loadedProduct = {this.state.loadedProduct}
+                        originalLoadedProduct = {this.state.originalLoadedProduct}
                         editModeStatus = {this.state.editModeStatus}
                         newInfo = {newInfo => this.receiveNewInfo(newInfo)}
                         saved = {this.state.saved}
