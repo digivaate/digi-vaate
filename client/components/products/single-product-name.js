@@ -9,7 +9,8 @@ class SingleProductName extends Component{
         super(props);
         this.state = {
             nameVisible: false,
-            productName: this.props.singleProductName
+            productName: this.props.singleProductName,
+            productNameOri: this.props.singleProductName
         }
     }
 
@@ -17,7 +18,7 @@ class SingleProductName extends Component{
         if(prevProps != this.props){
             this.setState({
                 nameVisible: false,
-                productName: this.props.singleProductName
+                productName: this.props.singleProductName,
             })
         }
     }
@@ -60,7 +61,7 @@ class SingleProductName extends Component{
         }
         return (
             <Row type="flex">
-                <h1>{this.state.productName}&nbsp;</h1>
+                <h1 style={ this.state.productName !== this.state.productNameOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.productName}&nbsp;</h1>
                 {editNameBtn}
                 <Modal
                     title="Edit name"

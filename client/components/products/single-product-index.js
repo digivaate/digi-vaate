@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
+import '../../utils';
 import SingleProductName from './single-product-name'
 import SingleProductImg from './single-product-img'
 import SingleProductLocation from './single-product-location'
@@ -16,6 +17,7 @@ class SingleProduct extends Component {
     constructor(props){
         super(props);
         this.state = {
+            modified: false,
             key:'tab1',
             loadedProduct: null,
             productName:null,
@@ -27,6 +29,12 @@ class SingleProduct extends Component {
             seasonName:null,
             productColors: null,
             colorOptions: null,
+            originalProductImg: null,
+            originalProductColors: null,
+            originalProductMaterials: null,
+            originalProductName: null,
+            originalLoadedProduct:null,
+            saved: false
         }
     }
 
@@ -135,6 +143,11 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            originalLoadedProduct: response.data[0],
+                            originalProductImg: response.data[0].imagePath,
+                            originalProductColors: response.data[0].colors,
+                            originalProductMaterials: response.data[0].materials,
+                            originalProductName: response.data[0].name,
                         });
                     })
                     .then(() => {
@@ -156,7 +169,12 @@ class SingleProduct extends Component {
                             productImg: response.data[0].imagePath,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
-                            productName: response.data[0].name
+                            productName: response.data[0].name,
+                            originalLoadedProduct: response.data[0],
+                            originalProductImg: response.data[0].imagePath,
+                            originalProductColors: response.data[0].colors,
+                            originalProductMaterials: response.data[0].materials,
+                            originalProductName: response.data[0].name,
                         });
                     })
                     .then(() => {
@@ -169,30 +187,68 @@ class SingleProduct extends Component {
 
     receiveNewName = (newName) => {
         this.setState({
-            productName: newName
+            productName: newName,
+            modified: !Object.compare(newName, this.state.originalProductName)
         })
     };
 
     receiveNewColors = (newColors) => {
+        const newColorsCompare = newColors.map(newColor => {
+            return {
+                id: newColor.id,
+                name: newColor.name,
+                code: newColor.code,
+                value: newColor.value
+            }
+        });
+        const originalColorsCompare = this.state.originalProductColors.map(oriColor => {
+            return {
+                id: oriColor.id,
+                name: oriColor.name,
+                code: oriColor.code,
+                value: oriColor.value
+            }
+        });
         this.setState({
-            productColors: newColors
+            productColors: newColors,
+            modified: !Object.compare(newColorsCompare, originalColorsCompare)
         })
     };
 
     receiveNewMaterials = (newMaterials) => {
+        const newMaterialsObj = newMaterials.map(newMaterial => {
+            return {
+                ...newMaterial,
+                material_product: {consumption: newMaterial.consumption}
+            }
+        });
+
+        const newMaterialsCompare = newMaterialsObj.map(newMaterial => {
+            return {
+                id: newMaterial.id,
+                name: newMaterial.name,
+                consumption: newMaterial.material_product.consumption
+            }
+        })
+
+        const oriMaterialsCompare = this.state.originalProductMaterials.map(oriMaterial => {
+            return {
+                id: oriMaterial.id,
+                name: oriMaterial.name,
+                consumption: oriMaterial.material_product.consumption
+            }
+        });
+
         this.setState({
-            productMaterials: newMaterials.map(newMaterial => {
-                return {
-                    ...newMaterial,
-                    material_product: {consumption: newMaterial.consumption}
-                }
-            })
+            productMaterials: newMaterialsObj,
+            modified: !Object.compare(newMaterialsCompare, oriMaterialsCompare)
         })
     };
 
     receiveNewInfo = (newInfo) =>{
         this.setState({
-            loadedProduct: newInfo
+            loadedProduct: newInfo,
+            modified: !Object.compare(newInfo, this.state.originalLoadedProduct)
         })
     };
 
@@ -244,6 +300,7 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            modified: false
                         });
                     })
                     .then(() => {
@@ -319,6 +376,13 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            originalLoadedProduct: response.data[0],
+                            originalProductImg: response.data[0].imagePath,
+                            originalProductColors: response.data[0].colors,
+                            originalProductMaterials: response.data[0].materials,
+                            originalProductName: response.data[0].name,
+                            modified: false,
+                            saved: true
                         });
                     })
                     .then(() => {
@@ -336,6 +400,12 @@ class SingleProduct extends Component {
                         }
                     });
             })
+    };
+
+    refreshCheck = (saved) => {
+        this.setState({
+            saved:saved
+        })
     };
 
     render(){
@@ -356,6 +426,8 @@ class SingleProduct extends Component {
                         loadedProduct = {this.state.loadedProduct}
                         editModeStatus = {this.state.editModeStatus}
                         newInfo = {newInfo => this.receiveNewInfo(newInfo)}
+                        saved = {this.state.saved}
+                        refreshCheck = {saved => this.refreshCheck(saved)}
                     />,
                 tab2: <div>
                     <Row gutter={8}>
@@ -396,8 +468,8 @@ class SingleProduct extends Component {
                         </Col>
                         <Col span={8} offset={8}>
                             <Row type="flex">
-                            <Button size="large" onClick={this.discardChanges}>Discard changes</Button>
-                            <Button size="large" onClick={this.saveInfo}>Save</Button>
+                            <Button size="large" disabled={!this.state.modified} onClick={this.discardChanges}>Discard changes</Button>
+                            <Button size="large" disabled={!this.state.modified} onClick={this.saveInfo}>Save</Button>
                             </Row>
                         </Col>
                     </Row>

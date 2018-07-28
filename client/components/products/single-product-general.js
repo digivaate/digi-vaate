@@ -15,11 +15,18 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
+            loadedProductOri: this.props.loadedProduct,
+            coverPercentOri: this.props.loadedProduct.coverPercent,
+            resellerProfitPercentOri: this.props.loadedProduct.resellerProfitPercent,
+            taxPercentOri: this.props.loadedProduct.taxPercent,
+            amountOri: this.props.loadedProduct.amount,
+            subcCostTotalOri: this.props.loadedProduct.subcCostTotal,
+            saved:this.props.saved
         }
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps != this.props){
+        if((prevProps != this.props) && this.props.saved === true) {
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
@@ -28,6 +35,25 @@ class SingleProductGeneralInfo extends Component{
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
                 subcCostTotal: this.props.loadedProduct.subcCostTotal,
+                loadedProductOri: this.props.loadedProduct,
+                coverPercentOri: this.props.loadedProduct.coverPercent,
+                resellerProfitPercentOri: this.props.loadedProduct.resellerProfitPercent,
+                taxPercentOri: this.props.loadedProduct.taxPercent,
+                amountOri: this.props.loadedProduct.amount,
+                subcCostTotalOri: this.props.loadedProduct.subcCostTotal,
+                saved: !this.props.saved
+            })
+        }
+        else if(prevProps != this.props){
+            this.setState({
+                infoVisible: false,
+                loadedProduct: this.props.loadedProduct,
+                coverPercent: this.props.loadedProduct.coverPercent,
+                resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
+                taxPercent: this.props.loadedProduct.taxPercent,
+                amount: this.props.loadedProduct.amount,
+                subcCostTotal: this.props.loadedProduct.subcCostTotal,
+                saved: this.props.saved
             })
         }
     }
@@ -60,6 +86,7 @@ class SingleProductGeneralInfo extends Component{
             subcCostTotal: parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2))
         };
         this.props.newInfo(newInfo);
+        this.props.refreshCheck(this.state.saved);
         this.setState({
             infoVisible:false
         })
@@ -125,10 +152,10 @@ class SingleProductGeneralInfo extends Component{
                         </Col>
                     </Row>
                 </Modal>
-                <p>Cover percentage:{this.state.coverPercent}</p>
-                <p>Reseller profit percentage: {this.state.resellerProfitPercent}</p>
-                <p>Amount:{this.state.amount}</p>
-                <p>Subcontracting cost:{this.state.subcCostTotal}</p>
+                <p>Cover percentage: <span style={ this.state.coverPercent !== this.state.coverPercentOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.coverPercent} </span></p>
+                <p>Reseller profit percentage: <span style={ this.state.resellerProfitPercent !== this.state.resellerProfitPercentOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.resellerProfitPercent}</span></p>
+                <p>Amount:<span style={ this.state.amount !== this.state.amountOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.amount}</span></p>
+                <p>Subcontracting cost:<span style={ this.state.subcCostTotal !== this.state.subcCostTotalOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.subcCostTotal}</span></p>
             </div>
         )
     }
