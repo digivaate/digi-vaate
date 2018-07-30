@@ -5,6 +5,14 @@ import ProductController from "./productController";
 class CompanyController extends Controller {
     constructor() { super(models.Company); }
 
+    setRelations(entity, jsonBody) {
+        const promises = [];
+        if (jsonBody.colors) {
+            promises.push( entity.setColors(jsonBody.colors) );
+        }
+        return Promise.all(promises);
+    }
+
     getAllProducts(req, res) {
         const properties = Controller.collectProperties(req.query, models.Company);
         if (properties.error) {

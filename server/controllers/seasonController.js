@@ -5,6 +5,10 @@ import ProductController from "./productController";
 class SeasonController extends Controller {
     constructor() { super(models.Season); }
 
+    setRelations(entity, jsonBody) {
+        if (jsonBody.colors) entity.setColors(jsonBody.colors);
+    }
+
     getAllProducts(req, res) {
 
         const properties = Controller.collectProperties(req.query, models.Season);
