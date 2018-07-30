@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {API_ROOT} from "../api-config";
 import axios from "axios";
-import {Button, Popover, message} from "antd";
+import {Button, Popover, message, Icon} from "antd";
 import ReactTable from "react-table";
 import '../utils';
 import 'react-table/react-table.css';
@@ -28,45 +28,6 @@ class SummaryTable extends React.Component {
         this.sumOfPurchasePrice = this.sumOfPurchasePrice.bind(this);
     }
 
-    //Custom table cells
-    renderEditable(cellInfo) {
-        return (
-            <div
-                contentEditable
-                suppressContentEditableWarning
-                style={ this.state.data[cellInfo.index].edited ? { color: '#EDAA00', fontWeight: 'bold'} : {} }
-                onBlur={e => {
-                    console.log(cellInfo.column.id, cellInfo.index);
-                    const value = parseInt(e.target.innerHTML);
-                    const data = [...this.state.data];
-                    //check if value is changed from original
-                    if (isNaN(value)) {
-                        message.warning('Input needs to be number');
-                        e.target.innerHTML = this.state.data[cellInfo.index][cellInfo.column.id];
-                    } else if (value !== this.state.originalData[cellInfo.index][cellInfo.column.id]) {
-                        data[cellInfo.index][cellInfo.column.id] = value;
-                        data[cellInfo.index].edited = true;
-                        this.checkDataDifference(cellInfo.index);
-                    } else {
-                        data[cellInfo.index].edited = false;
-                    }
-                    this.setState({ data });
-                }}
-                dangerouslySetInnerHTML={{
-                    __html: this.state.data[cellInfo.index][cellInfo.column.id]
-                }}
-            />
-        );
-    }
-
-    linkToProduct(cellInfo) {
-        return (
-            <a href={`${this.props.match.url}/../products/${cellInfo.value}`}>
-                {cellInfo.value}
-            </a>
-        )
-    }
-
     //Footer calculations
     sumOfAmounts(){
         let componentValue = [];
@@ -79,7 +40,7 @@ class SummaryTable extends React.Component {
     sumOfTotalSale(){
         let componentValue = [];
         this.state.data.forEach(row => {
-            componentValue.push(parseFloat((parseFloat(row.unitPriceWithoutTax) * parseFloat(row.amount)).toFixed(2)));
+            componentValue.push(parseFloat((parseFloat(row.sellingPrice) * parseFloat(row.amount)).toFixed(2)));
         });
         return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
     }
@@ -122,7 +83,7 @@ class SummaryTable extends React.Component {
         this.setState({ saving: true});
         const changedProds = [];
         for (let i in this.state.data) {
-            if (this.state.data[i].amount !== this.state.originalData[i].amount) {
+            if (!Object.compare(this.state.data[i], this.state.originalData[i])) {
                 changedProds.push(this.state.data[i]);
             }
         }
@@ -134,7 +95,8 @@ class SummaryTable extends React.Component {
             changedProds.forEach(prod => {
                 promises.push(
                     axios.patch(API_ROOT + '/product/?id=' + prod.id, {
-                        amount: prod.amount
+                        amount: prod.amount,
+                        sellingPrice: prod.sellingPrice,
                     })
                 );
             });
@@ -161,93 +123,99 @@ class SummaryTable extends React.Component {
     createColumns() {
         const columns = [
             {
-                Header: "Product name",
-                headerClassName: "wordwrap",
-                accessor: 'name',
-                Cell: this.linkToProduct,
-                width: 140,
-                Footer: 'Total:'
+                Header: 'Product',
+                columns: [
+                    {
+                        Header: "Product name",
+                        headerClassName: "wordwrap",
+                        accessor: 'name',
+                        Cell: this.linkToProduct,
+                        width: 140,
+                        Footer: 'Total:'
+                    },
+                    {
+                        Header: 'Material costs',
+                        headerClassName: 'wordwrap',
+                        accessor: 'materialCosts'
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Sum of material costs and subcontracting costs</p>)}>
+                                <p>Purchasing price</p>
+                            </Popover>,
+                        headerClassName: 'wordwrap',
+                        accessor: 'purchasePrice'
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Selling price of a single product</p>)}>
+                                <p>Selling price <Icon type={'form'} /></p>
+                            </Popover>,
+                        //headerClassName: "wordwrap",
+                        className: 'alignRight',
+                        accessor: 'sellingPrice',
+                        Cell: this.renderEditable
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Difference between purchasing price and selling price based on selling price</p>)}>
+                                <p>Cover percent</p>
+                            </Popover>,
+                        headerClassName: "wordwrap",
+                        className: 'alignRight',
+                        id: 'coverPercent',
+                        accessor: d => (d.coverPercent + '%'),
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Difference between purchasing price and selling price</p>)}>
+                                <p>Cover amount</p>
+                            </Popover>,
+                        headerClassName: "wordwrap",
+                        className: 'alignRight',
+                        accessor: "coverAmount",
+                    }
+                ]
             },
             {
-                Header: 'Material costs',
-                headerClassName: 'wordwrap',
-                accessor: 'materialCosts'
-            },
-            {
-                Header: "Product amount",
-                headerClassName: "wordwrapEdit",
-                className: 'alignRight',
-                accessor: "amount",
-                Cell: this.renderEditable,
-                Footer: this.sumOfAmounts
-            }
-            ,
-            {
-                Header: "Consumer Price",
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                accessor: "consumerPriceCommercial",
-            },
-            {
-                Header:
-                    <Popover content={(<p>Product amount multiplied by material costs</p>)}>
-                        <p>Purchasing price</p>
-                    </Popover>,
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                id: "purchasingPrice",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.purchasePrice)).toFixed(2))
-                        }}
-                    />,
-                Footer: () => {
-                    return(
-                        <div style={this.state.overBudget ? {color: 'red'} : {}}>
-                            <div>{this.sumOfPurchasePrice()}</div>
-                            <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
-                        </div>
-                    )
-                }
-            },
-            {
-                Header: "Cover %",
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                accessor: "coverPercent",
-            },
-            {
-                Header: "Cover amount",
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                id: "coverAmount",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.amount) * parseFloat(d.coverAmount)).toFixed(2))
-                        }}
-                    />,
-                Footer: this.sumOfCoverAmount
-            },
-            {
-                Header: "Unit Price without Taxes",
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                accessor: "unitPriceWithoutTax",
-            },
-            {
-                Header: "Total sale",
-                headerClassName: "wordwrap",
-                className: 'alignRight',
-                id: "totalSale",
-                accessor: d =>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: parseFloat((parseFloat(d.unitPriceWithoutTax) * parseFloat(d.amount)).toFixed(2))
-                        }}
-                    />,
-                Footer: this.sumOfTotalSale
+                Header: 'Amounts',
+                columns: [
+                    {
+                        Header: <p>Amounts <Icon type={'form'} /></p>,
+                        headerClassName: "sum-values",
+                        className: 'alignRight',
+                        accessor: "amount",
+                        Cell: this.renderEditable,
+                        Footer: this.sumOfAmounts
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Amount multiplied by purchasing price</p>)}>
+                                <p>Purchasing price sum</p>
+                            </Popover>,
+                        headerClassName: "wordwrap sum-values",
+                        className: 'alignRight',
+                        accessor: 'purchasePriceSum',
+                        Footer: () => {
+                            return(
+                                <div style={this.state.overBudget ? {color: 'red'} : {}}>
+                                    <div>{this.sumOfPurchasePrice()}</div>
+                                    <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
+                                </div>
+                            )
+                        }
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Selling price multiplied by amount</p>)}>
+                                <p>Total sale</p>
+                            </Popover>,
+                        headerClassName: "wordwrap sum-values",
+                        className: 'alignRight',
+                        accessor: 'totalSale',
+                        Footer: this.sumOfTotalSale
+                    }
+                ]
             }
         ];
 
@@ -268,6 +236,13 @@ class SummaryTable extends React.Component {
         return columns;
     }
 
+    calculateValues(product) {
+        product.purchasePrice = (product.materialCosts + product.subcCostTotal).toFixed(2);
+        product.coverPercent = ((1 - product.purchasePrice / product.sellingPrice) * 100).toFixed(2);
+        product.coverAmount = product.sellingPrice - product.purchasePrice;
+        product.totalSale = (product.sellingPrice * product.amount).toFixed(2);
+        product.purchasePriceSum = (product.purchasePrice * product.amount).toFixed(2);
+    }
     //React functions
     componentDidMount() {
         const dataCollected = [];
@@ -275,9 +250,7 @@ class SummaryTable extends React.Component {
             .then(response => {
                 this.products = response.data;
                 this.products.forEach(product => {
-                    product.coverAmount = parseFloat(((product.materialCosts + product.subcCostTotal) * (product.coverPercent / 100) / (1 - (product.coverPercent / 100))).toFixed(2));
-                    product.purchasePrice = parseFloat((product.materialCosts + product.subcCostTotal).toFixed(2));
-                    product.unitPriceWithoutTax = parseFloat((product.coverAmount + product.purchasePrice).toFixed(2));
+                    this.calculateValues(product);
                     dataCollected.push(product);
                 });
 
@@ -309,6 +282,42 @@ class SummaryTable extends React.Component {
 
     componentWillUnmount() {
         this.source.cancel('Aborting table data fetching');
+    }
+
+    //Custom table cells
+    renderEditable(cellInfo) {
+        return (
+            <div
+                contentEditable
+                suppressContentEditableWarning
+                style={ this.state.data[cellInfo.index][`${cellInfo.column.id}Edited`] ? { color: '#EDAA00', fontWeight: 'bold' } : {}  }
+                onBlur={e => {
+                    const value = parseInt(e.target.innerHTML);
+                    const data = [...this.state.data];
+
+                    if (isNaN(value)) {
+                        message.warning('Input needs to be number');
+                        e.target.innerHTML = this.state.data[cellInfo.index][cellInfo.column.id];
+                    } else {
+                        data[cellInfo.index][cellInfo.column.id] = value;
+                        data[cellInfo.index][`${cellInfo.column.id}Edited`] = value !== this.state.originalData[cellInfo.index][cellInfo.column.id];
+                    }
+                    this.checkDataDifference(cellInfo.index);
+                    this.calculateValues(data[cellInfo.index]);
+                    this.setState({ data });
+                }}
+            >
+                {this.state.data[cellInfo.index][cellInfo.column.id]}
+            </div>
+        );
+    }
+
+    linkToProduct(cellInfo) {
+        return (
+            <a href={`${this.props.match.url}/../products/${cellInfo.value}`}>
+                {cellInfo.value}
+            </a>
+        )
     }
 
     render() {

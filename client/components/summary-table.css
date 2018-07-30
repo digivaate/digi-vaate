@@ -3,9 +3,7 @@
     word-wrap: break-word;
 }
 
-.wordwrapEdit {
-    white-space: pre-line !important;
-    word-wrap: break-word;
+.sum-values {
     background-color: #e8e8e8;
 }
 

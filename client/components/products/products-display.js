@@ -33,7 +33,7 @@ class ProductsDisplay extends Component{
         this.load();
     }
 
-    load = () => {
+    load() {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
         const { location } = this.props;
         const pathSnippetsName = location.pathname.split('/').filter(i => i);
