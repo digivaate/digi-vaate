@@ -154,7 +154,6 @@ class ColorCollection extends Component{
     };
 
     render(){
-        console.log(this.colorsArray)
         if(this.colorCard.length === 0){
             return (
                 <div>
@@ -165,6 +164,7 @@ class ColorCollection extends Component{
                         colorsLevelId = {this.state.colorsLevelId}
                     />
                     <Card title="Color Collection">
+                        <h4>No colors</h4>
                     </Card>
                 </div>
             )

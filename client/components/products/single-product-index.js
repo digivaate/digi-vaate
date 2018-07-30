@@ -48,7 +48,6 @@ class SingleProduct extends Component {
         this.loadProduct();
         this.loadSeason();
         this.loadCollection();
-        this.loadColors();
         this.loadMaterials();
     }
 
@@ -106,17 +105,22 @@ class SingleProduct extends Component {
                 axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                     .then(response => {
                         if (response.data[0].companyId) {
-                            this.setState({
-                                collectionName: "None",
-                                seasonName: "None"
-                            });
+                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                                .then(res => {
+                                    this.setState({
+                                        collectionName: "None",
+                                        seasonName: "None",
+                                        colorOptions: res.data[0].colors
+                                    });
+                                });
                         }
                         if (response.data[0].seasonId) {
                             axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
                                 .then(res => {
                                     this.setState({
                                         collectionName: "None",
-                                        seasonName: res.data[0].name
+                                        seasonName: res.data[0].name,
+                                        colorOptions: res.data[0].colors
                                     });
                                 });
                         }
@@ -127,6 +131,7 @@ class SingleProduct extends Component {
                                         .then(res => {
                                             this.setState({
                                                 collectionName: res.data[0].name,
+                                                colorOptions: res.data[0].colors
                                             });
                                             axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
                                                 .then(re => {
