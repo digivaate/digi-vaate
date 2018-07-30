@@ -123,6 +123,12 @@ class SingleProduct extends Component {
                                         colorOptions: res.data[0].colors
                                     });
                                 });
+                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                                .then(re => {
+                                    this.setState({
+                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
+                                    })
+                                })
                         }
                         if (response.data[0].collectionId) {
                             axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
@@ -137,8 +143,16 @@ class SingleProduct extends Component {
                                                 .then(re => {
                                                     this.setState({
                                                         seasonName: re.data[0].name,
+                                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
                                                     });
                                                 })
+                                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                                                .then(re => {
+                                                    this.setState({
+                                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
+                                                    })
+                                                })
+
                                         });
                                 })
                         }
