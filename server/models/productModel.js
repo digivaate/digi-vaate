@@ -7,14 +7,14 @@ export default (sequelize, DataTypes) => {
         imagePath: {
             type: DataTypes.STRING,
         },
-        coverPercent: {
+        sellingPrice: {
             type: DataTypes.FLOAT
         },
         resellerProfitPercent: {
             type: DataTypes.FLOAT
         },
         taxPercent: {
-            type: DataTypes.INTEGER
+            type: DataTypes.FLOAT
         },
         amount: {
             type: DataTypes.INTEGER,

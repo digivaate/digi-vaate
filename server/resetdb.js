@@ -65,7 +65,7 @@ function createEntities() {
             name: 'Jacket',
             coverPercent: 30.5,
             resellerProfitPercent: 25.5,
-            taxPercent: 24,
+            sellingPrice: 0,
             subcCostTotal: 20
         }).then(res => products.push(res)),
 
@@ -73,7 +73,7 @@ function createEntities() {
             name: 'T-shirt',
             coverPercent: 20.5,
             resellerProfitPercent: 20.5,
-            taxPercent: 20,
+            sellingPrice: 60,
             subcCostTotal: 10
         }).then(res => products.push(res)),
 
@@ -81,7 +81,7 @@ function createEntities() {
             name: 'Hoodie',
             coverPercent: 10.5,
             resellerProfitPercent: 50.5,
-            taxPercent: 24,
+            sellingPrice: 120,
             subcCostTotal: 30
         }).then(res => products.push(res)),
 
