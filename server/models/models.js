@@ -14,6 +14,8 @@ const sequelize = new Sequelize(
             acquire: 30000,
             idle: 10000
         },
+        // disable logging; default: console.log
+        logging: false
     });
 
 const models = {
