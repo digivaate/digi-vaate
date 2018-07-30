@@ -50,6 +50,12 @@ class BreadCrumbDigi extends Component{
     companiesProductsMap = [];
     breadcrumbNameMap = {};
 
+    componentDidUpdate(prevProps){
+        if(prevProps.refresh != this.props.refresh){
+            this.componentDidMount();
+        }
+    }
+
     componentDidMount(){
         //Breadcrumbs for all company stuffs
         axios.get(`${API_ROOT}/company`)

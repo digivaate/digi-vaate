@@ -40,7 +40,6 @@ class App extends React.Component {
 
     productsSeason = [];
     productsCompany = [];
-    collections
 
     newProductCompanyFunc = (newProductCompany) => {
         this.productsCompany.push(newProductCompany);
@@ -112,7 +111,17 @@ class App extends React.Component {
         return(
             <BrowserRouter>
                 <div className="App">
-                    <Route path="/" component={(props) => <HeaderBar {...props}/>}/>
+                    <Route path="/" render={
+                        (props) =>
+                            <HeaderBar
+                                {...props}
+                                newSeasonName = {this.state.newSeasonName}
+                                newCollectionName = {this.state.newCollectionName}
+                                newProductCompany = {this.productsCompany}
+                                newProductSeason = {this.productsCompany}
+                                newProductCollection = {this.productsCompany}
+                            />}
+                    />
                     <div className="sider">
                         <Switch>
                             <Route path="/" exact component={SideBar}/>

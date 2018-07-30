@@ -8,13 +8,27 @@ import './layout.css';
 class HeaderBar extends Component{
     constructor(props){
         super(props)
+        this.state = {
+            refresh: false
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps != this.props){
+            this.setState({
+                refresh: !this.state.refresh
+            })
+        }
     }
 
     render(){
         return(
             <div className={'header'}>
                 <h1 className={'logo'}>DigiVaate</h1>
-                <BreadCrumbDisplay className={'bread-crumb'}/>
+                <BreadCrumbDisplay
+                    className={'bread-crumb'}
+                    refresh = {this.state.refresh}
+                />
             </div>
         )
     }
