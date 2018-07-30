@@ -30,6 +30,11 @@ function createEntities() {
             value: '#c12c2c'
         }).then(res => colors.push(res)),
 
+        Models.Color.create({
+            name: 'blue',
+            value: '#2d44ff'
+        }).then(res => colors.push(res)),
+
         Models.Material.create({
             name: 'leather',
             consumption: 2,
@@ -119,9 +124,12 @@ function addRelations() {
         collections[0].updateAttributes({ seasonId: 1}),
         collections[0].setTheme(1),
         collections[0].addProduct(products[0]),
+        collections[0].addColor(colors[1]),
         seasons[0].updateAttributes({ companyId: 1}),
         seasons[0].addProduct(products[1]),
+        seasons[0].addColor(colors[2]),
         companies[0].addProduct(products[2]),
+        companies[0].addColor(colors[2]),
         products[0].addSize(1),
         products[1].addSize(2)
     ];
