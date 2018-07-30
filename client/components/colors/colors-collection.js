@@ -16,37 +16,91 @@ class ColorCollection extends Component{
             name: null,
             code:null,
             hexCode:null,
-            productList:[]
+            productList:[],
+            colorsLevel: null,
+            colorsLevelId: null
         };
-        this.loadColors = this.loadColors.bind(this);
     }
 
     colorCard = [];
+    colorsArray=[];
 
 
     componentDidMount(){
-        this.loadColors();
+        this.loadColors()
     }
 
-    loadColors(){
-        axios.get(`${API_ROOT}/color`)
-            .then(response => {
-                this.colorCard = response.data;
-                this.setState(prevState => prevState);
-            })
-            .catch(err => console.log(err));
-    }
-
-    createColor(newColor){
-        axios.post(`${API_ROOT}/color`,newColor)
-            .then((reponse) => {
-                axios.get(`${API_ROOT}/color`)
-                    .then(response => {
-                        this.colorCard = response.data;
-                        this.setState(prevState => prevState);
+    loadColors = () => {
+        if (this.props.match.params.seasonId && this.props.match.params.collectionId){
+            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+                .then(response => {
+                    this.colorCard = response.data[0].colors;
+                    this.colorsArray = response.data[0].colors.map(color => color.id)
+                    this.setState({
+                        colorsLevel: "collection",
+                        colorsLevelId : response.data[0].id,
+                        colorsArray: response.data[0].colors.map(color => color.id)
                     })
-            })
-    }
+                })
+        } else if (this.props.match.params.seasonId){
+            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+                .then(response => {
+                    this.colorCard = response.data[0].colors;
+                    this.colorsArray = response.data[0].colors.map(color => color.id)
+                    this.setState({
+                        colorsLevel: "season",
+                        colorsLevelId : response.data[0].id,
+                        colorsArray: response.data[0].colors.map(color => color.id)
+                    })
+                })
+        } else {
+            axios.get(`${API_ROOT}/company?name=Lumi`)
+                .then(response => {
+                    this.colorCard = response.data[0].colors;
+                    this.colorsArray = response.data[0].colors.map(color => color.id)
+                    this.setState({
+                        colorsLevel: "company",
+                        colorsLevelId : response.data[0].id,
+                    })
+                })
+        }
+    };
+
+    createColor = (newColor) => {
+        if(this.state.colorsLevel === "company"){
+            axios.post(`${API_ROOT}/color`,newColor)
+                .then((response) => {
+                    this.colorsArray.push(response.data.id);
+                    this.colorCard.push(response.data);
+                    axios.patch(`${API_ROOT}/company?name=Lumi`,{colors:this.colorsArray})
+                        .then(response => {
+                            this.setState({})
+                        })
+                })
+        }
+        else if(this.state.colorsLevel === "season"){
+            axios.post(`${API_ROOT}/color`,newColor)
+                .then((response) => {
+                    this.colorsArray.push(response.data.id);
+                    this.colorCard.push(response.data);
+                    axios.patch(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`,{colors:this.colorsArray})
+                        .then(response => {
+                            this.setState({})
+                        })
+                })
+        }
+        else {
+            axios.post(`${API_ROOT}/color`,newColor)
+                .then((response) => {
+                    this.colorsArray.push(response.data.id);
+                    this.colorCard.push(response.data);
+                    axios.patch(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`,{colors:this.colorsArray})
+                        .then(response => {
+                            this.setState({})
+                        })
+                })
+        }
+    };
 
     showColorModal = (element) => {
         this.setState({
@@ -100,10 +154,16 @@ class ColorCollection extends Component{
     };
 
     render(){
+        console.log(this.colorsArray)
         if(this.colorCard.length === 0){
             return (
                 <div>
-                    <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
+                    <h1>Colors</h1>
+                    <ColorPage
+                        createColor = {(newColor) => this.createColor(newColor)}
+                        colorsLevel = {this.state.colorsLevel}
+                        colorsLevelId = {this.state.colorsLevelId}
+                    />
                     <Card title="Color Collection">
                     </Card>
                 </div>
@@ -133,7 +193,12 @@ class ColorCollection extends Component{
 
             return (
                 <div>
-                    <ColorPage createColor = {(newColor) => this.createColor(newColor)}/>
+                    <h1>Colors</h1>
+                    <ColorPage
+                        createColor = {(newColor) => this.createColor(newColor)}
+                        colorsLevel = {this.state.colorsLevel}
+                        colorsLevelId = {this.state.colorsLevelId}
+                    />
                     <Card title="Color Collection">
                         {colorCard}
                         <Modal

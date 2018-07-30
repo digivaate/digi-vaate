@@ -8,7 +8,7 @@ import BudgetPlanningTable from './components/summary-table'
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
-import ColorIndexPage from './components/colors/index'
+import ColorCollection from './components/colors/colors-collection'
 import MaterialList from './components/materials/material-list'
 import ProductsDisplay from './components/products/products-display'
 import SingleProduct from './components/products/single-product-index'
@@ -117,6 +117,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path="/" exact component={SideBar}/>
                             <Route path="/products" component = {SideBar}/>
+                            <Route path="/colors" component = {SideBar}/>
                             <Route path="/seasons" render ={(props) =>
                                 <SideBar
                                     {...props}
@@ -127,6 +128,7 @@ class App extends React.Component {
                             <Route path="/:seasonId" exact component={SeasonSideBar} />
                             <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
                             <Route path={'/:seasonId/products'} exact component={SeasonSideBar}/>
+                            <Route path={'/:seasonId/colors'} exact component={SeasonSideBar}/>
                             <Route path="/:seasonId/collections" exact render={(props) =>
                                 <SeasonSideBar
                                     {...props}
@@ -152,6 +154,7 @@ class App extends React.Component {
                                         sendNewSeason={seasonName => this.newSeasonNameFunc(seasonName)}
                                     />}
                                 />
+                                <Route path="/colors" exact component={ColorCollection}/>
                                 {productsCompanyRoute}
                                 <Route path="/:seasonId/products" exact render={(props) =>
                                     <ProductsDisplay
@@ -167,6 +170,7 @@ class App extends React.Component {
                                         showCollection={true}
                                     />}
                                 />
+                                <Route path={'/:seasonId/colors'} exact component={ColorCollection}/>
                                 <Route path="/:seasonId/collections" exact render={(props) =>
                                     <SingleSeason
                                         {...props}
@@ -180,7 +184,7 @@ class App extends React.Component {
                                         requestPath={`/collection/products?name=${props.match.params.collectionId}`}
                                     />}
                                 />
-                                <Route path="/:seasonId/:collectionId/colors" exact component={ColorIndexPage} />
+                                <Route path="/:seasonId/:collectionId/colors" exact component={ColorCollection} />
                                 <Route path="/:seasonId/:collectionId/materials" exact component={MaterialList} />
                                 <Route path="/:seasonId/:collectionId/products" exact render={(props) =>
                                     <ProductsDisplay

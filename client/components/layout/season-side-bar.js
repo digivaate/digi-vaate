@@ -67,6 +67,11 @@ class SeasonSideBar extends Component{
                             Budget
                         </NavLink>
                     </Menu.Item>
+                    <Menu.Item key="colors">
+                        <NavLink to={`/${this.props.match.params.seasonId}/colors`} className={'nav-text'}>
+                            Colors
+                        </NavLink>
+                    </Menu.Item>
                     <Menu.Item key="collections">
                         <NavLink to={`/${this.props.match.params.seasonId}/collections`} className={'nav-text'}>
                             Collections

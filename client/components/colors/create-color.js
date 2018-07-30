@@ -60,9 +60,9 @@ class ColorPage extends React.Component {
     };
     colorsCollection = {};
     hexCodeValues = "";
+
     getHexCode = (hexCodeValues) => {
         this.hexCodeValues = hexCodeValues;
-        console.log(this.hexCodeValues);
     };
     showModal = () => {
         this.setState({ visible: true });

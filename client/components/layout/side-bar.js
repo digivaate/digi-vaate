@@ -55,6 +55,11 @@ class SideBar extends Component{
                             Products
                         </NavLink>
                     </Menu.Item>
+                    <Menu.Item key="colors">
+                        <NavLink to={"/colors"}>
+                            Colors
+                        </NavLink>
+                    </Menu.Item>
                     <Menu.Item key="seasons">
                         <NavLink to="/seasons">
                             Seasons
