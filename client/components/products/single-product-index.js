@@ -348,7 +348,7 @@ class SingleProduct extends Component {
             name: this.state.productName,
             colors: newColorsPatch,
             materials: newMaterialsPatch,
-            coverPercent: this.state.loadedProduct.coverPercent,
+            sellingPrice: this.state.loadedProduct.sellingPrice,
             resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
             amount: this.state.loadedProduct.amount,
             subcCostTotal: this.state.loadedProduct.subcCostTotal
@@ -429,6 +429,7 @@ class SingleProduct extends Component {
 
     render(){
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
+            console.log(this.state.loadedProduct)
             const tabList = [{
                 key: 'tab1',
                 tab: 'General',

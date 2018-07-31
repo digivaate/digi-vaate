@@ -10,13 +10,13 @@ class SingleProductGeneralInfo extends Component{
         this.state = {
             infoVisible: false,
             loadedProduct: this.props.loadedProduct,
-            coverPercent: this.props.loadedProduct.coverPercent,
+            sellingPrice: this.props.loadedProduct.sellingPrice,
             resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
             loadedProductOri: this.props.originalLoadedProduct,
-            coverPercentOri: this.props.originalLoadedProduct.coverPercent,
+            sellingPriceOri: this.props.originalLoadedProduct.sellingPrice,
             resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
             taxPercentOri: this.props.originalLoadedProduct.taxPercent,
             amountOri: this.props.originalLoadedProduct.amount,
@@ -31,25 +31,25 @@ class SingleProductGeneralInfo extends Component{
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
-                coverPercent: this.props.loadedProduct.coverPercent,
+                sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
                 subcCostTotal: this.props.loadedProduct.subcCostTotal,
                 loadedProductOri: this.props.originalLoadedProduct,
-                coverPercentOri: this.props.originalLoadedProduct.coverPercent,
+                sellingPriceOri: this.props.originalLoadedProduct.sellingPrice,
                 resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
                 taxPercentOri: this.props.originalLoadedProduct.taxPercent,
                 amountOri: this.props.originalLoadedProduct.amount,
                 subcCostTotalOri: this.props.originalLoadedProduct.subcCostTotal,
-                saved: !this.props.saved
+                saved:this.props.saved
             })
         }
         else if(prevProps != this.props){
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
-                coverPercent: this.props.loadedProduct.coverPercent,
+                sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
@@ -80,7 +80,7 @@ class SingleProductGeneralInfo extends Component{
     handleInfoOk = () => {
         let newInfo = {
             ...this.state.loadedProduct,
-            coverPercent: parseFloat(parseFloat(this.state.coverPercent).toFixed(2)),
+            sellingPrice: parseFloat(parseFloat(this.state.sellingPrice).toFixed(2)),
             resellerProfitPercent: parseFloat(parseFloat(this.state.resellerProfitPercent).toFixed(2)),
             taxPercent: parseFloat(parseFloat(this.state.taxPercent).toFixed(2)),
             amount: parseFloat(parseFloat(this.state.amount).toFixed(2)),
@@ -113,11 +113,11 @@ class SingleProductGeneralInfo extends Component{
                 >
                     <Row gutter={8}>
                         <Col span={12}>
-                            Cover percentage:
+                            Selling price:
                             <Input
                                 className="input-style"
-                                value={this.state.coverPercent}
-                                name="coverPercent"
+                                value={this.state.sellingPrice}
+                                name="sellingPrice"
                                 onChange={this.handleChange}
                             />
                         </Col>
@@ -153,7 +153,7 @@ class SingleProductGeneralInfo extends Component{
                         </Col>
                     </Row>
                 </Modal>
-                <p>Cover percentage: <span style={ this.state.coverPercent !== this.state.coverPercentOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.coverPercent} </span></p>
+                <p>Selling price: <span style={ this.state.sellingPrice !== this.state.sellingPriceOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.sellingPrice} </span></p>
                 <p>Reseller profit percentage: <span style={ this.state.resellerProfitPercent !== this.state.resellerProfitPercentOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.resellerProfitPercent}</span></p>
                 <p>Amount:<span style={ this.state.amount !== this.state.amountOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.amount}</span></p>
                 <p>Subcontracting cost:<span style={ this.state.subcCostTotal !== this.state.subcCostTotalOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.subcCostTotal}</span></p>
