@@ -18,7 +18,7 @@ class SummaryTable extends React.Component {
         this.source = axios.CancelToken.source();
         this.saveData = this.saveData.bind(this);
         this.resetData = this.resetData.bind(this);
-        this.checkDataDifference = this.checkDataDifference.bind(this);
+        this.checkDataState = this.checkDataState.bind(this);
         this.createColumns = this.createColumns.bind(this);
         this.renderEditable = this.renderEditable.bind(this);
         this.linkToProduct = this.linkToProduct.bind(this);
@@ -62,7 +62,7 @@ class SummaryTable extends React.Component {
     }
 
     //Other functions
-    checkDataDifference() {
+    checkDataState() {
         if (this.state.budget) {
             if (this.sumOfPurchasePrice() > this.state.budget) {
                 this.setState({overBudget: true});
@@ -70,8 +70,11 @@ class SummaryTable extends React.Component {
                 this.setState({overBudget: false});
             }
         }
+        let modified = this.state.data.some(prod => {
+            return (prod.amountEdited || prod.sellingPriceEdited);
+        });
         this.setState({
-            modified: !Object.compare(this.state.data, this.state.originalData)
+            modified: modified
         });
     }
 
@@ -292,7 +295,7 @@ class SummaryTable extends React.Component {
                 suppressContentEditableWarning
                 style={ this.state.data[cellInfo.index][`${cellInfo.column.id}Edited`] ? { color: '#EDAA00', fontWeight: 'bold' } : {}  }
                 onBlur={e => {
-                    const value = parseInt(e.target.innerHTML);
+                    const value = parseFloat(e.target.innerHTML);
                     const data = [...this.state.data];
 
                     if (isNaN(value)) {
@@ -302,7 +305,7 @@ class SummaryTable extends React.Component {
                         data[cellInfo.index][cellInfo.column.id] = value;
                         data[cellInfo.index][`${cellInfo.column.id}Edited`] = value !== this.state.originalData[cellInfo.index][cellInfo.column.id];
                     }
-                    this.checkDataDifference(cellInfo.index);
+                    this.checkDataState(cellInfo.index);
                     this.calculateValues(data[cellInfo.index]);
                     this.setState({ data });
                 }}
