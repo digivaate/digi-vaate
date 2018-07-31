@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get('/', SeasonController.find_by_attribute);
 router.get('/products', SeasonController.getAllProducts);
+router.get('/colors', SeasonController.getAllColors);
 router.post('/', SeasonController.create);
 router.patch('/', SeasonController.update);
 router.delete('/', SeasonController.delete);
