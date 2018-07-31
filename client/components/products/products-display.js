@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,Spin,List } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,Spin,List,Divider,BackTop } from 'antd';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -33,7 +33,7 @@ class ProductsDisplay extends Component{
         this.load();
     }
 
-    load() {
+    load = () => {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
         const { location } = this.props;
         const pathSnippetsName = location.pathname.split('/').filter(i => i);
@@ -99,8 +99,8 @@ class ProductsDisplay extends Component{
                     else if(this.products[i].seasonId){
                         this.products[i].collectionName = "None";
                     }
-                    this.setState(prevState => prevState)
                 }
+                this.setState({isFetched:true})
                 /*if(pathSnippetsLevel[0] === "company"){
                  for(let i = 0;i < this.products.length; i++){
                  axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
@@ -301,6 +301,9 @@ class ProductsDisplay extends Component{
                 <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> products</h2>
         );
         let renderProductList = null;
+        let renderProductCompanyList = null;
+        let renderProductSeasonList = null;
+        let renderProductCollectionList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
         let singleProduct = null;
@@ -386,7 +389,7 @@ class ProductsDisplay extends Component{
                         )
                     }
                 return(
-                    <Col span={6} key={product.id}>
+                    <Col span={6} key={`${product.id}/${product.seasonName}/${product.collectionName}`}>
                         <div className="product-card-wrapper">
                         <Card
                             hoverable
@@ -421,7 +424,138 @@ class ProductsDisplay extends Component{
                     </Col>
                 )
             });
+            renderProductCompanyList = renderProductList.filter(element => {
+                const pathSnippetsName = element.key.split('/').filter(i => i);
+                return pathSnippetsName[pathSnippetsName.length-1] === "None" && pathSnippetsName[pathSnippetsName.length-2] === "None"
+            });
+
+            renderProductSeasonList = renderProductList.filter(element => {
+                const pathSnippetsName = element.key.split('/').filter(i => i);
+                return pathSnippetsName[pathSnippetsName.length-1] === "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
+            });
+
+            renderProductCollectionList = renderProductList.filter(element => {
+                const pathSnippetsName = element.key.split('/').filter(i => i);
+                return pathSnippetsName[pathSnippetsName.length-1] !== "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
+            });
+
+
             if(this.products.length > 0) {
+                if(this.state.productLevel === "company"){
+                    return (
+                        <div>
+                            <BackTop/>
+                            {singleProduct}
+                            <h1>Products</h1>
+                            <Button type="primary"
+                                    size="large"
+                                    onClick={this.createNewProduct}
+                            >
+                                Create new product
+                            </Button>
+                            <ProductCreateForm
+                                wrappedComponentRef={this.saveFormRef}
+                                visible={this.state.visible}
+                                onCancel={this.handleCancel}
+                                onCreate={this.handleCreate}
+                                uploadImage={(data) => this.uploadImage = data}
+                            />
+                            <br/>
+                            <br/>
+                            {showTotalProducts}
+                            <Divider> Company Products </Divider>
+                            <List
+                                dataSource={renderProductCompanyList}
+                                grid={{gutter: 40, column: 4}}
+                                pagination={{
+                                    pageSize: 8,
+                                    hideOnSinglePage: true,
+                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                                }}
+                                renderItem={item => <List.Item>{item}</List.Item>}
+                            >
+                            </List>
+                            <Divider> Season Products </Divider>
+                            <List
+                                dataSource={renderProductSeasonList}
+                                grid={{gutter: 40, column: 4}}
+                                pagination={{
+                                    pageSize: 8,
+                                    hideOnSinglePage: true,
+                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                                }}
+                                renderItem={item => <List.Item>{item}</List.Item>}
+                            >
+                            </List>
+                            <Divider> Collection Products </Divider>
+                            <List
+                                dataSource={renderProductCollectionList}
+                                grid={{gutter: 40, column: 4}}
+                                pagination={{
+                                    pageSize: 28,
+                                    hideOnSinglePage: true,
+                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                                }}
+                                renderItem={item => <List.Item>{item}</List.Item>}
+                            >
+                            </List>
+                        </div>
+                    )
+                }
+                if(this.state.productLevel === "season") {
+                    return (
+                        <div>
+                            <BackTop/>
+                            {singleProduct}
+                            <h1>Products</h1>
+                            <Button type="primary"
+                                    size="large"
+                                    onClick={this.createNewProduct}
+                            >
+                                Create new product
+                            </Button>
+                            <ProductCreateForm
+                                wrappedComponentRef={this.saveFormRef}
+                                visible={this.state.visible}
+                                onCancel={this.handleCancel}
+                                onCreate={this.handleCreate}
+                                uploadImage={(data) => this.uploadImage = data}
+                            />
+                            <br/>
+                            <br/>
+                            {showTotalProducts}
+                            <Divider> Season Products </Divider>
+                            <List
+                                dataSource={renderProductSeasonList}
+                                grid={{gutter: 40, column: 4}}
+                                pagination={{
+                                    pageSize: 8,
+                                    hideOnSinglePage: true,
+                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                                }}
+                                renderItem={item => <List.Item>{item}</List.Item>}
+                            >
+                            </List>
+                            <Divider> Collection Products </Divider>
+                            <List
+                                dataSource={renderProductCollectionList}
+                                grid={{gutter: 40, column: 4}}
+                                pagination={{
+                                    pageSize: 28,
+                                    hideOnSinglePage: true,
+                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                                }}
+                                renderItem={item => <List.Item>{item}</List.Item>}
+                            >
+                            </List>
+                        </div>
+                    )
+                }
                 return (
                     <div>
                         {singleProduct}
@@ -456,6 +590,31 @@ class ProductsDisplay extends Component{
                         </List>
                     </div>
                 )
+            }
+            else if(this.products.length === 0 && this.state.isFetched === false){
+                return (
+                        <div>
+                            {singleProduct}
+                            <h1>Products</h1>
+                            <Button type="primary"
+                                    size="large"
+                                    onClick={this.createNewProduct}
+                            >
+                                Create new product
+                            </Button>
+                            <ProductCreateForm
+                                wrappedComponentRef={this.saveFormRef}
+                                visible={this.state.visible}
+                                onCancel={this.handleCancel}
+                                onCreate={this.handleCreate}
+                                uploadImage={(data) => this.uploadImage = data}
+                            />
+                            <br/>
+                            <br/>
+                            {showTotalProducts}
+                            <Spin/>
+                        </div>
+                    )
             }
             else{
                 return (
