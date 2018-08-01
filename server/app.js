@@ -25,6 +25,7 @@ app.use('/api/product', require('./routes/productRoute'));
 app.use('/api/season', require('./routes/seasonRoute'));
 app.use('/api/theme', require('./routes/themeRoute'));
 app.use('/api/size', require('./routes/sizeRoute'));
+app.use('/api/order', require('./routes/orderRoute'));
 
 //Error handling
 app.use((req, res, next) => {

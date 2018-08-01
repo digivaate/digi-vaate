@@ -29,6 +29,7 @@ export default (sequelize, DataTypes) => {
         Product.belongsToMany(models.Material, {through: 'material_product'});
         Product.belongsToMany(models.Color, {through: 'color_product'});
         Product.belongsToMany(models.Size, {through: 'size_product'});
+        Product.belongsToMany(models.Order, {through: 'order_product'})
     };
     return Product;
 };

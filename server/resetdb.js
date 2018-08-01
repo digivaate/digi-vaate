@@ -1,14 +1,15 @@
-import Models from './models/models';
+import models from './models/models';
 
-const db = Models.sequelize;
+const db = models.sequelize;
 let products = [];
 let materials = [];
 let colors = [];
 let collections = [];
 let seasons = [];
 let companies = [];
-let theme = [];
-let size = [];
+let themes = [];
+let sizes = [];
+let orders = [];
 
 let promises = [];
 
@@ -20,22 +21,22 @@ db.sync({force: true})
 
 function createEntities() {
     promises = [
-        Models.Color.create({
+        models.Color.create({
             name: 'white',
             value: '#ffffff'
         }).then(res => colors.push(res)),
 
-        Models.Color.create({
+        models.Color.create({
             name: 'red',
             value: '#c12c2c'
         }).then(res => colors.push(res)),
 
-        Models.Color.create({
+        models.Color.create({
             name: 'blue',
             value: '#2d44ff'
         }).then(res => colors.push(res)),
 
-        Models.Material.create({
+        models.Material.create({
             name: 'leather',
             consumption: 2,
             unitPrice: 5,
@@ -48,7 +49,7 @@ function createEntities() {
             composition: 'composition description'
         }).then(res => materials.push(res)),
 
-        Models.Material.create({
+        models.Material.create({
             name: 'wool',
             consumption: 4,
             unitPrice: 2,
@@ -61,7 +62,7 @@ function createEntities() {
             composition: 'composition description'
         }).then(res => materials.push(res)),
 
-        Models.Product.create({
+        models.Product.create({
             name: 'Jacket',
             coverPercent: 30.5,
             resellerProfitPercent: 25.5,
@@ -69,7 +70,7 @@ function createEntities() {
             subcCostTotal: 20
         }).then(res => products.push(res)),
 
-        Models.Product.create({
+        models.Product.create({
             name: 'T-shirt',
             coverPercent: 20.5,
             resellerProfitPercent: 20.5,
@@ -77,7 +78,7 @@ function createEntities() {
             subcCostTotal: 10
         }).then(res => products.push(res)),
 
-        Models.Product.create({
+        models.Product.create({
             name: 'Hoodie',
             coverPercent: 10.5,
             resellerProfitPercent: 50.5,
@@ -85,32 +86,38 @@ function createEntities() {
             subcCostTotal: 30
         }).then(res => products.push(res)),
 
-        Models.Company.create({
+        models.Company.create({
             name: 'Lumi',
             taxPercent: 24
         }).then(res => companies.push(res)),
 
-        Models.Season.create({
+        models.Season.create({
             name: 'winter',
             budget: 200000
         }).then(res => seasons.push(res)),
 
-        Models.Collection.create({
+        models.Collection.create({
             name: 'winter sports'
         }).then(res => collections.push(res)),
 
-        Models.Theme.create({
-            name: 'winter theme'
-        }).then(res => theme.push(res)),
+        models.Theme.create({
+            name: 'winter themes'
+        }).then(res => themes.push(res)),
 
-        Models.Size.create({
+        models.Size.create({
             value: 'M'
-        }).then(res => size.push(res)),
+        }).then(res => sizes.push(res)),
 
-        Models.Size.create({
+        models.Size.create({
             value: 'L'
-        }).then(res => size.push(res)),
+        }).then(res => sizes.push(res)),
 
+        models.Order.create({
+            date: Date.now(),
+            price: 2000,
+            deliveryCosts: 200,
+            taxPercent: 24
+        })
     ];
 
     return Promise.all(promises);

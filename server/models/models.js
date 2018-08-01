@@ -27,9 +27,20 @@ const models = {
     Company: sequelize.import('./companyModel'),
     Theme: sequelize.import('./themeModel'),
     Size: sequelize.import('./sizeModel'),
+    Order: sequelize.import('./orderModel'),
     MaterialProduct: sequelize.define('material_product', {
         consumption: {
             type: Sequelize.FLOAT,
+            defaultValue: 0
+        }
+    }),
+    OrderProduct: sequelize.define('order_product', {
+        size: {
+            type: Sequelize.STRING,
+            required: true
+        },
+        amount:{
+            type: Sequelize.INTEGER,
             defaultValue: 0
         }
     })
