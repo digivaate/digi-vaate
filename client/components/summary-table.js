@@ -94,12 +94,20 @@ class SummaryTable extends React.Component {
             console.log('Nothing to save');
             this.setState({ saving: false });
         } else {
-            const promises = [];
-            changedProds.forEach(prod => {
-                promises.push(
-                    axios.patch(API_ROOT + '/product/?id=' + prod.id, {
-                        amount: prod.amount,
-                        sellingPrice: prod.sellingPrice,
+            if (this.props.match.params.collectionId) {
+                //IF in collection level
+                const promises = [];
+                changedProds.forEach(prod => {
+                    promises.push(
+                        axios.patch(API_ROOT + '/product/?id=' + prod.id, {
+                            amount: prod.amount,
+                            sellingPrice: prod.sellingPrice,
+                        })
+                    );
+                });
+                Promise.all(promises)
+                    .then(res => {
+                        console.log(res);
                         this.setState({saving: false});
                         this.componentDidMount();
                     })
