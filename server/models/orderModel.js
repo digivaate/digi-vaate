@@ -1,6 +1,7 @@
 export default (sequelize, DataTypes) => {
     const Order = sequelize.define('orders', {
         price: DataTypes.FLOAT,
+        status: DataTypes.STRING,
         deliveryCosts: DataTypes.FLOAT,
         taxPercent: DataTypes.FLOAT,
         supplier: DataTypes.STRING,
