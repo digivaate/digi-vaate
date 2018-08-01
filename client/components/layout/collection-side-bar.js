@@ -49,7 +49,12 @@ class CollectionSideBar extends Component{
                     </Menu.Item>
                     <Menu.Item key="5">
                         <NavLink to={`${this.props.match.url}/themes`} className="nav-text">
-                            Theme
+                            Themes
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="6">
+                        <NavLink to={`${this.props.match.url}/orders`} className="nav-text">
+                            Orders
                         </NavLink>
                     </Menu.Item>
                 </Menu>

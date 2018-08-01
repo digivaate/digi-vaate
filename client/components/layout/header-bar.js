@@ -1,7 +1,8 @@
 import React,{ Component } from "react";
 import 'antd/dist/antd.css';
 import BreadCrumbDisplay from './breadcrumb';
-import { Layout, Menu,Row, Col } from 'antd';
+import { Layout, Menu,Row, Col,Button } from 'antd';
+import {NavLink} from 'react-router-dom'
 const { Header } = Layout;
 import './layout.css';
 
@@ -29,6 +30,11 @@ class HeaderBar extends Component{
                     className={'bread-crumb'}
                     refresh = {this.state.refresh}
                 />
+                <Button className="header-button" size="large">
+                    <NavLink to="/orders">
+                        ORDERS
+                    </NavLink>
+                </Button>
             </div>
         )
     }

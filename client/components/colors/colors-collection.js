@@ -175,7 +175,6 @@ class ColorCollection extends Component{
     };
 
     render(){
-        console.log(this.state.colorsLevel)
         if(this.colorCard.length === 0){
             return (
                 <div>

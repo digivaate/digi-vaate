@@ -19,8 +19,10 @@ import ThemeList from './components/themes/theme-list'
 import SingleMaterial from './components/materials/single-material'
 import SingleSeason from './components/seasons/single-season'
 import SingleCompany from './components/company/single-company'
-import BreadCrumbDisplay from './components/layout/breadcrumb'
-
+import OrderIndex from './components/orders/orders-index'
+import OrderList from './components/orders/order-list'
+import SingleOrder from './components/orders/single-order'
+import OrderSideBar from './components/layout/order-side-bar'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import { BackTop } from 'antd';
 import ProductCard from "./components/products/product-card";
@@ -134,6 +136,8 @@ class App extends React.Component {
                                 />}
                             />
                             {productsCompanyRouteSideBar}
+                            <Route path="/orders" component={OrderSideBar}/>
+                            <Route path="/orders/manage" component={OrderSideBar}/>
                             <Route path="/:seasonId" exact component={SeasonSideBar} />
                             <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
                             <Route path={'/:seasonId/products'} exact component={SeasonSideBar}/>
@@ -151,6 +155,7 @@ class App extends React.Component {
                     <div className="content">
                         <div>
                             <Switch>
+                                <Route path="/orders" exact component={OrderList}/>
                                 <Route path='/products' exact render={(props) =>
                                     <ProductsDisplay
                                         {...props}
@@ -203,6 +208,8 @@ class App extends React.Component {
                                     />}
                                 />
                                 <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
+                                <Route path="/:seasonId/:collectionId/orders" exact component={OrderList} />
+                                <Route path="/:seasonId/:collectionId/orders/:orderId" exact component={SingleOrder} />
                                 <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
                                 <Route path="/:seasonId/:collectionId/materials/:materialId" exact component={SingleMaterial} />
                             </Switch>

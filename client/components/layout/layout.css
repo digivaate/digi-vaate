@@ -6,6 +6,12 @@
     border:none;
 }
 
+.header-button{
+    width:110px;
+    height:45px;
+    left:50%
+}
+
 /*
 side-bar.js
 season-side-bar.js
@@ -33,4 +39,5 @@ collection-side-bar.js
     font-size:20px;
     margin: 0.5em;
 }
+
 

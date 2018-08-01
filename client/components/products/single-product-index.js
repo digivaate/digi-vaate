@@ -429,7 +429,6 @@ class SingleProduct extends Component {
 
     render(){
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
-            console.log(this.state.loadedProduct)
             const tabList = [{
                 key: 'tab1',
                 tab: 'General',
