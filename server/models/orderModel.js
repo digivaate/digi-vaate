@@ -1,9 +1,17 @@
 export default (sequelize, DataTypes) => {
     const Order = sequelize.define('orders', {
-        date: DataTypes.DATE,
         price: DataTypes.FLOAT,
         deliveryCosts: DataTypes.FLOAT,
-        taxPercent: DataTypes.FLOAT
+        taxPercent: DataTypes.FLOAT,
+        supplier: DataTypes.STRING,
+        vat: DataTypes.STRING,
+        invoicingAddress: DataTypes.STRING,
+        deliveryAddress: DataTypes.STRING,
+        deliveryTime: DataTypes.DATE,
+        deliveryTerms: DataTypes.STRING,
+        paymentTerms: DataTypes.STRING,
+        brandLabel: DataTypes.STRING,
+        info: DataTypes.STRING
     });
 
     Order.associate = (models) => {
