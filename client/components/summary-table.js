@@ -100,19 +100,29 @@ class SummaryTable extends React.Component {
                     axios.patch(API_ROOT + '/product/?id=' + prod.id, {
                         amount: prod.amount,
                         sellingPrice: prod.sellingPrice,
+                        this.setState({saving: false});
+                        this.componentDidMount();
                     })
-                );
-            });
-            Promise.all(promises)
-                .then(res => {
-                    console.log(res);
-                    this.setState({saving: false});
-                    this.componentDidMount();
+                    .catch(res => {
+                        console.error(res);
+                        this.setState({saving: false});
+                    });
+            } else {
+                //IF in season level
+                axios.patch(API_ROOT + '/season/products?name=' + this.props.match.params.seasonId, {
+                    seasonName: this.props.match.params.seasonId,
+                    products: changedProds
                 })
-                .catch(res => {
-                    console.error(res);
-                    this.setState({saving: false});
-                });
+                    .then(res => {
+                        console.log(res);
+                        this.setState({saving: false});
+                        this.componentDidMount();
+                    })
+                    .catch(res => {
+                        console.error(res);
+                        this.setState({saving: false});
+                    });
+            }
         }
     }
 
@@ -140,6 +150,14 @@ class SummaryTable extends React.Component {
                         Header: 'Material costs',
                         headerClassName: 'wordwrap',
                         accessor: 'materialCosts'
+                    },
+                    {
+                        Header:
+                            <Popover content={(<p>Subcontracting costs</p>)}>
+                                <p>Subcontracting costs</p>
+                            </Popover>,
+                        headerClassName: 'wordwrap',
+                        accessor: 'subcCostTotal'
                     },
                     {
                         Header:

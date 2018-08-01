@@ -19,6 +19,7 @@ export default (sequelize, DataTypes) => {
         Season.hasMany(models.Product, {as: 'products'});
         Season.belongsToMany(models.Color, {through: 'color_season'});
     };
+
     return Season;
 };
 

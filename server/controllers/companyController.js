@@ -104,7 +104,7 @@ class CompanyController extends Controller {
                         });
                     });
                 });
-                products.forEach(product => ProductController.addMaterialCosts(product));
+                products.forEach(product => product.dataValues.materialCosts = ProductController.calcMaterialCosts(product));
                 res.send(products);
             })
             .catch(err => {

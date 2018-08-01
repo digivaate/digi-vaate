@@ -83,7 +83,7 @@ class CollectionController extends Controller {
             }]
         })
             .then(collection => {
-                collection.products.forEach(product => ProductController.addMaterialCosts(product));
+                collection.products.forEach(product => product.dataValues.materialCosts = ProductController.calcMaterialCosts(product));
                 res.send(collection.products);
             })
             .catch(err => {

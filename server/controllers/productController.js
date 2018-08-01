@@ -19,12 +19,17 @@ class ProductController extends Controller {
         next();
     }
 
-    static addMaterialCosts(product) {
+    static calcMaterialCosts(product) {
         let materialCosts = 0;
         product.dataValues.materials.forEach(material => {
             materialCosts += material.unitPrice * material.material_product.consumption + material.freight;
         });
-        product.dataValues.materialCosts = materialCosts;
+        return materialCosts;
+    }
+
+    static calcPurchasingPrice(product) {
+        const materialCosts = ProductController.calcMaterialCosts(product);
+        return product.subcCostTotal + materialCosts;
     }
 
     async setRelations(entity, jsonBody) {
@@ -52,7 +57,7 @@ class ProductController extends Controller {
             include: [{ all: true }]
         })
             .then(ents => {
-                ents.forEach(ent => ProductController.addMaterialCosts(ent));
+                ents.forEach(ent => ent.dataValues.materialCosts = ProductController.calcMaterialCosts(ent));
                 res.send(ents);
             })
             .catch(err => {
