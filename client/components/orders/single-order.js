@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
 import axios from 'axios';
-import {Col,Row,Anchor,Spin,List,Button,Divider,Icon} from 'antd'
+import {Col,Row,Anchor,Spin,List,Button,Divider,Icon,Card} from 'antd'
 import {Redirect} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
+import ProductTable from './single-order-products'
 const { Link } = Anchor;
 
 
@@ -28,10 +29,70 @@ class SingleOrder extends Component{
 
     render(){
         if(this.state.singleOrder){
-            return(
+            return (
                 <div>
-                    <p>Order ID: {this.state.singleOrder.id}</p>
-                    <p>Order price total: {this.state.singleOrder.price}</p>
+                    <h1>ORDER CODE</h1>
+                    <Row type="flex">
+                        <p> Created {this.state.singleOrder.createdAt}&nbsp;&nbsp;</p>
+                        <p>|&nbsp;&nbsp;</p>
+                        <p>{this.state.singleOrder.products.length} items&nbsp;&nbsp;</p>
+                        <p>|&nbsp;&nbsp;</p>
+                        <p>Price: {this.state.singleOrder.price}&nbsp;</p>
+                        <p>|&nbsp;&nbsp;</p>
+                        <p>Status: {this.state.singleOrder.status}</p>
+                    </Row>
+                    <Row>
+                        <Col span={12}>
+                    <Card title="SUPPLIER INFORMATION" style={{ width: 580,height:430 }}>
+                        <Col span={6}>
+                            <p>Company:</p>
+                            <p>Contact person:</p>
+                            <p>Address:</p>
+                            <p>Tell nr:</p>
+                            <p>Web page address:</p>
+                            <p>VAT code:</p>
+                            <p>Trade register nr:</p>
+                        </Col>
+                        <Col span={18}>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                        </Col>
+                    </Card>
+                        </Col>
+                        <Col span={12}>
+                    <Card title="CLIENT INFORMATION" style={{ width: 580,height:430 }}>
+                        <Col span={6}>
+                            <p>Company:</p>
+                            <p>Contact person:</p>
+                            <p>VAT code:</p>
+                            <p>Invoicing address:</p>
+                            <p>Delivery address:</p>
+                            <p>Delivery time:</p>
+                            <p>Delivery terms:</p>
+                            <p>Payment terms:</p>
+                            <p>Brandlabel:</p>
+                        </Col>
+                        <Col span={18}>
+                            <p>ABC</p>
+                            <p>ABC</p>
+                            <p>{this.state.singleOrder.vat}</p>
+                            <p>{this.state.singleOrder.invoicingAddress}</p>
+                            <p>{this.state.singleOrder.deliveryAddress}</p>
+                            <p>{this.state.singleOrder.deliveryTime ?this.state.singleOrder.deliveryTime:"Unknown" }</p>
+                            <p>{this.state.singleOrder.deliveryTerms}</p>
+                            <p>{this.state.singleOrder.paymentTerms}</p>
+                            <p>{this.state.singleOrder.brandLabel}</p>
+                        </Col>
+                    </Card>
+                        </Col>
+                    </Row>
+                    <Divider/>
+                    <ProductTable productList = {this.state.singleOrder.products}/>
                 </div>
             )
         } else {
