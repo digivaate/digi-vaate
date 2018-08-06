@@ -1,5 +1,5 @@
 
-export default class Controller {
+module.exports = class Controller {
     constructor(model) {
         this.model = model;
         this.find_by_attribute = this.find_by_attribute.bind(this);

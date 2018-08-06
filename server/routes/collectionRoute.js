@@ -1,5 +1,5 @@
 const express = require('express');
-import CollectionController from '../controllers/collectionController';
+const CollectionController = require('../controllers/collectionController');
 const router = express.Router();
 
 router.get('/', CollectionController.find_by_attribute);

@@ -1,5 +1,5 @@
-import models from '../models/models';
-import Controller from './Controller';
+const models = require('../models/models');
+const Controller = require('./Controller');
 
 class ColorController extends Controller {
     constructor() { super(models.Color); }
@@ -18,4 +18,4 @@ class ColorController extends Controller {
     };
 }
 
-export default new ColorController();
+module.exports = new ColorController();

@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Order = sequelize.define('orders', {
         price: DataTypes.FLOAT,
         status: DataTypes.STRING,

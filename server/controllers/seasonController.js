@@ -1,6 +1,6 @@
-import models from '../models/models';
-import Controller from './Controller';
-import ProductController from "./productController";
+const models = require('../models/models');
+const Controller = require('./Controller');
+const ProductController = require("./productController");
 
 class SeasonController extends Controller {
     constructor() {
@@ -169,4 +169,4 @@ class SeasonController extends Controller {
     }
 }
 
-export default new SeasonController();
+module.exports = new SeasonController();

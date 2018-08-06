@@ -1,4 +1,4 @@
-import models from './models/models';
+const models = require('./models/models');
 
 const db = models.sequelize;
 let products = [];

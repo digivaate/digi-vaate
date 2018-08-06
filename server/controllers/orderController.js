@@ -1,5 +1,5 @@
-import Controller from "./Controller";
-import models from "../models/models";
+const Controller = require("./Controller");
+const models = require("../models/models");
 
 class OrderController extends Controller {
     constructor() { super(models.Order) }
@@ -22,4 +22,4 @@ class OrderController extends Controller {
     }
 }
 
-export default new OrderController();
+module.exports = new OrderController();

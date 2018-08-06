@@ -1,5 +1,5 @@
 const express = require('express');
-import OrderController from '../controllers/orderController';
+const OrderController = require('../controllers/orderController');
 const router = express.Router();
 
 router.get('/', OrderController.find_by_attribute);

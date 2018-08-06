@@ -1,5 +1,5 @@
-import SizeController from '../controllers/sizeController';
-import express from 'express';
+const SizeController = require('../controllers/sizeController');
+const express = require('express');
 
 const router = express.Router();
 const sizeController = new SizeController();

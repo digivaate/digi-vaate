@@ -1,10 +1,10 @@
-import Sequelize from "sequelize";
+const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize(
-    'digivaate',
-    'digivaate',
-    'digivaate',
-    {
+const config = {
+    database: 'digivaate',
+    username: 'digivaate',
+    password: 'digivaate',
+    options: {
         host: 'localhost',
         dialect: 'postgres',
         operatorsAliases: false,
@@ -16,18 +16,21 @@ const sequelize = new Sequelize(
         },
         // disable logging; default: console.log
         logging: false
-    });
+    }
+};
 
-const models = {
-    Material: sequelize.import('./materialModel'),
-    Color: sequelize.import('./colorModel'),
-    Product: sequelize.import('./productModel'),
-    Collection: sequelize.import('./collectionModel'),
-    Season: sequelize.import('./seasonModel'),
-    Company: sequelize.import('./companyModel'),
-    Theme: sequelize.import('./themeModel'),
-    Size: sequelize.import('./sizeModel'),
-    Order: sequelize.import('./orderModel'),
+function modifyName(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
+}
+
+const sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config.options
+);
+
+let models = {
     MaterialProduct: sequelize.define('material_product', {
         consumption: {
             type: Sequelize.FLOAT,
@@ -46,6 +49,27 @@ const models = {
     })
 };
 
+let modules = [
+    require('./materialModel'),
+    require('./companyModel'),
+    require('./colorModel'),
+    require('./productModel'),
+    require('./collectionModel'),
+    require('./seasonModel'),
+    require('./themeModel'),
+    require('./sizeModel'),
+    require('./orderModel')
+];
+
+modules.forEach(module => {
+    const model = module(sequelize, Sequelize);
+    if (model.name === 'companies') {
+        models['Company'] = model;
+    } else {
+        models[modifyName(model.name)] = model;
+    }
+});
+
 Object.keys(models).forEach((modelName) => {
     if ('associate' in models[modelName]) {
         models[modelName].associate(models);
@@ -54,5 +78,5 @@ Object.keys(models).forEach((modelName) => {
 
 models.sequelize = sequelize;
 models.Sequelize = Sequelize;
-export default models;
+module.exports = models;
 

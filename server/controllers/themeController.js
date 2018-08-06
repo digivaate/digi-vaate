@@ -1,6 +1,6 @@
-import Models from '../models/models';
-import Controller from './Controller';
-import fs from 'fs';
+const Models = require('../models/models');
+const Controller = require('./Controller');
+const fs = require('fs');
 
 class ThemeController extends Controller {
     constructor() { super(Models.Theme); }
@@ -54,4 +54,4 @@ class ThemeController extends Controller {
     }
 }
 
-export default new ThemeController();
+module.exports = new ThemeController();

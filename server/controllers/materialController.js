@@ -1,6 +1,6 @@
-import Models from '../models/models';
-import Controller from './Controller';
-import fs from 'fs';
+const Models = require('../models/models');
+const Controller = require('./Controller');
+const fs = require('fs');
 
 class MaterialController extends Controller {
     constructor() { super(Models.Material); }
@@ -46,4 +46,4 @@ class MaterialController extends Controller {
     }
 }
 
-export default new MaterialController();
+module.exports = new MaterialController();

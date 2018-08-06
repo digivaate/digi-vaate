@@ -1,9 +1,9 @@
-import Controller from "./Controller";
-import Models from "../models/models";
+const Controller = require("./Controller");
+const Models = require("../models/models");
 
 class SizeController extends Controller {
     constructor() { super(Models.Product); }
 
 }
 
-export default SizeController;
+module.exports = SizeController;

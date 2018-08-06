@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Color = sequelize.define('colors', {
         name: {
             type: DataTypes.STRING,

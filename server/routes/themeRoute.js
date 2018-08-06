@@ -1,6 +1,6 @@
 const express = require('express');
-import ThemeController from '../controllers/themeController';
-import multer from "../multer";
+const ThemeController = require('../controllers/themeController');
+const multer = require("../multer");
 const router = express.Router();
 
 router.get('/', ThemeController.find_by_attribute);

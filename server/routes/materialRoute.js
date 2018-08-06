@@ -1,7 +1,7 @@
 const express = require('express');
-import MaterialController from '../controllers/materialController';
+const MaterialController = require('../controllers/materialController');
 const router = express.Router();
-import multer from '../multer';
+const multer = require('../multer');
 
 router.get('/', MaterialController.find_by_attribute);
 router.post('/', MaterialController.create);

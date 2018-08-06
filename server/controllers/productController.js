@@ -1,6 +1,6 @@
-import Models from '../models/models';
-import Controller from './Controller';
-import fs from 'fs';
+const Models = require('../models/models');
+const Controller = require('./Controller');
+const fs = require('fs');
 
 class ProductController extends Controller {
     constructor() { super(Models.Product); }
@@ -115,4 +115,4 @@ class ProductController extends Controller {
     }
 }
 
-export default ProductController;
+module.exports = ProductController;

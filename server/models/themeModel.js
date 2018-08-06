@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Theme = sequelize.define('themes', {
         name: {
             type: DataTypes.STRING,

@@ -1,6 +1,6 @@
-import Models from '../models/models';
-import Controller from './Controller';
-import ProductController from './productController';
+const Models = require('../models/models');
+const Controller = require('./Controller');
+const ProductController = require('./productController');
 
 class CollectionController extends Controller {
     constructor() { super(Models.Collection); }
@@ -93,4 +93,4 @@ class CollectionController extends Controller {
     }
 }
 
-export default new CollectionController();
+module.exports = new CollectionController();

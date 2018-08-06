@@ -2,8 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
-import morgan from 'morgan';
-import models from './models/models';
+const morgan = require('morgan');
+const models = require('./models/models');
 
 //synchronise sequelize models with database
 models.sequelize.sync()

@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Size = sequelize.define('sizes', {
         value: DataTypes.STRING
     });
@@ -8,4 +8,4 @@ export default (sequelize, DataTypes) => {
     };
 
     return Size;
-}
+};

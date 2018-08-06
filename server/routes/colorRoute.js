@@ -1,5 +1,5 @@
 const express = require('express');
-import ColorController from '../controllers/colorController';
+const ColorController = require('../controllers/colorController');
 const router = express.Router();
 
 router.get('/', ColorController.find_by_attribute);
