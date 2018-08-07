@@ -136,8 +136,6 @@ class App extends React.Component {
                                 />}
                             />
                             {productsCompanyRouteSideBar}
-                            <Route path="/orders" component={OrderSideBar}/>
-                            <Route path="/orders/manage" component={OrderSideBar}/>
                             <Route path="/:seasonId" exact component={SeasonSideBar} />
                             <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
                             <Route path={'/:seasonId/products'} exact component={SeasonSideBar}/>
