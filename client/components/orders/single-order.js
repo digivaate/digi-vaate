@@ -80,18 +80,18 @@ class SingleOrder extends Component{
                         <Col span={18}>
                             <p>ABC</p>
                             <p>ABC</p>
-                            <p>{this.state.singleOrder.vat}</p>
-                            <p>{this.state.singleOrder.invoicingAddress}</p>
-                            <p>{this.state.singleOrder.deliveryAddress}</p>
-                            <p>{this.state.singleOrder.deliveryTime ?this.state.singleOrder.deliveryTime:"Unknown" }</p>
-                            <p>{this.state.singleOrder.deliveryTerms}</p>
-                            <p>{this.state.singleOrder.paymentTerms}</p>
-                            <p>{this.state.singleOrder.brandLabel}</p>
+                            <p>{this.state.singleOrder.vat ? this.state.singleOrder.vat:"Unknown"}</p>
+                            <p>{this.state.singleOrder.invoicingAddress ? this.state.singleOrder.invoicingAddress:"Unknown"}</p>
+                            <p>{this.state.singleOrder.deliveryAddress ? this.state.singleOrder.deliveryAddress:"Unknown"}</p>
+                            <p>{this.state.singleOrder.deliveryTime ? this.state.singleOrder.deliveryTime:"Unknown" }</p>
+                            <p>{this.state.singleOrder.deliveryTerms ? this.state.singleOrder.deliveryTerms:"Unknown" }</p>
+                            <p>{this.state.singleOrder.paymentTerms ? this.state.singleOrder.paymentTerms:"Unknown"}</p>
+                            <p>{this.state.singleOrder.brandLabel ? this.state.singleOrder.brandLabel:"Unknown"}</p>
                         </Col>
                     </Card>
                         </Col>
                     </Row>
-                    <Divider/>
+                    <br/>
                     <ProductTable productList = {this.state.singleOrder.products}/>
                 </div>
             )

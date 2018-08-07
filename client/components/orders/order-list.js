@@ -18,10 +18,10 @@ class OrderList extends Component{
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/order`)
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
                 this.setState({
-                    orders: response.data
+                    orders: response.data[0].orders
                 })
             })
     }
@@ -48,7 +48,7 @@ class OrderList extends Component{
                         onClick={() => this.handleSelect(item)}
                         className="view-order-btn">View order</a>]}>
                         <List.Item.Meta
-                            title={<h2>Order code</h2>}
+                            title="Order code"
                             description={<div>
                                 <Row type="flex">
                                     <p> Created {item.createdAt}&nbsp;&nbsp;</p>
@@ -86,5 +86,5 @@ class OrderList extends Component{
     }
 }
 
-export default OrderList
+export default OrderList;
 

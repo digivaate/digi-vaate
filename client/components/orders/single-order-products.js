@@ -46,7 +46,7 @@ class ProductTable extends Component {
                 width: 140,
             },
             {
-                Header: 'Amount',
+                Header: 'Total amount',
                 accessor: 'amount',
                 width: 140,
             },
@@ -61,11 +61,10 @@ class ProductTable extends Component {
     };
 
     render() {
-        console.log(this.props.productList);
         return (
             <div>
                 <ReactTable
-                    sortable={true}
+                    sortable={false}
                     showPagination={false}
                     resizable={false}
                     data={this.state.data}
