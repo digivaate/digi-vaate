@@ -10,6 +10,7 @@ let companies = [];
 let themes = [];
 let sizes = [];
 let orders = [];
+let orderProducts = [];
 
 let promises = [];
 
@@ -117,7 +118,10 @@ function createEntities() {
             price: 2000,
             deliveryCosts: 200,
             taxPercent: 24
-        })
+        }).then(res => orders.push(res)),
+
+        models.OrderProduct.create()
+            .then(res => orderProducts.push(res))
     ];
 
     return Promise.all(promises);
@@ -138,7 +142,9 @@ function addRelations() {
         companies[0].addProduct(products[2]),
         companies[0].addColor(colors[2]),
         products[0].addSize(1),
-        products[1].addSize(2)
+        products[1].addSize(2),
+        orderProducts[0].addSize(1, {through: {amount: 10} }),
+        orderProducts[0].updateAttributes({ orderId: 1, productId: 1})
     ];
     return Promise.all(promises);
 }

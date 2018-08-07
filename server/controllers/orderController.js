@@ -5,20 +5,68 @@ class OrderController extends Controller {
     constructor() { super(models.Order) }
 
     async setRelations(entity, jsonBody) {
-        const promeses = [];
-        if (jsonBody.products) {
-            await entity.setProducts([]);
-            jsonBody.products.forEach(prod => {
-                promeses.push(
-                    entity.addProduct(prod.id, {
-                        through:{
-                            amount: prod.amount,
-                            size: prod.size
-                        }
-                    })
-                );
-            });
+        if(entity.orderProducts) delete entity.orderProducts;
+    }
+
+    //override
+    find_by_attribute(req, res) {
+        let orders = null;
+        const properties = Controller.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.stat(500).json(properties.error);
+            return;
         }
+        this.model.findAll({
+            where: properties,
+            include: [{
+                all: true,
+                include: [{
+                        model: models.Size,
+                        as: 'sizes'
+                    }]
+            }]
+        })
+            .then(ent => {
+                orders = ent;
+                const promises = [];
+                ent.forEach(order => {
+                    order.orderProducts.forEach(ordProd => {
+                        ordProd.sizes.forEach( size => {
+                            promises.push(
+                                models.Product.findById(size.productId, {
+                                    attributes: ['id', 'name', 'sellingPrice']
+                                }).then(res => {
+                                    size.dataValues.product = res;
+                                })
+                            );
+                        });
+                    });
+                });
+                return Promise.all(promises);
+            })
+            .then(() => {
+                res.send(orders);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
+    }
+
+    //INCOMPLETE
+    updateOrderProducts(req, res) {
+        req.body.forEach(ordProd => {
+            models.OrderProduct
+        });
+        const properties = Controller.collectProperties(req.query, models.Order);
+        if (properties.error) {
+            res.status(500).json(properties.error);
+            return;
+        }
+        models.Order.findOne({ where: properties })
+            .then(ent => {
+
+            })
     }
 }
 

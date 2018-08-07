@@ -37,11 +37,7 @@ let models = {
             defaultValue: 0
         }
     }),
-    OrderProduct: sequelize.define('order_product', {
-        size: {
-            type: Sequelize.STRING,
-            required: true
-        },
+    OrderProductSize: sequelize.define('orderProduct_size', {
         amount:{
             type: Sequelize.INTEGER,
             defaultValue: 0
@@ -58,7 +54,8 @@ let modules = [
     require('./seasonModel'),
     require('./themeModel'),
     require('./sizeModel'),
-    require('./orderModel')
+    require('./orderModel'),
+    require('./orderProductModel')
 ];
 
 modules.forEach(module => {

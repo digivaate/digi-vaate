@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const Size = sequelize.define('sizes', {
-        value: DataTypes.STRING
+        value: DataTypes.STRING,
+        amount: DataTypes.INTEGER
     });
 
-    Size.associate = (models) => {
-        Size.belongsToMany(models.Product, {through: 'size_product'});
+    Size.associate = (model) => {
+        Size.belongsToMany(model.OrderProduct, {through: 'orderProduct_size'});
     };
 
     return Size;
