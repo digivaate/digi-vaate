@@ -31,15 +31,13 @@ class OrderController extends Controller {
                 const promises = [];
                 ent.forEach(order => {
                     order.orderProducts.forEach(ordProd => {
-                        ordProd.sizes.forEach( size => {
-                            promises.push(
-                                models.Product.findById(size.productId, {
-                                    attributes: ['id', 'name', 'sellingPrice']
-                                }).then(res => {
-                                    size.dataValues.product = res;
-                                })
-                            );
-                        });
+                        promises.push(
+                            models.Product.findById(ordProd.productId, {
+                                attributes: ['id', 'name', 'sellingPrice']
+                            }).then(res => {
+                                ordProd.dataValues.product = res;
+                            })
+                        );
                     });
                 });
                 return Promise.all(promises);
@@ -53,7 +51,6 @@ class OrderController extends Controller {
             });
     }
 
-    //INCOMPLETE
     updateOrderProducts(req, res) {
         req.body.forEach(ordProd => {
             models.OrderProduct
