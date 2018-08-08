@@ -33,9 +33,9 @@ class SingleOrder extends Component{
                 <div>
                     <h1>ORDER CODE</h1>
                     <Row type="flex">
-                        <p> Created {this.state.singleOrder.createdAt}&nbsp;&nbsp;</p>
+                        <p> Created {this.state.singleOrder.createdAt.slice(0,10)}&nbsp;&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
-                        <p>{this.state.singleOrder.products.length} items&nbsp;&nbsp;</p>
+                        <p>{this.state.singleOrder.orderProducts.length} items&nbsp;&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
                         <p>Price: {this.state.singleOrder.price}&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
@@ -83,7 +83,7 @@ class SingleOrder extends Component{
                             <p>{this.state.singleOrder.vat ? this.state.singleOrder.vat:"Unknown"}</p>
                             <p>{this.state.singleOrder.invoicingAddress ? this.state.singleOrder.invoicingAddress:"Unknown"}</p>
                             <p>{this.state.singleOrder.deliveryAddress ? this.state.singleOrder.deliveryAddress:"Unknown"}</p>
-                            <p>{this.state.singleOrder.deliveryTime ? this.state.singleOrder.deliveryTime:"Unknown" }</p>
+                            <p>{this.state.singleOrder.deliveryTime ? `${this.state.singleOrder.deliveryTime.slice(0,10)} (YYYY-MM-DD)` :"Unknown" }</p>
                             <p>{this.state.singleOrder.deliveryTerms ? this.state.singleOrder.deliveryTerms:"Unknown" }</p>
                             <p>{this.state.singleOrder.paymentTerms ? this.state.singleOrder.paymentTerms:"Unknown"}</p>
                             <p>{this.state.singleOrder.brandLabel ? this.state.singleOrder.brandLabel:"Unknown"}</p>
@@ -92,7 +92,7 @@ class SingleOrder extends Component{
                         </Col>
                     </Row>
                     <br/>
-                    <ProductTable productList = {this.state.singleOrder.products}/>
+                    <ProductTable productList = {this.state.singleOrder.orderProducts}/>
                 </div>
             )
         } else {

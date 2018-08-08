@@ -30,11 +30,6 @@ class HeaderBar extends Component{
                     className={'bread-crumb'}
                     refresh = {this.state.refresh}
                 />
-                <Button className="header-button" size="large">
-                    <NavLink to="/orders">
-                        ORDERS
-                    </NavLink>
-                </Button>
             </div>
         )
     }

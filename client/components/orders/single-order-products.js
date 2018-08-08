@@ -19,19 +19,29 @@ class ProductTable extends Component {
 
     componentDidMount(){
         const dataCollected = [];
-        this.products.forEach(product => {
+        this.products.forEach(orderProduct => {
             dataCollected.push({
-                size: product.order_product.size,
-                amount:product.order_product.amount,
-                name: product.name,
-                sellingPrice: product.sellingPrice
+                amountEachSize: orderProduct.sizes.map(size => {
+                    return {
+                        sizeValue: size.value,
+                        sizeAmount: size.orderProduct_size.amount
+                    }
+                }),
+                name: orderProduct.product.name,
+                sellingPrice: orderProduct.product.sellingPrice,
+                totalAmount: orderProduct.sizes.reduce((sum,ele) => sum + ele.orderProduct_size.amount,0)
+            });
         });
-            this.setState({
-                data:dataCollected,
-                pageSize:dataCollected.length
-            })
+        console.log(dataCollected)
+        this.setState({
+            data:dataCollected,
+            pageSize:dataCollected.length
         })
     };
+
+    addProduct = () => {
+        console.log('Click')
+    }
 
     createColumns = () => {
         const columns = [
@@ -41,13 +51,23 @@ class ProductTable extends Component {
                 width: 140,
             },
             {
-                Header: 'Size',
-                accessor: 'size',
-                width: 140,
+                Header: "Sizes",
+                id: "sizes",
+                accessor: d =>{
+                    const mapSize = d.amountEachSize.map(ele => `${ele.sizeAmount}x${ele.sizeValue}`).join("+");
+                    return (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: mapSize
+                            }}
+                        />
+                    )},
+                width: 280
+
             },
             {
                 Header: 'Total amount',
-                accessor: 'amount',
+                accessor: 'totalAmount',
                 width: 140,
             },
             {
@@ -55,6 +75,19 @@ class ProductTable extends Component {
                 accessor: 'sellingPrice',
                 width: 140,
             },
+            {
+                Header: "Total Price",
+                id: "totalPrice",
+                accessor: d =>{
+                    return (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: parseInt(parseInt(d.totalAmount * d.sellingPrice).toFixed(2))
+                            }}
+                        />
+                    )},
+                width: 280
+            }
 
         ];
         return columns
@@ -68,9 +101,15 @@ class ProductTable extends Component {
                     showPagination={false}
                     resizable={false}
                     data={this.state.data}
-                    defaultPageSize={this.state.pageSize}
+                    defaultPageSize={5}
                     key={this.state.pageSize}
                     columns={this.createColumns()}
+                    noDataText={
+                        <div>
+                            No Product
+                            <Button onClick={this.addProduct}>Add product</Button>
+                        </div>
+                    }
                 />
             </div>
         )
