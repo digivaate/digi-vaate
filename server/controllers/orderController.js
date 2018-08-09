@@ -4,8 +4,6 @@ const models = require("../models/models");
 class OrderController extends Controller {
     constructor() {
         super(models.Order);
-        this.updateOrderProducts = this.updateOrderProducts.bind(this);
-        this.createOrderProducts = this.createOrderProducts.bind(this);
     }
 
     async setRelations(entity, jsonBody) {
@@ -55,51 +53,6 @@ class OrderController extends Controller {
             });
     }
 
-    createOrderProducts = (relations, orderId) => {
-        let promises = [];
-        relations.forEach(rel => {
-            promises.push(
-                models.OrderProduct.create({
-                    productId: rel.productId,
-                    orderId: orderId
-                })
-            );
-        });
-        return Promise.all(promises)
-            .then(orderProducts => {
-                promises = [];
-                for(let i in orderProducts) {
-                    for (let j in relations[i].sizes) {
-                        promises.push(
-                            orderProducts[i].addSize(relations[i].sizes[j].sizeId, {through: {amount: relations[i].sizes[j].amount}})
-                        )
-                    }
-                }
-                return Promise.all(promises);
-            })
-            .catch(err => {
-                console.error(err);
-                return Promise.reject(err);
-            });
-    };
-
-    updateOrderProducts(req, res, next) {
-        const properties = Controller.collectProperties(req.query, models.Order);
-        if (properties.error) {
-            next(properties.error);
-        }
-        models.Order.findOne({ where: properties })
-            .then( ent => {
-                return this.createOrderProducts(req.body.products, ent.id);
-            })
-            .then(resolved => {
-                console.log(resolved);
-                res.send(resolved);
-            })
-            .catch(err => {
-                next(err);
-            })
-    }
 }
 
 module.exports = new OrderController();

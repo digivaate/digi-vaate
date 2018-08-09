@@ -84,9 +84,9 @@ module.exports = class Controller {
                 ents.forEach(ent => {
                     deletedEnts.push(ent.destroy());
                 });
-                Promise.all(deletedEnts)
-                    .then( res.send({status: 'deleted'}) );
+                return Promise.all(deletedEnts);
             })
+            .then(() => res.send('deleted'))
             .catch(err => {
                 console.error('Error: ' + err);
                 res.status(500).json({ error: err });

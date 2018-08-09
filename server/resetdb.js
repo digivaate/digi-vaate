@@ -120,7 +120,10 @@ function createEntities() {
             taxPercent: 24
         }).then(res => orders.push(res)),
 
-        models.OrderProduct.create()
+        models.OrderProduct.create({
+            orderId: 1,
+            productId: 1,
+        })
             .then(res => orderProducts.push(res))
     ];
 
@@ -144,7 +147,6 @@ function addRelations() {
         products[0].addSize(1),
         products[1].addSize(2),
         orderProducts[0].addSize(1, {through: {amount: 10} }),
-        orderProducts[0].updateAttributes({ orderId: 1, productId: 1})
     ];
     return Promise.all(promises);
 }
