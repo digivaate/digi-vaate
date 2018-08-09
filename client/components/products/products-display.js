@@ -88,7 +88,7 @@ class ProductsDisplay extends Component{
          .catch(err => console.error(err));
          */
 
-        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+        axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(res => {
                 this.products = res.data;
                 for(let i = 0;i < this.products.length; i++){
@@ -242,7 +242,7 @@ class ProductsDisplay extends Component{
                         axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
                             .then(() => {
                                 message.success("Product created",1);
-                                axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                                axios.get(`${API_ROOT}${this.props.requestPath}`)
                                     .then(res => {
                                         this.products = res.data;
                                         for(let i = 0;i < this.products.length; i++){
@@ -266,7 +266,7 @@ class ProductsDisplay extends Component{
                 axios.post(`${API_ROOT}/product`, values)
                     .then(response => {
                         message.success("Product created",1);
-                        axios.get(`${API_ROOT}/${this.props.requestPath}`)
+                        axios.get(`${API_ROOT}${this.props.requestPath}`)
                             .then(res => {
                                 this.products = res.data;
                                 for(let i = 0;i < this.products.length; i++){

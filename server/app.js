@@ -12,8 +12,15 @@ models.sequelize.sync()
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 //Log requests
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('common'));
+} else {
+    app.use(morgan('dev'));
+}
 //Serve front end
+if (process.env.NODE_ENV === 'production') {
+    app.use('/', express.static(path.resolve(__dirname, '../dist/client/')));
+}
 app.use('/api', express.static(path.resolve(__dirname, '../uploads/')));
 
 //Back-end routes
