@@ -15,11 +15,11 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
-    "build": "webpack --mode production",
-    "prod": "node ./dist/server.bundle.js",
-    "build-prod": "npm run build && npm run prod",
+    "build": "SET NODE_ENV=production&&webpack --mode=production",
+    "start": "node ./dist/server.bundle.js",
+    "build:run": "npm run prod:build && npm run prod:run",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "dev:server": "nodemon --exec babel-node server/server",
+    "dev:server": "SET PORT=8080 && nodemon --exec babel-node server/server",
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\"",
     "cleardb": "babel-node server/resetdb.js"
   },

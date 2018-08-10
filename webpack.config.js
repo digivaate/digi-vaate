@@ -2,9 +2,19 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
 
-const port = process.env.DEV_PORT || 3000;
 const outputDir = "dist";
+
+let apiHost = null;
+switch (process.env.NODE_ENV) {
+    case 'development':
+        apiHost = 'http://localhost:3000';
+        break;
+    case 'production':
+        apiHost = 'http://localhost';
+        break;
+}
 
 const serverConfig = {
     target: 'node',
@@ -54,7 +64,7 @@ const clientConfig = {
             }
         ]
     },devServer: {
-        port: port,
+        port: 3000,
         open: true,
         contentBase: './client/',
         historyApiFallback: true,
@@ -67,8 +77,15 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             template: "./client/index.html",
             //favicon: "./client/assets/favicon.ico"
+        }),
+        new webpack.DefinePlugin({
+            __API_HOST__: JSON.stringify(apiHost)
         })
     ]
 };
 
-module.exports = [clientConfig, serverConfig];
+const configs = [clientConfig];
+if(process.env.NODE_ENV === 'production') {
+    configs.push(serverConfig);
+}
+module.exports = configs;
