@@ -12,18 +12,6 @@ class SingleProductColors extends Component{
         super(props);
         this.state = {
             colorVisible: false,
-            colorOptions: this.props.colorOptions,
-            productColors: this.props.productColors
-        }
-    }
-
-    componentDidUpdate(prevProps){
-        if(prevProps != this.props){
-            this.setState({
-                colorVisible: false,
-                colorOptions: this.props.colorOptions,
-                productColors: this.props.productColors
-            })
         }
     }
 
@@ -70,20 +58,21 @@ class SingleProductColors extends Component{
     };
 
     render(){
+        const {colorOptions,productColors} = this.props;
         let renderColorOptions = [];
         let renderDefaultColors = [];
         let renderProductColors = <p>This product does not have any colors yet</p>;
         let editColorBtn = null;
-        if (this.state.colorOptions.length > 0) {
-            renderColorOptions = this.state.colorOptions.map(color =>
+        if (colorOptions.length > 0) {
+            renderColorOptions = colorOptions.map(color =>
                 <Option key={color.name} style={{color: color.value}}>
                     {color.name}
                 </Option>
             )
         }
-        if (this.state.productColors.length > 0) {
-            renderDefaultColors = this.state.productColors.map(color => color.name);
-            renderProductColors = this.state.productColors.map(color =>{
+        if (productColors.length > 0) {
+            renderDefaultColors = productColors.map(color => color.name);
+            renderProductColors = productColors.map(color =>{
                     const colorContent =(
                         <div>
                             <p>{color.name}</p>

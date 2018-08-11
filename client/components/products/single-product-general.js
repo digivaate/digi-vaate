@@ -15,12 +15,6 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
-            loadedProductOri: this.props.originalLoadedProduct,
-            sellingPriceOri: this.props.originalLoadedProduct.sellingPrice,
-            resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
-            taxPercentOri: this.props.originalLoadedProduct.taxPercent,
-            amountOri: this.props.originalLoadedProduct.amount,
-            subcCostTotalOri: this.props.originalLoadedProduct.subcCostTotal,
             saved:this.props.saved
         }
     }
@@ -36,12 +30,6 @@ class SingleProductGeneralInfo extends Component{
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
                 subcCostTotal: this.props.loadedProduct.subcCostTotal,
-                loadedProductOri: this.props.originalLoadedProduct,
-                sellingPriceOri: this.props.originalLoadedProduct.sellingPrice,
-                resellerProfitPercentOri: this.props.originalLoadedProduct.resellerProfitPercent,
-                taxPercentOri: this.props.originalLoadedProduct.taxPercent,
-                amountOri: this.props.originalLoadedProduct.amount,
-                subcCostTotalOri: this.props.originalLoadedProduct.subcCostTotal,
                 saved:this.props.saved
             })
         }
@@ -49,7 +37,6 @@ class SingleProductGeneralInfo extends Component{
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
-                sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
@@ -153,10 +140,10 @@ class SingleProductGeneralInfo extends Component{
                         </Col>
                     </Row>
                 </Modal>
-                <p>Selling price: <span style={ this.state.sellingPrice !== this.state.sellingPriceOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.sellingPrice} </span></p>
-                <p>Reseller profit percentage: <span style={ this.state.resellerProfitPercent !== this.state.resellerProfitPercentOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.resellerProfitPercent}</span></p>
-                <p>Amount:<span style={ this.state.amount !== this.state.amountOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.amount}</span></p>
-                <p>Subcontracting cost:<span style={ this.state.subcCostTotal !== this.state.subcCostTotalOri ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.subcCostTotal}</span></p>
+                <p>Selling price: <span style={ this.state.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.sellingPrice} </span></p>
+                <p>Reseller profit percentage: <span style={ this.state.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.resellerProfitPercent}</span></p>
+                <p>Amount:<span style={ this.state.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.amount}</span></p>
+                <p>Subcontracting cost:<span style={ this.state.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.subcCostTotal}</span></p>
             </div>
         )
     }
