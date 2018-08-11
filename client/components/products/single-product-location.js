@@ -76,6 +76,8 @@ class SingleProductImg extends Component{
 
     render(){
         const {seasons,collections} = this.props;
+        console.log(seasons)
+
         let changeLocationBtn = <div style={{height:32}}></div>;
         let currentLocation = null;
         if(this.props.editModeStatus === true) {
