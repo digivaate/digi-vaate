@@ -64,20 +64,14 @@ class BreadCrumbDigi extends Component{
                 this.companies = response.data;
                 for(let i=0;i<this.companies.length;i++) {
                     this.companiesMap[i] = this.companies[i].name;
-                }
-                for(let j=0; j<this.companiesMap.length; j++){
-                    axios.get(`${API_ROOT}/company/products?name=${this.companiesMap[j]}`)
-                        .then(response => {
-                            this.companiesProduct = response.data;
-                            for(let m = 0 ; m<this.companiesProduct.length; m++){
-                                this.companiesProductsMap[m] = this.companiesProduct[m].name;
-                                this.breadcrumbNameMap["/products"] = "Products";
-                                this.breadcrumbNameMap["/colors"] = "Colors";
-                                this.breadcrumbNameMap["/seasons"] = "Seasons";
-                                this.breadcrumbNameMap["/orders"] = "Orders";
-                                this.breadcrumbNameMap["/products/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
-                            }
-                        })
+                    for(let m = 0 ; m<this.companies[i].products.length; m++){
+                        this.companiesProductsMap[m] = this.companies[i].products[m].name;
+                        this.breadcrumbNameMap["/products"] = "Products";
+                        this.breadcrumbNameMap["/colors"] = "Colors";
+                        this.breadcrumbNameMap["/seasons"] = "Seasons";
+                        this.breadcrumbNameMap["/orders"] = "Orders";
+                        this.breadcrumbNameMap["/products/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
+                    }
                 }
                 this.setState({})
             });
@@ -94,6 +88,10 @@ class BreadCrumbDigi extends Component{
                         this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/budget"] = "Budget";
                         this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/colors"] = "Colors";
                         this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/collections"] = "Collections";
+                        for(let m = 0 ; m<this.seasons[i].products.length; m++){
+                            this.seasonProductsMap[m] = this.seasons[i].products[m].name;
+                            this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/products"+"/"+this.seasonProductsMap[m]] = this.seasonProductsMap[m];
+                        }
                         for(let j=0;j<this.collections.length;j++){
                             this.collectionsMap[j] = this.collections[j].name;
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]] = this.collectionsMap[j];
@@ -105,17 +103,6 @@ class BreadCrumbDigi extends Component{
                             this.breadcrumbNameMap["/"+this.seasonsMap[i]+"/"+this.collectionsMap[j]+"/orders"] = "Orders";
 
                         }
-                    }
-                    for(let n=0; n<this.seasonsMap.length; n++){
-                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`)
-                            .then(response => {
-                                this.seasonProducts = response.data;
-                                for(let m = 0 ; m<this.seasonProducts.length; m++){
-                                    this.seasonProductsMap[m] = this.seasonProducts[m].name;
-                                    this.breadcrumbNameMap["/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProductsMap[m]] = this.seasonProductsMap[m];
-                                }
-                                this.setState({})
-                            })
                     }
                 this.setState({})
                 }
@@ -137,12 +124,6 @@ class BreadCrumbDigi extends Component{
                             }
                         }
                     }
-                this.setState({})
-            });
-
-        axios.get(`${API_ROOT}/collection`)
-            .then(response => {
-                this.collections = response.data;
                 axios.get(`${API_ROOT}/material`)
                     .then(response => {
                         this.materials = response.data;
@@ -157,10 +138,9 @@ class BreadCrumbDigi extends Component{
                                 }
                             }
                         }
-                        this.setState({})
                     })
-            })
-
+                this.setState({})
+            });
     }
 
     render(){
