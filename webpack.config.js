@@ -2,8 +2,9 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
 
-const port = process.env.DEV_PORT || 3000;
+const port = process.env.PORT || 3000;
 const outputDir = "dist";
 
 const serverConfig = {
@@ -67,6 +68,9 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             template: "./client/index.html",
             //favicon: "./client/assets/favicon.ico"
+        }),
+        new webpack.DefinePlugin({
+            __API_HOST__: `http://localhost:${port}`
         })
     ]
 };
