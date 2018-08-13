@@ -16,7 +16,7 @@
   },
   "scripts": {
     "postinstall": "webpack --mode production",
-    "start": "set NODE_ENV=production&& node ./server/server.js",
+    "start": "set NODE_ENV=production&& set PORT=3400&& node ./server/server.js",
     "build-run": "npm run postinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
@@ -58,7 +58,7 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.17.5",
     "url-loader": "^1.0.1",
-    "webpack": "^4.10.2",
+    "webpack": "^4.16.5",
     "webpack-cli": "^2.1.4",
     "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.4",

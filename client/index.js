@@ -7,4 +7,5 @@ import App from './App'
 import {API_ROOT} from "./api-config";
 
 console.log(API_ROOT);
+console.log(process.env.PORT);
 render(<App />, document.getElementById("root"));
