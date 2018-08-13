@@ -79,7 +79,11 @@ class OrderList extends Component{
         let renderOrderList = null;
         let singleOrder = null;
         if(this.state.isSelected){
-            singleOrder = <Redirect to={{pathname: this.props.match.url + '/' + this.state.singleOrder.id}}/>
+            singleOrder = <Redirect
+                to={{
+                    pathname: this.props.match.url + '/' + this.state.singleOrder.id,
+                }}
+            />
         }
         if(this.state.orders){
             renderOrderList = <List
