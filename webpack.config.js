@@ -68,9 +68,6 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             template: "./client/index.html",
             //favicon: "./client/assets/favicon.ico"
-        }),
-        new webpack.DefinePlugin({
-            __API_HOST__: `http://localhost:${port}`
         })
     ]
 };
