@@ -15,7 +15,11 @@ class HeaderBar extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.seasonName != this.props.seasonName || prevProps.collectionName != this.props.collectionName){
+        if(prevProps.newSeasonName != this.props.newSeasonName ||
+            prevProps.newCollectionName != this.props.newCollectionName ||
+                prevProps.newProduct != this.props.newProduct
+        ){
+
             this.setState({
                 refresh: !this.state.refresh
             })

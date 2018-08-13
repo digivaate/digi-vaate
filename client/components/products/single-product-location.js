@@ -11,23 +11,6 @@ class SingleProductImg extends Component{
         this.state = {
             changeLocationVisible: false,
             value: null,
-            seasons: this.props.seasons,
-            collections: this.props.collections,
-            seasonName: this.props.seasonName,
-            collectionName: this.props.collectionName,
-            loadedProduct: this.props.loadedProduct
-        }
-    }
-
-    componentDidUpdate(prevProps){
-        if(prevProps !== this.props){
-            this.setState({
-                seasons: this.props.seasons,
-                collections: this.props.collections,
-                seasonName: this.props.seasonName,
-                collectionName: this.props.collectionName,
-                loadedProduct: this.props.loadedProduct
-            })
         }
     }
 
@@ -55,15 +38,15 @@ class SingleProductImg extends Component{
     handleChangeLocationOk = () => {
         for(let i=0;i<this.seasons.length;i++){
             if(this.state.value === this.seasons[i][1]){
-                if(this.state.value === this.state.seasonName && this.state.collectionName === "None"){
+                if(this.state.value === this.props.seasonName && this.props.collectionName === "None"){
                     message.error(`You are currently on ${this.state.seasonName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
                         .then(() => {
                             message.success("Change successfully",1);
                             setTimeout(() => {
-                                window.location.href = `${window.location.origin}/${this.state.value}/products/${this.state.loadedProduct.name}`
+                                window.location.href = `${window.location.origin}/${this.state.value}/products/${this.props.loadedProduct.name}`
                             },1300)
                         })
                 }
@@ -71,17 +54,17 @@ class SingleProductImg extends Component{
         }
         for(let i=0;i<this.collections.length;i++){
             if(this.state.value === this.collections[i][1]){
-                if(this.state.value === this.state.collectionName){
-                    message.error(`You are currently on ${this.state.collectionName}`,1.5)
+                if(this.state.value === this.props.collectionName){
+                    message.error(`You are currently on ${this.props.collectionName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`, {collectionId: this.collections[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`, {collectionId: this.collections[i][0]})
                         .then(() => {
                             for (let j = 0; j < this.seasons.length; j++) {
                                 if (this.collections[i][2] === this.seasons[j][0]) {
                                     message.success("Change successfully", 1)
                                     setTimeout(() => {
-                                        window.location.href = `${window.location.origin}/${this.seasons[j][1]}/${this.state.value}/products/${this.state.loadedProduct.name}`
+                                        window.location.href = `${window.location.origin}/${this.seasons[j][1]}/${this.state.value}/products/${this.props.loadedProduct.name}`
                                     }, 1300)
                                 }
                             }
@@ -92,19 +75,22 @@ class SingleProductImg extends Component{
     };
 
     render(){
+        const {seasons,collections} = this.props;
+        console.log(seasons)
+
         let changeLocationBtn = <div style={{height:32}}></div>;
         let currentLocation = null;
         if(this.props.editModeStatus === true) {
             changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;
         }
-        this.seasons = this.state.seasons.map(season => {
+        this.seasons = seasons.map(season => {
             return [season.id,season.name]
         });
-        this.collections = this.state.collections.map(collection => {
+        this.collections = collections.map(collection => {
             return [collection.id,collection.name,collection.seasonId]
         });
-        this.treeData = this.state.seasons.map(season => {
-            let collections = this.state.collections.reduce((collections,collection) => {
+        this.treeData = seasons.map(season => {
+            let collectionsChild = collections.reduce((collections,collection) => {
                 if(collection.seasonId === season.id) {
                     collections.push({
                         title: "Collection: " + collection.name,
@@ -118,17 +104,17 @@ class SingleProductImg extends Component{
                 title: "Season: " + season.name,
                 value: season.name,
                 key: season.name + season.id,
-                children: collections
+                children: collectionsChild
             }
         });
-        if(this.state.collectionName === "None" && this.state.seasonName === "None"){
+        if(this.props.collectionName === "None" && this.props.seasonName === "None"){
             currentLocation = (
                 <div>
                     <p>Current location:</p>
                     <h3>Company</h3>
                 </div>)
         }
-        else if(this.state.collectionName === "None"){
+        else if(this.props.collectionName === "None"){
             currentLocation = (
                 <div>
                     <p>Current location:</p>
@@ -165,8 +151,8 @@ class SingleProductImg extends Component{
                         onChange={this.onChange}
                     />
                 </Modal>
-                <p>Season:{this.state.seasonName}</p>
-                <p>Collection:{this.state.collectionName}</p>
+                <p>Season:{this.props.seasonName}</p>
+                <p>Collection:{this.props.collectionName}</p>
             </Card>
         )
     }

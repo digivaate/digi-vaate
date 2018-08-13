@@ -52,6 +52,7 @@ class BreadCrumbDigi extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.refresh != this.props.refresh){
+            console.log("BC updated!")
             this.componentDidMount();
         }
     }

@@ -34,7 +34,7 @@ class App extends React.Component {
         this.state = {
             newSeasonName: "",
             newCollectionName: "",
-            newProductCompany: "",
+            newProduct: "",
             mount:false,
             renderBC: false
         }
@@ -45,19 +45,25 @@ class App extends React.Component {
 
     newProductCompanyFunc = (newProductCompany) => {
         this.productsCompany.push(newProductCompany);
-        this.setState({})
+        this.setState({
+            newProduct: newProductCompany
+        })
     };
 
     newProductSeasonFunc = (newProductSeason) => {
         this.productsCompany.push(newProductSeason);
         this.productsSeason.push(newProductSeason);
-        this.setState({})
+        this.setState({
+            newProduct: newProductSeason
+        })
     };
 
     newProductCollectionFunc = (newProductCollection) => {
         this.productsCompany.push(newProductCollection);
         this.productsSeason.push(newProductCollection);
-        this.setState({})
+        this.setState({
+            newProduct: newProductCollection
+        })
     };
 
     newSeasonNameFunc = (seasonName) => {
@@ -119,9 +125,7 @@ class App extends React.Component {
                                 {...props}
                                 newSeasonName = {this.state.newSeasonName}
                                 newCollectionName = {this.state.newCollectionName}
-                                newProductCompany = {this.productsCompany}
-                                newProductSeason = {this.productsCompany}
-                                newProductCollection = {this.productsCompany}
+                                newProduct = {this.state.newProduct}
                             />}
                     />
                     <div className="sider">
