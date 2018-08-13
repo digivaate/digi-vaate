@@ -68,6 +68,9 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             template: "./client/index.html",
             //favicon: "./client/assets/favicon.ico"
+        }),
+        new webpack.DefinePlugin({
+            'process.env.PORT': JSON.stringify(process.env.PORT)
         })
     ]
 };

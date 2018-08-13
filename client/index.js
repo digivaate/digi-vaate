@@ -4,6 +4,7 @@ import './index.css';
 import { render } from "react-dom";
 import "react-table/react-table.css";
 import App from './App'
+import {API_ROOT} from "./api-config";
 
-
+console.log(API_ROOT);
 render(<App />, document.getElementById("root"));
