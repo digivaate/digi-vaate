@@ -71,4 +71,4 @@ const clientConfig = {
     ]
 };
 
-module.exports = [clientConfig, serverConfig];
+module.exports = clientConfig;
