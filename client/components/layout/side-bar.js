@@ -19,11 +19,12 @@ class SideBar extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.newSeason !== this.props.newSeason){
+            console.log("New Season!")
             axios.get(`${API_ROOT}/season`)
                 .then(response => {
                     this.seasons = response.data;
+                    this.setState({})
                 })
-                .then(() => this.setState({}))
                 .catch(err => console.log(err));
         }
     }
