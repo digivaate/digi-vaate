@@ -15,8 +15,8 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
-    "postinstall": "webpack --mode production",
-    "start": "set NODE_ENV=production&& set PORT=3400&& node ./server/server.js",
+    "build": "webpack --mode production",
+    "start": "node ./server/server.js && webpack --mode production",
     "build-run": "npm run postinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
