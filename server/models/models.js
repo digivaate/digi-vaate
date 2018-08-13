@@ -25,7 +25,7 @@ function modifyName(string) {
 }
 
 if (process.env.DATABASE_URL) {
-    sequelize = new sequelize(process.env.DATABASE_URL, 'vznxkvbbbzxhxp');
+    sequelize = new Sequelize(process.env.DATABASE_URL, 'vznxkvbbbzxhxp');
 } else {
     sequelize = new Sequelize(
         config.database,
