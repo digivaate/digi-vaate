@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 
 const config = {
-    database: 'digivaate',
-    username: 'digivaate',
-    password: 'digivaate',
+    database: process.env.DATABASE || 'digivaate',
+    username: process.env.USERNAME || 'digivaate',
+    password: process.env.PASSWORD || 'digivaate',
     options: {
         host: process.env.DATABASE_URL || 'localhost',
         dialect: 'postgres',
