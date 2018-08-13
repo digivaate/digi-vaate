@@ -5,7 +5,7 @@ const config = {
     username: 'digivaate',
     password: 'digivaate',
     options: {
-        host: 'localhost',
+        host: process.env.DATABASE_URL || 'localhost',
         dialect: 'postgres',
         operatorsAliases: false,
         pool: {
