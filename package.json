@@ -17,7 +17,7 @@
   "scripts": {
     "postinstall": "webpack --mode production",
     "start": "node ./dist/server.bundle.js",
-    "build-run": "npm run build && npm run prod",
+    "build-run": "npm run postinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\"",

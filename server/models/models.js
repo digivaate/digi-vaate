@@ -2,11 +2,11 @@ const Sequelize = require("sequelize");
 let sequelize = null;
 
 const config = {
-    database: process.env.DATABASE || 'digivaate',
-    username: process.env.USERNAME || 'digivaate',
-    password: process.env.PASSWORD || 'digivaate',
+    database: 'digivaate',
+    username: 'digivaate',
+    password: 'digivaate',
     options: {
-        host: process.env.DATABASE_URL || 'localhost',
+        host: 'localhost',
         dialect: 'postgres',
         operatorsAliases: false,
         pool: {
@@ -25,7 +25,7 @@ function modifyName(string) {
 }
 
 if (process.env.DATABASE_URL) {
-    sequelize = new sequelize(process.env.DATABASE_URL);
+    sequelize = new sequelize(process.env.DATABASE_URL, 'vznxkvbbbzxhxp');
 } else {
     sequelize = new Sequelize(
         config.database,
