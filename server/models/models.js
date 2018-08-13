@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+let sequelize = null;
 
 const config = {
     database: process.env.DATABASE || 'digivaate',
@@ -23,12 +24,16 @@ function modifyName(string) {
     return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
 }
 
-const sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config.options
-);
+if (process.env.DATABASE_URL) {
+    sequelize = new sequelize(process.env.DATABASE_URL);
+} else {
+    sequelize = new Sequelize(
+        config.database,
+        config.username,
+        config.password,
+        config.options
+    );
+}
 
 let models = {
     MaterialProduct: sequelize.define('material_product', {
