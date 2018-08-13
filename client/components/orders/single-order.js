@@ -13,19 +13,35 @@ class SingleOrder extends Component{
         super(props);
         this.state = {
             singleOrder: null,
-
+            singleOrderLength: 0,
         };
     }
 
     componentDidMount(){
-        console.log(this.props)
         axios.get(`${API_ROOT}/order?id=${this.props.match.params.orderId}`)
             .then(response => {
                 this.setState({
-                    singleOrder: response.data[0]
+                    singleOrder: response.data[0],
+                    singleOrderLength: response.data[0].orderProducts.length
                 })
             })
     }
+
+    newProductFunc = (newProduct) => {
+        this.setState(prevState => {
+            return {
+                singleOrderLength: prevState.singleOrderLength + 1
+            }
+        })
+    };
+
+    lessProductFunc = (lessProduct) => {
+        this.setState(prevState => {
+            return {
+                singleOrderLength: prevState.singleOrderLength - 1
+            }
+        })
+    };
 
     render(){
         if(this.state.singleOrder){
@@ -35,7 +51,7 @@ class SingleOrder extends Component{
                     <Row type="flex">
                         <p> Created {this.state.singleOrder.createdAt.slice(0,10)}&nbsp;&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
-                        <p>{this.state.singleOrder.orderProducts.length} items&nbsp;&nbsp;</p>
+                        <p>{this.state.singleOrderLength} items&nbsp;&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
                         <p>Price: {this.state.singleOrder.price}&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>
@@ -92,7 +108,13 @@ class SingleOrder extends Component{
                         </Col>
                     </Row>
                     <br/>
-                    <ProductTable productList = {this.state.singleOrder.orderProducts}/>
+                    <ProductTable
+                        productList = {this.state.singleOrder.orderProducts}
+                        collectionName = {this.props.match.params.collectionId}
+                        orderId = {this.state.singleOrder.id}
+                        newProduct = {(newProduct) => this.newProductFunc(newProduct)}
+                        deleteProduct = {(lessProduct) => this.lessProductFunc(lessProduct)}
+                    />
                 </div>
             )
         } else {
