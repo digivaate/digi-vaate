@@ -25,7 +25,13 @@ function modifyName(string) {
 }
 
 if (process.env.DATABASE_URL) {
-    sequelize = new Sequelize(process.env.DATABASE_URL, 'vznxkvbbbzxhxp');
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        dialectOptions: {
+            ssl: true
+        }
+    });
 } else {
     sequelize = new Sequelize(
         config.database,
