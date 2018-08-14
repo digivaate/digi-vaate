@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 //Serve front end
 if (process.env.NODE_ENV === 'production') {
-    app.use('/', express.static(path.resolve(__dirname, '../dist/client/')));
+    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
 }
 app.use('/api', express.static(path.resolve(__dirname, '../uploads/')));
 
@@ -34,7 +34,10 @@ app.use('/api/theme', require('./routes/themeRoute'));
 app.use('/api/size', require('./routes/sizeRoute'));
 app.use('/api/order', require('./routes/orderRoute'));
 app.use('/api/orderproduct', require('./routes/oderProductRoute'));
-
+//Serve front end
+if (process.env.NODE_ENV === 'production') {
+    app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
+}
 //Error handling
 app.use((req, res, next) => {
     const error = new Error('Not found');
