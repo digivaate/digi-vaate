@@ -3,4 +3,4 @@ let backendHost = `http://localhost:${process.env.PORT}`;
 if (process.env.NODE_ENV === 'development') {
     backendHost = `http://localhost:${process.env.PORT || 3000}`;
 }
-export const API_ROOT = `${backendHost}/api`;
+export const API_ROOT = `/api`;

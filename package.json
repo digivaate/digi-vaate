@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "node ./server/server.js",
-    "postdeploy": "webpack --mode production",
+    "heroku-postbuild": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
