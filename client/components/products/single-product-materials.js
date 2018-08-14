@@ -24,7 +24,6 @@ class SingleProductMaterials extends Component{
                 }
             }),
             materialOptions: this.props.materialOptions,
-            materialCosts: this.props.loadedProduct.materialCosts
         }
     }
 
@@ -48,7 +47,6 @@ class SingleProductMaterials extends Component{
                     }
                 }),
                 materialOptions: this.props.materialOptions,
-                materialCosts: this.props.loadedProduct.materialCosts
             })
         }
     }
@@ -170,7 +168,6 @@ class SingleProductMaterials extends Component{
                 this.setState({
                     materialVisible:false,
                     productMaterials: objUpdateMaterials,
-                    materialCosts: materialCosts
                 });
                 this.materialPairs = []
             }
@@ -178,6 +175,7 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
+        let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
         let materialSelected1 = null;
         let materialSelected2 = null;
         let materialSelected3 = null;
@@ -320,7 +318,7 @@ class SingleProductMaterials extends Component{
                 </Row>
                 <br/>
                 <br/>
-                <h3>Total materials cost: {this.state.materialCosts}</h3>
+                <h3>Total materials cost: {sumMaterialCost}</h3>
             </div>
         )
     }

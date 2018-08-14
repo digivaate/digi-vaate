@@ -137,15 +137,9 @@ class BreadCrumbDigi extends Component{
                             }
                         }
                     }
-                this.setState({})
-            });
-
-        axios.get(`${API_ROOT}/collection`)
-            .then(response => {
-                this.collections = response.data;
                 axios.get(`${API_ROOT}/material`)
-                    .then(response => {
-                        this.materials = response.data;
+                    .then(res => {
+                        this.materials = res.data;
                         for(let k=0; k < this.seasons.length; k++){
                             for(let i=0;i<this.collections.length;i++) {
                                 if (this.seasons[k].id === this.collections[i].seasonId) {
@@ -157,9 +151,9 @@ class BreadCrumbDigi extends Component{
                                 }
                             }
                         }
-                        this.setState({})
                     })
-            })
+                this.setState({})
+            });
 
     }
 
