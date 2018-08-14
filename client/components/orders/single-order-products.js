@@ -214,7 +214,36 @@ class ProductTable extends Component {
                 console.log(productId);
             },
         });
-    }
+    };
+
+    //Calculate footer of product
+    sumOfAmounts = () => {
+        let componentValue = [];
+        this.state.data.forEach(row => {
+            componentValue.push(parseFloat(row.totalAmount));
+        });
+        return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
+    };
+
+    sumOfOrderPrice = () => {
+        let componentValue = [];
+        this.state.data.forEach(row => {
+            componentValue.push(parseInt(parseInt(row.totalAmount * row.sellingPrice).toFixed(2)));
+        });
+        return `${componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)*(1+this.props.taxPercent/100)} (incl. ${this.props.taxPercent}% tax)`
+    };
+
+    //Link to product
+    linkToProduct = (cellInfo) => {
+        return (
+            <div>
+                <a href={`${this.props.match.url}/../../products/${cellInfo.value.props.children[0]}`}>
+                    {cellInfo.value.props.children[0]}
+                </a>
+                {cellInfo.value.props.children[1]}
+            </div>
+        )
+    };
 
 
     //Create table column
@@ -223,6 +252,7 @@ class ProductTable extends Component {
             {
                 Header: 'Product',
                 id:'name',
+                Cell: this.linkToProduct,
                 accessor: d =>{
                     return (
                         <div>
@@ -231,6 +261,7 @@ class ProductTable extends Component {
                         </div>
                     )},
                 width: 140,
+                Footer: 'Total:'
             },
             {
                 Header: "Sizes",
@@ -250,6 +281,7 @@ class ProductTable extends Component {
                 Header: 'Total amount',
                 accessor: 'totalAmount',
                 width: 140,
+                Footer: this.sumOfAmounts
             },
             {
                 Header: 'Unit price',
@@ -267,7 +299,8 @@ class ProductTable extends Component {
                             }}
                         />
                     )},
-                width: 140
+                width: 140,
+                Footer: this.sumOfOrderPrice
             }
 
         ];
@@ -321,7 +354,7 @@ class ProductTable extends Component {
                     showPagination={false}
                     resizable={false}
                     data={this.state.data}
-                    defaultPageSize={5}
+                    defaultPageSize={this.state.pageSize > 5 ? this.state.pageSize : 5}
                     key={this.state.pageSize}
                     columns={this.createColumns()}
                     noDataText={

@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import ProductTable from './single-order-products'
+import ClientInfo from './clientInfo'
 const { Link } = Anchor;
 
 
@@ -59,7 +60,9 @@ class SingleOrder extends Component{
                     </Row>
                     <Row>
                         <Col span={12}>
-                    <Card title="SUPPLIER INFORMATION" style={{ width: 580,height:430 }}>
+                    <Card title="SUPPLIER INFORMATION"
+                          style={{ width: 580,height:430 }}
+                    >
                         <Col span={6}>
                             <p>Company:</p>
                             <p>Contact person:</p>
@@ -70,45 +73,24 @@ class SingleOrder extends Component{
                             <p>Trade register nr:</p>
                         </Col>
                         <Col span={18}>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>ABC</p>
+                            <p>Logo Oy</p>
+                            <p>Jan Olson</p>
+                            <p>Kauppakatu 2, 00220 Helsinki, Finland</p>
+                            <p>+358 50 778022</p>
+                            <p>www.logo.com</p>
+                            <p>FI123456</p>
+                            <p>7891011</p>
                         </Col>
                     </Card>
                         </Col>
                         <Col span={12}>
-                    <Card title="CLIENT INFORMATION" style={{ width: 580,height:430 }}>
-                        <Col span={6}>
-                            <p>Company:</p>
-                            <p>Contact person:</p>
-                            <p>VAT code:</p>
-                            <p>Invoicing address:</p>
-                            <p>Delivery address:</p>
-                            <p>Delivery time:</p>
-                            <p>Delivery terms:</p>
-                            <p>Payment terms:</p>
-                            <p>Brandlabel:</p>
-                        </Col>
-                        <Col span={18}>
-                            <p>ABC</p>
-                            <p>ABC</p>
-                            <p>{this.state.singleOrder.vat ? this.state.singleOrder.vat:"Unknown"}</p>
-                            <p>{this.state.singleOrder.invoicingAddress ? this.state.singleOrder.invoicingAddress:"Unknown"}</p>
-                            <p>{this.state.singleOrder.deliveryAddress ? this.state.singleOrder.deliveryAddress:"Unknown"}</p>
-                            <p>{this.state.singleOrder.deliveryTime ? `${this.state.singleOrder.deliveryTime.slice(0,10)} (YYYY-MM-DD)` :"Unknown" }</p>
-                            <p>{this.state.singleOrder.deliveryTerms ? this.state.singleOrder.deliveryTerms:"Unknown" }</p>
-                            <p>{this.state.singleOrder.paymentTerms ? this.state.singleOrder.paymentTerms:"Unknown"}</p>
-                            <p>{this.state.singleOrder.brandLabel ? this.state.singleOrder.brandLabel:"Unknown"}</p>
-                        </Col>
-                    </Card>
+                            <ClientInfo clientInfo = {this.state.singleOrder}/>
                         </Col>
                     </Row>
                     <br/>
                     <ProductTable
+                        {...this.props}
+                        taxPercent = {this.state.singleOrder.taxPercent}
                         productList = {this.state.singleOrder.orderProducts}
                         collectionName = {this.props.match.params.collectionId}
                         orderId = {this.state.singleOrder.id}
