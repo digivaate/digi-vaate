@@ -17,25 +17,15 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     app.use(morgan('dev'));
 }
-//Serve front end
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
-}
+//serve uploaded images
 app.use('/api', express.static(path.resolve(__dirname, '../uploads/')));
 
 //Back-end routes
-app.use('/api/collection', require('./routes/collectionRoute'));
-app.use('/api/color', require('./routes/colorRoute'));
-app.use('/api/company', require('./routes/companyRoute'));
-app.use('/api/material', require('./routes/materialRoute'));
-app.use('/api/product', require('./routes/productRoute'));
-app.use('/api/season', require('./routes/seasonRoute'));
-app.use('/api/theme', require('./routes/themeRoute'));
-app.use('/api/size', require('./routes/sizeRoute'));
-app.use('/api/order', require('./routes/orderRoute'));
-app.use('/api/orderproduct', require('./routes/oderProductRoute'));
+app.use('/api', require('./routes/api'));
+
 //Serve front end
 if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
     app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
 }
 //Error handling
