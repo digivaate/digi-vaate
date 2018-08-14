@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack --mode production&& node ./server/server.js",
+    "start": "node ./server/server.js",
     "build-run": "npm run preinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
