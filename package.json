@@ -15,8 +15,8 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
-    "heroku-postbuild": "node ./server/server.js",
-    "start": "webpack --mode production",
+    "start": "node ./server/server.js",
+    "postdeploy": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
