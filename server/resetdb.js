@@ -143,7 +143,7 @@ function addRelations() {
         seasons[0].addProduct(products[1]),
         seasons[0].addColor(colors[2]),
         companies[0].addProduct(products[2]),
-        companies[0].addColor(colors[2]),
+        companies[0].addColor(colors[0]),
         products[0].addSize(1),
         products[1].addSize(2),
         orderProducts[0].addSize(1, {through: {amount: 10} }),
