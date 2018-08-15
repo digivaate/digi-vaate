@@ -59,7 +59,6 @@ class SingleProductColors extends Component{
 
     render(){
         const {colorOptions,productColors} = this.props;
-        console.log(colorOptions)
         let renderColorOptions = [];
         let renderDefaultColors = [];
         let renderProductColors = <p>This product does not have any colors yet</p>;

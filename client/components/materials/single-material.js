@@ -173,6 +173,30 @@ class SingleMaterial extends Component{
     };
 
     //Edit material name
+    handleNameChange = (event) => {
+        if (this.state.inputName) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
+    };
+
+    checkName = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (key >= 106 && key <= 188 || key >= 190 || specialChar.indexOf(event.key) >= 0) {
+            this.setState({
+                inputName: false
+            });
+            message.error("Invalid character for name!",1)
+        }
+        else{
+            this.setState({
+                inputName: true
+            });
+        }
+    };
+
     showNameModal = (e) => {
         this.setState({
             nameVisible:true
@@ -365,7 +389,8 @@ class SingleMaterial extends Component{
                                 placeholder="Material name"
                                 name = "name"
                                 value={this.state.name}
-                                onChange={this.handleChange}
+                                onChange={this.handleNameChange}
+                                onKeyDown={this.checkName}
                             />
                         </Modal>
                     </Row>

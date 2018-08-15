@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Row,Input, Button, Icon, Modal} from 'antd';
+import {Row,Input, Button, Icon, Modal,message} from 'antd';
 import './products.css'
 
 
@@ -32,13 +32,32 @@ class SingleProductName extends Component{
     handleNameCancel = (e) => {
         this.setState({
             nameVisible: false,
+            productName: this.props.singleProductName
         });
     };
 
     handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        if (this.state.inputName) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
+    };
+
+    checkName = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (key >= 106 && key <= 188 || key >= 190 || specialChar.indexOf(event.key) >= 0) {
+            this.setState({
+                inputName: false
+            });
+            message.error("Invalid character for name!",1)
+        }
+        else{
+            this.setState({
+                inputName: true
+            });
+        }
     };
 
     handleNameOk = () => {
@@ -71,6 +90,7 @@ class SingleProductName extends Component{
                     bodyStyle={{maxHeight: 300, overflow: 'auto'}}
                 >
                     <Input
+                        onKeyDown={this.checkName}
                         placeholder="Product name"
                         name="productName"
                         value={this.state.productName}
