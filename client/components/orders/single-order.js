@@ -131,7 +131,7 @@ class SingleOrder extends Component{
                     <ProductTable
                         {...this.props}
                         orderTotalPrice = {this.state.singleOrder.price}
-                        taxPercent = {parseFloat(this.state.singleOrder.taxPercent)}
+                        taxPercent = {this.state.singleOrder.taxPercent}
                         productList = {this.state.singleOrder.orderProducts}
                         collectionName = {this.props.match.params.collectionId}
                         orderId = {this.state.singleOrder.id}
