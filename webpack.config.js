@@ -67,7 +67,7 @@ const clientConfig = {
         new CleanWebpackPlugin([outputDir]),
         new HtmlWebpackPlugin({
             template: "./client/index.html",
-            //favicon: "./client/assets/favicon.ico"
+            favicon: "./client/public/favicon.ico"
         }),
         new webpack.DefinePlugin({
             'process.env': {
