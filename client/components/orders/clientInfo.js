@@ -46,11 +46,13 @@ class ClientInfo extends Component{
             paymentTerms: this.state.paymentTerms,
             brandLabel: this.state.brandLabel,
         };
+        this.props.newClientInfo(newData)
         axios.patch(`${API_ROOT}/order?id=${this.props.clientInfo.id}`,newData)
-            .then(() => {
+            .then((response) => {
+                console.log(response.data[0])
                 this.setState({
                     visible: false,
-                    currentDeliveryTime: this.state.currentDeliveryTime
+                    currentDeliveryTime: response.data[0].deliveryTime ? response.data[0].deliveryTime.slice(0,10) : null
                 });
             })
     };
@@ -63,7 +65,6 @@ class ClientInfo extends Component{
 
     onDateChange = (date,dateString) => {
         this.setState({
-            currentDeliveryTime: dateString,
             newDeliveryTime: date
         })
     };

@@ -15,15 +15,18 @@ class ProductTable extends Component {
             pageSize: this.props.productList.length,
             productsCollection: [],
             editMode: false,
-            S:0,
-            M:0,
-            L:0,
             productId: null
         }
     }
 
     products = this.props.productList;
     productsCollection = null;
+
+    componentDidUpdate(prevProps){
+        if(prevProps.taxPercent !== this.props.taxPercent){
+            this.sumOfOrderPrice();
+        }
+    }
 
     componentDidMount(){
         axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`)
@@ -48,7 +51,7 @@ class ProductTable extends Component {
                 id: orderProduct.id,
                 name: orderProduct.product.name,
                 sellingPrice: orderProduct.product.sellingPrice,
-                totalAmount: orderProduct.sizes.reduce((sum,ele) => sum + ele.orderProduct_size.amount,0)
+                totalAmount: orderProduct.sizes.reduce((sum,ele) => sum + ele.orderProduct_size.amount,0),
             });
         });
         this.setState({
@@ -84,19 +87,19 @@ class ProductTable extends Component {
 
     handleSizeOk = () => {
         const sizeArray = [];
-        if(this.state.S !== 0){
+        if(this.state.S !== 0 && this.state.S){
             sizeArray.push({
                 id:3,
                 amount: this.state.S
             })
         }
-        if(this.state.M !== 0){
+        if(this.state.M !== 0 && this.state.M){
             sizeArray.push({
                 id:1,
                 amount: this.state.M
             })
         }
-        if(this.state.L !== 0){
+        if(this.state.L !== 0 && this.state.L){
             sizeArray.push({
                 id:2,
                 amount: this.state.L
@@ -111,9 +114,6 @@ class ProductTable extends Component {
                         this.formatProduct();
                         this.setState({
                             showSizeModal: false,
-                            S:0,
-                            M:0,
-                            L:0
                         })
                     });
             })
@@ -124,9 +124,6 @@ class ProductTable extends Component {
     handleSizeCancel = () => {
         this.setState({
             showSizeModal: false,
-            S:0,
-            M:0,
-            L:0
         })
     };
 
@@ -177,7 +174,8 @@ class ProductTable extends Component {
                         .then(res => {
                             this.products = res.data[0].orderProducts;
                             this.formatProduct();
-                            this.props.newProduct(this.products)
+                            this.sumOfOrderPrice();
+                            this.props.newProduct(this.products);
                             this.setState({
                                 visible:false
                             })
@@ -206,6 +204,7 @@ class ProductTable extends Component {
                             .then(res => {
                                 self.products = res.data[0].orderProducts;
                                 self.formatProduct();
+                                self.sumOfOrderPrice();
                                 self.props.deleteProduct(self.products)
                             });
                     })
@@ -230,7 +229,16 @@ class ProductTable extends Component {
         this.state.data.forEach(row => {
             componentValue.push(parseInt(parseInt(row.totalAmount * row.sellingPrice).toFixed(2)));
         });
-        return `${componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)*(1+this.props.taxPercent/100)} (incl. ${this.props.taxPercent}% tax)`
+        const orderTotalPrice = parseFloat((componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)*(1+this.props.taxPercent/100)).toFixed(2));
+        this.props.getOrderPrice(orderTotalPrice);
+
+        /*if(this.props.taxPercent){
+            return `${orderTotalPrice} (incl. ${this.props.taxPercent}% tax)`
+        }
+        else {
+            return orderTotalPrice
+        }
+        */
     };
 
     //Link to product
@@ -257,10 +265,10 @@ class ProductTable extends Component {
                     return (
                         <div>
                             {d.name}
-                            {this.state.editMode ? <Icon onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.id)} type="delete"/>:"" }
+                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.id)} type="delete"/>:"" }
                         </div>
                     )},
-                width: 140,
+                width: 220,
                 Footer: 'Total:'
             },
             {
@@ -271,10 +279,10 @@ class ProductTable extends Component {
                     return (
                         <div>
                             {mapSize}
-                            {this.state.editMode ? <Icon onClick = {() => this.editSize(d.amountEachSize,d.id)} type="edit"/>:"" }
+                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.editSize(d.amountEachSize,d.id)} type="edit"/>:"" }
                         </div>
                     )},
-                width: 280
+                width: 220
 
             },
             {
@@ -300,7 +308,7 @@ class ProductTable extends Component {
                         />
                     )},
                 width: 140,
-                Footer: this.sumOfOrderPrice
+                Footer: this.props.taxPercent ? `${this.props.orderTotalPrice} incl. ${this.props.taxPercent}%` : this.props.orderTotalPrice
             }
 
         ];
@@ -308,6 +316,42 @@ class ProductTable extends Component {
     };
 
     render() {
+        let size_S_edit = null;
+        let size_M_edit = null;
+        let size_L_edit = null;
+        if(this.state.S){
+            size_S_edit = <div>
+                S
+                <Input
+                    placeholder="S"
+                    name="S"
+                    value={this.state.S}
+                    onChange={this.handleChange}
+                />
+            </div>
+        }
+        if(this.state.M){
+            size_M_edit = <div>
+                M
+                <Input
+                    placeholder="M"
+                    name="M"
+                    value={this.state.M}
+                    onChange={this.handleChange}
+                />
+            </div>
+        }
+        if(this.state.L){
+            size_L_edit = <div>
+                L
+                <Input
+                    placeholder="L"
+                    name="L"
+                    value={this.state.L}
+                    onChange={this.handleChange}
+                />
+            </div>
+        }
         return (
             <div>
                 <Button onClick={this.addProduct}>Add product</Button>
@@ -318,31 +362,12 @@ class ProductTable extends Component {
                     onOk={this.handleSizeOk}
                     onCancel={this.handleSizeCancel}
                 >
-                    S
-                    <Input
-                        placeholder="S"
-                        name="S"
-                        value={this.state.S}
-                        onChange={this.handleChange}
-                    />
-                    M
-                    <Input
-                        placeholder="M"
-                        name="M"
-                        value={this.state.M}
-                        onChange={this.handleChange}
-                    />
-                    L
-                    <Input
-                        placeholder="L"
-                        name="L"
-                        value={this.state.L}
-                        onChange={this.handleChange}
-                    />
-
-
+                    {size_S_edit}
+                    {size_M_edit}
+                    {size_L_edit}
                 </Modal>
                 <OrderProductCreateForm
+                    {...this.props}
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}

@@ -22,6 +22,7 @@ class SingleProduct extends Component {
             loadedProduct: null,
             productName:null,
             productImg:null,
+            productSizes:null,
             editModeStatus:false,
             seasons:null,
             collections:null,
@@ -162,6 +163,7 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
                             originalProductImg: response.data[0].imagePath,
                             originalProductColors: response.data[0].colors,
@@ -189,6 +191,7 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
                             originalProductImg: response.data[0].imagePath,
                             originalProductColors: response.data[0].colors,
@@ -271,6 +274,13 @@ class SingleProduct extends Component {
         })
     };
 
+    receiveNewSizes = (newSizes) => {
+        this.setState({
+            productSizes: newSizes,
+            modified: !Object.compare(newSizes, this.state.originalLoadedProduct.sizes)
+        })
+    }
+
     discardChanges = () => {
         let self=this;
         confirm({
@@ -319,6 +329,7 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            productSizes: response.data[0].sizes,
                             modified: false
                         });
                     })
@@ -344,14 +355,16 @@ class SingleProduct extends Component {
                 consumption: material.material_product.consumption
             }
         });
+        let newSizesPatch = this.state.productSizes.map(size => size.id)
         axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{
             name: this.state.productName,
             colors: newColorsPatch,
             materials: newMaterialsPatch,
+            sizes: newSizesPatch,
             sellingPrice: this.state.loadedProduct.sellingPrice,
             resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
             amount: this.state.loadedProduct.amount,
-            subcCostTotal: this.state.loadedProduct.subcCostTotal
+            subcCostTotal: this.state.loadedProduct.subcCostTotal,
         })
             .then(res => {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
@@ -395,6 +408,7 @@ class SingleProduct extends Component {
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
+                            productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
                             originalProductImg: response.data[0].imagePath,
                             originalProductColors: response.data[0].colors,
@@ -471,8 +485,9 @@ class SingleProduct extends Component {
                     />
                 </div>,
                 tab3: <SingleProductSize
-                    sizes={this.state.loadedProduct.sizes}
+                    sizes={this.state.productSizes}
                     editModeStatus = {this.state.editModeStatus}
+                    newSizes = {newSizes => this.receiveNewSizes(newSizes)}
                 />
 
             };

@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import axios from 'axios';
-import {Col,Row,Anchor,Spin,List,Button,message} from 'antd'
+import {Col,Row,Modal,Spin,List,Button,message} from 'antd'
 import {Redirect} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import OrderCreateForm from './newOrder'
-const { Link } = Anchor;
+const confirm = Modal.confirm;
 
 
 class OrderList extends Component{
@@ -15,6 +15,7 @@ class OrderList extends Component{
             collectionId:null,
             orders: null,
             isSelected:false,
+            isDeleted:false,
             singleOrder:null
         }
     }
@@ -29,12 +30,38 @@ class OrderList extends Component{
             })
     }
 
-    handleSelect = (item) => {
+    handleSelectOrder = (item) => {
         this.setState({
             isSelected:true,
             singleOrder: item
         })
     };
+
+    handleDeleteOrder = (item) => {
+        let self = this;
+        confirm({
+            title: 'Are you sure delete this order?',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                axios.delete(`${API_ROOT}/order?id=${item.id}`)
+                    .then(() => {
+                        axios.get(`${API_ROOT}/collection?name=${self.props.match.params.collectionId}`)
+                            .then(response => {
+                                self.setState({
+                                    collectionId: response.data[0].id,
+                                    orders: response.data[0].orders
+                                })
+                            })
+                    })
+            },
+            onCancel() {
+                console.log(item.id);
+            },
+        });
+        this.setState(prevState => prevState)
+    }
 
     createNewOrder = () => {
         this.setState({ visible: true })
@@ -54,7 +81,9 @@ class OrderList extends Component{
             const values = {
                 ...fieldValue,
                 //'deliveryTime': fieldValue['deliveryTime'].format('DD-MM-YYYY'),
-                collectionId: this.state.collectionId
+                collectionId: this.state.collectionId,
+                status: "In process",
+                price: 0
             };
             axios.post(`${API_ROOT}/order`,values)
                 .then(response => {
@@ -90,9 +119,16 @@ class OrderList extends Component{
                 itemLayout="horizontal"
                 dataSource={this.state.orders}
                 renderItem={item => (
-                    <List.Item actions={[<a
-                        onClick={() => this.handleSelect(item)}
-                        className="view-order-btn">View order</a>]}>
+                    <List.Item actions={[
+                        <button
+                            onClick={() => this.handleSelectOrder(item)}
+                            className="view-order-btn">View order
+                        </button>,
+                        <button
+                            onClick={() => this.handleDeleteOrder(item)}
+                            className="delete-order-btn">Delete order
+                        </button>
+                    ]}>
                         <List.Item.Meta
                             title="Order code"
                             description={<div>

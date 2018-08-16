@@ -15,6 +15,8 @@ class SingleOrder extends Component{
         this.state = {
             singleOrder: null,
             singleOrderLength: 0,
+            singleOrderPrice:0,
+            singleOrderProducts: []
         };
     }
 
@@ -23,7 +25,9 @@ class SingleOrder extends Component{
             .then(response => {
                 this.setState({
                     singleOrder: response.data[0],
-                    singleOrderLength: response.data[0].orderProducts.length
+                    singleOrderLength: response.data[0].orderProducts.length,
+                    singleOrderPrice: response.data[0].price,
+                    singleOrderProducts: response.data[0].orderProducts
                 })
             })
     }
@@ -31,7 +35,11 @@ class SingleOrder extends Component{
     newProductFunc = (newProduct) => {
         this.setState(prevState => {
             return {
-                singleOrderLength: prevState.singleOrderLength + 1
+                singleOrderLength: prevState.singleOrderLength + 1,
+                singleOrder: {
+                    ...prevState.singleOrder,
+                    orderProducts: newProduct
+                },
             }
         })
     };
@@ -39,10 +47,39 @@ class SingleOrder extends Component{
     lessProductFunc = (lessProduct) => {
         this.setState(prevState => {
             return {
-                singleOrderLength: prevState.singleOrderLength - 1
+                singleOrderLength: prevState.singleOrderLength - 1,
+                singleOrder: {
+                    ...prevState.singleOrder,
+                    orderProducts: lessProduct
+                },
             }
         })
     };
+
+    receiveNewClientInfo = (newClientInfo) => {
+        const updatedClientInfo = {
+            ...this.state.singleOrder,
+            ...newClientInfo,
+            orderProducts: this.state.singleOrderProducts
+        };
+        this.setState({
+            singleOrder: updatedClientInfo
+        })
+    };
+
+    updateTotalPrice = (orderTotalPrice) => {
+        axios.patch(`${API_ROOT}/order?id=${this.props.match.params.orderId}`,{price:orderTotalPrice})
+            .then(response => {
+                this.setState(prevState => {
+                    return {
+                        singleOrder: {
+                            ...prevState.singleOrder,
+                            price: orderTotalPrice
+                        }
+                    }
+                })
+            })
+    }
 
     render(){
         if(this.state.singleOrder){
@@ -84,18 +121,23 @@ class SingleOrder extends Component{
                     </Card>
                         </Col>
                         <Col span={12}>
-                            <ClientInfo clientInfo = {this.state.singleOrder}/>
+                            <ClientInfo
+                                clientInfo = {this.state.singleOrder}
+                                newClientInfo = {(newClientInfo) => this.receiveNewClientInfo(newClientInfo)}
+                            />
                         </Col>
                     </Row>
                     <br/>
                     <ProductTable
                         {...this.props}
-                        taxPercent = {this.state.singleOrder.taxPercent}
+                        orderTotalPrice = {this.state.singleOrder.price}
+                        taxPercent = {parseFloat(this.state.singleOrder.taxPercent)}
                         productList = {this.state.singleOrder.orderProducts}
                         collectionName = {this.props.match.params.collectionId}
                         orderId = {this.state.singleOrder.id}
                         newProduct = {(newProduct) => this.newProductFunc(newProduct)}
                         deleteProduct = {(lessProduct) => this.lessProductFunc(lessProduct)}
+                        getOrderPrice = {(orderTotalPrice) => this.updateTotalPrice(orderTotalPrice)}
                     />
                 </div>
             )
