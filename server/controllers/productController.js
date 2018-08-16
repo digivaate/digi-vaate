@@ -35,6 +35,7 @@ class ProductController extends Controller {
     async setRelations(entity, jsonBody) {
         const promises = [];
         if (jsonBody.colors) promises.push(entity.setColors(jsonBody.colors));
+        if (jsonBody.sizes) promises.push(entity.setSizes(jsonBody.sizes));
         if (jsonBody.materials) {
             await entity.setMaterials([]);
             jsonBody.materials.forEach(mat => {
