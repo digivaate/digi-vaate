@@ -162,7 +162,7 @@ class App extends React.Component {
                                     <ProductsDisplay
                                         {...props}
                                         newProductCompany={newProductCompany => this.newProductCompanyFunc(newProductCompany)}
-                                        requestPath={`/company/products?name=Lumi`}
+                                        requestPath={`/company/products?name=Demo%20company`}
                                     />}
                                 />
                                 <Route path="/seasons" exact render={() =>

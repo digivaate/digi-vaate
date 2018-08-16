@@ -105,7 +105,7 @@ class SingleProduct extends Component {
                 axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
                     .then(response => {
                         if (response.data[0].companyId) {
-                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                 .then(res => {
                                     this.setState({
                                         collectionName: "None",
@@ -123,7 +123,7 @@ class SingleProduct extends Component {
                                         colorOptions: res.data[0].colors
                                     });
                                 });
-                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                 .then(re => {
                                     this.setState({
                                         colorOptions: this.state.colorOptions.concat(re.data[0].colors)
@@ -146,7 +146,7 @@ class SingleProduct extends Component {
                                                         colorOptions: this.state.colorOptions.concat(re.data[0].colors)
                                                     });
                                                 })
-                                            axios.get(`${API_ROOT}/company?name=Lumi`)
+                                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                                 .then(re => {
                                                     this.setState({
                                                         colorOptions: this.state.colorOptions.concat(re.data[0].colors)

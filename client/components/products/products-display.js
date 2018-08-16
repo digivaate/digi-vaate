@@ -38,7 +38,7 @@ class ProductsDisplay extends Component{
         const { location } = this.props;
         const pathSnippetsName = location.pathname.split('/').filter(i => i);
         if(pathSnippetsLevel[0] === "company"){
-            axios.get(`${API_ROOT}/company?name=Lumi`)
+            axios.get(`${API_ROOT}/company?name=Demo%20company`)
                 .then(response => {
                     this.setState({
                         productLevel: pathSnippetsLevel[0],
