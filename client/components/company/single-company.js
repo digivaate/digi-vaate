@@ -16,7 +16,7 @@ class SingleCompany extends Component{
         }
     }
     componentDidMount(){
-        axios.get(`${API_ROOT}/company?name=Lumi`)
+        axios.get(`${API_ROOT}/company?name=Demo%20company`)
             .then(response => {
                 this.setState({
                     seasons: response.data[0].seasons,
@@ -42,7 +42,7 @@ class SingleCompany extends Component{
             this.props.sendNewSeason(values.name);
             axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget, coverPercent:values.coverPercent})
                 .then(() => {
-                    axios.get(`${API_ROOT}/company?name=Lumi`)
+                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
                         .then(response => {
                             this.setState({
                                 seasons: response.data[0].seasons,

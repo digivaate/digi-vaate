@@ -88,7 +88,7 @@ function createEntities() {
         }).then(res => products.push(res)),
 
         models.Company.create({
-            name: 'Lumi',
+            name: 'Demo company',
             taxPercent: 24
         }).then(res => companies.push(res)),
 
