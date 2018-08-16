@@ -1,7 +1,7 @@
 import React, {Fragment, Component} from "react";
 import {API_ROOT} from "../../api-config";
 import axios from "axios";
-import {Button, Popover, message, Icon,Modal,Input} from "antd";
+import {Button, Icon,Modal,Input} from "antd";
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import OrderProductCreateForm from './newOrderProduct'
@@ -15,13 +15,14 @@ class ProductTable extends Component {
             pageSize: this.props.productList.length,
             productsCollection: [],
             editMode: false,
-            productId: null
+            orderProductId: null,
+            sizeOptions:null
         }
     }
 
     products = this.props.productList;
     productsCollection = null;
-
+    sizeInOrderProduct = [];
     componentDidUpdate(prevProps){
         if(prevProps.taxPercent !== this.props.taxPercent){
             this.sumOfOrderPrice();
@@ -36,6 +37,12 @@ class ProductTable extends Component {
                 })
             });
         this.formatProduct();
+        axios.get(`${API_ROOT}/size`)
+            .then(response => {
+                this.setState({
+                    sizeOptions: response.data
+                })
+            })
     };
 
     formatProduct = () => {
@@ -48,8 +55,9 @@ class ProductTable extends Component {
                         sizeAmount: size.orderProduct_size.amount
                     }
                 }),
-                id: orderProduct.id,
+                orderProductId: orderProduct.id,
                 name: orderProduct.product.name,
+                productId: orderProduct.product.id,
                 sellingPrice: orderProduct.product.sellingPrice,
                 totalAmount: orderProduct.sizes.reduce((sum,ele) => sum + ele.orderProduct_size.amount,0),
             });
@@ -67,16 +75,20 @@ class ProductTable extends Component {
     };
 
     //Edit size of products
-    editSize = (amountEachSize,productId) => {
+    editSize = (amountEachSize,productId,orderProductId) => {
+        axios.get(`${API_ROOT}/product?id=${productId}`)
+            .then(response => {
+                this.sizeInOrderProduct = response.data[0].sizes
+                this.setState({
+                    orderProductId:orderProductId,
+                    showSizeModal: true
+                })
+            });
         for(let i = 0; i< amountEachSize.length; i++){
             this.setState({
                 [amountEachSize[i].sizeValue]: amountEachSize[i].sizeAmount
             })
         }
-        this.setState({
-            productId:productId,
-            showSizeModal: true
-        })
     };
 
     handleChange = (event) => {
@@ -87,26 +99,15 @@ class ProductTable extends Component {
 
     handleSizeOk = () => {
         const sizeArray = [];
-        if(this.state.S !== 0 && this.state.S){
-            sizeArray.push({
-                id:3,
-                amount: this.state.S
-            })
+        for(let i=0;i < this.sizeInOrderProduct.length; i++){
+            if(this.state[this.sizeInOrderProduct[i].value] && parseFloat(this.state[this.sizeInOrderProduct[i].value]) !== 0){
+                sizeArray.push({
+                    id: this.sizeInOrderProduct[i].id,
+                    amount: parseFloat(this.state[this.sizeInOrderProduct[i].value])
+                })
+            }
         }
-        if(this.state.M !== 0 && this.state.M){
-            sizeArray.push({
-                id:1,
-                amount: this.state.M
-            })
-        }
-        if(this.state.L !== 0 && this.state.L){
-            sizeArray.push({
-                id:2,
-                amount: this.state.L
-            })
-        }
-
-        axios.patch(`${API_ROOT}/orderproduct?id=${this.state.productId}`,{sizes:sizeArray})
+        axios.patch(`${API_ROOT}/orderproduct?id=${this.state.orderProductId}`,{sizes:sizeArray})
             .then((response) => {
                 axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
                     .then(res => {
@@ -145,29 +146,21 @@ class ProductTable extends Component {
             }
             console.log('Received values of form: ', values);
             const sizeArray = [];
-            if(values.size_s){
-                sizeArray.push({
-                    id:3,
-                    amount: values.size_s
-                })
+            for(let i = 0 ; i<this.state.sizeOptions.length;i++){
+                if(values[this.state.sizeOptions[i].value]){
+                    sizeArray.push({
+                        id:this.state.sizeOptions[i].id,
+                        amount: values[this.state.sizeOptions[i].value]
+                    })
+                }
             }
-            if(values.size_m){
-                sizeArray.push({
-                    id:1,
-                    amount: values.size_m
-                })
-            }
-            if(values.size_l){
-                sizeArray.push({
-                    id:2,
-                    amount: values.size_l
-                })
-            }
+
             const newProductOrder = {
                 productId: values.productId,
                 orderId: this.props.orderId,
                 sizes:sizeArray
             };
+
             axios.post(`${API_ROOT}/orderproduct`,newProductOrder)
                 .then(response => {
                     axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
@@ -190,7 +183,7 @@ class ProductTable extends Component {
     };
 
     //Delete product
-    deleteProduct = (productIndex,productId) => {
+    deleteProduct = (productIndex,orderProductId) => {
         let self = this;
         confirm({
             title: 'Are you sure remove this product from order?',
@@ -198,7 +191,7 @@ class ProductTable extends Component {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/orderproduct?id=${productId}`)
+                axios.delete(`${API_ROOT}/orderproduct?id=${orderProductId}`)
                     .then(() => {
                         axios.get(`${API_ROOT}/order?id=${self.props.orderId}`)
                             .then(res => {
@@ -210,7 +203,6 @@ class ProductTable extends Component {
                     })
             },
             onCancel() {
-                console.log(productId);
             },
         });
     };
@@ -231,14 +223,6 @@ class ProductTable extends Component {
         });
         const orderTotalPrice = parseFloat((componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)*(1+this.props.taxPercent/100)).toFixed(2));
         this.props.getOrderPrice(orderTotalPrice);
-
-        /*if(this.props.taxPercent){
-            return `${orderTotalPrice} (incl. ${this.props.taxPercent}% tax)`
-        }
-        else {
-            return orderTotalPrice
-        }
-        */
     };
 
     //Link to product
@@ -265,7 +249,7 @@ class ProductTable extends Component {
                     return (
                         <div>
                             {d.name}
-                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.id)} type="delete"/>:"" }
+                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.orderProductId)} type="delete"/>:"" }
                         </div>
                     )},
                 width: 220,
@@ -275,14 +259,14 @@ class ProductTable extends Component {
                 Header: "Sizes",
                 id: "sizes",
                 accessor: d =>{
-                    const mapSize = d.amountEachSize.map(ele => `${ele.sizeAmount}x${ele.sizeValue}`).join("+");
+                    const mapSize = d.amountEachSize.map(ele => `${ele.sizeValue} : ${ele.sizeAmount}`).join("  |  ");
                     return (
                         <div>
                             {mapSize}
-                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.editSize(d.amountEachSize,d.id)} type="edit"/>:"" }
+                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.editSize(d.amountEachSize,d.productId,d.orderProductId)} type="edit"/>:"" }
                         </div>
                     )},
-                width: 220
+                width: 320
 
             },
             {
@@ -316,41 +300,20 @@ class ProductTable extends Component {
     };
 
     render() {
-        let size_S_edit = null;
-        let size_M_edit = null;
-        let size_L_edit = null;
-        if(this.state.S){
-            size_S_edit = <div>
-                S
-                <Input
-                    placeholder="S"
-                    name="S"
-                    value={this.state.S}
-                    onChange={this.handleChange}
-                />
-            </div>
-        }
-        if(this.state.M){
-            size_M_edit = <div>
-                M
-                <Input
-                    placeholder="M"
-                    name="M"
-                    value={this.state.M}
-                    onChange={this.handleChange}
-                />
-            </div>
-        }
-        if(this.state.L){
-            size_L_edit = <div>
-                L
-                <Input
-                    placeholder="L"
-                    name="L"
-                    value={this.state.L}
-                    onChange={this.handleChange}
-                />
-            </div>
+        let renderSizeToEdit = null;
+        if(this.sizeInOrderProduct.length > 0){
+            renderSizeToEdit = this.sizeInOrderProduct.map(size => {
+                return (
+                    <div key={size.value}>
+                        {size.value}
+                        <Input
+                            name={`${size.value}`}
+                            value={this.state[size.value]}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                )
+            })
         }
         return (
             <div>
@@ -362,9 +325,7 @@ class ProductTable extends Component {
                     onOk={this.handleSizeOk}
                     onCancel={this.handleSizeCancel}
                 >
-                    {size_S_edit}
-                    {size_M_edit}
-                    {size_L_edit}
+                    {renderSizeToEdit}
                 </Modal>
                 <OrderProductCreateForm
                     {...this.props}

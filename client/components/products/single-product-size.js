@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import axios from 'axios';
 import {Row,Col,Input, Button, Icon, Modal,Spin,Card,Select,Divider} from 'antd';
 import {API_ROOT} from '../../api-config';
-import SizeCreateForm from './newSize'
 import './products.css'
 
 
@@ -142,6 +141,7 @@ class SingleProductSize extends Component{
                             defaultValue={renderDefaultSizes}
                             onChange={this.handleSizeChange}
                             style={{width: '100%'}}
+                            optionLabelProp="title"
                         >
                             {renderSizeOptions}
                         </Select>

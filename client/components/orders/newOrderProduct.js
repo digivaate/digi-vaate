@@ -1,12 +1,9 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider,Button,Form,Input,Radio,Select,Upload } from 'antd';
+import { Card, Row, Modal,Button,Form,Input,Select} from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
-const { Meta } = Card;
-const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const Option = Select.Option;
-import FormData from 'form-data';
 
 
 const OrderProductCreateForm = Form.create()(
@@ -42,11 +39,9 @@ const OrderProductCreateForm = Form.create()(
             const {sizeOptions,productNameSelected} = this.state;
             const { visible, onCancel, onCreate, form ,productList } = this.props;
             const { getFieldDecorator } = form;
-            let size_S_formItem = null;
-            let size_M_formItem = null;
-            let size_L_formItem = null;
             let noSizeFormItem = null;
             let redirectToProduct = null;
+            let renderSizeFormItems = null;
             if(productNameSelected){
                 redirectToProduct =
                     <div>
@@ -59,32 +54,19 @@ const OrderProductCreateForm = Form.create()(
                     </div>
             }
             if(sizeOptions){
-                for(let i = 0; i < sizeOptions.length; i++){
-                    if(sizeOptions[i].value === "S"){
-                        size_S_formItem = <FormItem label="S">
-                            {getFieldDecorator('size_s')(
+                renderSizeFormItems = sizeOptions.map(size => {
+                    return(
+                        <FormItem key={size.id} label={size.value}>
+                            {getFieldDecorator(`${size.value}`)(
                                 <Input style={{width:150}}/>
                             )}
                         </FormItem>
-                    } else if (sizeOptions[i].value === "M") {
-                        size_M_formItem = <FormItem label="M">
-                            {getFieldDecorator('size_m')(
-                                <Input style={{width: 150}}/>
-                            )}
-                        </FormItem>
-                    } else if (sizeOptions[i].value === "L") {
-                        size_M_formItem = <FormItem label="L">
-                            {getFieldDecorator('size_l')(
-                                <Input style={{width: 150}}/>
-                            )}
-                        </FormItem>
-                    } else {
-                        noSizeFormItem = <p>This product does not have any size yet.</p>
-                    }
+                    )
+                });
+                if(sizeOptions.length === 0) {
+                    noSizeFormItem = <p>This product does not have any size yet.</p>
                 }
-
             }
-
 
             const productOptions = productList.map(product => {
                 return (
@@ -107,9 +89,8 @@ const OrderProductCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        {size_S_formItem}
-                        {size_M_formItem}
-                        {size_L_formItem}
+                        {renderSizeFormItems}
+                        {noSizeFormItem}
                         {redirectToProduct}
                     </Form>
                 </Modal>
