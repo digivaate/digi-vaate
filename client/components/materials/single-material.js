@@ -154,6 +154,36 @@ class SingleMaterial extends Component{
 
     };
 
+    checkNumber = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (specialChar.indexOf(event.key) >= 0){
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+            this.setState({
+                inputNumber: true
+            });
+        }
+        else{
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
+    };
+
+    handleNumberChange = (event) => {
+        if(this.state.inputNumber) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
+    };
+
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -173,6 +203,30 @@ class SingleMaterial extends Component{
     };
 
     //Edit material name
+    handleNameChange = (event) => {
+        if (this.state.inputName) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
+    };
+
+    checkName = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (key >= 106 && key <= 188 || key >= 190 || specialChar.indexOf(event.key) >= 0) {
+            this.setState({
+                inputName: false
+            });
+            message.error("Invalid character for name!",1)
+        }
+        else{
+            this.setState({
+                inputName: true
+            });
+        }
+    };
+
     showNameModal = (e) => {
         this.setState({
             nameVisible:true
@@ -365,7 +419,8 @@ class SingleMaterial extends Component{
                                 placeholder="Material name"
                                 name = "name"
                                 value={this.state.name}
-                                onChange={this.handleChange}
+                                onChange={this.handleNameChange}
+                                onKeyDown={this.checkName}
                             />
                         </Modal>
                     </Row>
@@ -420,16 +475,8 @@ class SingleMaterial extends Component{
                                                 className="input-style"
                                                 value={this.state.freight}
                                                 name="freight"
-                                                onChange={this.handleChange}
-                                            />
-                                        </Col>
-                                        <Col span={12}>
-                                            Consumption:
-                                            <Input
-                                                className="input-style"
-                                                value={this.state.consumption}
-                                                name="consumption"
-                                                onChange={this.handleChange}
+                                                onChange={this.handleNumberChange}
+                                                onKeyDown={this.checkNumber}
                                             />
                                         </Col>
                                     </Row>
@@ -441,7 +488,8 @@ class SingleMaterial extends Component{
                                                 className="input-style"
                                                 value={this.state.minQuality}
                                                 name="minQuality"
-                                                onChange={this.handleChange}
+                                                onChange={this.handleNumberChange}
+                                                onKeyDown={this.checkNumber}
                                             />
                                         </Col>
                                         <Col span={12}>
@@ -450,7 +498,8 @@ class SingleMaterial extends Component{
                                                 className="input-style"
                                                 value={this.state.unitPrice}
                                                 name="unitPrice"
-                                                onChange={this.handleChange}
+                                                onChange={this.handleNumberChange}
+                                                onKeyDown={this.checkNumber}
                                             />
                                         </Col>
                                     </Row>
@@ -462,7 +511,8 @@ class SingleMaterial extends Component{
                                                 className="input-style"
                                                 value={this.state.width}
                                                 name="width"
-                                                onChange={this.handleChange}
+                                                onChange={this.handleNumberChange}
+                                                onKeyDown={this.checkNumber}
                                             />
                                         </Col>
                                         <Col span={12}>
@@ -487,7 +537,8 @@ class SingleMaterial extends Component{
                                                 className="input-style"
                                                 value={this.state.weight}
                                                 name="weight"
-                                                onChange={this.handleChange}
+                                                onChange={this.handleNumberChange}
+                                                onKeyDown={this.checkNumber}
                                             />
                                         </Col>
                                         <Col span={12}>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Row,Col,Input, Button, Icon, Modal} from 'antd';
+import {Row,Col,Input, Button, Icon, Modal,message} from 'antd';
 import './products.css'
 
 
@@ -37,6 +37,7 @@ class SingleProductGeneralInfo extends Component{
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
+                sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
                 amount: this.props.loadedProduct.amount,
@@ -59,9 +60,33 @@ class SingleProductGeneralInfo extends Component{
     };
 
     handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        if(this.state.inputNumber) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
+    };
+
+    checkNumber = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (specialChar.indexOf(event.key) >= 0){
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+            this.setState({
+                inputNumber: true
+            });
+        }
+        else{
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
     };
 
     handleInfoOk = () => {
@@ -106,6 +131,7 @@ class SingleProductGeneralInfo extends Component{
                                 value={this.state.sellingPrice}
                                 name="sellingPrice"
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                         <Col span={12}>
@@ -115,6 +141,7 @@ class SingleProductGeneralInfo extends Component{
                                 value={this.state.resellerProfitPercent}
                                 name="resellerProfitPercent"
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                     </Row>
@@ -127,6 +154,7 @@ class SingleProductGeneralInfo extends Component{
                                 value={this.state.amount}
                                 name="amount"
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                         <Col span={12}>
@@ -136,6 +164,7 @@ class SingleProductGeneralInfo extends Component{
                                 value={this.state.subcCostTotal}
                                 name="subcCostTotal"
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                     </Row>
