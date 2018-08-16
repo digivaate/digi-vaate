@@ -16,8 +16,10 @@
   },
   "scripts": {
     "start": "node ./server/server.js",
-    "heroku-postbuild": "webpack --mode production",
+    "build": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
+    "heroku-postinstall": "npm run cleardb",
+    "heroku-postbuild": "npm run build",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\"",
@@ -41,7 +43,8 @@
     "react-scripts": "1.1.4",
     "react-table": "^6.8.6",
     "reactcss": "latest",
-    "sequelize": "^4.37.10"
+    "sequelize": "^4.37.10",
+    "debug": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
