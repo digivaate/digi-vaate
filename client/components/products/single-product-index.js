@@ -279,7 +279,7 @@ class SingleProduct extends Component {
             productSizes: newSizes,
             modified: !Object.compare(newSizes, this.state.originalLoadedProduct.sizes)
         })
-    }
+    };
 
     discardChanges = () => {
         let self=this;

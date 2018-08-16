@@ -308,7 +308,7 @@ class ProductTable extends Component {
                         />
                     )},
                 width: 140,
-                Footer: this.props.taxPercent ? `${this.props.orderTotalPrice} incl. ${this.props.taxPercent}%` : this.props.orderTotalPrice
+                Footer: this.props.taxPercent ? `${this.props.orderTotalPrice} incl. ${this.props.taxPercent}%` : `${this.props.orderTotalPrice}`
             }
 
         ];

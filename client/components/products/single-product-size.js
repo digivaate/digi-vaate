@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Row,Col,Input, Button, Icon, Modal,Spin,Card,Select} from 'antd';
+import {Row,Col,Input, Button, Icon, Modal,Spin,Card,Select,Divider} from 'antd';
 import {API_ROOT} from '../../api-config';
+import SizeCreateForm from './newSize'
 import './products.css'
 
 
@@ -12,14 +13,19 @@ class SingleProductSize extends Component{
             sizeVisible: false,
             sizes: this.props.sizes,
             sizeOptions: null,
+            createNewSize: false,
+            numberOfNewSize:0
         }
     }
 
-    updateSizes = [];
+    updateSizes = this.props.sizes;
+    newSizesCreated = [];
 
     componentDidUpdate(prevProps){
         if(prevProps.sizes != this.props.sizes){
-            this.setState(prevState => prevState)
+            this.setState({
+                sizes: this.props.sizes
+            })
         }
     }
 
@@ -50,24 +56,48 @@ class SingleProductSize extends Component{
 
     handleSizeChange = (value) => {
         this.setState(prevState => prevState);
+        let sizeOptionsValue = this.state.sizeOptions.map(size => size.value);
         let valueObj = [];
+        let newValueObj = [];
         for (let i = 0; i < value.length; i++) {
             for (let j = 0; j < this.state.sizeOptions.length; j++) {
-                if (parseInt(value[i]) === this.state.sizeOptions[j].id) {
+                if (value[i] === this.state.sizeOptions[j].value) {
                     valueObj[i] = this.state.sizeOptions[j]
                 }
             }
+            if(sizeOptionsValue.indexOf(value[i]) < 0){
+                newValueObj.push({
+                    value: value[i]
+                })
+            }
         }
+        this.newSizesCreated = newValueObj;
         this.updateSizes = valueObj;
+        console.log("A")
     };
 
     handleSizeOk = () => {
-        this.props.newSizes(this.updateSizes);
-        this.setState({
-            sizeVisible:false,
-            sizes: this.updateSizes
-        })
+        let mergeSizes = [];
+        if(this.newSizesCreated.length > 0) {
+            axios.post(`${API_ROOT}/size`, this.newSizesCreated)
+                .then((response) => {
+                    mergeSizes = this.updateSizes.concat(response.data)
+                    this.props.newSizes(mergeSizes);
+                    this.setState({
+                        sizeVisible: false,
+                        sizes: mergeSizes,
+                    })
+                })
+        } else {
+            this.props.newSizes(this.updateSizes);
+            this.setState({
+                sizeVisible: false,
+                sizes: this.updateSizes,
+            })
+        }
     };
+
+
 
     render(){
         let {sizeOptions} = this.state;
@@ -83,12 +113,13 @@ class SingleProductSize extends Component{
         }
         if (sizeOptions) {
             renderSizeOptions = sizeOptions.map(size =>
-                <Select.Option key={size.id}>
-                    {size.value}
+                <Select.Option key={size.value} title={<span style={{color:'#E94E53'}}>{size.value}</span>}>
+                    <span style={{color:'#E94E53'}}>{size.value}</span>
                 </Select.Option>
             )
         }
         if(this.state.sizes){
+            renderDefaultSizes = this.state.sizes.map(size => size.value);
             sizesDisplay = this.state.sizes.map(size =>
                 <Card key={size.id} style={{ width: 100,textAlign:'center' }} hoverable>
                     <p>{size.value}</p>
@@ -102,7 +133,7 @@ class SingleProductSize extends Component{
                         visible={this.state.sizeVisible}
                         onOk={this.handleSizeOk}
                         onCancel={this.handleSizeCancel}
-                        bodyStyle={{maxHeight: 300, overflow: 'auto'}}
+                        bodyStyle={{maxHeight: 500, overflow: 'auto'}}
                     >
                         <Select
                             mode="tags"
@@ -115,7 +146,9 @@ class SingleProductSize extends Component{
                             {renderSizeOptions}
                         </Select>
                     </Modal>
+                    <Row type="flex">
                     {sizesDisplay}
+                    </Row>
                 </div>
             )
         } else {
