@@ -2,7 +2,7 @@ import React,{ Component } from "react";
 import 'antd/dist/antd.css'
 import { render } from "react-dom";
 import "react-table/react-table.css";
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -42,9 +42,10 @@ class SideBar extends Component{
         let renderSeasonList = null;
         if(this.seasons){
             renderSeasonList = this.seasons.map(season =>
-                <Menu.Item className="season-item" style={{paddingLeft:45}} key={season.id}>
+                <Menu.Item className="season-item" key={season.id}>
+
                     <NavLink to={`/${season.name}`} className="nav-text">
-                        {season.name}
+                        <Icon type="right" /> {season.name}
                     </NavLink>
                 </Menu.Item>
             );
@@ -52,19 +53,19 @@ class SideBar extends Component{
             <Sider>
                 <Menu className="side-bar-menu" mode="inline">
                     <Menu.Item key="products">
-                        <NavLink to={"/products"}>
+                        <Link to={"/products"}>
                             Products
-                        </NavLink>
+                        </Link>
                     </Menu.Item>
                     <Menu.Item key="colors">
-                        <NavLink to={"/colors"}>
+                        <Link to={"/colors"}>
                             Colors
-                        </NavLink>
+                        </Link>
                     </Menu.Item>
                     <Menu.Item key="seasons">
-                        <NavLink to="/seasons">
+                        <Link to="/seasons">
                             Seasons
-                        </NavLink>
+                        </Link>
                     </Menu.Item>
                     {renderSeasonList}
                 </Menu>

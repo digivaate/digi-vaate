@@ -49,7 +49,7 @@ class SeasonSideBar extends Component{
             renderCollectionList = this.state.collections.map(collection =>
                 <Menu.Item className="collection-item" style={{paddingLeft:45}} key={collection.id}>
                     <NavLink to={`/${this.props.match.params.seasonId}/${collection.name}`} className="nav-text">
-                        {collection.name}
+                        <Icon type="right" /> {collection.name}
                     </NavLink>
                 </Menu.Item>
             );
