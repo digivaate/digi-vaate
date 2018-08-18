@@ -21,7 +21,7 @@ class ProductTable extends Component {
     }
 
     products = this.props.productList;
-    productsCollection = null;
+    productsCollection = [];
     sizeInOrderProduct = [];
     componentDidUpdate(prevProps){
         if(prevProps.taxPercent !== this.props.taxPercent){
@@ -32,11 +32,13 @@ class ProductTable extends Component {
     componentDidMount(){
         axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`)
             .then(response => {
+                this.productsCollection = response.data[0].products
+                this.formatProduct();
                 this.setState({
                     productsCollection: response.data[0].products
                 })
             });
-        this.formatProduct();
+
         axios.get(`${API_ROOT}/size`)
             .then(response => {
                 this.setState({
@@ -46,6 +48,65 @@ class ProductTable extends Component {
     };
 
     formatProduct = () => {
+        let productsCollectionSizes = this.productsCollection.map(product => {
+            return {
+                productName: product.name,
+                sizes:product.sizes
+            }});
+        let productsCollectionSizesValue = productsCollectionSizes.map(productSize => {
+            return {
+                productName: productSize.productName,
+                sizes:productSize.sizes.map(size => size.value)
+            }});
+        let middleware = [];
+        let updatedSizeAvailable = [];
+        let fullupdatedSizeAvailable = [];
+        for(let k = 0; k< this.products.length; k++) {
+            for (let a = 0; a < productsCollectionSizesValue.length; a++) {
+                if(this.products[k].product.name === productsCollectionSizesValue[a].productName) {
+                    for (let b = 0; b < productsCollectionSizesValue[a].sizes.length; b++) {
+                            middleware = this.products[k].sizes.filter(size => size.value === productsCollectionSizesValue[a].sizes[b])
+                            if (middleware.length > 0) {
+                                fullupdatedSizeAvailable.push(middleware[0]);
+                                updatedSizeAvailable.push({
+                                    id: middleware[0].id,
+                                    amount: middleware[0].orderProduct_size.amount
+                                })
+                            }
+
+                    }
+                    this.products[k].sizes = fullupdatedSizeAvailable.slice(0);
+                    let copyOfUpdatedSizeAvailable = updatedSizeAvailable.slice(0);
+                    fullupdatedSizeAvailable = [];
+                    updatedSizeAvailable = [];
+                    axios.patch(`${API_ROOT}/orderproduct?id=${this.products[k].id}`, {sizes: copyOfUpdatedSizeAvailable})
+                }}
+        }
+        const dataCollected = [];
+        this.products.forEach(orderProduct => {
+            dataCollected.push({
+                amountEachSize: orderProduct.sizes.map(size => {
+                    return {
+                        sizeValue: size.value,
+                        sizeAmount: size.orderProduct_size.amount
+                    }
+                }),
+                orderProductId: orderProduct.id,
+                name: orderProduct.product.name,
+                productId: orderProduct.product.id,
+                sellingPrice: orderProduct.product.sellingPrice,
+                totalAmount: orderProduct.sizes.reduce((sum, ele) => sum + ele.orderProduct_size.amount, 0),
+            });
+        });
+        this.setState({
+            data: dataCollected,
+            pageSize: dataCollected.length
+        });
+        this.sumOfOrderPrice()
+
+    };
+
+    formatProductForEdit = () => {
         const dataCollected = [];
         this.products.forEach(orderProduct => {
             dataCollected.push({
@@ -66,7 +127,7 @@ class ProductTable extends Component {
             data:dataCollected,
             pageSize:dataCollected.length
         })
-    };
+    }
 
     changeEditMode =() => {
         this.setState({
@@ -112,7 +173,8 @@ class ProductTable extends Component {
                 axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
                     .then(res => {
                         this.products = res.data[0].orderProducts;
-                        this.formatProduct();
+                        this.formatProductForEdit();
+                        this.sumOfOrderPrice();
                         this.setState({
                             showSizeModal: false,
                         })
@@ -140,6 +202,7 @@ class ProductTable extends Component {
 
     handleCreate = () => {
         const form = this.formRef.props.form;
+        console.log(form)
         form.validateFields((err, values) => {
             if (err) {
                 return;
@@ -166,12 +229,13 @@ class ProductTable extends Component {
                     axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
                         .then(res => {
                             this.products = res.data[0].orderProducts;
-                            this.formatProduct();
+                            this.formatProductForEdit();
                             this.sumOfOrderPrice();
                             this.props.newProduct(this.products);
                             this.setState({
                                 visible:false
-                            })
+                            });
+                            form.resetFields();
                         });
                 });
         });
@@ -196,7 +260,7 @@ class ProductTable extends Component {
                         axios.get(`${API_ROOT}/order?id=${self.props.orderId}`)
                             .then(res => {
                                 self.products = res.data[0].orderProducts;
-                                self.formatProduct();
+                                self.formatProductForEdit();
                                 self.sumOfOrderPrice();
                                 self.props.deleteProduct(self.products)
                             });

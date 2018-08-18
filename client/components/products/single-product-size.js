@@ -72,7 +72,6 @@ class SingleProductSize extends Component{
         }
         this.newSizesCreated = newValueObj;
         this.updateSizes = valueObj;
-        console.log("A")
     };
 
     handleSizeOk = () => {
