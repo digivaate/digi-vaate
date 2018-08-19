@@ -130,7 +130,7 @@ class OrderList extends Component{
                         </button>
                     ]}>
                         <List.Item.Meta
-                            title="Order code"
+                            title={`Order ${item.id}`}
                             description={<div>
                                 <Row type="flex">
                                     <p> Created {item.createdAt.slice(0,10)}&nbsp;&nbsp;</p>

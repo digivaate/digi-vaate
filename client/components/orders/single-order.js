@@ -85,7 +85,7 @@ class SingleOrder extends Component{
         if(this.state.singleOrder){
             return (
                 <div>
-                    <h1>ORDER CODE</h1>
+                    <h1>ORDER {this.state.singleOrder.id}</h1>
                     <Row type="flex">
                         <p> Created {this.state.singleOrder.createdAt.slice(0,10)}&nbsp;&nbsp;</p>
                         <p>|&nbsp;&nbsp;</p>

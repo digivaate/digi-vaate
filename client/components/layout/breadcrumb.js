@@ -49,6 +49,7 @@ class BreadCrumbDigi extends Component{
     companiesProduct = [];
     companiesProductsMap = [];
     breadcrumbNameMap = {};
+    orders =[];
 
     componentDidUpdate(prevProps){
         if(prevProps.refresh != this.props.refresh){
@@ -133,6 +134,11 @@ class BreadCrumbDigi extends Component{
                                 for (let j = 0; j < this.products.length; j++) {
                                     this.productsMap[j] = this.products[j].name;
                                     this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name;
+
+                                }
+                                this.orders = this.collections[i].orders
+                                for (let m = 0; m < this.orders.length; m++){
+                                    this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] +"/orders/"+this.orders[m].id] = `Order ${this.orders[m].id}`
                                 }
                             }
                         }
