@@ -18,7 +18,7 @@ import SingleCollection from './components/collections/single_collection'
 import ThemeList from './components/themes/theme-list'
 import SingleMaterial from './components/materials/single-material'
 import SingleSeason from './components/seasons/single-season'
-import SingleCompany from './components/company/single-company'
+import SeasonsList from './components/company/seasons-list'
 import OrderIndex from './components/orders/orders-index'
 import OrderList from './components/orders/order-list'
 import SingleOrder from './components/orders/single-order'
@@ -166,7 +166,7 @@ class App extends React.Component {
                                     />}
                                 />
                                 <Route path="/seasons" exact render={() =>
-                                    <SingleCompany
+                                    <SeasonsList
                                         sendNewSeason={seasonName => this.newSeasonNameFunc(seasonName)}
                                     />}
                                 />

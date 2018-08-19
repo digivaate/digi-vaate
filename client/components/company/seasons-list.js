@@ -1,18 +1,23 @@
-import React,{Component} from 'react';
-import { List,Button,Spin } from 'antd';
+import React, {Component, Fragment} from 'react';
+import { List,Button,Spin,Icon } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
 import SeasonCreateForm from './newSeason'
+import {Link} from "react-router-dom";
+import EditSeason from "./edit-season";
 
 
-class SingleCompany extends Component{
+class SeasonsList extends Component{
     constructor(props){
         super(props);
         this.state={
             isFetched:false,
             company:null,
-            seasons:null
+            seasons:null,
+            editVisible: false,
+            editableId: null,
+            confirmLoading: false
         }
     }
     componentDidMount(){
@@ -59,38 +64,65 @@ class SingleCompany extends Component{
         this.formRef = formRef;
     };
 
+    showEdit = (e) => {
+        this.setState({ editVisible: true, editableId: parseInt(e.target.id) });
+    };
+
+    hideEdit = () => {
+        this.setState({ editVisible: false });
+    };
+
+    getEditableSeason = () => {
+        return this.state.seasons.find((e) => {
+            return e.id === this.state.editableId;
+        });
+    };
+
     render(){
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
             for(let i=0; i<this.state.seasons.length; i++){
-                renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget + ", Cover percentage: " + this.state.seasons[i].coverPercent +"%"
+                renderSeasonsOfCompany[i] = <Icon type="caret-up" />;
+                //renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget + ", Cover percentage: " + this.state.seasons[i].coverPercent +"%"
             }
             if(this.state.seasons.length > 0){
-                return (
+                let elements = [<Fragment key={0}>
                     <div>
                         <h1>Seasons of company</h1>
                         <Button type="primary"
                                 size="large"
                                 onClick={this.createNewSeason}
-                        >
-                            New season
-                        </Button>
+                        >New season</Button>
                         <SeasonCreateForm
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
                         />
+                        <EditSeason key={1}
+                                    visible={this.state.editVisible}
+                                    hide={this.hideEdit}
+                                    season={this.getEditableSeason}
+                        />
                         <br/>
                         <br/>
                         <List
                             size="small"
                             bordered
-                            dataSource={renderSeasonsOfCompany}
-                            renderItem={item => (<List.Item>{item}</List.Item>)}
+                            dataSource={this.state.seasons}
+                            renderItem={item => (
+                                <List.Item>
+                                    <Link style={{marginRight: 'auto'}} to={''}>
+                                        <List.Item.Meta
+                                            title={item.name}
+                                            description={`Budget: ${item.budget}, Cover percent: ${item.coverPercent}`} />
+                                    </Link>
+                                    <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
+                                </List.Item>)}
                         />
                     </div>
-                )
+                </Fragment>];
+                return (elements)
             }
             else{
                 return (
@@ -123,4 +155,4 @@ class SingleCompany extends Component{
     }
 }
 
-export default SingleCompany;
+export default SeasonsList;
