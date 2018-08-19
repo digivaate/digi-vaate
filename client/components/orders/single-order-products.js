@@ -16,7 +16,8 @@ class ProductTable extends Component {
             productsCollection: [],
             editMode: false,
             orderProductId: null,
-            sizeOptions:null
+            sizeOptions:null,
+            showCreateOrderForm: false
         }
     }
 
@@ -47,6 +48,7 @@ class ProductTable extends Component {
             })
     };
 
+
     formatProduct = () => {
         let productsCollectionSizes = this.productsCollection.map(product => {
             return {
@@ -75,11 +77,19 @@ class ProductTable extends Component {
                             }
 
                     }
-                    this.products[k].sizes = fullupdatedSizeAvailable.slice(0);
+                    this.products[k].sizes.sort(function(a, b){
+                        return a.id-b.id
+                    });
+                    fullupdatedSizeAvailable.sort(function(a, b){
+                        return a.id-b.id
+                    });
                     let copyOfUpdatedSizeAvailable = updatedSizeAvailable.slice(0);
+                    if(JSON.stringify(this.products[k].sizes) !== JSON.stringify(fullupdatedSizeAvailable)){
+                        axios.patch(`${API_ROOT}/orderproduct?id=${this.products[k].id}`, {sizes: copyOfUpdatedSizeAvailable})
+                    }
+                    this.products[k].sizes = fullupdatedSizeAvailable.slice(0);
                     fullupdatedSizeAvailable = [];
                     updatedSizeAvailable = [];
-                    axios.patch(`${API_ROOT}/orderproduct?id=${this.products[k].id}`, {sizes: copyOfUpdatedSizeAvailable})
                 }}
         }
         const dataCollected = [];
@@ -103,7 +113,6 @@ class ProductTable extends Component {
             pageSize: dataCollected.length
         });
         this.sumOfOrderPrice()
-
     };
 
     formatProductForEdit = () => {
@@ -141,6 +150,7 @@ class ProductTable extends Component {
             .then(response => {
                 this.sizeInOrderProduct = response.data[0].sizes
                 this.setState({
+                    amountEachSize:amountEachSize,
                     orderProductId:orderProductId,
                     showSizeModal: true
                 })
@@ -175,13 +185,16 @@ class ProductTable extends Component {
                         this.products = res.data[0].orderProducts;
                         this.formatProductForEdit();
                         this.sumOfOrderPrice();
+                        for(let i = 0; i< this.sizeInOrderProduct.length; i++){
+                            this.setState({
+                                [this.sizeInOrderProduct[i].value]: 0
+                            })
+                        }
                         this.setState({
                             showSizeModal: false,
                         })
                     });
             })
-
-
     };
 
     handleSizeCancel = () => {
@@ -192,7 +205,7 @@ class ProductTable extends Component {
 
     //Add products to order
     addProduct = () => {
-        this.setState({ visible: true })
+        this.setState({ visible: true, showCreateOrderForm: true })
     };
 
 
@@ -233,7 +246,8 @@ class ProductTable extends Component {
                             this.sumOfOrderPrice();
                             this.props.newProduct(this.products);
                             this.setState({
-                                visible:false
+                                visible:false,
+                                showCreateOrderForm: false
                             });
                             form.resetFields();
                         });
@@ -363,8 +377,21 @@ class ProductTable extends Component {
         return columns
     };
 
+
+
     render() {
         let renderSizeToEdit = null;
+        let showCreateOrderForm = null;
+        if(this.state.showCreateOrderForm){
+            showCreateOrderForm = <OrderProductCreateForm
+                {...this.props}
+                wrappedComponentRef={this.saveFormRef}
+                visible={this.state.visible}
+                onCancel={this.handleCancel}
+                onCreate={this.handleCreate}
+                productList = {this.state.productsCollection}
+            />
+        }
         if(this.sizeInOrderProduct.length > 0){
             renderSizeToEdit = this.sizeInOrderProduct.map(size => {
                 return (
@@ -391,14 +418,7 @@ class ProductTable extends Component {
                 >
                     {renderSizeToEdit}
                 </Modal>
-                <OrderProductCreateForm
-                    {...this.props}
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                    productList = {this.state.productsCollection}
-                />
+                {showCreateOrderForm}
                 <ReactTable
                     sortable={false}
                     showPagination={false}
