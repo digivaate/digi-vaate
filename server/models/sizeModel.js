@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Size.associate = (model) => {
         Size.belongsToMany(model.OrderProduct, {through: 'orderProduct_size'});
+        Size.belongsToMany(model.Product, {through: 'size_product'});
     };
 
     return Size;
