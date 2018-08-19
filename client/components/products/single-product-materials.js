@@ -78,9 +78,11 @@ class SingleProductMaterials extends Component{
 
     /*Edit material*/
     handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        if(this.state.inputNumber) {
+            this.setState({
+                [event.target.name]: event.target.value
+            });
+        }
     };
 
     showMaterialModal = (e) => {
@@ -114,6 +116,28 @@ class SingleProductMaterials extends Component{
             }
         }
         this.updatedMaterials = valueObj;
+    };
+
+    checkNumber = (event) => {
+        const key = event.keyCode;
+        const specialChar = ["!","@","#","$","%","^","*","(",")"];
+        if (specialChar.indexOf(event.key) >= 0){
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+            this.setState({
+                inputNumber: true
+            });
+        }
+        else{
+            this.setState({
+                inputNumber: false
+            });
+            message.error("Only numbers allowed!",1)
+        }
     };
 
     handleMaterialOk = () => {
@@ -239,6 +263,7 @@ class SingleProductMaterials extends Component{
                                 name={this.displaySelectedMaterial[0]}
                                 value={this.state[this.displaySelectedMaterial[0]]}
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                     </Row>
@@ -257,6 +282,7 @@ class SingleProductMaterials extends Component{
                                 name={this.displaySelectedMaterial[1]}
                                 value={this.state[this.displaySelectedMaterial[1]]}
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                     </Row>
@@ -275,6 +301,7 @@ class SingleProductMaterials extends Component{
                                 name={this.displaySelectedMaterial[2]}
                                 value={this.state[this.displaySelectedMaterial[2]]}
                                 onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
                             />
                         </Col>
                     </Row>
