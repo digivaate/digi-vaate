@@ -32,12 +32,39 @@ const ProductCreateForm = Form.create()(
         }
 
         loadColors = () => {
-            axios.get(`${API_ROOT}/color`)
-                .then(response => {
-                    this.setState({
-                        colorOptions: response.data
+            if(this.props.productLevelName === "company"){
+                axios.get(`${API_ROOT}/company?id=${this.props.productLevelId}`)
+                    .then(response => {
+                        this.setState({
+                            colorOptions: response.data[0].colors
+                        })
                     })
-                })
+            }
+            if(this.props.productLevelName === "season"){
+                axios.get(`${API_ROOT}/season?id=${this.props.productLevelId}`)
+                    .then(response => {
+                        axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`)
+                            .then(res => {
+                                this.setState({
+                                    colorOptions:res.data[0].colors.concat(response.data[0].colors)
+                                })
+                            })
+                    })
+            }
+            if(this.props.productLevelName === "collection"){
+                axios.get(`${API_ROOT}/collection?id=${this.props.productLevelId}`)
+                    .then(response => {
+                        axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                            .then(res => {
+                                axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`)
+                                    .then(re => {
+                                        this.setState({
+                                            colorOptions:re.data[0].colors.concat(res.data[0].colors.concat(response.data[0].colors))
+                                        })
+                                    })
+                            })
+                    })
+            }
         };
 
         loadMaterials = () => {

@@ -399,7 +399,7 @@ class ProductsDisplay extends Component{
             }}/>;
             //return <SingleProduct productId={this.state.productName}/>
         }
-        if (this.products) {
+        if (this.products && this.state.productLevel && this.state.productLevelId) {
             renderProductList = this.products.map(product =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imagePath !== null){
@@ -539,6 +539,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -603,6 +606,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -652,6 +658,9 @@ class ProductsDisplay extends Component{
                             Create new product
                         </Button>
                         <ProductCreateForm
+                            productLevelName = {this.state.productLevel}
+                            productLevelId = {this.state.productLevelId}
+                            {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
@@ -688,6 +697,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -713,6 +725,9 @@ class ProductsDisplay extends Component{
                             Create new product
                         </Button>
                         <ProductCreateForm
+                            productLevelName = {this.state.productLevel}
+                            productLevelId = {this.state.productLevelId}
+                            {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
