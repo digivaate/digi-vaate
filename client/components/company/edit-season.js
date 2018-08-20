@@ -3,20 +3,41 @@ import { Form, Icon, Input, Button, Modal } from 'antd';
 
 const FormItem = Form.Item;
 
+class EditForm extends React.Component {
+
+    submit = () => {
+
+    };
+
+    render() {
+        return(
+            <Form layout="inline" onSubmit={this.submit}>
+                <FormItem>
+                    <Input placeholder={this.props.season.name} />
+                </FormItem>
+                <FormItem>
+                    <Input placeholder={this.props.season.budget} />
+                </FormItem>
+            </Form>
+        );
+    }
+}
+
 class EditSeason extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            visible: false
+            visible: false,
+            formRef: null
         };
         this.close = this.close.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
+
     componentDidMount() {
-        // To disabled submit button at the beginning.
-        this.props.form.validateFields();
+
     }
 
     handleOk = () => {
@@ -28,7 +49,7 @@ class EditSeason extends React.Component {
     };
 
     close = () => {
-        if (this.props.hide) { this.props.hide() }
+        if (this.props.hide) this.props.hide();
     };
 
     handleChange(e) {
@@ -36,11 +57,8 @@ class EditSeason extends React.Component {
     };
 
     render() {
-        if (!this.props.season()) return null;
-        const season = this.props.season();
-        //FORM
-        const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-        //MODAL
+        if (!this.props.season) return null;
+        const season = this.props.season;
         const { loading } = this.state;
         return (
             <Modal
@@ -57,17 +75,10 @@ class EditSeason extends React.Component {
                     >Save</Button>
                 ]}
             >
-                <Form layout="inline" onSubmit={this.handleSubmit}>
-                    <FormItem>
-                        <Input placeholder={season.name} />
-                    </FormItem>
-                    <FormItem>
-                        <Input placeholder={season.budget} />
-                    </FormItem>
-                </Form>
+                <EditForm season={this.props.season}/>
             </Modal>
         );
     }
 }
 
-export default Form.create()(EditSeason);
+export default EditSeason;

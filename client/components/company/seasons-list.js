@@ -102,7 +102,7 @@ class SeasonsList extends Component{
                         <EditSeason key={1}
                                     visible={this.state.editVisible}
                                     hide={this.hideEdit}
-                                    season={this.getEditableSeason}
+                                    season={this.getEditableSeason()}
                         />
                         <br/>
                         <br/>
