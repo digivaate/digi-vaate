@@ -101,7 +101,7 @@ class SingleProductSize extends Component{
         let {sizeOptions} = this.state;
         let renderSizeOptions = [];
         let renderDefaultSizes = [];
-        let editSizeInfo = null;
+        let editSizeInfo = <div style={{height:40,width:40}}></div>;
         let sizesDisplay = null;
         if(this.props.editModeStatus === true) {
             editSizeInfo =
