@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider,Button,Form,Input,Radio,Select,Upload } from 'antd';
+import { Card, Row, Col,message,Modal,Divider,Button,Form,Input,Radio,Select,Upload } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
@@ -19,6 +19,7 @@ const ProductCreateForm = Form.create()(
             this.state = {
                 materialOptions: null,
                 colorOptions:null,
+                sizeOptions:null,
                 fileList: [],
                 uploading: false,
             }
@@ -27,6 +28,7 @@ const ProductCreateForm = Form.create()(
         componentDidMount(){
             this.loadColors();
             this.loadMaterials();
+            this.loadSizes();
         }
 
         loadColors = () => {
@@ -47,6 +49,15 @@ const ProductCreateForm = Form.create()(
                 })
         };
 
+        loadSizes = () => {
+            axios.get(`${API_ROOT}/size`)
+                .then(response => {
+                    this.setState({
+                        sizeOptions: response.data
+                    })
+                })
+        }
+
         onFileChange = (e) => {
             let file = e.target.files[0];
             const data = new FormData();
@@ -54,10 +65,19 @@ const ProductCreateForm = Form.create()(
             this.props.uploadImage(data);
         };
 
+        //Validation Form
+
+        checkName = (event) => {
+            const key = event.keyCode;
+            console.log(key)
+            return (key >= 65 && key <= 90)
+        }
+
         render() {
             let renderColorOptions = [];
             let renderMaterialOptions = [];
-            if (this.state.colorOptions && this.state.materialOptions) {
+            let renderSizeOptions = [];
+            if (this.state.colorOptions && this.state.materialOptions && this.state.sizeOptions) {
                 if (this.state.materialOptions.length > 0) {
                     renderMaterialOptions = this.state.materialOptions.map(material =>
                         <Option key={material.name}>
@@ -69,6 +89,13 @@ const ProductCreateForm = Form.create()(
                     renderColorOptions = this.state.colorOptions.map(color =>
                         <Option key={color.name} style={{color: color.value}}>
                             {color.name}
+                        </Option>
+                    )
+                }
+                if(this.state.sizeOptions.length > 0){
+                    renderSizeOptions = this.state.sizeOptions.map(size =>
+                        <Option key={size.value}>
+                            {size.value}
                         </Option>
                     )
                 }
@@ -88,7 +115,9 @@ const ProductCreateForm = Form.create()(
                             {getFieldDecorator('name', {
                                 rules: [{ required: true, message: 'Please input the name of product' }],
                             })(
-                                <Input />
+                                <Input
+                                    onKeyDown={this.checkName}
+                                />
                             )}
                         </FormItem>
                         <Row gutter={16}>
@@ -125,6 +154,20 @@ const ProductCreateForm = Form.create()(
                         </Row>
                         <FormItem label="Description">
                             {getFieldDecorator('description')(<Input type="textarea" />)}
+                        </FormItem>
+                        <FormItem label="Sizes">
+                            {getFieldDecorator('sizes', {
+                                initialValue: [],
+                            })(
+                                <Select
+                                    mode="tags"
+                                    size={'default'}
+                                    placeholder="Please select sizes"
+                                    style={{width: '100%'}}
+                                >
+                                    {renderSizeOptions}
+                                </Select>
+                            )}
                         </FormItem>
                         <FormItem label="Colors">
                             {getFieldDecorator('colors', {
