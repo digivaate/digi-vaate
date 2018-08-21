@@ -83,7 +83,7 @@ const ProductCreateForm = Form.create()(
                         sizeOptions: response.data
                     })
                 })
-        }
+        };
 
         onFileChange = (e) => {
             let file = e.target.files[0];
@@ -94,11 +94,60 @@ const ProductCreateForm = Form.create()(
 
         //Validation Form
 
-        checkName = (event) => {
-            const key = event.keyCode;
-            console.log(key)
-            return (key >= 65 && key <= 90)
-        }
+        checkName = (rule, value, callback) => {
+            if(/^[0-9A-Za-z\s\-_]+$/.test(value) || value === ""){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("Name of product cannot contain special character")
+        };
+
+        checkSellingPrice = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+        checkSubcontractingCost = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkResellerProfitPercent = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkTaxPercent = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
 
         render() {
             let renderColorOptions = [];
@@ -140,7 +189,10 @@ const ProductCreateForm = Form.create()(
                     <Form layout="vertical">
                         <FormItem label="Name">
                             {getFieldDecorator('name', {
-                                rules: [{ required: true, message: 'Please input the name of product' }],
+                                rules: [
+                                    { required: true, message: 'Please input the name of product' },
+                                    { validator: this.checkName}
+                                ],
                             })(
                                 <Input
                                     onKeyDown={this.checkName}
@@ -150,14 +202,22 @@ const ProductCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Selling Price">
-                                    {getFieldDecorator('sellingPrice')(
+                                    {getFieldDecorator('sellingPrice',{
+                                        rules: [
+                                            { validator: this.checkSellingPrice}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Reseller Profit Percentage">
-                                    {getFieldDecorator('resellerProfitPercent')(
+                                    {getFieldDecorator('resellerProfitPercent',{
+                                        rules: [
+                                            { validator: this.checkResellerProfitPercent}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -166,14 +226,22 @@ const ProductCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Tax Percentage">
-                                    {getFieldDecorator('taxPercent')(
+                                    {getFieldDecorator('taxPercent',{
+                                        rules: [
+                                            { validator: this.checkTaxPercent}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Subcontracting cost">
-                                    {getFieldDecorator('subcCostTotal')(
+                                    {getFieldDecorator('subcCostTotal',{
+                                        rules: [
+                                            { validator: this.checkSubcontractingCost}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>

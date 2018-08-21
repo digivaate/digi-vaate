@@ -204,7 +204,14 @@ class ProductsDisplay extends Component{
 
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            form.resetFields();
+        })
     };
 
     handleCreate = () => {
@@ -212,6 +219,18 @@ class ProductsDisplay extends Component{
         form.validateFields((err, values) => {
             if (err) {
                 return;
+            }
+            if(!values.sellingPrice){
+                values.sellingPrice = 0;
+            }
+            if(!values.taxPercent){
+                values.taxPercent = 0;
+            }
+            if(!values.resellerProfitPercent){
+                values.resellerProfitPercent = 0;
+            }
+            if(!values.subcCostTotal){
+                values.subcCostTotal = 0;
             }
             for (let i = 0; i < values.colors.length; i++) {
                 for (let j = 0; j < this.state.colorOptions.length; j++) {
