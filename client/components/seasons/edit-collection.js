@@ -9,28 +9,28 @@ const confirm = Modal.confirm;
 const EditForm = Form.create()(
     class extends React.Component {
 
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        return(
-            <Form layout="inline" onSubmit={this.submit}>
-                <FormItem label={'Name'}>
-                    {getFieldDecorator('name',
-                        {initialValue: this.props.season.name} )(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem label={'Budget'}>
-                    {getFieldDecorator('budget',
-                        {initialValue: this.props.season.budget} )(
-                        <Input />
-                    )}
-                </FormItem>
-            </Form>
-        );
-    }
-});
+        render() {
+            const { getFieldDecorator } = this.props.form;
+            return(
+                <Form layout="inline" onSubmit={this.submit}>
+                    <FormItem label={'Name'}>
+                        {getFieldDecorator('name',
+                            {initialValue: this.props.collection.name} )(
+                            <Input />
+                        )}
+                    </FormItem>
+                    <FormItem label={'Default cover percentage'}>
+                        {getFieldDecorator('coverPercent',
+                            {initialValue: this.props.collection.coverPercent} )(
+                            <Input />
+                        )}
+                    </FormItem>
+                </Form>
+            );
+        }
+    });
 
-class EditSeason extends React.Component {
+class EditCollection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,7 +55,7 @@ class EditSeason extends React.Component {
         this.setState({ loading: true });
         this.formRef.props.form.validateFields((err, values) => {
             if (err) console.error(err);
-            axios.patch(API_ROOT + '/season/?id=' + this.props.season.id, values )
+            axios.patch(API_ROOT + '/collection/?id=' + this.props.collection.id, values )
                 .then(res => {
                     console.log(res);
                     this.close();
@@ -70,12 +70,12 @@ class EditSeason extends React.Component {
     };
 
     confirmDelete = () => {
-        const seasonId = this.props.season.id;
+        const collectionId = this.props.collection.id;
         const close = this.close;
         confirm({
-            title: 'Delete this season?',
+            title: 'Delete this collection?',
             onOk() {
-                return axios.delete(API_ROOT + '/season/?id=' + seasonId)
+                return axios.delete(API_ROOT + '/collection/?id=' + collectionId)
                     .then(res => {
                         console.log(res);
                         close();
@@ -89,7 +89,7 @@ class EditSeason extends React.Component {
     };
 
     render() {
-        if (!this.props.season) return null;
+        if (!this.props.collection) return null;
         const { loading } = this.state;
         return (
             <Modal
@@ -105,7 +105,7 @@ class EditSeason extends React.Component {
                     >Save</Button>
                 ]}
             >
-                <EditForm season={this.props.season}
+                <EditForm collection={this.props.collection}
                           wrappedComponentRef={(f) => this.formRef = f }
                 />
                 <Button type={'danger'}
@@ -116,4 +116,4 @@ class EditSeason extends React.Component {
     }
 }
 
-export default EditSeason;
+export default EditCollection;

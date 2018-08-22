@@ -20,7 +20,7 @@ class SeasonsList extends Component{
             confirmLoading: false
         }
     }
-    componentDidMount(){
+    componentDidMount =() => {
         axios.get(`${API_ROOT}/company?name=Demo%20company`)
             .then(response => {
                 this.setState({
@@ -39,6 +39,7 @@ class SeasonsList extends Component{
     };
 
     handleCreate = () => {
+        console.log(this.formRef);
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -103,6 +104,7 @@ class SeasonsList extends Component{
                                     visible={this.state.editVisible}
                                     hide={this.hideEdit}
                                     season={this.getEditableSeason()}
+                                    refresh={this.componentDidMount}
                         />
                         <br/>
                         <br/>

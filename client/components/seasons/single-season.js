@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './seasons.css'
 import CollectionCreateForm from './newCollection'
+import EditCollection from "./edit-collection";
+import {Link} from "react-router-dom";
 
 
 class SingleSeason extends Component{
@@ -12,10 +14,12 @@ class SingleSeason extends Component{
         this.state={
             isFetched:false,
             collections:null,
-            seasons:null
+            seasons:null,
+            editVisible: false,
+            editableId: null,
         }
     }
-    componentDidMount(){
+    componentDidMount = () => {
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
                 this.setState({
@@ -59,6 +63,20 @@ class SingleSeason extends Component{
         this.formRef = formRef;
     };
 
+    showEdit = (e) => {
+        this.setState({ editVisible: true, editableId: parseInt(e.target.id) });
+    };
+
+    hideEdit = () => {
+        this.setState({ editVisible: false });
+    };
+
+    getEditableCollection = () => {
+        return this.state.collections.find((e) => {
+            return e.id === this.state.editableId;
+        });
+    };
+
     render() {
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
@@ -81,13 +99,28 @@ class SingleSeason extends Component{
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
                         />
+                        <EditCollection key={1}
+                                        visible={this.state.editVisible}
+                                        hide={this.hideEdit}
+                                        collection={this.getEditableCollection()}
+                                        refresh={this.componentDidMount}
+                        />
                         <br/>
                         <br/>
                         <List
                             size="small"
                             bordered
-                            dataSource={renderCollectionsOfSeason}
-                            renderItem={item => (<List.Item>{item}</List.Item>)}
+                            dataSource={this.state.collections}
+                            renderItem={item => (
+                                <List.Item>
+                                    <Link style={{marginRight: 'auto'}} to={''}>
+                                        <List.Item.Meta
+                                            title={item.name}
+                                            description={`Cover percent: ${item.coverPercent}`} />
+                                    </Link>
+                                    <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
+                                </List.Item>
+                            )}
                         />
                     </div>
                 )
