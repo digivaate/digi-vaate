@@ -310,6 +310,7 @@ class ProductsDisplay extends Component{
                                 .then(() => this.setState(prevState => prevState));
                         })
                 } else {
+                    values.sizes = existedSizes.slice(0);
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
                             axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
@@ -365,6 +366,7 @@ class ProductsDisplay extends Component{
                                 .then(() => this.setState(prevState => prevState));
                         })
                 } else {
+                    values.sizes = existedSizes.slice(0);
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
                             message.success("Product created", 1);
