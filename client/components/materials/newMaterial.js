@@ -29,6 +29,74 @@ const MaterialCreateForm = Form.create()(
             this.props.uploadImage(data);
         };
 
+        //Validation Form
+
+        checkName = (rule, value, callback) => {
+            if(/^[0-9A-Za-z\s\-_]+$/.test(value) || value === ""){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("Name of product cannot contain special character")
+        };
+
+        checkUnitPrice = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkWidth = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkWeight = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkFreight = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
+        checkMinimumQuality = (rule, value, callback) => {
+            if(/^[0-9.]+$/.test(value) || !value ){
+                if(callback){
+                    callback();
+                    return;
+                }
+                return;
+            }
+            callback("You can input only number")
+        };
+
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
             const { getFieldDecorator } = form;
@@ -43,7 +111,10 @@ const MaterialCreateForm = Form.create()(
                     <Form layout="vertical">
                         <FormItem label="Name">
                             {getFieldDecorator('name', {
-                                rules: [{ required: true, message: 'Please input the name of material' }],
+                                rules: [
+                                    { required: true, message: 'Please input the name of material' },
+                                    { validator: this.checkName}
+                                ],
                             })(
                                 <Input />
                             )}
@@ -63,7 +134,11 @@ const MaterialCreateForm = Form.create()(
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Unit Price">
-                                    {getFieldDecorator('unitPrice')(
+                                    {getFieldDecorator('unitPrice',{
+                                        rules: [
+                                            { validator: this.checkUnitPrice}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -72,7 +147,11 @@ const MaterialCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Weight">
-                                    {getFieldDecorator('weight')(
+                                    {getFieldDecorator('weight',{
+                                        rules: [
+                                            { validator: this.checkWeight}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -93,7 +172,11 @@ const MaterialCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Width">
-                                    {getFieldDecorator('width')(
+                                    {getFieldDecorator('width',{
+                                        rules: [
+                                            { validator: this.checkWidth}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
@@ -114,14 +197,22 @@ const MaterialCreateForm = Form.create()(
                         <Row gutter={16}>
                             <Col span={12}>
                                 <FormItem label="Freight">
-                                    {getFieldDecorator('freight')(
+                                    {getFieldDecorator('freight',{
+                                        rules: [
+                                            { validator: this.checkFreight}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>
                             </Col>
                             <Col span={12}>
                                 <FormItem label="Minimum Quality">
-                                    {getFieldDecorator('minQuality')(
+                                    {getFieldDecorator('minQuality',{
+                                        rules: [
+                                            { validator: this.checkMinimumQuality}
+                                        ]
+                                    })(
                                         <Input />
                                     )}
                                 </FormItem>

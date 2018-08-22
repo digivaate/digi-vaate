@@ -106,7 +106,7 @@ class SingleProductGeneralInfo extends Component{
     };
 
     render(){
-        let editGeneralInfo = null;
+        let editGeneralInfo = <div style={{height:40,width:40}}></div>;
         if(this.props.editModeStatus === true) {
             editGeneralInfo =
                 <Button className="edit-btn" onClick={this.showInfoModal}>

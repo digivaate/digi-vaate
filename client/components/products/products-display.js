@@ -20,6 +20,7 @@ class ProductsDisplay extends Component{
             visible: false,
             materialOptions: null,
             colorOptions:null,
+            sizeOptions:null,
             productLevel: null,
             productLevelId:null,
         };
@@ -165,6 +166,12 @@ class ProductsDisplay extends Component{
                     materialOptions: res.data
                 })
             });
+        axios.get(`${API_ROOT}/size`)
+            .then(res => {
+                this.setState({
+                    sizeOptions: res.data
+                })
+            })
     };
 
     handleSelect(productName){
@@ -197,7 +204,14 @@ class ProductsDisplay extends Component{
 
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            form.resetFields();
+        })
     };
 
     handleCreate = () => {
@@ -205,6 +219,18 @@ class ProductsDisplay extends Component{
         form.validateFields((err, values) => {
             if (err) {
                 return;
+            }
+            if(!values.sellingPrice){
+                values.sellingPrice = 0;
+            }
+            if(!values.taxPercent){
+                values.taxPercent = 0;
+            }
+            if(!values.resellerProfitPercent){
+                values.resellerProfitPercent = 0;
+            }
+            if(!values.subcCostTotal){
+                values.subcCostTotal = 0;
             }
             for (let i = 0; i < values.colors.length; i++) {
                 for (let j = 0; j < this.state.colorOptions.length; j++) {
@@ -221,6 +247,23 @@ class ProductsDisplay extends Component{
                     }
                 }
             }
+            let sizeOptionsValue = this.state.sizeOptions.map(size => size.value);
+            let newSizes = [];
+            let existedSizes = [];
+            let newSizeId = [];
+            for (let i = 0; i < values.sizes.length; i++) {
+                for (let j = 0; j < this.state.sizeOptions.length; j++) {
+                    if (values.sizes[i] === this.state.sizeOptions[j].value) {
+                        existedSizes.push(this.state.sizeOptions[j])
+                    }
+                }
+                if (sizeOptionsValue.indexOf(values.sizes[i]) < 0){
+                    newSizes.push({
+                        value:values.sizes[i]
+                    })
+                }
+            }
+            existedSizes = existedSizes.map(size => size.id);
 
             if(this.state.productLevel === "company"){
                 values.companyId = this.state.productLevelId;
@@ -235,56 +278,117 @@ class ProductsDisplay extends Component{
                 this.props.newProductCollection(values.name);
             }
             values.imagePath = null;
-            console.log('Received values of form: ', values);
             if(this.uploadImage) {
-                axios.post(`${API_ROOT}/product`, values)
-                    .then(response => {
-                        axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
-                            .then(() => {
-                                message.success("Product created",1);
-                                axios.get(`${API_ROOT}${this.props.requestPath}`)
-                                    .then(res => {
-                                        this.products = res.data;
-                                        for(let i = 0;i < this.products.length; i++){
-                                            if(this.products[i].companyId){
-                                                this.products[i].seasonName = "None";
-                                                this.products[i].collectionName = "None";
+                if(newSizes.length > 0){
+                    axios.post(`${API_ROOT}/size`,newSizes)
+                        .then(response => {
+                            newSizeId = response.data.map(ele => ele.id);
+                            existedSizes = existedSizes.concat(newSizeId);
+                            values.sizes = existedSizes.slice(0);
+                            axios.post(`${API_ROOT}/product`, values)
+                                .then(response => {
+                                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
+                                        .then(() => {
+                                            message.success("Product created", 1);
+                                            axios.get(`${API_ROOT}${this.props.requestPath}`)
+                                                .then(res => {
+                                                    this.products = res.data;
+                                                    for (let i = 0; i < this.products.length; i++) {
+                                                        if (this.products[i].companyId) {
+                                                            this.products[i].seasonName = "None";
+                                                            this.products[i].collectionName = "None";
+                                                        }
+                                                        else if (this.products[i].seasonId) {
+                                                            this.products[i].collectionName = "None";
+                                                        }
+                                                    }
+                                                    this.uploadImage = null;
+                                                    this.setState({visible: false});
+                                                });
+                                        });
+                                })
+                                .then(() => this.setState(prevState => prevState));
+                        })
+                } else {
+                    axios.post(`${API_ROOT}/product`, values)
+                        .then(response => {
+                            axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
+                                .then(() => {
+                                    message.success("Product created", 1);
+                                    axios.get(`${API_ROOT}${this.props.requestPath}`)
+                                        .then(res => {
+                                            this.products = res.data;
+                                            for (let i = 0; i < this.products.length; i++) {
+                                                if (this.products[i].companyId) {
+                                                    this.products[i].seasonName = "None";
+                                                    this.products[i].collectionName = "None";
+                                                }
+                                                else if (this.products[i].seasonId) {
+                                                    this.products[i].collectionName = "None";
+                                                }
                                             }
-                                            else if(this.products[i].seasonId){
-                                                this.products[i].collectionName = "None";
-                                            }
-                                        }
-                                        this.uploadImage = null;
-                                        this.setState({visible: false});
-                                    });
-                            });
-                    })
-                    .then(() => this.setState(prevState => prevState));
+                                            this.uploadImage = null;
+                                            this.setState({visible: false});
+                                        });
+                                });
+                        })
+                        .then(() => this.setState(prevState => prevState));
+                }
                 form.resetFields();
             }
             else if(!this.uploadImage){
-                axios.post(`${API_ROOT}/product`, values)
-                    .then(response => {
-                        message.success("Product created",1);
-                        axios.get(`${API_ROOT}${this.props.requestPath}`)
-                            .then(res => {
-                                this.products = res.data;
-                                for(let i = 0;i < this.products.length; i++){
-                                    if(this.products[i].companyId){
-                                        this.products[i].seasonName = "None";
-                                        this.products[i].collectionName = "None";
+                if(newSizes.length > 0){
+                    axios.post(`${API_ROOT}/size`,newSizes)
+                        .then(response => {
+                            newSizeId = response.data.map(ele => ele.id);
+                            existedSizes = existedSizes.concat(newSizeId);
+                            values.sizes = existedSizes.slice(0);
+                            axios.post(`${API_ROOT}/product`, values)
+                                .then(response => {
+                                    message.success("Product created",1);
+                                    axios.get(`${API_ROOT}${this.props.requestPath}`)
+                                        .then(res => {
+                                            this.products = res.data;
+                                            for(let i = 0;i < this.products.length; i++){
+                                                if(this.products[i].companyId){
+                                                    this.products[i].seasonName = "None";
+                                                    this.products[i].collectionName = "None";
+                                                }
+                                                else if(this.products[i].seasonId){
+                                                    this.products[i].collectionName = "None";
+                                                }
+                                            }
+                                            this.uploadImage = null;
+                                            this.setState({visible: false});
+                                        });
+                                })
+                                .then(() => this.setState(prevState => prevState));
+                        })
+                } else {
+                    axios.post(`${API_ROOT}/product`, values)
+                        .then(response => {
+                            message.success("Product created", 1);
+                            axios.get(`${API_ROOT}${this.props.requestPath}`)
+                                .then(res => {
+                                    this.products = res.data;
+                                    for (let i = 0; i < this.products.length; i++) {
+                                        if (this.products[i].companyId) {
+                                            this.products[i].seasonName = "None";
+                                            this.products[i].collectionName = "None";
+                                        }
+                                        else if (this.products[i].seasonId) {
+                                            this.products[i].collectionName = "None";
+                                        }
                                     }
-                                    else if(this.products[i].seasonId){
-                                        this.products[i].collectionName = "None";
-                                    }
-                                }
-                                this.uploadImage = null;
-                                this.setState({visible: false});
-                            });
-                    })
-                    .then(() => this.setState(prevState => prevState));
+                                    this.uploadImage = null;
+                                    this.setState({visible: false});
+                                });
+                        })
+                        .then(() => this.setState(prevState => prevState));
+                }
                 form.resetFields();
             }
+            console.log('Received values of form: ', values);
         });
     };
 
@@ -314,7 +418,7 @@ class ProductsDisplay extends Component{
             }}/>;
             //return <SingleProduct productId={this.state.productName}/>
         }
-        if (this.products) {
+        if (this.products && this.state.productLevel && this.state.productLevelId) {
             renderProductList = this.products.map(product =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imagePath !== null){
@@ -454,6 +558,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -518,6 +625,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -567,6 +677,9 @@ class ProductsDisplay extends Component{
                             Create new product
                         </Button>
                         <ProductCreateForm
+                            productLevelName = {this.state.productLevel}
+                            productLevelId = {this.state.productLevelId}
+                            {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
@@ -603,6 +716,9 @@ class ProductsDisplay extends Component{
                                 Create new product
                             </Button>
                             <ProductCreateForm
+                                productLevelName = {this.state.productLevel}
+                                productLevelId = {this.state.productLevelId}
+                                {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
@@ -628,6 +744,9 @@ class ProductsDisplay extends Component{
                             Create new product
                         </Button>
                         <ProductCreateForm
+                            productLevelName = {this.state.productLevel}
+                            productLevelId = {this.state.productLevelId}
+                            {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}

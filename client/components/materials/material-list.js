@@ -58,7 +58,14 @@ class MaterialList extends Component{
 
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            form.resetFields();
+        })
     };
 
     handleCreate = () => {
@@ -70,6 +77,21 @@ class MaterialList extends Component{
             //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
             values.imagePath = null;
             console.log('Received values of form: ', values);
+            if(!values.unitPrice){
+                values.unitPrice = 0;
+            }
+            if(!values.width){
+                values.width = 0;
+            }
+            if(!values.weight){
+                values.weight = 0;
+            }
+            if(!values.minQuality){
+                values.minQuality = 0;
+            }
+            if(!values.freight){
+                values.freight = 0;
+            }
             if(this.uploadImage) {
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {

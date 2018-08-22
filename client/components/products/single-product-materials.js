@@ -203,7 +203,7 @@ class SingleProductMaterials extends Component{
         let materialSelected1 = null;
         let materialSelected2 = null;
         let materialSelected3 = null;
-        let editMaterialBtn = null;
+        let editMaterialBtn = <div style={{height:40,width:40}}></div>;
         let renderProductMaterials = <p>This product does not have any materials yet</p>;
         let renderMaterialOptions = [];
         let renderDefaultMaterials = [];

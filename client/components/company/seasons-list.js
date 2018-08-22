@@ -35,7 +35,14 @@ class SeasonsList extends Component{
     };
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            form.resetFields();
+        })
     };
 
     handleCreate = () => {
