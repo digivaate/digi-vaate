@@ -19,7 +19,7 @@ const SeasonCreateForm = Form.create()(
                 }
                 return;
             }
-            callback("Name of product cannot contain special character")
+            callback("Name of season cannot contain special character")
         };
 
         checkBudget = (rule, value, callback) => {

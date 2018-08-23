@@ -39,7 +39,7 @@ const MaterialCreateForm = Form.create()(
                 }
                 return;
             }
-            callback("Name of product cannot contain special character")
+            callback("Name of material cannot contain special character")
         };
 
         checkUnitPrice = (rule, value, callback) => {

@@ -19,7 +19,7 @@ const CollectionCreateForm = Form.create()(
                 }
                 return;
             }
-            callback("Name of product cannot contain special character")
+            callback("Name of collection cannot contain special character")
         };
 
         checkCoverPercent = (rule, value, callback) => {

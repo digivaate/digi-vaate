@@ -63,7 +63,7 @@ const OrderCreateForm = Form.create()(
                     <Row gutter={16}>
                         <Col span={12}>
                             <FormItem label="Tax percentage *">
-                                {getFieldDecorator('taxPercentage')(
+                                {getFieldDecorator('taxPercent')(
                                     <Input />
                                 )}
                             </FormItem>
