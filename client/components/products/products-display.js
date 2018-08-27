@@ -30,6 +30,13 @@ class ProductsDisplay extends Component{
     collections = [];
     products = [];
     uploadImage = null;
+
+    componentDidUpdate(prevProps){
+        if(prevProps.requestPath !== this.props.requestPath){
+            this.load()
+        }
+    }
+
     componentDidMount() {
         this.load();
     }

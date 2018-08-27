@@ -18,12 +18,11 @@ class SideBar extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.newSeason !== this.props.newSeason){
-            console.log("New Season!")
+        if(prevProps.newSeason !== this.props.newSeason || prevProps.newCollection !== this.props.newCollection){
             axios.get(`${API_ROOT}/season`)
                 .then(response => {
                     this.seasons = response.data;
-                    this.setState({})
+                    this.setState(prevState => prevState)
                 })
                 .catch(err => console.log(err));
         }
@@ -39,18 +38,80 @@ class SideBar extends Component{
     }
 
     render(){
+        console.log(this.seasons)
         let renderSeasonList = null;
+        let renderCollectionList = null;
         if(this.seasons){
-            renderSeasonList = this.seasons.map(season =>
-                <Menu.Item className="season-item" key={season.id}>
-
-                    <NavLink to={`/${season.name}`} className="nav-text">
-                        <Icon type="right" /> {season.name}
-                    </NavLink>
-                </Menu.Item>
-            );
+            renderSeasonList = this.seasons.map(season => {
+                renderCollectionList = season.collections.map(collection =>
+                    <SubMenu
+                        className="collection-item"
+                        key={`collection-${collection.id}`}
+                        title={<span>{collection.name}</span>}
+                    >
+                        <Menu.Item key={`products-collections-${collection.id}`}>
+                            <NavLink to={`/${season.name}/${collection.name}/products`} className="nav-text">
+                                Products
+                            </NavLink>
+                        </Menu.Item>
+                        <Menu.Item key={`colors-collections-${collection.id}`}>
+                            <NavLink to={`/${season.name}/${collection.name}/colors`} className="nav-text">
+                                Colors
+                            </NavLink>
+                        </Menu.Item>
+                        <Menu.Item key={`materials-collections-${collection.id}`}>
+                            <NavLink to={`/${season.name}/${collection.name}/materials`} className="nav-text">
+                                Materials
+                            </NavLink>
+                        </Menu.Item>
+                        <Menu.Item key={`budget-collections-${collection.id}`}>
+                            <NavLink to={`/${season.name}/${collection.name}/budget`} className="nav-text">
+                                Budget
+                            </NavLink>
+                        </Menu.Item>
+                        <Menu.Item key={`orders-collections-${collection.id}`}>
+                            <NavLink to={`/${season.name}/${collection.name}/orders`} className="nav-text">
+                                Orders
+                            </NavLink>
+                        </Menu.Item>
+                    </SubMenu>
+                );
+                return (
+                <SubMenu
+                    className="season-item"
+                    key={`season-${season.id}`}
+                    title={<span>{season.name}</span>}
+                >
+                    <Menu.Item key={`products-season-${season.id}`}>
+                        <NavLink to={`/${season.name}/products`} className={'nav-text'}>
+                            Products
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key={`budget-season-${season.id}`}>
+                        <NavLink to={`/${season.name}/budget`} className={'nav-text'}>
+                            Budget
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key={`colors-season-${season.id}`}>
+                        <NavLink to={`/${season.name}/colors`} className={'nav-text'}>
+                            Colors
+                        </NavLink>
+                    </Menu.Item>
+                    <SubMenu key={`collections-season-${season.id}`}
+                             title={<span>Collections</span>}
+                    >
+                        <Menu.Item>
+                            <Link to={`/${season.name}/collections`}>
+                                Summary
+                            </Link>
+                        </Menu.Item>
+                        {renderCollectionList}
+                    </SubMenu>
+                </SubMenu>
+                )
+            });
         }return (
-            <Sider>
+            <Sider width={250}>
                 <Menu className="side-bar-menu" mode="inline">
                     <Menu.Item key="products">
                         <Link to={"/products"}>
@@ -62,12 +123,17 @@ class SideBar extends Component{
                             Colors
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="seasons">
-                        <Link to="/seasons">
-                            Seasons
-                        </Link>
-                    </Menu.Item>
-                    {renderSeasonList}
+                    <SubMenu key="seasons"
+                        title={<span>Season</span>
+
+                    }>
+                        <Menu.Item>
+                            <Link to="/seasons">
+                                Summary
+                            </Link>
+                        </Menu.Item>
+                        {renderSeasonList}
+                    </SubMenu>
                 </Menu>
             </Sider>
         )

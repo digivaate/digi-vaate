@@ -28,6 +28,43 @@ class SummaryTable extends React.Component {
         this.sumOfPurchasePrice = this.sumOfPurchasePrice.bind(this);
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.requestPath !== this.props.requestPath){
+            const dataCollected = [];
+            axios.get(`${API_ROOT}${this.props.requestPath}`, { cancelToken: this.source.token})
+                .then(response => {
+                    this.products = response.data;
+                    this.products.forEach(product => {
+                        this.calculateValues(product);
+                        dataCollected.push(product);
+                    });
+
+                    //fetch budget if in season level
+                    if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
+                        return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, {cancelToken: this.source.token})
+                            .then(res => {
+                                return res.data[0].budget;
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                return null;
+                            })
+                    } else {
+                        return null;
+                    }
+                })
+                .then(budget => {
+                    this.setState({
+                        modified: false,
+                        originalData: dataCollected,
+                        data: JSON.parse(JSON.stringify(dataCollected)),
+                        pageSize: dataCollected.length,
+                        budget: budget
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+    }
     //Footer calculations
     sumOfAmounts(){
         let componentValue = [];

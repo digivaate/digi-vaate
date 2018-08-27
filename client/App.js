@@ -95,24 +95,16 @@ class App extends React.Component {
     }
     render(){
         let productsCompanyRoute = null;
-        let productsCompanyRouteSideBar = null;
         let productsSeasonRoute = null;
-        let productsSeasonRouteSideBar = null;
         if(this.productsCompany.length > 0){
             productsCompanyRoute = this.productsCompany.map(product =>
                 <Route path={`/products/${product}`} key={`company-${product.id}`} exact component={SingleProduct}
                 />
             );
-            productsCompanyRouteSideBar = this.productsCompany.map(product =>
-                <Route path={`/products/${product}`} key={`company-sidebar-${product.id}`} exact component={SideBar}/>
-            );
         }
         if(this.productsSeason.length > 0){
             productsSeasonRoute = this.productsSeason.map(product =>
                 <Route path={`/:seasonId/products/${product}`} key={`season-${product.id}`} exact component={SingleProduct}/>
-            );
-            productsSeasonRouteSideBar =  this.productsSeason.map(product =>
-                <Route path={`/:seasonId/products/${product}`} key={`season-sidebar-${product.id}`} exact component={SeasonSideBar}/>
             );
         }
 
@@ -130,28 +122,26 @@ class App extends React.Component {
                     />
                     <div className="sider">
                         <Switch>
-                            <Route path="/" exact component={SideBar}/>
-                            <Route path="/products" component = {SideBar}/>
-                            <Route path="/colors" component = {SideBar}/>
+                            <Route path="/"  render ={(props) =>
+                                <SideBar
+                                    {...props}
+                                    newSeason = {this.state.newSeasonName}
+                                    newCollection = {this.state.newCollectionName}
+
+                                />}
+                            />
                             <Route path="/seasons" render ={(props) =>
                                 <SideBar
                                     {...props}
                                     newSeason = {this.state.newSeasonName}
                                 />}
                             />
-                            {productsCompanyRouteSideBar}
-                            <Route path="/:seasonId" exact component={SeasonSideBar} />
-                            <Route path={'/:seasonId/budget'} exact component={SeasonSideBar}/>
-                            <Route path={'/:seasonId/products'} exact component={SeasonSideBar}/>
-                            <Route path={'/:seasonId/colors'} exact component={SeasonSideBar}/>
                             <Route path="/:seasonId/collections" exact render={(props) =>
                                 <SeasonSideBar
                                     {...props}
                                     newCollection = {this.state.newCollectionName}
                                 />}
                             />
-                            {productsSeasonRouteSideBar}
-                            <Route path="/:seasonId/:collectionId" component={CollectionSideBar} />
                         </Switch>
                     </div>
                     <div className="content">

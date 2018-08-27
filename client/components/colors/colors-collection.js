@@ -25,9 +25,14 @@ class ColorCollection extends Component{
     colorCard = [];
     colorsArray=[];
 
+    componentDidUpdate(prevProps){
+        if(prevProps.match.url !== this.props.match.url){
+            this.loadColors();
+        }
+    }
 
     componentDidMount(){
-        this.loadColors()
+        this.loadColors();
     }
 
     loadColors = () => {
