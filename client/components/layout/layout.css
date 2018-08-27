@@ -27,13 +27,18 @@ collection-side-bar.js
     margin: 0.5em;
 }
 
-.collection-item{
-
+.season-menu {
+    background: #EBECF8;
 }
 
-.season-item{
-
+.collection-menu {
+    background: #D6D8DF;
 }
+
+.ant-menu-submenu > .ant-menu {
+    background: inherit;
+}
+
 /* breadcrumb.js */
 .bread-crumb{
     font-size:20px;

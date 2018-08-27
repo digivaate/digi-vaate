@@ -38,14 +38,13 @@ class SideBar extends Component{
     }
 
     render(){
-        console.log(this.seasons)
         let renderSeasonList = null;
         let renderCollectionList = null;
         if(this.seasons){
             renderSeasonList = this.seasons.map(season => {
                 renderCollectionList = season.collections.map(collection =>
                     <SubMenu
-                        className="collection-item"
+                        className="collection-menu"
                         key={`collection-${collection.id}`}
                         title={<span>{collection.name}</span>}
                     >
@@ -78,7 +77,7 @@ class SideBar extends Component{
                 );
                 return (
                 <SubMenu
-                    className="season-item"
+                    className="season-menu"
                     key={`season-${season.id}`}
                     title={<span>{season.name}</span>}
                 >
