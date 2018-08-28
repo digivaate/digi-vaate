@@ -52,9 +52,9 @@ class SeasonsList extends Component{
             if (err) {
                 return;
             }
-            this.props.sendNewSeason(values.name);
             axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget, coverPercent:values.coverPercent})
-                .then(() => {
+                .then((res) => {
+                    this.props.sendNewSeason(res.data);
                     axios.get(`${API_ROOT}/company?name=Demo%20company`)
                         .then(response => {
                             this.setState({
@@ -86,6 +86,10 @@ class SeasonsList extends Component{
         });
     };
 
+    deleteSeason = (seasonName) => {
+        this.props.deleteSeason(seasonName)
+    }
+
     render(){
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
@@ -112,6 +116,7 @@ class SeasonsList extends Component{
                                     hide={this.hideEdit}
                                     season={this.getEditableSeason()}
                                     refresh={this.componentDidMount}
+                                    deleteSeason ={seasonName => this.deleteSeason(seasonName)}
                         />
                         <br/>
                         <br/>

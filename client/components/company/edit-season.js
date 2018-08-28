@@ -57,7 +57,6 @@ class EditSeason extends React.Component {
             if (err) console.error(err);
             axios.patch(API_ROOT + '/season/?id=' + this.props.season.id, values )
                 .then(res => {
-                    console.log(res);
                     this.close();
                     this.setState({ loading: false });
                 })
@@ -71,12 +70,14 @@ class EditSeason extends React.Component {
 
     confirmDelete = () => {
         const seasonId = this.props.season.id;
+        const self = this;
         const close = this.close;
         confirm({
             title: 'Delete this season?',
             onOk() {
                 return axios.delete(API_ROOT + '/season/?id=' + seasonId)
                     .then(res => {
+                        self.props.deleteSeason(self.props.season)
                         console.log(res);
                         close();
                     })

@@ -19,6 +19,19 @@ class SingleSeason extends Component{
             editableId: null,
         }
     }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.match.params.seasonId !== this.props.match.params.seasonId){
+            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+                .then(response => {
+                    this.setState({
+                        collections: response.data[0].collections,
+                        seasons: response.data[0]
+                    })
+                })
+        }
+    }
+
     componentDidMount = () => {
         axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
             .then(response => {
@@ -50,9 +63,9 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
-            this.props.sendNewCollection(values.name);
             axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id,coverPercent:values.coverPercent})
-                .then(() => {
+                .then((res) => {
+                    this.props.sendNewCollection(res.data);
                     axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
                         .then(response => {
                             this.setState({
@@ -83,7 +96,9 @@ class SingleSeason extends Component{
             return e.id === this.state.editableId;
         });
     };
-
+    deleteCollection = (collectionName) => {
+        this.props.deleteCollection(collectionName)
+    };
     render() {
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
@@ -111,6 +126,8 @@ class SingleSeason extends Component{
                                         hide={this.hideEdit}
                                         collection={this.getEditableCollection()}
                                         refresh={this.componentDidMount}
+                                        deleteCollection ={collectionName => this.deleteCollection(collectionName)}
+
                         />
                         <br/>
                         <br/>

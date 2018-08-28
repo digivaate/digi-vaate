@@ -35,6 +35,8 @@ class App extends React.Component {
             newSeasonName: "",
             newCollectionName: "",
             newProduct: "",
+            newDeleteSeasonName:"",
+            newDeleteCollectionName:"",
             mount:false,
             renderBC: false
         }
@@ -80,6 +82,18 @@ class App extends React.Component {
         })
 
     };
+
+    deleteSeason = (seasonName) => {
+        this.setState({
+            newDeleteSeasonName: seasonName
+        })
+    }
+
+    deleteCollection = (collectionName) => {
+        this.setState({
+            newDeleteCollectionName: collectionName
+        })
+    }
 
     componentDidMount(){
         axios.get(`${API_ROOT}/product`)
@@ -127,7 +141,8 @@ class App extends React.Component {
                                     {...props}
                                     newSeason = {this.state.newSeasonName}
                                     newCollection = {this.state.newCollectionName}
-
+                                    newDeleteSeason = {this.state.newDeleteSeasonName}
+                                    newDeleteCollection = {this.state.newDeleteCollectionName}
                                 />}
                             />
                             <Route path="/seasons" render ={(props) =>
@@ -158,6 +173,7 @@ class App extends React.Component {
                                 <Route path="/seasons" exact render={() =>
                                     <SeasonsList
                                         sendNewSeason={seasonName => this.newSeasonNameFunc(seasonName)}
+                                        deleteSeason = {seasonName => this.deleteSeason(seasonName)}
                                     />}
                                 />
                                 <Route path="/colors" exact component={ColorCollection}/>
@@ -181,6 +197,7 @@ class App extends React.Component {
                                     <SingleSeason
                                         {...props}
                                         sendNewCollection = {collectionName => this.newCollectionNameFunc(collectionName)}
+                                        deleteCollection = {collectionName => this.deleteCollection(collectionName)}
                                     />
                                 }/>
                                 {productsSeasonRoute}

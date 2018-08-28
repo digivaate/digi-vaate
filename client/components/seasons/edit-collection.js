@@ -72,12 +72,13 @@ class EditCollection extends React.Component {
     confirmDelete = () => {
         const collectionId = this.props.collection.id;
         const close = this.close;
+        const self = this;
         confirm({
             title: 'Delete this collection?',
             onOk() {
                 return axios.delete(API_ROOT + '/collection/?id=' + collectionId)
                     .then(res => {
-                        console.log(res);
+                        self.props.deleteCollection(self.props.collection)
                         close();
                     })
                     .catch(err => console.error(err));
