@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
-import '../../utils';
+import '../../utils/compare-obj';
 import SingleProductName from './single-product-name'
 import SingleProductImg from './single-product-img'
 import SingleProductLocation from './single-product-location'

@@ -3,7 +3,7 @@ import {API_ROOT} from "../api-config";
 import axios from "axios";
 import {Button, Popover, message, Icon} from "antd";
 import ReactTable from "react-table";
-import '../utils';
+import '../utils/compare-obj';
 import 'react-table/react-table.css';
 import './summary-table.css';
 

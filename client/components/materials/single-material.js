@@ -2,7 +2,7 @@ import React,{ Component } from "react";
 import axios from 'axios';
 import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
-import '../../utils';
+import '../../utils/compare-obj';
 import './materials.css'
 import FormData from 'form-data';
 const confirm = Modal.confirm;

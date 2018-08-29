@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from 'axios';
 import {Row,Col,Input, Button, Icon, Modal,message} from 'antd';
 import './products.css'
+import { comaToPeriod } from "../../utils/coma-convert";
 
 
 class SingleProductGeneralInfo extends Component{
@@ -60,11 +61,18 @@ class SingleProductGeneralInfo extends Component{
     };
 
     handleChange = (event) => {
+        console.log(event.target.value);
         if(this.state.inputNumber) {
             this.setState({
                 [event.target.name]: event.target.value
             });
         }
+    };
+
+    handleComa = (event) => {
+        event.target.value = comaToPeriod(event.target.value);
+        console.log(event.target.value);
+        this.handleChange(event);
     };
 
     checkNumber = (event) => {
@@ -76,7 +84,7 @@ class SingleProductGeneralInfo extends Component{
             });
             message.error("Only numbers allowed!",1)
         }
-        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 188 || key == 27) {
             this.setState({
                 inputNumber: true
             });
@@ -132,6 +140,7 @@ class SingleProductGeneralInfo extends Component{
                                 name="sellingPrice"
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComa}
                             />
                         </Col>
                         <Col span={12}>
@@ -142,6 +151,7 @@ class SingleProductGeneralInfo extends Component{
                                 name="resellerProfitPercent"
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComa}
                             />
                         </Col>
                     </Row>
@@ -155,6 +165,7 @@ class SingleProductGeneralInfo extends Component{
                                 name="amount"
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComa}
                             />
                         </Col>
                         <Col span={12}>
@@ -165,6 +176,7 @@ class SingleProductGeneralInfo extends Component{
                                 name="subcCostTotal"
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComa}
                             />
                         </Col>
                     </Row>
