@@ -36,18 +36,28 @@ class MaterialList extends Component{
         })
     };
 
-    handleDelete = (materialName) =>{
+    handleDelete = (materialId) =>{
+        let self = this;
         confirm({
             title: 'Are you sure remove this product from collection?',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/material?name=${materialName}`);
-                window.location.reload();
+                axios.delete(`${API_ROOT}/material?id=${materialId}`)
+                    .then(() => {
+                        const materials = [...self.materials];
+                        for(let i = 0; i < materials.length; i++){
+                            if(materials[i].id === materialId){
+                                materials.splice(i,1)
+                            }
+                        }
+                        self.materials = [...materials];
+                        self.setState({})
+                    })
             },
             onCancel() {
-                console.log(productName);
+                console.log(materialId);
             },
         });
     };
@@ -152,7 +162,7 @@ class MaterialList extends Component{
                                     className="material-card-display"
                                     cover={<img onClick = {() => this.handleSelect(material.name)} alt="example" className="material-img" src={`${imgUrl}`} />}
                                     actions={[
-                                        <div onClick = {() => this.handleDelete(material.name)}>
+                                        <div onClick = {() => this.handleDelete(material.id)}>
                                             <Icon type="delete" />
                                         </div>
                                     ]}>
@@ -178,6 +188,19 @@ class MaterialList extends Component{
                 return (
                     <div>
                         <h1>Materials</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewMaterial}
+                        >
+                            Create new material
+                        </Button>
+                        <MaterialCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            uploadImage={(data) => this.uploadImage = data}
+                        />
                         <p>No materials yet...</p>
                     </div>
                 )

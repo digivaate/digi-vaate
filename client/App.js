@@ -176,6 +176,8 @@ class App extends React.Component {
                                         deleteSeason = {seasonName => this.deleteSeason(seasonName)}
                                     />}
                                 />
+                                <Route path="/materials" exact component={MaterialList} />
+                                <Route path="/materials/:materialId" exact component={SingleMaterial} />
                                 <Route path="/colors" exact component={ColorCollection}/>
                                 {productsCompanyRoute}
                                 <Route path="/:seasonId/products" exact render={(props) =>
@@ -208,7 +210,6 @@ class App extends React.Component {
                                     />}
                                 />
                                 <Route path="/:seasonId/:collectionId/colors" exact component={ColorCollection} />
-                                <Route path="/:seasonId/:collectionId/materials" exact component={MaterialList} />
                                 <Route path="/:seasonId/:collectionId/products" exact render={(props) =>
                                     <ProductsDisplay
                                         {...props}
@@ -220,7 +221,6 @@ class App extends React.Component {
                                 <Route path="/:seasonId/:collectionId/orders" exact component={OrderList} />
                                 <Route path="/:seasonId/:collectionId/orders/:orderId" exact component={SingleOrder} />
                                 <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
-                                <Route path="/:seasonId/:collectionId/materials/:materialId" exact component={SingleMaterial} />
                             </Switch>
                         </div>
                     </div>

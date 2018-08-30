@@ -43,7 +43,6 @@ class BreadCrumbDigi extends Component{
     products = [];
     productsMap = [];
     materials=[];
-    materialsMap = [];
     companies = [];
     companiesMap = [];
     companiesProduct = [];
@@ -74,13 +73,24 @@ class BreadCrumbDigi extends Component{
                                 this.companiesProductsMap[m] = this.companiesProduct[m].name;
                                 this.breadcrumbNameMap["/products"] = "Products";
                                 this.breadcrumbNameMap["/colors"] = "Colors";
+                                this.breadcrumbNameMap["/materials"] = "Materials";
                                 this.breadcrumbNameMap["/seasons"] = "Seasons";
                                 this.breadcrumbNameMap["/orders"] = "Orders";
                                 this.breadcrumbNameMap["/products/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
                             }
+                            this.setState({})
+                        })
+                        .then(() => {
+                            axios.get(`${API_ROOT}/material`)
+                                .then(res => {
+                                    this.materials = res.data;
+                                    for(let m = 0 ; m<this.materials.length; m++) {
+                                        this.breadcrumbNameMap["/materials/"+this.materials[m].name] = this.materials[m].name
+                                    }
+                                    this.setState({})
+                                })
                         })
                 }
-                this.setState({})
             });
 
         //Breadcrumb for all season stuffs
@@ -143,7 +153,7 @@ class BreadCrumbDigi extends Component{
                             }
                         }
                     }
-                axios.get(`${API_ROOT}/material`)
+                /*axios.get(`${API_ROOT}/material`)
                     .then(res => {
                         this.materials = res.data;
                         for(let k=0; k < this.seasons.length; k++){
@@ -159,6 +169,7 @@ class BreadCrumbDigi extends Component{
                         }
                     })
                 this.setState({})
+                */
             });
 
     }

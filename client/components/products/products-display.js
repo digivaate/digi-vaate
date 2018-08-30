@@ -188,7 +188,7 @@ class ProductsDisplay extends Component{
         })
     }
 
-    handleDelete(productName){
+    handleDelete(productId){
         let self = this;
         confirm({
             title: 'Are you sure remove this product from collection?',
@@ -196,11 +196,20 @@ class ProductsDisplay extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/product?name=${productName}`)
-                    .then(() => self.load())
+                axios.delete(`${API_ROOT}/product?id=${productId}`)
+                    .then(() => {
+                        const products = [...self.products];
+                        for(let i = 0; i < products.length; i++){
+                            if(products[i].id === productId){
+                                products.splice(i,1)
+                            }
+                        }
+                        self.products = [...products];
+                        self.setState({})
+                    })
             },
             onCancel() {
-                console.log(productName);
+                console.log(productId);
             },
         });
     }
@@ -376,6 +385,8 @@ class ProductsDisplay extends Component{
                     values.sizes = existedSizes.slice(0);
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
+                            console.log(response.data)
+                            console.log(this.products)
                             message.success("Product created", 1);
                             axios.get(`${API_ROOT}${this.props.requestPath}`)
                                 .then(res => {
@@ -474,7 +485,7 @@ class ProductsDisplay extends Component{
                                         className="product-card-display"
                                         cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
                                         actions={[
-                                            <div onClick = {() => this.handleDelete(product.name)}>
+                                            <div onClick = {() => this.handleDelete(product.id)}>
                                                 <Icon type="delete" />
                                             </div>
                                         ]}
@@ -510,7 +521,7 @@ class ProductsDisplay extends Component{
                             className="product-card-display"
                             cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
                             actions={[
-                                <div onClick = {() => this.handleDelete(product.name)}>
+                                <div onClick = {() => this.handleDelete(product.id)}>
                                     <Icon type="delete" />
                                 </div>
                             ]}

@@ -92,7 +92,7 @@ class SideBar extends Component{
     }
 
     render(){
-        const {seasons} = this.state
+        const {seasons} = this.state;
         let renderSeasonList = null;
         let renderCollectionList = null;
         if(seasons){
@@ -111,11 +111,6 @@ class SideBar extends Component{
                         <Menu.Item key={`colors-collections-${collection.id}`}>
                             <NavLink to={`/${season.name}/${collection.name}/colors`} className="nav-text">
                                 Colors
-                            </NavLink>
-                        </Menu.Item>
-                        <Menu.Item key={`materials-collections-${collection.id}`}>
-                            <NavLink to={`/${season.name}/${collection.name}/materials`} className="nav-text">
-                                Materials
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`budget-collections-${collection.id}`}>
@@ -177,6 +172,11 @@ class SideBar extends Component{
                             Colors
                         </Link>
                     </Menu.Item>
+                    <Menu.Item key="materials">
+                        <Link to={"/materials"}>
+                            Materials
+                        </Link>
+                    </Menu.Item>
                     <Menu.Item>
                         <Link to="/seasons">
                             Summary
@@ -184,7 +184,6 @@ class SideBar extends Component{
                     </Menu.Item>
                     <SubMenu key="seasons"
                         title={<span>Season</span>
-
                     }>
 
                         {renderSeasonList}
