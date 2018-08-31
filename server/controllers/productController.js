@@ -84,6 +84,35 @@ class ProductController extends Controller {
             });
     };
 
+    update(req, res) {
+        const properties = Controller.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.status(500).json(properties);
+            return;
+        }
+        const updatedEntities = [];
+        this.model.findAll({ where: properties })
+            .then(ents => {
+                const promises = [];
+                ents.forEach( ent => {
+                    promises.push(this.setRelations(ent, req.body));
+                    updatedEntities.push(ent.updateAttributes(req.body));
+                });
+                return Promise.all(promises.concat(updatedEntities));
+            })
+            .then(async () => {
+                const ents = await this.model.findAll({
+                    where: properties,
+                    include: [{all: true}]
+                });
+                res.send(ents);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
+    };
+
     //saves the file path to entity that is saved to the server in the previous function
     uploadImage(req, res, next) {
         const properties = Controller.collectProperties(req.query, Models.Product);
