@@ -304,7 +304,8 @@ class ProductsDisplay extends Component{
                             axios.post(`${API_ROOT}/product`, values)
                                 .then(response => {
                                     axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
-                                        .then(() => {
+                                        .then((re) => {
+                                            console.log(re.data)
                                             message.success("Product created", 1);
                                             axios.get(`${API_ROOT}${this.props.requestPath}`)
                                                 .then(res => {
@@ -330,7 +331,8 @@ class ProductsDisplay extends Component{
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
                             axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
-                                .then(() => {
+                                .then((re) => {
+                                    console.log(re.data)
                                     message.success("Product created", 1);
                                     axios.get(`${API_ROOT}${this.props.requestPath}`)
                                         .then(res => {
@@ -362,49 +364,35 @@ class ProductsDisplay extends Component{
                             values.sizes = existedSizes.slice(0);
                             axios.post(`${API_ROOT}/product`, values)
                                 .then(response => {
-                                    message.success("Product created",1);
-                                    axios.get(`${API_ROOT}${this.props.requestPath}`)
-                                        .then(res => {
-                                            this.products = res.data;
-                                            for(let i = 0;i < this.products.length; i++){
-                                                if(this.products[i].companyId){
-                                                    this.products[i].seasonName = "None";
-                                                    this.products[i].collectionName = "None";
-                                                }
-                                                else if(this.products[i].seasonId){
-                                                    this.products[i].collectionName = "None";
-                                                }
-                                            }
-                                            this.uploadImage = null;
-                                            this.setState({visible: false});
-                                        });
+                                    if (response.data.companyId) {
+                                        response.data.seasonName = "None";
+                                        response.data.collectionName = "None";
+                                    }
+                                    else if (response.data.seasonId) {
+                                        response.data.collectionName = "None";
+                                    }
+                                    this.products.push(response.data);
+                                    message.success("Product created", 1);
+                                    this.uploadImage = null;
+                                    this.setState({visible: false});
                                 })
-                                .then(() => this.setState(prevState => prevState));
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
-                            console.log(response.data)
-                            console.log(this.products)
+                            if (response.data.companyId) {
+                                response.data.seasonName = "None";
+                                response.data.collectionName = "None";
+                            }
+                            else if (response.data.seasonId) {
+                                response.data.collectionName = "None";
+                            }
+                            this.products.push(response.data);
                             message.success("Product created", 1);
-                            axios.get(`${API_ROOT}${this.props.requestPath}`)
-                                .then(res => {
-                                    this.products = res.data;
-                                    for (let i = 0; i < this.products.length; i++) {
-                                        if (this.products[i].companyId) {
-                                            this.products[i].seasonName = "None";
-                                            this.products[i].collectionName = "None";
-                                        }
-                                        else if (this.products[i].seasonId) {
-                                            this.products[i].collectionName = "None";
-                                        }
-                                    }
-                                    this.uploadImage = null;
-                                    this.setState({visible: false});
-                                });
+                            this.uploadImage = null;
+                            this.setState({visible: false});
                         })
-                        .then(() => this.setState(prevState => prevState));
                 }
                 form.resetFields();
             }

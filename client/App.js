@@ -37,6 +37,7 @@ class App extends React.Component {
             newProduct: "",
             newDeleteSeasonName:"",
             newDeleteCollectionName:"",
+            newMaterial: "",
             mount:false,
             renderBC: false
         }
@@ -81,6 +82,12 @@ class App extends React.Component {
             renderBC:!this.state.renderBC
         })
 
+    };
+
+    newMaterialFunc = (newMaterial) => {
+        this.setState({
+            newMaterial:newMaterial
+        })
     };
 
     deleteSeason = (seasonName) => {
@@ -132,6 +139,7 @@ class App extends React.Component {
                                 newSeasonName = {this.state.newSeasonName}
                                 newCollectionName = {this.state.newCollectionName}
                                 newProduct = {this.state.newProduct}
+                                newMaterial = {this.state.newMaterial}
                             />}
                     />
                     <div className="sider">
@@ -176,7 +184,12 @@ class App extends React.Component {
                                         deleteSeason = {seasonName => this.deleteSeason(seasonName)}
                                     />}
                                 />
-                                <Route path="/materials" exact component={MaterialList} />
+                                <Route path="/materials" exact render={(props) =>
+                                    <MaterialList
+                                        {...props}
+                                        newMaterial={newMaterial => this.newMaterialFunc(newMaterial)}
+                                    />}
+                                />
                                 <Route path="/materials/:materialId" exact component={SingleMaterial} />
                                 <Route path="/colors" exact component={ColorCollection}/>
                                 {productsCompanyRoute}

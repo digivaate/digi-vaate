@@ -146,13 +146,14 @@ class BreadCrumbDigi extends Component{
                                     this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name;
 
                                 }
-                                this.orders = this.collections[i].orders
+                                this.orders = this.collections[i].orders;
                                 for (let m = 0; m < this.orders.length; m++){
                                     this.breadcrumbNameMap["/" + this.seasonsMap[k] + "/" + this.collectionsMap[i] +"/orders/"+this.orders[m].id] = `Order ${this.orders[m].id}`
                                 }
                             }
                         }
                     }
+                this.setState({})
                 /*axios.get(`${API_ROOT}/material`)
                     .then(res => {
                         this.materials = res.data;
