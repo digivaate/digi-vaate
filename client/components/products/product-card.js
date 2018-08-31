@@ -9,6 +9,7 @@ const Option = Select.Option;
 import FormData from 'form-data';
 
 import "./products.css"
+import {comaToPeriod} from "../../utils/coma-convert";
 
 
 
@@ -105,49 +106,22 @@ const ProductCreateForm = Form.create()(
             callback("Name of product cannot contain special character")
         };
 
-        checkSellingPrice = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
+        checkNumber = (rule, value, callback) => {
+            if(/^\d+(\.|\,\d{0,4})?$/.test(value) || !value ){
                 if(callback){
                     callback();
                     return;
                 }
                 return;
             }
-            callback("You can input only number")
-        };
-        checkSubcontractingCost = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
+            callback("Invalid number")
         };
 
-        checkResellerProfitPercent = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
+        handleComa = (event) => {
+            event.target.value = comaToPeriod(event.target.value);
+            console.log(event.target.value);
+            this.handleChange(event);
         };
-
-        checkTaxPercent = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
-        };
-
 
         render() {
             let renderColorOptions = [];
@@ -204,10 +178,12 @@ const ProductCreateForm = Form.create()(
                                 <FormItem label="Selling Price">
                                     {getFieldDecorator('sellingPrice',{
                                         rules: [
-                                            { validator: this.checkSellingPrice}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -215,10 +191,12 @@ const ProductCreateForm = Form.create()(
                                 <FormItem label="Reseller Profit Percentage">
                                     {getFieldDecorator('resellerProfitPercent',{
                                         rules: [
-                                            { validator: this.checkResellerProfitPercent}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -228,10 +206,12 @@ const ProductCreateForm = Form.create()(
                                 <FormItem label="Tax Percentage">
                                     {getFieldDecorator('taxPercent',{
                                         rules: [
-                                            { validator: this.checkTaxPercent}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -239,10 +219,12 @@ const ProductCreateForm = Form.create()(
                                 <FormItem label="Subcontracting cost">
                                     {getFieldDecorator('subcCostTotal',{
                                         rules: [
-                                            { validator: this.checkSubcontractingCost}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
