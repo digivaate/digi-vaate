@@ -121,19 +121,21 @@ class ProductController extends Controller {
             return;
         }
         //save the file path for entity
-        Models.Product.findAll({ where: properties })
-            .then(ents => {
+        Models.Product.findAll({
+            where: properties,
+            include: [{ all: true }]
+        })
+            .then(async ents => {
                 const updatedEnts = [];
                 ents.forEach(ent => {
                     updatedEnts.push(
-                        ent.updateAttributes( { imagePath: req.file.filename})
+                        ent.updateAttributes({imagePath: req.file.filename})
                     );
                 });
-                Promise.all(updatedEnts)
-                    .then(resolved => {
-                        res.send(resolved);
-                    });
-            });
+                await Promise.all(updatedEnts);
+                res.send(ents);
+            })
+            .catch(err => next(err));
     }
 
     deleteImage(req, res, next) {
