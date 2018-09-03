@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
@@ -51,6 +52,8 @@ class SingleProduct extends Component {
         this.loadCollection();
         this.loadMaterials();
     }
+
+
 
     loadColors = () => {
         axios.get(`${API_ROOT}/color`)
@@ -118,43 +121,35 @@ class SingleProduct extends Component {
                         if (response.data[0].seasonId) {
                             axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
                                 .then(res => {
-                                    this.setState({
-                                        collectionName: "None",
-                                        seasonName: res.data[0].name,
-                                        colorOptions: res.data[0].colors
-                                    });
+                                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                                        .then(re => {
+                                            this.setState({
+                                                collectionName: "None",
+                                                seasonName: res.data[0].name,
+                                                colorOptions: res.data[0].colors.concat(re.data[0].colors)
+                                            })
+                                        });
                                 });
-                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                                .then(re => {
-                                    this.setState({
-                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
-                                    })
-                                })
+
                         }
                         if (response.data[0].collectionId) {
                             axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
-                                .then(response => {
-                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                .then(resp => {
+                                    axios.get(`${API_ROOT}/collection?id=${resp.data[0].collectionId}`)
                                         .then(res => {
-                                            this.setState({
-                                                collectionName: res.data[0].name,
-                                                colorOptions: res.data[0].colors
-                                            });
                                             axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
                                                 .then(re => {
-                                                    this.setState({
-                                                        seasonName: re.data[0].name,
-                                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
-                                                    });
-                                                })
-                                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                                                .then(re => {
-                                                    this.setState({
-                                                        colorOptions: this.state.colorOptions.concat(re.data[0].colors)
-                                                    })
-                                                })
+                                                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                                                        .then(re1 => {
+                                                            this.setState({
+                                                                seasonName: re.data[0].name,
+                                                                collectionName: res.data[0].name,
+                                                                colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))
+                                                            })
+                                                        })
 
-                                        });
+                                                });
+                                        })
                                 })
                         }
                         this.setState({
@@ -442,6 +437,25 @@ class SingleProduct extends Component {
     };
 
     render(){
+        let backToOrderBtn = null;
+        let backToOrder = null;
+        if(this.props.location.state){
+            if(this.props.location.state.historyOrderUrl){
+                backToOrderBtn =
+                    <Button
+                        onClick={() => this.setState({
+                            backToOrder: true
+                        })}
+                    >
+                       Back to order
+                    </Button>
+            }
+        }
+        if(this.state.backToOrder){
+            backToOrder = <Redirect to={{
+                pathname: `${this.props.location.state.historyOrderUrl}`
+            }}/>
+        }
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
             const tabList = [{
                 key: 'tab1',
@@ -493,6 +507,8 @@ class SingleProduct extends Component {
             };
             return(
                 <div>
+                    {backToOrderBtn}
+                    {backToOrder}
                     <Row>
                         <Col span={8}>
                             <SingleProductName
@@ -516,12 +532,14 @@ class SingleProduct extends Component {
                                 productName = {this.state.productName}
                             />
                             <SingleProductLocation
+                                {...this.props}
                                 editModeStatus = {this.state.editModeStatus}
                                 seasons = {this.state.seasons}
                                 seasonName = {this.state.seasonName}
                                 collections = {this.state.collections}
                                 collectionName = {this.state.collectionName}
                                 loadedProduct = {this.state.loadedProduct}
+                                changeLocation = {() => this.props.changeLocation()}
                             />
                         </Col>
                         <Col span={16}>

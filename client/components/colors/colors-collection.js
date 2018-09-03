@@ -128,7 +128,6 @@ class ColorCollection extends Component{
     };
 
     showColorModal = (element) => {
-        console.log(element)
         this.setState({
             colorVisible: true,
             id: element.id,
@@ -163,9 +162,15 @@ class ColorCollection extends Component{
             onOk() {
                 axios.delete(`${API_ROOT}/color?id=${self.state.id}`)
                     .then(response => {
-                        self.loadColors()
+                        const colors = [...self.colorCard];
+                        for(let i = 0; i < colors.length; i++){
+                            if(colors[i].id === self.state.id){
+                                colors.splice(i,1)
+                            }
+                        }
+                        self.colorCard = [...colors];
+                        self.setState({colorVisible: false})
                     })
-                    .then(() => self.setState({colorVisible:false}))
             },
             onCancel() {
 

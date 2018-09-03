@@ -37,8 +37,10 @@ class App extends React.Component {
             newProduct: "",
             newDeleteSeasonName:"",
             newDeleteCollectionName:"",
+            newMaterial: "",
             mount:false,
-            renderBC: false
+            renderBC: false,
+            changeLocation: false
         }
     }
 
@@ -83,6 +85,12 @@ class App extends React.Component {
 
     };
 
+    newMaterialFunc = (newMaterial) => {
+        this.setState({
+            newMaterial:newMaterial
+        })
+    };
+
     deleteSeason = (seasonName) => {
         this.setState({
             newDeleteSeasonName: seasonName
@@ -93,6 +101,14 @@ class App extends React.Component {
         this.setState({
             newDeleteCollectionName: collectionName
         })
+    }
+
+    changeLocation = () => {
+        this.setState(prevState => {
+            return{
+                changeLocation: !prevState.changeLocation
+            }}
+        )
     }
 
     componentDidMount(){
@@ -112,13 +128,23 @@ class App extends React.Component {
         let productsSeasonRoute = null;
         if(this.productsCompany.length > 0){
             productsCompanyRoute = this.productsCompany.map(product =>
-                <Route path={`/products/${product}`} key={`company-${product.id}`} exact component={SingleProduct}
-                />
+                <Route path={`/products/${product}`} key={`company-${product.id}`} exact render={(props) =>
+                    <SingleProduct
+                        {...props}
+                        changeLocation = {() => this.changeLocation()}
+                    />
+                }/>
             );
         }
         if(this.productsSeason.length > 0){
             productsSeasonRoute = this.productsSeason.map(product =>
-                <Route path={`/:seasonId/products/${product}`} key={`season-${product.id}`} exact component={SingleProduct}/>
+                <Route path={`/:seasonId/products/${product}`} key={`season-${product.id}`} exact render={(props) =>
+                    <SingleProduct
+                        {...props}
+                        key = {window.location.href}
+                        changeLocation = {() => this.changeLocation()}
+                    />
+                }/>
             );
         }
 
@@ -132,6 +158,8 @@ class App extends React.Component {
                                 newSeasonName = {this.state.newSeasonName}
                                 newCollectionName = {this.state.newCollectionName}
                                 newProduct = {this.state.newProduct}
+                                newMaterial = {this.state.newMaterial}
+                                changeLocation = {this.state.changeLocation}
                             />}
                     />
                     <div className="sider">
@@ -176,7 +204,12 @@ class App extends React.Component {
                                         deleteSeason = {seasonName => this.deleteSeason(seasonName)}
                                     />}
                                 />
-                                <Route path="/materials" exact component={MaterialList} />
+                                <Route path="/materials" exact render={(props) =>
+                                    <MaterialList
+                                        {...props}
+                                        newMaterial={newMaterial => this.newMaterialFunc(newMaterial)}
+                                    />}
+                                />
                                 <Route path="/materials/:materialId" exact component={SingleMaterial} />
                                 <Route path="/colors" exact component={ColorCollection}/>
                                 {productsCompanyRoute}
@@ -220,7 +253,13 @@ class App extends React.Component {
                                 <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
                                 <Route path="/:seasonId/:collectionId/orders" exact component={OrderList} />
                                 <Route path="/:seasonId/:collectionId/orders/:orderId" exact component={SingleOrder} />
-                                <Route path="/:seasonId/:collectionId/products/:productId" exact component={SingleProduct} />
+                                <Route path="/:seasonId/:collectionId/products/:productId" exact render={(props) =>
+                                    <SingleProduct
+                                        {...props}
+                                        key={window.location.href}
+                                        changeLocation = {() => this.changeLocation()}
+                                    />
+                                } />
                             </Switch>
                         </div>
                     </div>

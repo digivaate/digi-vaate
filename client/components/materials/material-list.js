@@ -102,34 +102,27 @@ class MaterialList extends Component{
             if(!values.freight){
                 values.freight = 0;
             }
+            this.props.newMaterial(values.name);
             if(this.uploadImage) {
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
                         axios.patch(`${API_ROOT}/material/${response.data.id}/image`, this.uploadImage)
-                            .then(() => {
+                            .then((re) => {
+                                this.materials.push(re.data)
                                 message.success("Material created",1);
-                                axios.get(`${API_ROOT}/material`)
-                                    .then(res => {
-                                        this.materials = res.data;
-                                        this.setState({visible: false});
-                                        this.uploadImage = null;
-                                    });
+                                this.uploadImage = null;
+                                this.setState({visible: false});
                             });
-                    })
-                    .then(() => this.setState(prevState => prevState));
+                    });
                 form.resetFields();
             }
             else if(!this.uploadImage){
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
+                        this.materials.push(response.data)
                         message.success("Material created",1);
-                        axios.get(`${API_ROOT}/material`)
-                            .then(res => {
-                                this.materials = res.data;
-                                this.setState({visible: false});
-                            });
-                    })
-                    .then(() => this.setState(prevState => prevState));
+                        this.setState({visible: false});
+                    });
                 form.resetFields();
             }
         });
