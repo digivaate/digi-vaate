@@ -44,7 +44,7 @@ class SingleProductImg extends Component{
         return (
             <div className="img-container">
                 {changeImgBtn}
-                <img alt="example" height="300" width="370" src={`${imgUrl}`}/>
+                <img alt="example" className="product-big-ava-img" src={`${imgUrl}`}/>
             </div>
         )
     }

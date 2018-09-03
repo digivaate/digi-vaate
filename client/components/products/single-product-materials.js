@@ -232,7 +232,7 @@ class SingleProductMaterials extends Component{
                             <Card
                                 hoverable
                                 className="product-material-card"
-                                cover={<img width="100" height="120" src={`${materialImgUrl}`}/>}
+                                cover={<img className="material-img" src={`${materialImgUrl}`}/>}
                             >
                                 <Meta
                                     title={material.name}
