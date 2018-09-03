@@ -18,7 +18,8 @@ class HeaderBar extends Component{
         if(prevProps.newSeasonName != this.props.newSeasonName ||
             prevProps.newCollectionName != this.props.newCollectionName ||
                 prevProps.newProduct != this.props.newProduct ||
-                prevProps.newMaterial != this.props.newMaterial
+                prevProps.newMaterial != this.props.newMaterial ||
+                prevProps.changeLocation != this.props.changeLocation
         ){
 
             this.setState({

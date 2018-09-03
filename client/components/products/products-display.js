@@ -768,7 +768,19 @@ class ProductsDisplay extends Component{
                 )
             }
         } else {
-            return <Spin/>
+            return (
+                <div>
+                    {singleProduct}
+                    <h1>Products</h1>
+                    <Button type="primary"
+                            size="large"
+                            onClick={this.createNewProduct}
+                    >
+                        Create new product
+                    </Button>
+                </div>
+                )
+
         }
     }
 }

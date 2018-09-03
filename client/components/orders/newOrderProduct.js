@@ -1,5 +1,6 @@
 import React,{ Component } from "react";
-import { Card, Row, Modal,Button,Form,Input,Select} from 'antd';
+import { Modal,Button,Form,Input,Select} from 'antd';
+import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const FormItem = Form.Item;
@@ -20,7 +21,7 @@ const OrderProductCreateForm = Form.create()(
             let valueObj = [];
             for (let i = 0; i < value.length; i++) {
                 for (let j = 0; j < this.props.productList.length; j++) {
-                    if (parseInt(value[i]) === this.props.productList[j].id) {
+                    if (parseInt(value) === this.props.productList[j].id) {
                         valueObj[i] = this.props.productList[j]
                     }
                 }
@@ -42,16 +43,23 @@ const OrderProductCreateForm = Form.create()(
             let noSizeFormItem = null;
             let redirectToProduct = null;
             let renderSizeFormItems = null;
+            let linkToProduct = null;
             if(productNameSelected){
                 redirectToProduct =
                     <div>
                         <p> For more size options, click the button below: </p>
                         <Button
-                            onClick={() => window.location.href = `${this.props.match.url}/../../products/${productNameSelected}`}
+                            onClick={() => this.setState({isRedirected:true})}
                         >
                             Edit size
                         </Button>
                     </div>
+            }
+            if(this.state.isRedirected){
+                linkToProduct =  <Redirect to={{
+                    pathname: `/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${productNameSelected}`,
+                    state: {historyOrderUrl: this.props.match.url}
+                }}/>
             }
             if(sizeOptions){
                 renderSizeFormItems = sizeOptions.map(size => {
@@ -81,6 +89,7 @@ const OrderProductCreateForm = Form.create()(
                     onCancel={onCancel}
                     onOk={onCreate}
                 >
+                    {linkToProduct}
                     <Form layout="vertical">
                         <FormItem label="Product">
                             {getFieldDecorator('productId')(
