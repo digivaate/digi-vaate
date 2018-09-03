@@ -305,26 +305,19 @@ class ProductsDisplay extends Component{
                                 .then(response => {
                                     axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
                                         .then((re) => {
-                                            console.log(re.data)
+                                            if (re.data[0].companyId) {
+                                                re.data[0].seasonName = "None";
+                                                re.data[0].collectionName = "None";
+                                            }
+                                            else if (re[0].data.seasonId) {
+                                                re.data[0].collectionName = "None";
+                                            }
+                                            this.products.push(re.data[0]);
                                             message.success("Product created", 1);
-                                            axios.get(`${API_ROOT}${this.props.requestPath}`)
-                                                .then(res => {
-                                                    this.products = res.data;
-                                                    for (let i = 0; i < this.products.length; i++) {
-                                                        if (this.products[i].companyId) {
-                                                            this.products[i].seasonName = "None";
-                                                            this.products[i].collectionName = "None";
-                                                        }
-                                                        else if (this.products[i].seasonId) {
-                                                            this.products[i].collectionName = "None";
-                                                        }
-                                                    }
-                                                    this.uploadImage = null;
-                                                    this.setState({visible: false});
-                                                });
+                                            this.uploadImage = null;
+                                            this.setState({visible: false});
                                         });
                                 })
-                                .then(() => this.setState(prevState => prevState));
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
@@ -332,26 +325,19 @@ class ProductsDisplay extends Component{
                         .then(response => {
                             axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
                                 .then((re) => {
-                                    console.log(re.data)
+                                    if (re.data[0].companyId) {
+                                        re.data[0].seasonName = "None";
+                                        re.data[0].collectionName = "None";
+                                    }
+                                    else if (re[0].data.seasonId) {
+                                        re.data[0].collectionName = "None";
+                                    }
+                                    this.products.push(re.data[0]);
                                     message.success("Product created", 1);
-                                    axios.get(`${API_ROOT}${this.props.requestPath}`)
-                                        .then(res => {
-                                            this.products = res.data;
-                                            for (let i = 0; i < this.products.length; i++) {
-                                                if (this.products[i].companyId) {
-                                                    this.products[i].seasonName = "None";
-                                                    this.products[i].collectionName = "None";
-                                                }
-                                                else if (this.products[i].seasonId) {
-                                                    this.products[i].collectionName = "None";
-                                                }
-                                            }
-                                            this.uploadImage = null;
-                                            this.setState({visible: false});
-                                        });
+                                    this.uploadImage = null;
+                                    this.setState({visible: false});
                                 });
                         })
-                        .then(() => this.setState(prevState => prevState));
                 }
                 form.resetFields();
             }

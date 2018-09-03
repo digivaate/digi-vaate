@@ -120,7 +120,6 @@ const ProductCreateForm = Form.create()(
         handleComa = (event) => {
             event.target.value = comaToPeriod(event.target.value);
             console.log(event.target.value);
-            this.handleChange(event);
         };
 
         render() {
