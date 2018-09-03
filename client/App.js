@@ -95,13 +95,13 @@ class App extends React.Component {
         this.setState({
             newDeleteSeasonName: seasonName
         })
-    }
+    };
 
     deleteCollection = (collectionName) => {
         this.setState({
             newDeleteCollectionName: collectionName
         })
-    }
+    };
 
     changeLocation = () => {
         this.setState(prevState => {
@@ -131,13 +131,12 @@ class App extends React.Component {
                 <Route path={`/products/${product}`} key={`company-${product.id}`} exact render={(props) =>
                     <SingleProduct
                         {...props}
+                        key={window.location.href}
                         changeLocation = {() => this.changeLocation()}
                     />
                 }/>
             );
-        }
-        if(this.productsSeason.length > 0){
-            productsSeasonRoute = this.productsSeason.map(product =>
+            productsSeasonRoute = this.productsCompany.map(product =>
                 <Route path={`/:seasonId/products/${product}`} key={`season-${product.id}`} exact render={(props) =>
                     <SingleProduct
                         {...props}
