@@ -9,6 +9,7 @@ const Option = Select.Option;
 import FormData from 'form-data';
 
 import "./materials.css"
+import {comaToPeriod} from "../../utils/coma-convert";
 
 
 const MaterialCreateForm = Form.create()(
@@ -29,6 +30,11 @@ const MaterialCreateForm = Form.create()(
             this.props.uploadImage(data);
         };
 
+        handleComa = (event) => {
+            event.target.value = comaToPeriod(event.target.value);
+            console.log(event.target.value);
+        };
+
         //Validation Form
 
         checkName = (rule, value, callback) => {
@@ -42,59 +48,26 @@ const MaterialCreateForm = Form.create()(
             callback("Name of material cannot contain special character")
         };
 
-        checkUnitPrice = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
+        checkNumber = (rule, value, callback) => {
+            if(/^\d*(\.|,)?\d*$/.test(value) || !value ){
                 if(callback){
                     callback();
                     return;
                 }
                 return;
             }
-            callback("You can input only number")
+            callback("Invalid number")
         };
 
-        checkWidth = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
+        checkWholeNumber = (rule, value, callback) => {
+            if(/^\d*$/.test(value) || !value ){
                 if(callback){
                     callback();
                     return;
                 }
                 return;
             }
-            callback("You can input only number")
-        };
-
-        checkWeight = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
-        };
-
-        checkFreight = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
-        };
-
-        checkMinimumQuality = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
+            callback("Invalid number")
         };
 
         render() {
@@ -116,7 +89,9 @@ const MaterialCreateForm = Form.create()(
                                     { validator: this.checkName}
                                 ],
                             })(
-                                <Input />
+                                <Input
+                                    onBlur={this.handleComa}
+                                />
                             )}
                         </FormItem>
                         <FormItem label="Manufacturer">
@@ -136,10 +111,12 @@ const MaterialCreateForm = Form.create()(
                                 <FormItem label="Unit Price">
                                     {getFieldDecorator('unitPrice',{
                                         rules: [
-                                            { validator: this.checkUnitPrice}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -149,10 +126,12 @@ const MaterialCreateForm = Form.create()(
                                 <FormItem label="Weight">
                                     {getFieldDecorator('weight',{
                                         rules: [
-                                            { validator: this.checkWeight}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -174,10 +153,12 @@ const MaterialCreateForm = Form.create()(
                                 <FormItem label="Width">
                                     {getFieldDecorator('width',{
                                         rules: [
-                                            { validator: this.checkWidth}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -199,10 +180,12 @@ const MaterialCreateForm = Form.create()(
                                 <FormItem label="Freight">
                                     {getFieldDecorator('freight',{
                                         rules: [
-                                            { validator: this.checkFreight}
+                                            { validator: this.checkNumber}
                                         ]
                                     })(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComa}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -210,7 +193,7 @@ const MaterialCreateForm = Form.create()(
                                 <FormItem label="Minimum Quality">
                                     {getFieldDecorator('minQuality',{
                                         rules: [
-                                            { validator: this.checkMinimumQuality}
+                                            { validator: this.checkWholeNumber}
                                         ]
                                     })(
                                         <Input />

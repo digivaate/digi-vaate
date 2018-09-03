@@ -5,6 +5,7 @@ import { API_ROOT } from '../../api-config';
 import '../../utils/compare-obj';
 import './materials.css'
 import FormData from 'form-data';
+import {comaToPeriod} from "../../utils/coma-convert";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -163,7 +164,7 @@ class SingleMaterial extends Component{
             });
             message.error("Only numbers allowed!",1)
         }
-        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 188 || key == 27) {
             this.setState({
                 inputNumber: true
             });
@@ -182,6 +183,12 @@ class SingleMaterial extends Component{
                 [event.target.name]: event.target.value
             });
         }
+    };
+
+    handleComma = (event) => {
+        event.target.value = comaToPeriod(event.target.value);
+        console.log(event.target.value);
+        this.handleChange(event);
     };
 
     handleChange = (event) => {
@@ -477,6 +484,7 @@ class SingleMaterial extends Component{
                                                 name="freight"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
+                                                onBlur={this.handleComma}
                                             />
                                         </Col>
                                     </Row>
@@ -490,6 +498,7 @@ class SingleMaterial extends Component{
                                                 name="minQuality"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
+                                                onBlur={this.handleComma}
                                             />
                                         </Col>
                                         <Col span={12}>
@@ -500,6 +509,7 @@ class SingleMaterial extends Component{
                                                 name="unitPrice"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
+                                                onBlur={this.handleComma}
                                             />
                                         </Col>
                                     </Row>
@@ -513,6 +523,7 @@ class SingleMaterial extends Component{
                                                 name="width"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
+                                                onBlur={this.handleComma}
                                             />
                                         </Col>
                                         <Col span={12}>
@@ -539,6 +550,7 @@ class SingleMaterial extends Component{
                                                 name="weight"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
+                                                onBlur={this.handleComma}
                                             />
                                         </Col>
                                         <Col span={12}>

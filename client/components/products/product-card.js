@@ -107,7 +107,7 @@ const ProductCreateForm = Form.create()(
         };
 
         checkNumber = (rule, value, callback) => {
-            if(/^\d+(\.|\,\d{0,4})?$/.test(value) || !value ){
+            if(/^\d*(\.|,)?\d*$/.test(value) || !value ){
                 if(callback){
                     callback();
                     return;

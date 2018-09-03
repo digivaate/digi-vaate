@@ -108,7 +108,7 @@ class MaterialList extends Component{
                     .then(response => {
                         axios.patch(`${API_ROOT}/material/${response.data.id}/image`, this.uploadImage)
                             .then((re) => {
-                                this.materials.push(re.data)
+                                this.materials.push(re.data);
                                 message.success("Material created",1);
                                 this.uploadImage = null;
                                 this.setState({visible: false});
@@ -119,7 +119,7 @@ class MaterialList extends Component{
             else if(!this.uploadImage){
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
-                        this.materials.push(response.data)
+                        this.materials.push(response.data);
                         message.success("Material created",1);
                         this.setState({visible: false});
                     });
