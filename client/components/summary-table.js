@@ -16,7 +16,8 @@ class SummaryTable extends React.Component {
             overBudget: false,
             modified: false,
             isSelected: false,
-            productName: null
+            productName: null,
+            collectionName: null
         };
         this.source = axios.CancelToken.source();
         this.saveData = this.saveData.bind(this);
@@ -191,11 +192,18 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         id:'name',
                         accessor: d =>{
+                            if(d.collectionName){
+                                return (
+                                    <div>
+                                        <span className="link-to-product" onClick={() => this.linkToProduct(d.name,d.collectionName)}>{d.name}</span>
+                                    </div>
+                                )
+                            } else {
                             return (
                                 <div>
                                     <span className="link-to-product" onClick={() => this.linkToProduct(d.name)}>{d.name}</span>
                                 </div>
-                            )},
+                            )}},
                         width: 140,
                         Footer: 'Total:'
                     },
@@ -386,8 +394,9 @@ class SummaryTable extends React.Component {
         );
     }
 
-    linkToProduct = (productName) => {
+    linkToProduct = (productName,collectionName="None") => {
         this.setState({
+            collectionName: collectionName,
             productName:productName,
             isSelected:true
         })
@@ -397,13 +406,20 @@ class SummaryTable extends React.Component {
         let linkToProduct = null;
         if(this.state.isSelected){
             if(this.props.match.params.seasonId && !this.props.match.params.collectionId){
-                linkToProduct =  <Redirect to={{
-                    pathname: `/${this.props.match.params.seasonId}/products/${this.state.productName}`,
-                    state: {historyBudgetUrl: this.props.match.url}
-                }}/>
+                if(this.state.collectionName !== "None"){
+                    linkToProduct =  <Redirect to={{
+                        pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.state.collectionName}/products/${this.state.productName}`,
+                        state: {historyBudgetUrl: this.props.match.url}
+                    }}/>
+                } else {
+                    linkToProduct = <Redirect to={{
+                        pathname: `/seasons/${this.props.match.params.seasonId}/products/${this.state.productName}`,
+                        state: {historyBudgetUrl: this.props.match.url}
+                    }}/>
+                }
             } else if(this.props.match.params.seasonId && this.props.match.params.collectionId){
                 linkToProduct =  <Redirect to={{
-                    pathname: `/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`,
+                    pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${this.state.productName}`,
                     state: {historyBudgetUrl: this.props.match.url}
                 }}/>
             }

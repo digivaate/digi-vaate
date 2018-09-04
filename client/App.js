@@ -137,7 +137,7 @@ class App extends React.Component {
                 }/>
             );
             productsSeasonRoute = this.productsCompany.map(product =>
-                <Route path={`/:seasonId/products/${product}`} key={`season-${product.id}`} exact render={(props) =>
+                <Route path={`/seasons/:seasonId/products/${product}`} key={`season-${product.id}`} exact render={(props) =>
                     <SingleProduct
                         {...props}
                         key = {window.location.href}
@@ -212,22 +212,22 @@ class App extends React.Component {
                                 <Route path="/materials/:materialId" exact component={SingleMaterial} />
                                 <Route path="/colors" exact component={ColorCollection}/>
                                 {productsCompanyRoute}
-                                <Route path="/:seasonId/products" exact render={(props) =>
+                                <Route path="/seasons/:seasonId/products" exact render={(props) =>
                                     <ProductsDisplay
                                         {...props}
                                         newProductSeason={newProductSeason => this.newProductSeasonFunc(newProductSeason)}
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
                                     />}
                                 />
-                                <Route path={'/:seasonId/budget'} exact render={(props) =>
+                                <Route path={'/seasons/:seasonId/budget'} exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
                                         showCollection={true}
                                     />}
                                 />
-                                <Route path={'/:seasonId/colors'} exact component={ColorCollection}/>
-                                <Route path="/:seasonId/collections" exact render={(props) =>
+                                <Route path={'/seasons/:seasonId/colors'} exact component={ColorCollection}/>
+                                <Route path="/seasons/:seasonId/collections" exact render={(props) =>
                                     <SingleSeason
                                         {...props}
                                         sendNewCollection = {collectionName => this.newCollectionNameFunc(collectionName)}
@@ -235,24 +235,24 @@ class App extends React.Component {
                                     />
                                 }/>
                                 {productsSeasonRoute}
-                                <Route path="/:seasonId/:collectionId/budget" exact render={(props) =>
+                                <Route path="/seasons/:seasonId/collections/:collectionId/budget" exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}
                                         requestPath={`/collection/products?name=${props.match.params.collectionId}`}
                                     />}
                                 />
-                                <Route path="/:seasonId/:collectionId/colors" exact component={ColorCollection} />
-                                <Route path="/:seasonId/:collectionId/products" exact render={(props) =>
+                                <Route path="/seasons/:seasonId/collections/:collectionId/colors" exact component={ColorCollection} />
+                                <Route path="/seasons/:seasonId/collections/:collectionId/products" exact render={(props) =>
                                     <ProductsDisplay
                                         {...props}
                                         requestPath={`/collection/products?name=${props.match.params.collectionId}`}
                                         newProductCollection = {(newProductCollection) => this.newProductCollectionFunc(newProductCollection)}
                                     />}
                                 />
-                                <Route path="/:seasonId/:collectionId/themes" exact component={ThemeList} />
-                                <Route path="/:seasonId/:collectionId/orders" exact component={OrderList} />
-                                <Route path="/:seasonId/:collectionId/orders/:orderId" exact component={SingleOrder} />
-                                <Route path="/:seasonId/:collectionId/products/:productId" exact render={(props) =>
+                                <Route path="/seasons/:seasonId/collections/:collectionId/themes" exact component={ThemeList} />
+                                <Route path="/seasons/:seasonId/collections/:collectionId/orders" exact component={OrderList} />
+                                <Route path="/seasons/:seasonId/collections/:collectionId/orders/:orderId" exact component={SingleOrder} />
+                                <Route path="/seasons/:seasonId/collections/:collectionId/products/:productId" exact render={(props) =>
                                     <SingleProduct
                                         {...props}
                                         key={window.location.href}

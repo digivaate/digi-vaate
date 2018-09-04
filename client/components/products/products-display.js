@@ -55,7 +55,7 @@ class ProductsDisplay extends Component{
                 })
         }
         if(pathSnippetsLevel[0] === "season"){
-            axios.get(`${API_ROOT}/season?name=${pathSnippetsName[0]}`)
+            axios.get(`${API_ROOT}/season?name=${pathSnippetsName[1]}`)
                 .then(response => {
                     this.setState({
                         productLevel: pathSnippetsLevel[0],
@@ -65,7 +65,7 @@ class ProductsDisplay extends Component{
 
         }
         if(pathSnippetsLevel[0] === "collection"){
-            axios.get(`${API_ROOT}/collection?name=${pathSnippetsName[1]}`)
+            axios.get(`${API_ROOT}/collection?name=${pathSnippetsName[3]}`)
                 .then(response => {
                     this.setState({
                         productLevel: pathSnippetsLevel[0],

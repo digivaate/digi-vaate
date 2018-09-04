@@ -104,22 +104,22 @@ class SideBar extends Component{
                         title={<span>{collection.name}</span>}
                     >
                         <Menu.Item key={`products-collections-${collection.id}`}>
-                            <NavLink to={`/${season.name}/${collection.name}/products`} className="nav-text">
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/products`} className="nav-text">
                                 Products
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`colors-collections-${collection.id}`}>
-                            <NavLink to={`/${season.name}/${collection.name}/colors`} className="nav-text">
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/colors`} className="nav-text">
                                 Colors
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`budget-collections-${collection.id}`}>
-                            <NavLink to={`/${season.name}/${collection.name}/budget`} className="nav-text">
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/budget`} className="nav-text">
                                 Budget
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`orders-collections-${collection.id}`}>
-                            <NavLink to={`/${season.name}/${collection.name}/orders`} className="nav-text">
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/orders`} className="nav-text">
                                 Orders
                             </NavLink>
                         </Menu.Item>
@@ -132,22 +132,22 @@ class SideBar extends Component{
                     title={<span>{season.name}</span>}
                 >
                     <Menu.Item key={`products-season-${season.id}`}>
-                        <NavLink to={`/${season.name}/products`} className={'nav-text'}>
+                        <NavLink to={`/seasons/${season.name}/products`} className={'nav-text'}>
                             Products
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item key={`budget-season-${season.id}`}>
-                        <NavLink to={`/${season.name}/budget`} className={'nav-text'}>
+                        <NavLink to={`/seasons/${season.name}/budget`} className={'nav-text'}>
                             Budget
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item key={`colors-season-${season.id}`}>
-                        <NavLink to={`/${season.name}/colors`} className={'nav-text'}>
+                        <NavLink to={`/seasons/${season.name}/colors`} className={'nav-text'}>
                             Colors
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item>
-                        <Link to={`/${season.name}/collections`}>
+                        <Link to={`/seasons/${season.name}/collections`}>
                             Summary
                         </Link>
                     </Menu.Item>

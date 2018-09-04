@@ -381,7 +381,7 @@ class ProductTable extends Component {
         let linkToProduct = null;
         if(this.state.isSelected){
             linkToProduct =  <Redirect to={{
-                pathname: `/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`,
+                pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${this.state.productName}`,
                 state: {historyOrderUrl: this.props.match.url}
             }}/>
         }
