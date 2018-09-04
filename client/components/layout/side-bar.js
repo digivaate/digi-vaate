@@ -118,6 +118,11 @@ class SideBar extends Component{
                                 Budget
                             </NavLink>
                         </Menu.Item>
+                        <Menu.Item key={`themes-collections-${collection.id}`}>
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/themes`} className="nav-text">
+                                Themes
+                            </NavLink>
+                        </Menu.Item>
                         <Menu.Item key={`orders-collections-${collection.id}`}>
                             <NavLink to={`/seasons/${season.name}/collections/${collection.name}/orders`} className="nav-text">
                                 Orders

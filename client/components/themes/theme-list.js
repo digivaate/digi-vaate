@@ -66,7 +66,7 @@ class ThemeList extends Component{
             renderThemeImg = this.state.themeImg.map(theme =>
             <Col key={theme} span={6}>
                 <div className="show-image">
-                    <img height="220" width="285" src={`${API_ROOT}/${theme}`}/>
+                    <img className="img-theme" src={`${API_ROOT}/${theme}`}/>
                     <button className="btn"
                             onClick={() => this.handleDelete(theme)}
                     >
