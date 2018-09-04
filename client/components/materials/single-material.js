@@ -446,7 +446,7 @@ class SingleMaterial extends Component{
                                     <input type="file" name="file" onChange={this.onFileChange}/>
                                     <button className="btn-upload"><Icon type="upload"/></button>
                                 </div>
-                                <img alt="example" height="300" width="370" src={`${imgUrl}`} />
+                                <img className="material-ava-img" src={`${imgUrl}`} />
                             </div>
                         </Col>
                         <Col span={16}>

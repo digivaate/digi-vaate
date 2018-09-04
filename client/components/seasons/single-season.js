@@ -40,7 +40,19 @@ class SingleSeason extends Component{
                     seasons: response.data[0]
                 })
             })
-    }
+    };
+
+    saveEdit = (editInfo) => {
+        let collections = [...this.state.collections];
+        for(let i = 0; i< collections.length;i++){
+            if(collections[i].id === editInfo.id){
+                collections[i] = {...editInfo}
+            }
+        }
+        this.setState({
+            collections: collections
+        })
+    };
 
     createNewCollection = () => {
         this.setState({ visible: true })
@@ -66,15 +78,13 @@ class SingleSeason extends Component{
             axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id,coverPercent:values.coverPercent})
                 .then((res) => {
                     this.props.sendNewCollection(res.data);
-                    axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
-                        .then(response => {
-                            this.setState({
-                                collections: response.data[0].collections,
-                                seasons: response.data[0],
-                                visible:false
-                            })
-                        })
-                })
+                    let collections = [...this.state.collections];
+                    collections.push(res.data);
+                    this.setState({
+                        collections:collections,
+                        visible:false
+                    });
+                });
             form.resetFields();
         });
     };
@@ -97,7 +107,16 @@ class SingleSeason extends Component{
         });
     };
     deleteCollection = (collectionName) => {
-        this.props.deleteCollection(collectionName)
+        this.props.deleteCollection(collectionName);
+        let collections = [...this.state.collections];
+        for(let i = 0; i< collections.length;i++){
+            if(collections[i].id === collectionName.id){
+                collections.splice(i,1)
+            }
+        }
+        this.setState({
+            collections: collections
+        })
     };
     render() {
         let renderCollectionsOfSeason = [];
@@ -125,7 +144,7 @@ class SingleSeason extends Component{
                                         visible={this.state.editVisible}
                                         hide={this.hideEdit}
                                         collection={this.getEditableCollection()}
-                                        refresh={this.componentDidMount}
+                                        editCollection={(editInfo) => this.saveEdit(editInfo)}
                                         deleteCollection ={collectionName => this.deleteCollection(collectionName)}
 
                         />

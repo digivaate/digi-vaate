@@ -46,9 +46,7 @@ class EditCollection extends React.Component {
     }
 
     close = () => {
-        if (this.props.refresh) this.props.refresh();
         if (this.props.hide) this.props.hide();
-        this.formRef.props.form.resetFields();
     };
 
     handleSave = () => {
@@ -57,7 +55,7 @@ class EditCollection extends React.Component {
             if (err) console.error(err);
             axios.patch(API_ROOT + '/collection/?id=' + this.props.collection.id, values )
                 .then(res => {
-                    console.log(res);
+                    this.props.editCollection(res.data[0]);
                     this.close();
                     this.setState({ loading: false });
                 })
@@ -71,7 +69,6 @@ class EditCollection extends React.Component {
 
     confirmDelete = () => {
         const collectionId = this.props.collection.id;
-        const close = this.close;
         const self = this;
         confirm({
             title: 'Delete this collection?',
@@ -79,7 +76,7 @@ class EditCollection extends React.Component {
                 return axios.delete(API_ROOT + '/collection/?id=' + collectionId)
                     .then(res => {
                         self.props.deleteCollection(self.props.collection)
-                        close();
+                        self.close();
                     })
                     .catch(err => console.error(err));
             },

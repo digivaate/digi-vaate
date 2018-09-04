@@ -34,6 +34,7 @@ class SeasonsList extends Component{
         this.setState({ visible: true })
     };
 
+
     handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
@@ -55,14 +56,12 @@ class SeasonsList extends Component{
             axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget, coverPercent:values.coverPercent})
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
-                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                        .then(response => {
-                            this.setState({
-                                seasons: response.data[0].seasons,
-                                company: response.data[0],
-                                visible:false
-                            })
-                        })
+                    let seasons = [...this.state.seasons];
+                    seasons.push(res.data);
+                    this.setState({
+                        seasons:seasons,
+                        visible:false
+                    })
                 });
             form.resetFields();
         });
@@ -87,8 +86,29 @@ class SeasonsList extends Component{
     };
 
     deleteSeason = (seasonName) => {
-        this.props.deleteSeason(seasonName)
-    }
+        this.props.deleteSeason(seasonName);
+        let seasons = [...this.state.seasons];
+        for(let i = 0; i< seasons.length;i++){
+            if(seasons[i].id === seasonName.id){
+                seasons.splice(i,1)
+            }
+        }
+        this.setState({
+            seasons: seasons
+        })
+    };
+
+    saveEdit = (editInfo) => {
+        let seasons = [...this.state.seasons];
+        for(let i = 0; i< seasons.length;i++){
+            if(seasons[i].id === editInfo.id){
+                seasons[i] = {...editInfo}
+            }
+        }
+        this.setState({
+            seasons: seasons
+        })
+    };
 
     render(){
         let renderSeasonsOfCompany = [];
@@ -115,7 +135,7 @@ class SeasonsList extends Component{
                                     visible={this.state.editVisible}
                                     hide={this.hideEdit}
                                     season={this.getEditableSeason()}
-                                    refresh={this.componentDidMount}
+                                    editSeason={(editInfo) => this.saveEdit(editInfo)}
                                     deleteSeason ={seasonName => this.deleteSeason(seasonName)}
                         />
                         <br/>

@@ -46,9 +46,7 @@ class EditSeason extends React.Component {
     }
 
     close = () => {
-        if (this.props.refresh) this.props.refresh();
         if (this.props.hide) this.props.hide();
-        this.formRef.props.form.resetFields();
     };
 
     handleSave = () => {
@@ -57,6 +55,7 @@ class EditSeason extends React.Component {
             if (err) console.error(err);
             axios.patch(API_ROOT + '/season/?id=' + this.props.season.id, values )
                 .then(res => {
+                    this.props.editSeason(res.data[0]);
                     this.close();
                     this.setState({ loading: false });
                 })
