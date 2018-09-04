@@ -309,7 +309,7 @@ class ProductsDisplay extends Component{
                                                 re.data[0].seasonName = "None";
                                                 re.data[0].collectionName = "None";
                                             }
-                                            else if (re[0].data.seasonId) {
+                                            else if (re.data[0].seasonId) {
                                                 re.data[0].collectionName = "None";
                                             }
                                             this.products.push(re.data[0]);
@@ -329,7 +329,7 @@ class ProductsDisplay extends Component{
                                         re.data[0].seasonName = "None";
                                         re.data[0].collectionName = "None";
                                     }
-                                    else if (re[0].data.seasonId) {
+                                    else if (re.data[0].seasonId) {
                                         re.data[0].collectionName = "None";
                                     }
                                     this.products.push(re.data[0]);
