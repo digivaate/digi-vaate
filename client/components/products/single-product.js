@@ -4,6 +4,7 @@ import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spi
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
+import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -550,6 +551,7 @@ class SingleProduct extends Component {
                                     name={this.displaySelectedMaterial[0]}
                                     value={this.state[this.displaySelectedMaterial[0]]}
                                     onChange={this.handleChange}
+                                    onBlur={this.handleComma}
                                 />
                             </Col>
                         </Row>
@@ -568,6 +570,7 @@ class SingleProduct extends Component {
                                     name={this.displaySelectedMaterial[1]}
                                     value={this.state[this.displaySelectedMaterial[1]]}
                                     onChange={this.handleChange}
+                                    onBlur={this.handleComma}
                                 />
                             </Col>
                         </Row>
@@ -586,6 +589,7 @@ class SingleProduct extends Component {
                                     name={this.displaySelectedMaterial[2]}
                                     value={this.state[this.displaySelectedMaterial[2]]}
                                     onChange={this.handleChange}
+                                    onBlur={this.handleComma}
                                 />
                             </Col>
                         </Row>

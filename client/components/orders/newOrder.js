@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import ProductTable from './single-order-products'
+import {comaToPeriod} from "../../utils/coma-convert";
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -17,6 +18,10 @@ const OrderCreateForm = Form.create()(
 
             }
         }
+
+        handleComma = (event) => {
+            event.target.value = comaToPeriod(event.target.value);
+        };
 
         render() {
             const config = {
@@ -43,7 +48,9 @@ const OrderCreateForm = Form.create()(
                             <Col span={12}>
                                 <FormItem label="Delivery cost">
                                     {getFieldDecorator('deliveryCosts')(
-                                        <Input />
+                                        <Input
+                                            onBlur={this.handleComma}
+                                        />
                                     )}
                                 </FormItem>
                             </Col>
@@ -64,7 +71,9 @@ const OrderCreateForm = Form.create()(
                         <Col span={12}>
                             <FormItem label="Tax percentage *">
                                 {getFieldDecorator('taxPercent')(
-                                    <Input />
+                                    <Input
+                                        onBlur={this.handleComma}
+                                    />
                                 )}
                             </FormItem>
                         </Col>
