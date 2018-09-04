@@ -36,7 +36,9 @@ class SingleProduct extends Component {
             originalProductMaterials: null,
             originalProductName: null,
             originalLoadedProduct:null,
-            saved: false
+            saved: false,
+            backToBudget: false,
+            backToOrder:false,
         }
     }
 
@@ -439,6 +441,8 @@ class SingleProduct extends Component {
     render(){
         let backToOrderBtn = null;
         let backToOrder = null;
+        let backToBudgetBtn = null;
+        let backToBudget = null;
         if(this.props.location.state){
             if(this.props.location.state.historyOrderUrl){
                 backToOrderBtn =
@@ -450,10 +454,25 @@ class SingleProduct extends Component {
                        Back to order
                     </Button>
             }
+            if(this.props.location.state.historyBudgetUrl){
+                backToBudgetBtn =
+                    <Button
+                        onClick={() => this.setState({
+                            backToBudget: true
+                        })}
+                    >
+                        Back to budget
+                    </Button>
+            }
         }
         if(this.state.backToOrder){
             backToOrder = <Redirect to={{
                 pathname: `${this.props.location.state.historyOrderUrl}`
+            }}/>
+        }
+        if(this.state.backToBudget){
+            backToBudget = <Redirect to={{
+                pathname: `${this.props.location.state.historyBudgetUrl}`
             }}/>
         }
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
@@ -509,6 +528,8 @@ class SingleProduct extends Component {
                 <div>
                     {backToOrderBtn}
                     {backToOrder}
+                    {backToBudgetBtn}
+                    {backToBudget}
                     <Row>
                         <Col span={8}>
                             <SingleProductName

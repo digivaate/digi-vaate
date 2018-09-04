@@ -20,6 +20,14 @@
 .bad-value {
     background-color: red;
 }
+
+.link-to-product{
+    color:blue;
+}
+
+.link-to-product:hover{
+    cursor:pointer;
+}
 /*
 .ReactTable .rt-thead .rt-resizable-header {
     overflow: hidden !important;

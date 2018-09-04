@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 import {API_ROOT} from "../api-config";
 import axios from "axios";
+import {Redirect} from 'react-router-dom';
 import {Button, Popover, message, Icon} from "antd";
 import ReactTable from "react-table";
 import '../utils/compare-obj';
@@ -13,7 +14,9 @@ class SummaryTable extends React.Component {
         this.state = {
             data: [],
             overBudget: false,
-            modified: false
+            modified: false,
+            isSelected: false,
+            productName: null
         };
         this.source = axios.CancelToken.source();
         this.saveData = this.saveData.bind(this);
@@ -186,8 +189,13 @@ class SummaryTable extends React.Component {
                     {
                         Header: "Product name",
                         headerClassName: "wordwrap",
-                        accessor: 'name',
-                        Cell: this.linkToProduct,
+                        id:'name',
+                        accessor: d =>{
+                            return (
+                                <div>
+                                    <span className="link-to-product" onClick={() => this.linkToProduct(d.name)}>{d.name}</span>
+                                </div>
+                            )},
                         width: 140,
                         Footer: 'Total:'
                     },
@@ -378,17 +386,32 @@ class SummaryTable extends React.Component {
         );
     }
 
-    linkToProduct(cellInfo) {
-        return (
-            <a href={`${this.props.match.url}/../products/${cellInfo.value}`}>
-                {cellInfo.value}
-            </a>
-        )
-    }
+    linkToProduct = (productName) => {
+        this.setState({
+            productName:productName,
+            isSelected:true
+        })
+    };
 
     render() {
+        let linkToProduct = null;
+        if(this.state.isSelected){
+            if(this.props.match.params.seasonId && !this.props.match.params.collectionId){
+                linkToProduct =  <Redirect to={{
+                    pathname: `/${this.props.match.params.seasonId}/products/${this.state.productName}`,
+                    state: {historyBudgetUrl: this.props.match.url}
+                }}/>
+            } else if(this.props.match.params.seasonId && this.props.match.params.collectionId){
+                linkToProduct =  <Redirect to={{
+                    pathname: `/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${this.state.productName}`,
+                    state: {historyBudgetUrl: this.props.match.url}
+                }}/>
+            }
+
+        }
         return(
             <Fragment>
+                {linkToProduct}
                 <div className={'table-header'}>
                     <h1>Budget plan</h1>
                     <div>
