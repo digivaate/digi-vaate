@@ -4,6 +4,7 @@ import {Col,Row,DatePicker,Modal,Button,Card,Input} from 'antd'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import ProductTable from './single-order-products'
+import {comaToPeriod} from "../../utils/coma-convert";
 const { TextArea } = Input;
 
 class ClientInfo extends Component{
@@ -63,6 +64,11 @@ class ClientInfo extends Component{
         });
     };
 
+    handleComma = (event) => {
+        event.target.value = comaToPeriod(event.target.value);
+        this.handleChange(event);
+    };
+
     onDateChange = (date,dateString) => {
         this.setState({
             newDeliveryTime: date
@@ -99,6 +105,7 @@ class ClientInfo extends Component{
                                     value={this.state.taxPercent}
                                     name="taxPercent"
                                     onChange={this.handleChange}
+                                    onBlur={this.handleComma}
                                 />
                             </Col>
                         </Row>

@@ -6,6 +6,8 @@ import ReactTable from "react-table";
 import '../utils/compare-obj';
 import 'react-table/react-table.css';
 import './summary-table.css';
+import '../utils/coma-convert';
+import {comaToPeriod} from "../utils/coma-convert";
 
 class SummaryTable extends React.Component {
     constructor(props) {
@@ -358,9 +360,8 @@ class SummaryTable extends React.Component {
                 suppressContentEditableWarning
                 style={ this.state.data[cellInfo.index][`${cellInfo.column.id}Edited`] ? { color: '#EDAA00', fontWeight: 'bold' } : {}  }
                 onBlur={e => {
-                    const value = parseFloat(e.target.innerHTML);
+                    let value = comaToPeriod(e.target.innerHTML);
                     const data = [...this.state.data];
-
                     if (isNaN(value)) {
                         message.warning('Input needs to be number');
                         e.target.innerHTML = this.state.data[cellInfo.index][cellInfo.column.id];

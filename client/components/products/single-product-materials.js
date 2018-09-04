@@ -4,6 +4,7 @@ import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spi
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
+import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -127,7 +128,7 @@ class SingleProductMaterials extends Component{
             });
             message.error("Only numbers allowed!",1)
         }
-        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 27) {
+        else if (key >= 48 && key <= 57 || key >= 96 && key <= 105 || key == 8 || key == 9 || key == 13 || key == 190 || key == 188 || key == 27) {
             this.setState({
                 inputNumber: true
             });
@@ -138,6 +139,11 @@ class SingleProductMaterials extends Component{
             });
             message.error("Only numbers allowed!",1)
         }
+    };
+
+    handleComma = (event) => {
+        event.target.value = comaToPeriod(event.target.value);
+        this.handleChange(event);
     };
 
     handleMaterialOk = () => {
@@ -264,6 +270,7 @@ class SingleProductMaterials extends Component{
                                 value={this.state[this.displaySelectedMaterial[0]]}
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComma}
                             />
                         </Col>
                     </Row>
@@ -283,6 +290,7 @@ class SingleProductMaterials extends Component{
                                 value={this.state[this.displaySelectedMaterial[1]]}
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComma}
                             />
                         </Col>
                     </Row>
@@ -302,6 +310,7 @@ class SingleProductMaterials extends Component{
                                 value={this.state[this.displaySelectedMaterial[2]]}
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
+                                onBlur={this.handleComma}
                             />
                         </Col>
                     </Row>
