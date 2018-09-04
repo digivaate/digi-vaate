@@ -183,7 +183,7 @@ class SideBar extends Component{
                         </Link>
                     </Menu.Item>
                     <SubMenu key="seasons"
-                        title={<span>Season</span>
+                        title={<span>Seasons</span>
                     }>
 
                         {renderSeasonList}
