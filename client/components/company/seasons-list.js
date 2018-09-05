@@ -152,7 +152,7 @@ class SeasonsList extends Component{
                                     <Link style={{marginRight: 'auto'}} to={''}>
                                         <List.Item.Meta
                                             title={item.name}
-                                            description={`Budget: ${item.budget}, Cover percent: ${item.coverPercent}`} />
+                                            description={`Budget: ${item.budget}, Cover percent: ${item.coverPercent}%`} />
                                     </Link>
                                     <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
                                 </List.Item>)}

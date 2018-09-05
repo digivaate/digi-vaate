@@ -162,7 +162,7 @@ class SingleSeason extends Component{
                                     <Link style={{marginRight: 'auto'}} to={''}>
                                         <List.Item.Meta
                                             title={item.name}
-                                            description={`Cover percent: ${item.coverPercent}`} />
+                                            description={`Cover percent: ${item.coverPercent}%`} />
                                     </Link>
                                     <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
                                 </List.Item>
