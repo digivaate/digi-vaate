@@ -103,7 +103,6 @@ class SideBar extends Component{
         const {seasons} = this.state;
         let renderSeasonList = null;
         let renderCollectionList = null;
-        console.log(seasons)
         if(seasons){
             renderSeasonList = seasons.map(season => {
                 renderCollectionList = season.collections.map(collection =>

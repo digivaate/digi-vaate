@@ -38,11 +38,7 @@ class SingleSeason extends Component{
                 this.setState({
                     collections: response.data[0].collections,
                     seasons: response.data[0]
-                },() => {
-                    this.state.collections.sort(function(a, b){
-                        return a.id-b.id
-                    })}
-                )
+                })
             })
     };
 
@@ -125,6 +121,9 @@ class SingleSeason extends Component{
     render() {
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
+            this.state.collections.sort(function(a, b){
+                return a.id-b.id
+            })
             for (let i = 0; i < this.state.collections.length; i++) {
                 renderCollectionsOfSeason[i] = this.state.collections[i].name + ", Cover percentage: " + this.state.collections[i].coverPercent +"%"
             }

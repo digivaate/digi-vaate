@@ -26,10 +26,6 @@ class SeasonsList extends Component{
                 this.setState({
                     seasons: response.data[0].seasons,
                     company: response.data[0]
-                },() => {
-                    this.state.seasons.sort(function(a, b){
-                        return a.id-b.id
-                    });
                 })
             })
     };
@@ -115,9 +111,11 @@ class SeasonsList extends Component{
     };
 
     render(){
-        console.log(this.state.seasons)
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
+            this.state.seasons.sort(function(a, b){
+                return a.id-b.id
+            });
             for(let i=0; i<this.state.seasons.length; i++){
                 renderSeasonsOfCompany[i] = <Icon type="caret-up" />;
                 //renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget + ", Cover percentage: " + this.state.seasons[i].coverPercent +"%"
