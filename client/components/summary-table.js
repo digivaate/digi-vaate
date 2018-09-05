@@ -382,8 +382,8 @@ class SummaryTable extends React.Component {
                         message.warning('Input needs to be number');
                         e.target.innerHTML = this.state.data[cellInfo.index][cellInfo.column.id];
                     } else {
-                        data[cellInfo.index][cellInfo.column.id] = value;
-                        data[cellInfo.index][`${cellInfo.column.id}Edited`] = value !== this.state.originalData[cellInfo.index][cellInfo.column.id];
+                        data[cellInfo.index][cellInfo.column.id] = parseFloat(value);
+                        data[cellInfo.index][`${cellInfo.column.id}Edited`] = parseFloat(value) !== this.state.originalData[cellInfo.index][cellInfo.column.id];
                     }
                     this.checkDataState(cellInfo.index);
                     this.calculateValues(data[cellInfo.index]);
