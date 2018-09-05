@@ -82,9 +82,17 @@ class SideBar extends Component{
     componentDidMount() {
         axios.get(`${API_ROOT}/season`)
             .then(response => {
-                this.seasons = response.data;
                 this.setState({
                     seasons: response.data
+                },() => {
+                    this.state.seasons.sort(function(a, b){
+                        return a.id-b.id
+                    });
+                    for(let i = 0; i< this.state.seasons.length;i++){
+                        this.state.seasons[i].collections.sort(function(a, b){
+                            return a.id-b.id
+                        });
+                    }
                 })
             })
             .then(() => this.setState({}))
@@ -95,6 +103,7 @@ class SideBar extends Component{
         const {seasons} = this.state;
         let renderSeasonList = null;
         let renderCollectionList = null;
+        console.log(seasons)
         if(seasons){
             renderSeasonList = seasons.map(season => {
                 renderCollectionList = season.collections.map(collection =>

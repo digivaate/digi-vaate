@@ -38,7 +38,11 @@ class SingleSeason extends Component{
                 this.setState({
                     collections: response.data[0].collections,
                     seasons: response.data[0]
-                })
+                },() => {
+                    this.state.collections.sort(function(a, b){
+                        return a.id-b.id
+                    })}
+                )
             })
     };
 

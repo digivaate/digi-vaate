@@ -75,26 +75,6 @@ class ProductsDisplay extends Component{
 
         }
 
-        /*
-         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
-         .then(response => {
-         console.log(response);
-         this.collections = response.data;
-         this.products = this.collections[0].products;
-         for(let i=0 ; i < this.products.length; i++){
-         axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-         .then(response => {
-         this.products[i].colors = response.data[0].colors;
-         this.products[i].materials = response.data[0].materials;
-         this.products[i].imgPath = response.data[0].imagePath;
-
-         })
-         .then(()=>this.setState({isColorFetched:true}));
-         }
-         })
-         .then(() => this.setState({isFetched: true}))
-         .catch(err => console.error(err));
-         */
 
         axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(res => {
@@ -109,55 +89,7 @@ class ProductsDisplay extends Component{
                     }
                 }
                 this.setState({isFetched:true})
-                /*if(pathSnippetsLevel[0] === "company"){
-                 for(let i = 0;i < this.products.length; i++){
-                 axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-                 .then(response => {
-                 axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
-                 .then(res => {
-                 this.products[i].collectionName = res.data[0].name;
-                 this.setState(prevState => prevState)
-                 axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                 .then(re => {
-                 this.products[i].seasonName = re.data[0].name
-                 this.setState(prevState => prevState)
-                 })
-                 });
-                 })
-                 }
-                 }
-                 else if(pathSnippetsLevel[0] === "season"){
-                 for(let i = 0;i < this.products.length; i++){
-                 axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-                 .then(response => {
-                 axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
-                 .then(res => {
-                 this.products[i].seasonName = res.data[0].name;
-                 this.products[i].collectionName = "None";
-                 this.setState(prevState => prevState)
-                 });
-                 })
-                 }
-                 }
-                 else if(pathSnippetsLevel[0] === "collection"){
-                 for(let i = 0;i < this.products.length; i++){
-                 axios.get(`${API_ROOT}/product?name=${this.products[i].name}`)
-                 .then(response => {
-                 axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
-                 .then(res => {
-                 this.products[i].collectionName = res.data[0].name;
-                 this.setState(prevState => prevState)
-                 axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                 .then(re => {
-                 this.products[i].seasonName = re.data[0].name
-                 this.setState(prevState => prevState)
-                 })
-                 });
-                 })
-                 }
-                 }
-                 this.setState({isFetched: true});
-                 */
+
             });
 
         axios.get(`${API_ROOT}/color`)
@@ -408,7 +340,8 @@ class ProductsDisplay extends Component{
         if (this.state.isSelected) {
             let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
             singleProduct = <Redirect to={{
-                pathname: url + this.state.productName
+                pathname: url + this.state.productName,
+                state: {productListUrl: this.props.match.url}
             }}/>;
             //return <SingleProduct productId={this.state.productName}/>
         }

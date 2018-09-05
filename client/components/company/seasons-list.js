@@ -26,9 +26,13 @@ class SeasonsList extends Component{
                 this.setState({
                     seasons: response.data[0].seasons,
                     company: response.data[0]
+                },() => {
+                    this.state.seasons.sort(function(a, b){
+                        return a.id-b.id
+                    });
                 })
             })
-    }
+    };
 
     createNewSeason = () => {
         this.setState({ visible: true })
@@ -111,6 +115,7 @@ class SeasonsList extends Component{
     };
 
     render(){
+        console.log(this.state.seasons)
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
             for(let i=0; i<this.state.seasons.length; i++){

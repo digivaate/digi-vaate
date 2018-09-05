@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React, {Component,Fragment} from "react";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import {Card, Col, Row, Divider, Button, Spin,message,Modal} from 'antd';
+import {Card, Col, Row, Divider, Button, Spin,message,Modal,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import '../../utils/compare-obj';
@@ -443,26 +443,50 @@ class SingleProduct extends Component {
         let backToOrder = null;
         let backToBudgetBtn = null;
         let backToBudget = null;
+        let backToProductListBtn = null;
+        let backToProductList = null;
         if(this.props.location.state){
             if(this.props.location.state.historyOrderUrl){
                 backToOrderBtn =
+                    <Fragment>
                     <Button
                         onClick={() => this.setState({
                             backToOrder: true
                         })}
                     >
-                       Back to order
+                        <Icon type="left" theme="outlined" /> Back to order
                     </Button>
+                    <br/>
+                    <br/>
+                    </Fragment>
             }
             if(this.props.location.state.historyBudgetUrl){
                 backToBudgetBtn =
+                    <Fragment>
                     <Button
                         onClick={() => this.setState({
                             backToBudget: true
                         })}
                     >
-                        Back to budget
+                        <Icon type="left" theme="outlined" /> Back to budget
                     </Button>
+                    <br/>
+                    <br/>
+                    </Fragment>
+            }
+            if(this.props.location.state.productListUrl){
+                backToProductListBtn =
+                    <Fragment>
+                    <Button
+                        onClick={() => this.setState({
+                            backToProductList: true
+                        })}
+                    >
+                        <Icon type="left" theme="outlined" /> Back to products
+                    </Button>
+                    <br/>
+                    <br/>
+                    </Fragment>
             }
         }
         if(this.state.backToOrder){
@@ -473,6 +497,11 @@ class SingleProduct extends Component {
         if(this.state.backToBudget){
             backToBudget = <Redirect to={{
                 pathname: `${this.props.location.state.historyBudgetUrl}`
+            }}/>
+        }
+        if(this.state.backToProductList){
+            backToProductList = <Redirect to={{
+                pathname: `${this.props.location.state.productListUrl}`
             }}/>
         }
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
@@ -530,6 +559,8 @@ class SingleProduct extends Component {
                     {backToOrder}
                     {backToBudgetBtn}
                     {backToBudget}
+                    {backToProductListBtn}
+                    {backToProductList}
                     <Row>
                         <Col span={8}>
                             <SingleProductName
