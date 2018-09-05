@@ -1,7 +1,8 @@
-import React,{ Component } from "react";
+import React,{ Component,Fragment } from "react";
 import axios from 'axios';
 import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
+import {Redirect} from 'react-router-dom'
 import '../../utils/compare-obj';
 import './materials.css'
 import FormData from 'form-data';
@@ -369,6 +370,30 @@ class SingleMaterial extends Component{
     }
 
     render(){
+        let backToProductBtn = null;
+        let backToProduct = null;
+        if(this.props.location.state) {
+            if (this.props.location.state.historyProductUrl) {
+                backToProductBtn =
+                    <Fragment>
+                        <Button
+                            onClick={() => this.setState({
+                                backToProduct: true
+                            })}
+                        >
+                            <Icon type="left" theme="outlined"/> Back to product
+                        </Button>
+                        <br/>
+                        <br/>
+                    </Fragment>
+            }
+        }
+        if(this.state.backToProduct){
+            backToProduct = <Redirect to={{
+                pathname: `${this.props.location.state.historyProductUrl}`,
+                state:{productListUrl:this.props.location.state.historyProductListUrl}
+            }}/>
+        }
         if(this.state.loadedMaterial){
             let totalConsumption = this.state.loadedMaterial.products.reduce((sum,product) => sum + product.material_product.consumption,0);
             let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
@@ -406,6 +431,8 @@ class SingleMaterial extends Component{
             }
             return (
                 <div>
+                    {backToProductBtn}
+                    {backToProduct}
                     <Row>
                     <Col span={8}>
                     <Row type="flex">

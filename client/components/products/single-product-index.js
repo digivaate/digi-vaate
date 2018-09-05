@@ -537,6 +537,7 @@ class SingleProduct extends Component {
                     </Row>
                     <Divider/>
                     <SingleProductMaterials
+                        {...this.props}
                         updatedMaterials = {this.updatedMaterials}
                         materialOptions = {this.state.materialOptions}
                         productMaterials = {this.state.productMaterials}

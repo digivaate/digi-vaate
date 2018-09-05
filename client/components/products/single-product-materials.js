@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect,Popover} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
+import {Redirect} from 'react-router-dom';
 import FormData from 'form-data';
 import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
@@ -205,10 +206,24 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
+        if(this.props.location.state){
+            console.log(this.props.location.state.productListUrl)
+        }
         let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
         let materialSelected1 = null;
         let materialSelected2 = null;
         let materialSelected3 = null;
+        let linkToMaterial = null;
+        if(this.state.isSelected){
+            linkToMaterial = <Redirect to={{
+                pathname: `/materials/${this.state.materialName}`,
+                state:
+                    {
+                        historyProductUrl:this.props.match.url,
+                        historyProductListUrl: this.props.location.state.productListUrl
+                    }
+            }}/>
+        }
         let editMaterialBtn = <div style={{height:40,width:40}}></div>;
         let renderProductMaterials = <p>This product does not have any materials yet</p>;
         let renderMaterialOptions = [];
@@ -239,6 +254,10 @@ class SingleProductMaterials extends Component{
                                 hoverable
                                 className="product-material-card"
                                 cover={<img className="material-img" src={`${materialImgUrl}`}/>}
+                                onClick={() => this.setState({
+                                    materialName:material.name,
+                                    isSelected:true
+                                })}
                             >
                                 <Meta
                                     title={material.name}
@@ -319,6 +338,7 @@ class SingleProductMaterials extends Component{
 
         return (
             <div>
+                {linkToMaterial}
                 <Row gutter={8}>
                     <Row type="flex">
                         <h4>Materials&nbsp;&nbsp;</h4>
