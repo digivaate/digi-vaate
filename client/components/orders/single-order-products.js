@@ -382,7 +382,10 @@ class ProductTable extends Component {
         if(this.state.isSelected){
             linkToProduct =  <Redirect to={{
                 pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${this.state.productName}`,
-                state: {historyOrderUrl: this.props.match.url}
+                state: {
+                    historyOrderUrl: this.props.match.url,
+                    orderListUrl:this.props.location.state.orderListUrl,
+                }
             }}/>
         }
         let renderSizeToEdit = null;

@@ -491,12 +491,17 @@ class SingleProduct extends Component {
         }
         if(this.state.backToOrder){
             backToOrder = <Redirect to={{
-                pathname: `${this.props.location.state.historyOrderUrl}`
+                pathname: `${this.props.location.state.historyOrderUrl}`,
+                state:{
+                    backToOrderList: this.props.location.state.backToOrderList,
+                    orderListUrl:this.props.location.state.orderListUrl,
+                }
             }}/>
         }
         if(this.state.backToBudget){
             backToBudget = <Redirect to={{
-                pathname: `${this.props.location.state.historyBudgetUrl}`
+                pathname: `${this.props.location.state.historyBudgetUrl}`,
+                state:{historyBudgetUrl: this.props.match.historyBudgetUrl}
             }}/>
         }
         if(this.state.backToProductList){

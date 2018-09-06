@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React,{Component,Fragment} from 'react';
 import axios from 'axios';
 import {Col,Row,Anchor,Spin,List,Button,Divider,Icon,Card} from 'antd'
 import {Redirect} from 'react-router-dom'
@@ -82,9 +82,35 @@ class SingleOrder extends Component{
     }
 
     render(){
+        let backToOrderListBtn = null;
+        let backToOrderList = null;
+
+        if(this.props.location.state) {
+            if (this.props.location.state.orderListUrl) {
+                backToOrderListBtn =
+                    <Fragment>
+                        <Button
+                            onClick={() => this.setState({
+                                backToOrderList: true
+                            })}
+                        >
+                            <Icon type="left" theme="outlined"/> Back to orders
+                        </Button>
+                        <br/>
+                        <br/>
+                    </Fragment>
+            }
+        }
+        if(this.state.backToOrderList){
+            backToOrderList = <Redirect to={{
+                pathname: `${this.props.location.state.orderListUrl}`,
+            }}/>
+        }
         if(this.state.singleOrder){
             return (
                 <div>
+                    {backToOrderListBtn}
+                    {backToOrderList}
                     <h1>ORDER {this.state.singleOrder.id}</h1>
                     <Row type="flex">
                         <p> Created {this.state.singleOrder.createdAt.slice(0,10)}&nbsp;&nbsp;</p>

@@ -220,7 +220,10 @@ class SingleProductMaterials extends Component{
                 state:
                     {
                         historyProductUrl:this.props.match.url,
-                        historyProductListUrl: this.props.location.state.productListUrl
+                        historyProductListUrl: this.props.location.state.productListUrl,
+                        historyOrderUrl: this.props.location.state.historyOrderUrl,
+                        orderListUrl:this.props.location.state.orderListUrl,
+                        historyBudgetUrl: this.props.location.state.historyBudgetUrl
                     }
             }}/>
         }

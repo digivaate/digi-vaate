@@ -137,7 +137,8 @@ class MaterialList extends Component{
         let singleMaterial= null;
         if (this.state.isSelected) {
             singleMaterial = <Redirect to={{
-                pathname: this.props.match.url + "/" + this.state.materialName
+                pathname: this.props.match.url + "/" + this.state.materialName,
+                state:{materialListUrl: this.props.match.url}
             }}/>
         }
         if (this.materials) {

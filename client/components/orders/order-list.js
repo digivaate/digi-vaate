@@ -20,6 +20,18 @@ class OrderList extends Component{
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.match.url !== this.props.match.url){
+            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+                .then(response => {
+                    this.setState({
+                        collectionId: response.data[0].id,
+                        orders: response.data[0].orders
+                    })
+                })
+        }
+    }
+
     componentDidMount(){
         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
@@ -111,6 +123,7 @@ class OrderList extends Component{
             singleOrder = <Redirect
                 to={{
                     pathname: this.props.match.url + '/' + this.state.singleOrder.id,
+                    state:{orderListUrl: this.props.match.url}
                 }}
             />
         }
