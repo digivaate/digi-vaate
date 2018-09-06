@@ -57,8 +57,11 @@ const OrderProductCreateForm = Form.create()(
             }
             if(this.state.isRedirected){
                 linkToProduct =  <Redirect to={{
-                    pathname: `/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/products/${productNameSelected}`,
-                    state: {historyOrderUrl: this.props.match.url}
+                    pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${productNameSelected}`,
+                    state: {
+                        historyOrderUrl: this.props.match.url,
+                        orderListUrl:this.props.location.state.orderListUrl,
+                    }
                 }}/>
             }
             if(sizeOptions){
