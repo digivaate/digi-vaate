@@ -59,21 +59,22 @@ class OrderList extends Component{
             onOk() {
                 axios.delete(`${API_ROOT}/order?id=${item.id}`)
                     .then(() => {
-                        axios.get(`${API_ROOT}/collection?name=${self.props.match.params.collectionId}`)
-                            .then(response => {
-                                self.setState({
-                                    collectionId: response.data[0].id,
-                                    orders: response.data[0].orders
-                                })
-                            })
+                        let orders = [...self.state.orders];
+                        for(let i = 0; i<orders.length;i++){
+                            if(orders[i].id === item.id){
+                                orders.splice(i,1)
+                            }
+                        }
+                        self.setState({
+                            orders: orders
+                        });
                     })
             },
             onCancel() {
                 console.log(item.id);
             },
         });
-        this.setState(prevState => prevState)
-    }
+    };
 
     createNewOrder = () => {
         this.setState({ visible: true })
@@ -99,15 +100,15 @@ class OrderList extends Component{
             };
             axios.post(`${API_ROOT}/order`,values)
                 .then(response => {
-                    axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
-                        .then(response => {
-                            message.success("Order created!");
-                            this.setState({
-                                orders: response.data[0].orders,
-                                visible:false
-                            });
-                            form.resetFields();
-                        })
+                    message.success("Order created!");
+                    response.data.orderProducts = [];
+                    let orders = [...this.state.orders];
+                    orders.push(response.data);
+                    this.setState({
+                        orders: orders,
+                        visible:false
+                    });
+                    form.resetFields();
                 });
         });
     };
@@ -128,6 +129,9 @@ class OrderList extends Component{
             />
         }
         if(this.state.orders){
+            this.state.orders.sort(function(a, b) {
+                return a.id - b.id
+            });
             renderOrderList = <List
                 itemLayout="horizontal"
                 dataSource={this.state.orders}
