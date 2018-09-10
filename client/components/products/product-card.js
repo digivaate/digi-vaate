@@ -157,7 +157,7 @@ const ProductCreateForm = Form.create()(
                     title="Create a product"
                     okText="Create"
                     onCancel={onCancel}
-                    onOk={onCreate}
+                    onOk={() => onCreate(this.state.colorOptions,this.state.materialOptions,this.state.sizeOptions)}
                 >
                     <Form layout="vertical">
                         <FormItem label="Name">

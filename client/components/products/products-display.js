@@ -91,26 +91,6 @@ class ProductsDisplay extends Component{
                 this.setState({isFetched:true})
 
             });
-
-        axios.get(`${API_ROOT}/color`)
-            .then(res => {
-                this.setState({
-                    colorOptions: res.data
-                })
-            });
-
-        axios.get(`${API_ROOT}/material`)
-            .then(res => {
-                this.setState({
-                    materialOptions: res.data
-                })
-            });
-        axios.get(`${API_ROOT}/size`)
-            .then(res => {
-                this.setState({
-                    sizeOptions: res.data
-                })
-            })
     };
 
     handleSelect(productName){
@@ -162,7 +142,7 @@ class ProductsDisplay extends Component{
         })
     };
 
-    handleCreate = () => {
+    handleCreate = (colorOptions,materialOptions,sizeOptions) => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -181,28 +161,28 @@ class ProductsDisplay extends Component{
                 values.subcCostTotal = 0;
             }
             for (let i = 0; i < values.colors.length; i++) {
-                for (let j = 0; j < this.state.colorOptions.length; j++) {
-                    if (values.colors[i] === this.state.colorOptions[j].name) {
-                        values.colors[i] = this.state.colorOptions[j].id
+                for (let j = 0; j < colorOptions.length; j++) {
+                    if (values.colors[i] === colorOptions[j].name) {
+                        values.colors[i] = colorOptions[j].id
                     }
                 }
             }
 
             for (let i = 0; i < values.materials.length; i++) {
-                for (let j = 0; j < this.state.materialOptions.length; j++) {
-                    if (values.materials[i] === this.state.materialOptions[j].name) {
-                        values.materials[i] = {id:this.state.materialOptions[j].id}
+                for (let j = 0; j < materialOptions.length; j++) {
+                    if (values.materials[i] === materialOptions[j].name) {
+                        values.materials[i] = {id:materialOptions[j].id}
                     }
                 }
             }
-            let sizeOptionsValue = this.state.sizeOptions.map(size => size.value);
+            let sizeOptionsValue = sizeOptions.map(size => size.value);
             let newSizes = [];
             let existedSizes = [];
             let newSizeId = [];
             for (let i = 0; i < values.sizes.length; i++) {
-                for (let j = 0; j < this.state.sizeOptions.length; j++) {
-                    if (values.sizes[i] === this.state.sizeOptions[j].value) {
-                        existedSizes.push(this.state.sizeOptions[j])
+                for (let j = 0; j < sizeOptions.length; j++) {
+                    if (values.sizes[i] === sizeOptions[j].value) {
+                        existedSizes.push(sizeOptions[j])
                     }
                 }
                 if (sizeOptionsValue.indexOf(values.sizes[i]) < 0){
@@ -491,7 +471,7 @@ class ProductsDisplay extends Component{
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
-                                onCreate={this.handleCreate}
+                                onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                                 uploadImage={(data) => this.uploadImage = data}
                             />
                             <br/>
@@ -558,7 +538,7 @@ class ProductsDisplay extends Component{
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
-                                onCreate={this.handleCreate}
+                                onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                                 uploadImage={(data) => this.uploadImage = data}
                             />
                             <br/>
@@ -610,7 +590,7 @@ class ProductsDisplay extends Component{
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
-                            onCreate={this.handleCreate}
+                            onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                             uploadImage={(data) => this.uploadImage = data}
                         />
                         <br/>
@@ -649,7 +629,7 @@ class ProductsDisplay extends Component{
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
                                 onCancel={this.handleCancel}
-                                onCreate={this.handleCreate}
+                                onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                                 uploadImage={(data) => this.uploadImage = data}
                             />
                             <br/>
@@ -677,7 +657,7 @@ class ProductsDisplay extends Component{
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
-                            onCreate={this.handleCreate}
+                            onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                             uploadImage={(data) => this.uploadImage = data}
                         />
                         <br/>
