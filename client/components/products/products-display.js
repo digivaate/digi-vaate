@@ -350,39 +350,42 @@ class ProductsDisplay extends Component{
                         return (
                             <Col span={6} key={product.id}>
                                 <div className="product-card-wrapper">
-                                    <Link to={{
-                                        pathname: url + product.name,
-                                        state: {productListUrl: this.props.match.url}
-                                    }}>
                                     <Card
                                         hoverable
                                         bodyStyle={{height:200}}
                                         className="product-card-display"
-                                        cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
+                                        cover={<Link to={{
+                                            pathname: url + product.name,
+                                            state: {productListUrl: this.props.match.url}
+                                        }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
                                         actions={[
                                             <div onClick = {() => this.handleDelete(product.id)}>
                                                 <Icon type="delete" />
                                             </div>
                                         ]}
                                     >
-                                        <Meta
-                                            title={product.name}
-                                            description={
-                                                <div>
-                                                    <br/>
-                                                    <br/>
-                                                    <Row gutter={8}>
-                                                        { renderProductColors }
-                                                    </Row>
-                                                    <Row gutter={16}>
-                                                        <hr />
-                                                        {renderProductMaterials}
-                                                    </Row>
-                                                </div>
-                                            }
-                                        />
+                                        <Link to={{
+                                            pathname: url + product.name,
+                                            state: {productListUrl: this.props.match.url}
+                                        }}>
+                                            <Meta
+                                                title={product.name}
+                                                description={
+                                                    <div>
+                                                        <br/>
+                                                        <br/>
+                                                        <Row gutter={8}>
+                                                            { renderProductColors }
+                                                        </Row>
+                                                        <Row gutter={16}>
+                                                            <hr />
+                                                            {renderProductMaterials}
+                                                        </Row>
+                                                    </div>
+                                                }
+                                            />
+                                        </Link>
                                     </Card>
-                                    </Link>
                                 </div>
                             </Col>
                         )
@@ -390,21 +393,24 @@ class ProductsDisplay extends Component{
                 return(
                     <Col span={6} key={`${product.id}/${product.seasonName}/${product.collectionName}`}>
                         <div className="product-card-wrapper">
-                            <Link to={{
-                                pathname: url + product.name,
-                                state: {productListUrl: this.props.match.url}
-                            }}>
-                                <Card
-                                    hoverable
-                                    bodyStyle={{height:200}}
-                                    className="product-card-display"
-                                    cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
-                                    actions={[
-                                        <div onClick = {() => this.handleDelete(product.id)}>
-                                            <Icon type="delete" />
-                                        </div>
-                                    ]}
-                                >
+                            <Card
+                                hoverable
+                                bodyStyle={{height:200}}
+                                className="product-card-display"
+                                cover={<Link to={{
+                                    pathname: url + product.name,
+                                    state: {productListUrl: this.props.match.url}
+                                }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
+                                actions={[
+                                    <div onClick = {() => this.handleDelete(product.id)}>
+                                        <Icon type="delete" />
+                                    </div>
+                                ]}
+                            >
+                                <Link to={{
+                                    pathname: url + product.name,
+                                    state: {productListUrl: this.props.match.url}
+                                }}>
                                     <Meta
                                         title={product.name}
                                         description={
@@ -421,8 +427,8 @@ class ProductsDisplay extends Component{
                                             </div>
                                         }
                                     />
-                                </Card>
-                            </Link>
+                                </Link>
+                            </Card>
                         </div>
                     </Col>
                 )

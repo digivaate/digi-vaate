@@ -326,8 +326,8 @@ class ProductTable extends Component {
                                 }
                             }}>
                             <span className="link-to-product">{d.name}</span>
-                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.orderProductId)} type="delete"/>:"" }
                             </Link>
+                            {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.orderProductId)} type="delete"/>:"" }
                         </div>
                     )},
                 width: 220,

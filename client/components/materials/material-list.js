@@ -136,20 +136,23 @@ class MaterialList extends Component{
                     return(
                         <Col span={6} key={material.id}>
                             <div className="material-card-wrapper">
-                                <Link to={{
-                                    pathname: this.props.match.url + "/" + material.name,
-                                    state:{materialListUrl: this.props.match.url}
-                                }}>
                                 <Card
                                     hoverable
                                     bodyStyle={{height:90}}
                                     className="material-card-display"
-                                    cover={<img alt="example" className="material-img" src={`${imgUrl}`} />}
+                                    cover={<Link to={{
+                                        pathname: this.props.match.url + "/" + material.name,
+                                        state:{materialListUrl: this.props.match.url}
+                                    }}><img alt="example" className="material-img" src={`${imgUrl}`} /></Link>}
                                     actions={[
                                         <div onClick = {() => this.handleDelete(material.id)}>
                                             <Icon type="delete" />
                                         </div>
                                     ]}>
+                                    <Link to={{
+                                        pathname: this.props.match.url + "/" + material.name,
+                                        state:{materialListUrl: this.props.match.url}
+                                    }}>
                                     <Meta
                                         title= {
                                             <div>
@@ -158,8 +161,8 @@ class MaterialList extends Component{
                                             </div>
                                         }
                                     />
+                                    </Link>
                                 </Card>
-                                </Link>
                             </div>
                         </Col>
                     )
