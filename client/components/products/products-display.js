@@ -409,8 +409,8 @@ class ProductsDisplay extends Component{
                                         title={product.name}
                                         description={
                                             <div>
-                                                <br/>
-                                                <br/>
+                                                <p>Season: {product.seasonName} </p>
+                                                <p>Collection: {product.collectionName}</p>
                                                 <Row gutter={8}>
                                                     { renderProductColors }
                                                 </Row>
