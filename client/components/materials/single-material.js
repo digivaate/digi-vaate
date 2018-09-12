@@ -2,7 +2,7 @@ import React,{ Component,Fragment } from "react";
 import axios from 'axios';
 import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import '../../utils/compare-obj';
 import './materials.css'
 import FormData from 'form-data';
@@ -371,20 +371,26 @@ class SingleMaterial extends Component{
 
     render(){
         let backToMaterialListBtn = null;
-        let backToMaterialList = null;
         let backToProductBtn = null;
         let backToProduct = null;
         if(this.props.location.state) {
             if (this.props.location.state.historyProductUrl) {
                 backToProductBtn =
                     <Fragment>
-                        <Button
-                            onClick={() => this.setState({
-                                backToProduct: true
-                            })}
-                        >
-                            <Icon type="left" theme="outlined"/> Back to product
-                        </Button>
+                        <Link to={{
+                            pathname: `${this.props.location.state.historyProductUrl}`,
+                            state:
+                                {
+                                    productListUrl:this.props.location.state.historyProductListUrl,
+                                    historyOrderUrl: this.props.location.state.historyOrderUrl,
+                                    orderListUrl:this.props.location.state.orderListUrl,
+                                    historyBudgetUrl: this.props.location.state.historyBudgetUrl
+                                }
+                        }}>
+                            <Button>
+                                <Icon type="left" theme="outlined"/> Back to product
+                            </Button>
+                        </Link>
                         <br/>
                         <br/>
                     </Fragment>
@@ -392,34 +398,17 @@ class SingleMaterial extends Component{
             if (this.props.location.state.materialListUrl) {
                 backToMaterialListBtn =
                     <Fragment>
-                        <Button
-                            onClick={() => this.setState({
-                                backToMaterialList: true
-                            })}
-                        >
-                            <Icon type="left" theme="outlined"/> Back to materials
-                        </Button>
+                        <Link to={{
+                            pathname: `${this.props.location.state.materialListUrl}`,
+                        }}>
+                            <Button>
+                                <Icon type="left" theme="outlined"/> Back to materials
+                            </Button>
+                        </Link>
                         <br/>
                         <br/>
                     </Fragment>
             }
-        }
-        if(this.state.backToProduct){
-            backToProduct = <Redirect to={{
-                pathname: `${this.props.location.state.historyProductUrl}`,
-                state:
-                    {
-                        productListUrl:this.props.location.state.historyProductListUrl,
-                        historyOrderUrl: this.props.location.state.historyOrderUrl,
-                        orderListUrl:this.props.location.state.orderListUrl,
-                        historyBudgetUrl: this.props.location.state.historyBudgetUrl
-                    }
-            }}/>
-        }
-        if(this.state.backToMaterialList){
-            backToMaterialList = <Redirect to={{
-                pathname: `${this.props.location.state.materialListUrl}`,
-            }}/>
         }
         if(this.state.loadedMaterial){
             let totalConsumption = this.state.loadedMaterial.products.reduce((sum,product) => sum + product.material_product.consumption,0);
@@ -459,9 +448,7 @@ class SingleMaterial extends Component{
             return (
                 <div>
                     {backToProductBtn}
-                    {backToProduct}
                     {backToMaterialListBtn}
-                    {backToMaterialList}
                     <Row>
                     <Col span={8}>
                     <Row type="flex">

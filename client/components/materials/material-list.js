@@ -1,7 +1,7 @@
 import React,{ Component } from "react";
 import MaterialCreateForm from './newMaterial'
 import { Card, Row, Col,Icon,Avatar,Button,Form,message,Modal } from 'antd';
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
@@ -28,13 +28,6 @@ class MaterialList extends Component{
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
     }
-
-    handleSelect = (materialName) =>{
-        this.setState({
-            isSelected:true,
-            materialName: materialName
-        })
-    };
 
     handleDelete = (materialId) =>{
         let self = this;
@@ -134,13 +127,6 @@ class MaterialList extends Component{
 
     render() {
         let renderMaterialList = null;
-        let singleMaterial= null;
-        if (this.state.isSelected) {
-            singleMaterial = <Redirect to={{
-                pathname: this.props.match.url + "/" + this.state.materialName,
-                state:{materialListUrl: this.props.match.url}
-            }}/>
-        }
         if (this.materials) {
             renderMaterialList = this.materials.map(material =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
@@ -150,18 +136,21 @@ class MaterialList extends Component{
                     return(
                         <Col span={6} key={material.id}>
                             <div className="material-card-wrapper">
+                                <Link to={{
+                                    pathname: this.props.match.url + "/" + material.name,
+                                    state:{materialListUrl: this.props.match.url}
+                                }}>
                                 <Card
                                     hoverable
                                     bodyStyle={{height:90}}
                                     className="material-card-display"
-                                    cover={<img onClick = {() => this.handleSelect(material.name)} alt="example" className="material-img" src={`${imgUrl}`} />}
+                                    cover={<img alt="example" className="material-img" src={`${imgUrl}`} />}
                                     actions={[
                                         <div onClick = {() => this.handleDelete(material.id)}>
                                             <Icon type="delete" />
                                         </div>
                                     ]}>
                                     <Meta
-                                        onClick = {() => this.handleSelect(material.name)}
                                         title= {
                                             <div>
                                                 <p>{material.name}</p>
@@ -170,6 +159,7 @@ class MaterialList extends Component{
                                         }
                                     />
                                 </Card>
+                                </Link>
                             </div>
                         </Col>
                     )
@@ -202,7 +192,6 @@ class MaterialList extends Component{
         }
         return (
             <div>
-                {singleMaterial}
                 <h1>Materials</h1>
                 <Button type="primary"
                         size="large"

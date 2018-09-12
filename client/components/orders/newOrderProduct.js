@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { Modal,Button,Form,Input,Select} from 'antd';
-import {Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const FormItem = Form.Item;
@@ -43,26 +43,22 @@ const OrderProductCreateForm = Form.create()(
             let noSizeFormItem = null;
             let redirectToProduct = null;
             let renderSizeFormItems = null;
-            let linkToProduct = null;
             if(productNameSelected){
                 redirectToProduct =
                     <div>
                         <p> For more size options, click the button below: </p>
-                        <Button
-                            onClick={() => this.setState({isRedirected:true})}
-                        >
+                        <Link to={{
+                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${productNameSelected}`,
+                            state: {
+                                historyOrderUrl: this.props.match.url,
+                                orderListUrl:this.props.location.state.orderListUrl,
+                            }
+                        }}>
+                        <Button>
                             Edit size
                         </Button>
+                        </Link>
                     </div>
-            }
-            if(this.state.isRedirected){
-                linkToProduct =  <Redirect to={{
-                    pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${productNameSelected}`,
-                    state: {
-                        historyOrderUrl: this.props.match.url,
-                        orderListUrl:this.props.location.state.orderListUrl,
-                    }
-                }}/>
             }
             if(sizeOptions){
                 renderSizeFormItems = sizeOptions.map(size => {
@@ -92,7 +88,6 @@ const OrderProductCreateForm = Form.create()(
                     onCancel={onCancel}
                     onOk={onCreate}
                 >
-                    {linkToProduct}
                     <Form layout="vertical">
                         <FormItem label="Product">
                             {getFieldDecorator('productId')(

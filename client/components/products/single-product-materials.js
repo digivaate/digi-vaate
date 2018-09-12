@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect,Popover} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
-import {Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import FormData from 'form-data';
 import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
@@ -213,20 +213,6 @@ class SingleProductMaterials extends Component{
         let materialSelected1 = null;
         let materialSelected2 = null;
         let materialSelected3 = null;
-        let linkToMaterial = null;
-        if(this.state.isSelected){
-            linkToMaterial = <Redirect to={{
-                pathname: `/materials/${this.state.materialName}`,
-                state:
-                    {
-                        historyProductUrl:this.props.match.url,
-                        historyProductListUrl: this.props.location.state.productListUrl,
-                        historyOrderUrl: this.props.location.state.historyOrderUrl,
-                        orderListUrl:this.props.location.state.orderListUrl,
-                        historyBudgetUrl: this.props.location.state.historyBudgetUrl
-                    }
-            }}/>
-        }
         let editMaterialBtn = <div style={{height:40,width:40}}></div>;
         let renderProductMaterials = <p>This product does not have any materials yet</p>;
         let renderMaterialOptions = [];
@@ -253,14 +239,21 @@ class SingleProductMaterials extends Component{
                     }
                     return (
                         <Col key={material.id} span={8}>
+                            <Link to={{
+                                pathname: `/materials/${material.name}`,
+                                state:
+                                    {
+                                        historyProductUrl:this.props.match.url,
+                                        historyProductListUrl: this.props.location.state.productListUrl,
+                                        historyOrderUrl: this.props.location.state.historyOrderUrl,
+                                        orderListUrl:this.props.location.state.orderListUrl,
+                                        historyBudgetUrl: this.props.location.state.historyBudgetUrl
+                                    }
+                            }}>
                             <Card
                                 hoverable
                                 className="product-material-card"
                                 cover={<img className="material-img" src={`${materialImgUrl}`}/>}
-                                onClick={() => this.setState({
-                                    materialName:material.name,
-                                    isSelected:true
-                                })}
                             >
                                 <Meta
                                     title={material.name}
@@ -273,6 +266,7 @@ class SingleProductMaterials extends Component{
                                     }
                                 />
                             </Card>
+                            </Link>
                         </Col>
                     )
                 }
@@ -341,7 +335,6 @@ class SingleProductMaterials extends Component{
 
         return (
             <div>
-                {linkToMaterial}
                 <Row gutter={8}>
                     <Row type="flex">
                         <h4>Materials&nbsp;&nbsp;</h4>

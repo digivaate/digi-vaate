@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import {Col,Row,Modal,Spin,List,Button,message} from 'antd'
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import OrderCreateForm from './newOrder'
@@ -14,9 +14,7 @@ class OrderList extends Component{
         this.state={
             collectionId:null,
             orders: null,
-            isSelected:false,
             isDeleted:false,
-            singleOrder:null
         }
     }
 
@@ -41,13 +39,6 @@ class OrderList extends Component{
                 })
             })
     }
-
-    handleSelectOrder = (item) => {
-        this.setState({
-            isSelected:true,
-            singleOrder: item
-        })
-    };
 
     handleDeleteOrder = (item) => {
         let self = this;
@@ -119,15 +110,6 @@ class OrderList extends Component{
 
     render(){
         let renderOrderList = null;
-        let singleOrder = null;
-        if(this.state.isSelected){
-            singleOrder = <Redirect
-                to={{
-                    pathname: this.props.match.url + '/' + this.state.singleOrder.id,
-                    state:{orderListUrl: this.props.match.url}
-                }}
-            />
-        }
         if(this.state.orders){
             this.state.orders.sort(function(a, b) {
                 return a.id - b.id
@@ -137,10 +119,14 @@ class OrderList extends Component{
                 dataSource={this.state.orders}
                 renderItem={item => (
                     <List.Item actions={[
+                        <Link to={{
+                            pathname: this.props.match.url + '/' + item.id,
+                            state:{orderListUrl: this.props.match.url}
+                        }}>
                         <button
-                            onClick={() => this.handleSelectOrder(item)}
                             className="view-order-btn">View order
-                        </button>,
+                        </button>
+                        </Link>,
                         <button
                             onClick={() => this.handleDeleteOrder(item)}
                             className="delete-order-btn">Delete order
@@ -167,7 +153,6 @@ class OrderList extends Component{
             return(
                 <div>
                     <h1>ORDERS</h1>
-                    {singleOrder}
                     <Button type="primary"
                             size="large"
                             onClick={this.createNewOrder}

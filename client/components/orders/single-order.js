@@ -1,12 +1,11 @@
 import React,{Component,Fragment} from 'react';
 import axios from 'axios';
 import {Col,Row,Anchor,Spin,List,Button,Divider,Icon,Card} from 'antd'
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import ProductTable from './single-order-products'
 import ClientInfo from './clientInfo'
-const { Link } = Anchor;
 
 
 class SingleOrder extends Component{
@@ -83,34 +82,26 @@ class SingleOrder extends Component{
 
     render(){
         let backToOrderListBtn = null;
-        let backToOrderList = null;
-
         if(this.props.location.state) {
             if (this.props.location.state.orderListUrl) {
                 backToOrderListBtn =
                     <Fragment>
-                        <Button
-                            onClick={() => this.setState({
-                                backToOrderList: true
-                            })}
-                        >
+                        <Link to={{
+                            pathname: `${this.props.location.state.orderListUrl}`,
+                        }}>
+                        <Button>
                             <Icon type="left" theme="outlined"/> Back to orders
                         </Button>
+                        </Link>
                         <br/>
                         <br/>
                     </Fragment>
             }
         }
-        if(this.state.backToOrderList){
-            backToOrderList = <Redirect to={{
-                pathname: `${this.props.location.state.orderListUrl}`,
-            }}/>
-        }
         if(this.state.singleOrder){
             return (
                 <div>
                     {backToOrderListBtn}
-                    {backToOrderList}
                     <h1>ORDER {this.state.singleOrder.id}</h1>
                     <Row type="flex">
                         <p> Created {this.state.singleOrder.createdAt.slice(0,10)}&nbsp;&nbsp;</p>

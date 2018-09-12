@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { Card, Row, Col,Icon,Modal,Button,message,Spin,List,Divider,BackTop } from 'antd';
-import {Redirect} from 'react-router-dom'
+import {Redirect,Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
@@ -24,7 +24,6 @@ class ProductsDisplay extends Component{
             productLevel: null,
             productLevelId:null,
         };
-        this.handleSelect = this.handleSelect.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
     collections = [];
@@ -92,13 +91,6 @@ class ProductsDisplay extends Component{
 
             });
     };
-
-    handleSelect(productName){
-        this.setState({
-            isSelected:true,
-            productName: productName
-        })
-    }
 
     handleDelete(productId){
         let self = this;
@@ -316,17 +308,9 @@ class ProductsDisplay extends Component{
         let renderProductCollectionList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
-        let singleProduct = null;
-        if (this.state.isSelected) {
-            let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
-            singleProduct = <Redirect to={{
-                pathname: url + this.state.productName,
-                state: {productListUrl: this.props.match.url}
-            }}/>;
-            //return <SingleProduct productId={this.state.productName}/>
-        }
         if (this.products && this.state.productLevel && this.state.productLevelId) {
             renderProductList = this.products.map(product =>{
+                let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(product.imagePath !== null){
                     imgUrl = `${API_ROOT}/${product.imagePath}`
@@ -366,11 +350,15 @@ class ProductsDisplay extends Component{
                         return (
                             <Col span={6} key={product.id}>
                                 <div className="product-card-wrapper">
+                                    <Link to={{
+                                        pathname: url + product.name,
+                                        state: {productListUrl: this.props.match.url}
+                                    }}>
                                     <Card
                                         hoverable
                                         bodyStyle={{height:200}}
                                         className="product-card-display"
-                                        cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
+                                        cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
                                         actions={[
                                             <div onClick = {() => this.handleDelete(product.id)}>
                                                 <Icon type="delete" />
@@ -378,7 +366,6 @@ class ProductsDisplay extends Component{
                                         ]}
                                     >
                                         <Meta
-                                            onClick = {() => this.handleSelect(product.name)}
                                             title={product.name}
                                             description={
                                                 <div>
@@ -395,6 +382,7 @@ class ProductsDisplay extends Component{
                                             }
                                         />
                                     </Card>
+                                    </Link>
                                 </div>
                             </Col>
                         )
@@ -402,35 +390,39 @@ class ProductsDisplay extends Component{
                 return(
                     <Col span={6} key={`${product.id}/${product.seasonName}/${product.collectionName}`}>
                         <div className="product-card-wrapper">
-                        <Card
-                            hoverable
-                            bodyStyle={{height:200}}
-                            className="product-card-display"
-                            cover={<img alt="example" onClick = {() => this.handleSelect(product.name)} className="product-img" src={`${imgUrl}`} />}
-                            actions={[
-                                <div onClick = {() => this.handleDelete(product.id)}>
-                                    <Icon type="delete" />
-                                </div>
-                            ]}
-                        >
-                            <Meta
-                                onClick = {() => this.handleSelect(product.name)}
-                                title={product.name}
-                                description ={
-                                    <div>
-                                        <p>Season: {product.seasonName} </p>
-                                        <p>Collection: {product.collectionName}</p>
-                                        <Row gutter={8}>
-                                            { renderProductColors }
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <hr />
-                                            {renderProductMaterials}
-                                        </Row>
-                                    </div>
-                                }
-                            />
-                        </Card>
+                            <Link to={{
+                                pathname: url + product.name,
+                                state: {productListUrl: this.props.match.url}
+                            }}>
+                                <Card
+                                    hoverable
+                                    bodyStyle={{height:200}}
+                                    className="product-card-display"
+                                    cover={<img alt="example" className="product-img" src={`${imgUrl}`} />}
+                                    actions={[
+                                        <div onClick = {() => this.handleDelete(product.id)}>
+                                            <Icon type="delete" />
+                                        </div>
+                                    ]}
+                                >
+                                    <Meta
+                                        title={product.name}
+                                        description={
+                                            <div>
+                                                <br/>
+                                                <br/>
+                                                <Row gutter={8}>
+                                                    { renderProductColors }
+                                                </Row>
+                                                <Row gutter={16}>
+                                                    <hr />
+                                                    {renderProductMaterials}
+                                                </Row>
+                                            </div>
+                                        }
+                                    />
+                                </Card>
+                            </Link>
                         </div>
                     </Col>
                 )
@@ -456,7 +448,6 @@ class ProductsDisplay extends Component{
                     return (
                         <div>
                             <BackTop/>
-                            {singleProduct}
                             <h1>Products</h1>
                             <Button type="primary"
                                     size="large"
@@ -523,7 +514,6 @@ class ProductsDisplay extends Component{
                     return (
                         <div>
                             <BackTop/>
-                            {singleProduct}
                             <h1>Products</h1>
                             <Button type="primary"
                                     size="large"
@@ -575,7 +565,6 @@ class ProductsDisplay extends Component{
                 }
                 return (
                     <div>
-                        {singleProduct}
                         <h1>Products</h1>
                         <Button type="primary"
                                 size="large"
@@ -614,7 +603,6 @@ class ProductsDisplay extends Component{
             else if(this.products.length === 0 && this.state.isFetched === false){
                 return (
                         <div>
-                            {singleProduct}
                             <h1>Products</h1>
                             <Button type="primary"
                                     size="large"
@@ -642,7 +630,6 @@ class ProductsDisplay extends Component{
             else{
                 return (
                     <div>
-                        {singleProduct}
                         <h1>Products</h1>
                         <Button type="primary"
                                 size="large"
@@ -669,7 +656,6 @@ class ProductsDisplay extends Component{
         } else {
             return (
                 <div>
-                    {singleProduct}
                     <h1>Products</h1>
                     <Button type="primary"
                             size="large"

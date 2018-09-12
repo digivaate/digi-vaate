@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {API_ROOT} from "../api-config";
 import axios from "axios";
-import {Redirect} from 'react-router-dom';
+import {Redirect,Link} from 'react-router-dom';
 import {Button, Popover, message, Icon} from "antd";
 import ReactTable from "react-table";
 import '../utils/compare-obj';
@@ -27,7 +27,6 @@ class SummaryTable extends React.Component {
         this.checkDataState = this.checkDataState.bind(this);
         this.createColumns = this.createColumns.bind(this);
         this.renderEditable = this.renderEditable.bind(this);
-        this.linkToProduct = this.linkToProduct.bind(this);
         this.sumOfAmounts = this.sumOfAmounts.bind(this);
         this.sumOfTotalSale = this.sumOfTotalSale.bind(this);
         this.sumOfCoverAmount = this.sumOfCoverAmount.bind(this);
@@ -194,18 +193,38 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         id:'name',
                         accessor: d =>{
-                            if(d.collectionName){
+                            if(this.props.match.params.seasonId && !this.props.match.params.collectionId){
+                                if(d.collectionName){
                                 return (
                                     <div>
-                                        <span className="link-to-product" onClick={() => this.linkToProduct(d.name,d.collectionName)}>{d.name}</span>
+                                        <Link to={{
+                                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${d.collectionName}/products/${d.name}`,
+                                            state: {historyBudgetUrl: this.props.match.url}
+                                        }}>
+                                        <span className="link-to-product">{d.name}</span>
+                                        </Link>
                                     </div>
                                 )
                             } else {
                             return (
                                 <div>
-                                    <span className="link-to-product" onClick={() => this.linkToProduct(d.name)}>{d.name}</span>
+                                    <Link to={{
+                                        pathname: `/seasons/${this.props.match.params.seasonId}/products/${d.name}`,
+                                        state: {historyBudgetUrl: this.props.match.url}
+                                    }}>
+                                    <span className="link-to-product">{d.name}</span>
+                                    </Link>
                                 </div>
-                            )}},
+                            )}} else if(this.props.match.params.seasonId && this.props.match.params.collectionId) {
+                                return (
+                                    <Link to={{
+                                        pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.name}`,
+                                        state: {historyBudgetUrl: this.props.match.url}
+                                    }}>
+                                        <span className="link-to-product">{d.name}</span>
+                                    </Link>
+                                )
+                            }},
                         width: 140,
                         Footer: 'Total:'
                     },
@@ -395,40 +414,9 @@ class SummaryTable extends React.Component {
         );
     }
 
-    linkToProduct = (productName,collectionName="None") => {
-        this.setState({
-            collectionName: collectionName,
-            productName:productName,
-            isSelected:true
-        })
-    };
-
     render() {
-        let linkToProduct = null;
-        if(this.state.isSelected){
-            if(this.props.match.params.seasonId && !this.props.match.params.collectionId){
-                if(this.state.collectionName !== "None"){
-                    linkToProduct =  <Redirect to={{
-                        pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.state.collectionName}/products/${this.state.productName}`,
-                        state: {historyBudgetUrl: this.props.match.url}
-                    }}/>
-                } else {
-                    linkToProduct = <Redirect to={{
-                        pathname: `/seasons/${this.props.match.params.seasonId}/products/${this.state.productName}`,
-                        state: {historyBudgetUrl: this.props.match.url}
-                    }}/>
-                }
-            } else if(this.props.match.params.seasonId && this.props.match.params.collectionId){
-                linkToProduct =  <Redirect to={{
-                    pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${this.state.productName}`,
-                    state: {historyBudgetUrl: this.props.match.url}
-                }}/>
-            }
-
-        }
         return(
             <Fragment>
-                {linkToProduct}
                 <div className={'table-header'}>
                     <h1>Budget plan</h1>
                     <div>

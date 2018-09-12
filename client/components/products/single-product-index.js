@@ -1,6 +1,6 @@
 import React, {Component,Fragment} from "react";
 import axios from 'axios';
-import {Redirect} from 'react-router-dom';
+import {Redirect,Link} from 'react-router-dom';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
@@ -440,22 +440,23 @@ class SingleProduct extends Component {
 
     render(){
         let backToOrderBtn = null;
-        let backToOrder = null;
         let backToBudgetBtn = null;
-        let backToBudget = null;
         let backToProductListBtn = null;
-        let backToProductList = null;
         if(this.props.location.state){
             if(this.props.location.state.historyOrderUrl){
                 backToOrderBtn =
                     <Fragment>
-                    <Button
-                        onClick={() => this.setState({
-                            backToOrder: true
-                        })}
-                    >
-                        <Icon type="left" theme="outlined" /> Back to order
-                    </Button>
+                        <Link to={{
+                            pathname: `${this.props.location.state.historyOrderUrl}`,
+                            state:{
+                                backToOrderList: this.props.location.state.backToOrderList,
+                                orderListUrl:this.props.location.state.orderListUrl,
+                            }
+                        }}>
+                            <Button>
+                                <Icon type="left" theme="outlined" /> Back to order
+                            </Button>
+                        </Link>
                     <br/>
                     <br/>
                     </Fragment>
@@ -463,13 +464,14 @@ class SingleProduct extends Component {
             if(this.props.location.state.historyBudgetUrl){
                 backToBudgetBtn =
                     <Fragment>
-                    <Button
-                        onClick={() => this.setState({
-                            backToBudget: true
-                        })}
-                    >
-                        <Icon type="left" theme="outlined" /> Back to budget
-                    </Button>
+                        <Link to={{
+                            pathname: `${this.props.location.state.historyBudgetUrl}`,
+                            state:{historyBudgetUrl: this.props.match.historyBudgetUrl}
+                        }}>
+                            <Button>
+                                <Icon type="left" theme="outlined" /> Back to budget
+                            </Button>
+                        </Link>
                     <br/>
                     <br/>
                     </Fragment>
@@ -477,37 +479,19 @@ class SingleProduct extends Component {
             if(this.props.location.state.productListUrl){
                 backToProductListBtn =
                     <Fragment>
-                    <Button
-                        onClick={() => this.setState({
-                            backToProductList: true
-                        })}
-                    >
-                        <Icon type="left" theme="outlined" /> Back to products
-                    </Button>
+                        <Link
+                            to = {{
+                                pathname: `${this.props.location.state.productListUrl}`
+                            }}
+                        >
+                            <Button>
+                                <Icon type="left" theme="outlined" /> Back to products
+                            </Button>
+                        </Link>
                     <br/>
                     <br/>
                     </Fragment>
             }
-        }
-        if(this.state.backToOrder){
-            backToOrder = <Redirect to={{
-                pathname: `${this.props.location.state.historyOrderUrl}`,
-                state:{
-                    backToOrderList: this.props.location.state.backToOrderList,
-                    orderListUrl:this.props.location.state.orderListUrl,
-                }
-            }}/>
-        }
-        if(this.state.backToBudget){
-            backToBudget = <Redirect to={{
-                pathname: `${this.props.location.state.historyBudgetUrl}`,
-                state:{historyBudgetUrl: this.props.match.historyBudgetUrl}
-            }}/>
-        }
-        if(this.state.backToProductList){
-            backToProductList = <Redirect to={{
-                pathname: `${this.props.location.state.productListUrl}`
-            }}/>
         }
         if(this.state.loadedProduct && this.state.seasons && this.state.collections){
             const tabList = [{
@@ -562,11 +546,8 @@ class SingleProduct extends Component {
             return(
                 <div>
                     {backToOrderBtn}
-                    {backToOrder}
                     {backToBudgetBtn}
-                    {backToBudget}
                     {backToProductListBtn}
-                    {backToProductList}
                     <Row>
                         <Col span={8}>
                             <SingleProductName

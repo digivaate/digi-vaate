@@ -1,5 +1,5 @@
 import React, {Fragment, Component} from "react";
-import {Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {API_ROOT} from "../../api-config";
 import axios from "axios";
 import {Button, Icon,Modal,Input} from "antd";
@@ -307,12 +307,6 @@ class ProductTable extends Component {
     };
 
     //Link to product
-    linkToProduct = (productName) => {
-        this.setState({
-            productName:productName,
-            isSelected:true
-        })
-    };
 
 
     //Create table column
@@ -324,8 +318,16 @@ class ProductTable extends Component {
                 accessor: d =>{
                     return (
                         <div>
-                            <span className="link-to-product" onClick={() => this.linkToProduct(d.name)}>{d.name}</span>
+                            <Link to={{
+                                pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.name}`,
+                                state: {
+                                    historyOrderUrl: this.props.match.url,
+                                    orderListUrl:this.props.location.state.orderListUrl,
+                                }
+                            }}>
+                            <span className="link-to-product">{d.name}</span>
                             {this.state.editMode ? <Icon style={{float:'right'}} onClick = {() => this.deleteProduct(this.state.data.indexOf(d),d.orderProductId)} type="delete"/>:"" }
+                            </Link>
                         </div>
                     )},
                 width: 220,
@@ -378,16 +380,6 @@ class ProductTable extends Component {
 
 
     render() {
-        let linkToProduct = null;
-        if(this.state.isSelected){
-            linkToProduct =  <Redirect to={{
-                pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${this.state.productName}`,
-                state: {
-                    historyOrderUrl: this.props.match.url,
-                    orderListUrl:this.props.location.state.orderListUrl,
-                }
-            }}/>
-        }
         let renderSizeToEdit = null;
         let showCreateOrderForm = null;
         if(this.state.showCreateOrderForm){
@@ -416,7 +408,6 @@ class ProductTable extends Component {
         }
         return (
             <div>
-                {linkToProduct}
                 <Button onClick={this.addProduct}>Add product</Button>
                 <Button onClick={this.changeEditMode}>Edit</Button>
                 <Modal
