@@ -477,7 +477,7 @@ class ProductsDisplay extends Component{
                             <Divider> Company Products </Divider>
                             <List
                                 dataSource={renderProductCompanyList}
-                                grid={{gutter: 40, column: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
                                     hideOnSinglePage: true,
@@ -490,7 +490,7 @@ class ProductsDisplay extends Component{
                             <Divider> Season Products </Divider>
                             <List
                                 dataSource={renderProductSeasonList}
-                                grid={{gutter: 40, column: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
                                     hideOnSinglePage: true,
@@ -503,7 +503,7 @@ class ProductsDisplay extends Component{
                             <Divider> Collection Products </Divider>
                             <List
                                 dataSource={renderProductCollectionList}
-                                grid={{gutter: 40, column: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
                                     hideOnSinglePage: true,
@@ -543,7 +543,7 @@ class ProductsDisplay extends Component{
                             <Divider> Season Products </Divider>
                             <List
                                 dataSource={renderProductSeasonList}
-                                grid={{gutter: 40, column: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
                                     hideOnSinglePage: true,
@@ -556,7 +556,7 @@ class ProductsDisplay extends Component{
                             <Divider> Collection Products </Divider>
                             <List
                                 dataSource={renderProductCollectionList}
-                                grid={{gutter: 40, column: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
                                     hideOnSinglePage: true,
@@ -593,9 +593,9 @@ class ProductsDisplay extends Component{
                         {showTotalProducts}
                         <List
                             dataSource={renderProductList}
-                            grid={{gutter: 40, column: 4}}
+                            grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                             pagination={{
-                                pageSize: 28,
+                                pageSize: 8,
                                 hideOnSinglePage: true,
                                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 

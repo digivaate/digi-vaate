@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import MaterialCreateForm from './newMaterial'
-import { Card, Row, Col,Icon,Avatar,Button,Form,message,Modal } from 'antd';
+import { Card, List, Col,Icon,Spin,Button,Form,message,Modal } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -191,31 +191,63 @@ class MaterialList extends Component{
                         <p>No materials yet...</p>
                     </div>
                 )
+            } else {
+                return (
+                    <div>
+                        <h1>Materials</h1>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewMaterial}
+                        >
+                            Create new material
+                        </Button>
+                        <MaterialCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            uploadImage={(data) => this.uploadImage = data}
+                        />
+                        <br/>
+                        <br/>
+                        <List
+                            dataSource={renderMaterialList}
+                            grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+                            pagination={{
+                                pageSize: 8,
+                                hideOnSinglePage: true,
+                                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+
+                            }}
+                            renderItem={item => <List.Item>{item}</List.Item>}
+                        >
+                        </List>
+                    </div>
+                )
             }
+        } else {
+            return (
+                <div>
+                    <h1>Materials</h1>
+                    <Button type="primary"
+                            size="large"
+                            onClick={this.createNewMaterial}
+                    >
+                        Create new material
+                    </Button>
+                    <MaterialCreateForm
+                        wrappedComponentRef={this.saveFormRef}
+                        visible={this.state.visible}
+                        onCancel={this.handleCancel}
+                        onCreate={this.handleCreate}
+                        uploadImage={(data) => this.uploadImage = data}
+                    />
+                    <br/>
+                    <Spin/>
+                </div>
+            )
         }
-        return (
-            <div>
-                <h1>Materials</h1>
-                <Button type="primary"
-                        size="large"
-                        onClick={this.createNewMaterial}
-                >
-                    Create new material
-                </Button>
-                <MaterialCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                    uploadImage={(data) => this.uploadImage = data}
-                />
-                <br/>
-                <br/>
-                <Row gutter={5}>
-                    {renderMaterialList}
-                </Row>
-            </div>
-        )
+
     }
 }
 

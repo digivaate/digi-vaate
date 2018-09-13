@@ -75,6 +75,7 @@
 /* products-display.js */
 .product-card-wrapper{
     height:440px;
+    width:300px;
 }
 
 .product-card-display{
