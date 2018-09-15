@@ -106,8 +106,6 @@ class SingleProduct extends Component {
                             axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                 .then(res => {
                                     this.setState({
-                                        collectionName: "None",
-                                        seasonName: "None",
                                         colorOptions: res.data[0].colors
                                     });
                                 });
@@ -118,8 +116,6 @@ class SingleProduct extends Component {
                                     axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                         .then(re => {
                                             this.setState({
-                                                collectionName: "None",
-                                                seasonName: res.data[0].name,
                                                 colorOptions: res.data[0].colors.concat(re.data[0].colors)
                                             })
                                         });
@@ -136,8 +132,6 @@ class SingleProduct extends Component {
                                                     axios.get(`${API_ROOT}/company?name=Demo%20company`)
                                                         .then(re1 => {
                                                             this.setState({
-                                                                seasonName: re.data[0].name,
-                                                                collectionName: res.data[0].name,
                                                                 colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))
                                                             })
                                                         })
@@ -280,38 +274,6 @@ class SingleProduct extends Component {
             onOk(){
                 axios.get(`${API_ROOT}/product?name=${self.state.loadedProduct.name}`)
                     .then(response => {
-                        if (response.data[0].companyId) {
-                            self.setState({
-                                collectionName: "None",
-                                seasonName: "None"
-                            });
-                        }
-                        if (response.data[0].seasonId) {
-                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
-                                .then(res => {
-                                    self.setState({
-                                        collectionName: "None",
-                                        seasonName: res.data[0].name
-                                    });
-                                });
-                        }
-                        if (response.data[0].collectionId) {
-                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
-                                .then(response => {
-                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
-                                        .then(res => {
-                                            self.setState({
-                                                collectionName: res.data[0].name,
-                                            });
-                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                                                .then(re => {
-                                                    self.setState({
-                                                        seasonName: re.data[0].name,
-                                                    });
-                                                })
-                                        });
-                                })
-                        }
                         self.setState({
                             loadedProduct: response.data[0],
                             productImg: response.data[0].imagePath,
@@ -359,38 +321,6 @@ class SingleProduct extends Component {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
                         message.success("Updated!",1.5);
-                        if (response.data[0].companyId) {
-                            this.setState({
-                                collectionName: "None",
-                                seasonName: "None"
-                            });
-                        }
-                        if (response.data[0].seasonId) {
-                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
-                                .then(res => {
-                                    this.setState({
-                                        collectionName: "None",
-                                        seasonName: res.data[0].name
-                                    });
-                                });
-                        }
-                        if (response.data[0].collectionId) {
-                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
-                                .then(response => {
-                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
-                                        .then(res => {
-                                            this.setState({
-                                                collectionName: res.data[0].name,
-                                            });
-                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                                                .then(re => {
-                                                    this.setState({
-                                                        seasonName: re.data[0].name,
-                                                    });
-                                                })
-                                        });
-                                })
-                        }
                         this.setState({
                             loadedProduct: response.data[0],
                             productImg: response.data[0].imagePath,
@@ -431,10 +361,14 @@ class SingleProduct extends Component {
     };
 
     render(){
+        let seasonName = null;
+        let collectionName = null;
         let backToOrderBtn = null;
         let backToBudgetBtn = null;
         let backToProductListBtn = null;
         if(this.props.location.state){
+            seasonName = this.props.location.state.seasonName;
+            collectionName = this.props.location.state.collectionName;
             if(this.props.location.state.historyOrderUrl){
                 backToOrderBtn =
                     <Fragment>
@@ -567,8 +501,8 @@ class SingleProduct extends Component {
                                 {...this.props}
                                 editModeStatus = {this.state.editModeStatus}
                                 seasons = {this.state.seasons}
-                                seasonName = {this.state.seasonName}
-                                collectionName = {this.state.collectionName}
+                                seasonName = {seasonName}
+                                collectionName = {collectionName}
                                 loadedProduct = {this.state.loadedProduct}
                                 changeLocation = {() => this.props.changeLocation()}
                             />

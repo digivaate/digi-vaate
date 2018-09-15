@@ -61,7 +61,6 @@ class SingleProductGeneralInfo extends Component{
     };
 
     handleChange = (event) => {
-        console.log(event.target.value);
         if(this.state.inputNumber) {
             this.setState({
                 [event.target.name]: event.target.value

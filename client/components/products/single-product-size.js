@@ -42,13 +42,13 @@ class SingleProductSize extends Component{
 
     handleSizeChange = (value) => {
         this.setState(prevState => prevState);
-        let sizeOptionsValue = this.state.sizeOptions.map(size => size.value);
+        let sizeOptionsValue = this.props.sizeOptions.map(size => size.value);
         let valueObj = [];
         let newValueObj = [];
         for (let i = 0; i < value.length; i++) {
-            for (let j = 0; j < this.state.sizeOptions.length; j++) {
-                if (value[i] === this.state.sizeOptions[j].value) {
-                    valueObj[i] = this.state.sizeOptions[j]
+            for (let j = 0; j < this.props.sizeOptions.length; j++) {
+                if (value[i] === this.props.sizeOptions[j].value) {
+                    valueObj[i] = this.props.sizeOptions[j]
                 }
             }
             if(sizeOptionsValue.indexOf(value[i]) < 0){
@@ -66,7 +66,7 @@ class SingleProductSize extends Component{
         if(this.newSizesCreated.length > 0) {
             axios.post(`${API_ROOT}/size`, this.newSizesCreated)
                 .then((response) => {
-                    mergeSizes = this.updateSizes.concat(response.data)
+                    mergeSizes = this.updateSizes.concat(response.data);
                     this.props.newSizes(mergeSizes);
                     this.setState({
                         sizeVisible: false,

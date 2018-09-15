@@ -60,9 +60,6 @@ class ProductsDisplay extends Component{
             })
         };
 
-        console.log(this.props.requestPath)
-
-
         axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(res => {
                 this.products = res.data;
@@ -73,6 +70,10 @@ class ProductsDisplay extends Component{
                     }
                     else if(this.products[i].seasonId){
                         this.products[i].collectionName = "None";
+                    }
+                    else if(pathSnippetsLevel[0] === "collection"){
+                        this.products[i].seasonName = this.props.match.params.seasonId;
+                        this.products[i].collectionName = this.props.match.params.collectionId;
                     }
                 }
                 this.setState({isFetched:true})
@@ -175,15 +176,12 @@ class ProductsDisplay extends Component{
 
             if(this.state.productLevel === "company"){
                 values.companyId = this.state.productLevelId;
-                this.props.newProductCompany(values.name);
             }
             else if(this.state.productLevel === "season"){
                 values.seasonId = this.state.productLevelId;
-                this.props.newProductSeason(values.name);
             }
             else if(this.state.productLevel === "collection"){
                 values.collectionId = this.state.productLevelId;
-                this.props.newProductCollection(values.name);
             }
             values.imagePath = null;
             if(this.uploadImage) {
@@ -208,6 +206,15 @@ class ProductsDisplay extends Component{
                                             message.success("Product created", 1);
                                             this.uploadImage = null;
                                             this.setState({visible: false});
+                                            if(this.state.productLevel === "company"){
+                                                this.props.newProductCompany(values.name);
+                                            }
+                                            else if(this.state.productLevel === "season"){
+                                                this.props.newProductSeason(values.name);
+                                            }
+                                            else if(this.state.productLevel === "collection"){
+                                                this.props.newProductCollection(values.name);
+                                            }
                                         });
                                 })
                         })
@@ -228,6 +235,15 @@ class ProductsDisplay extends Component{
                                     message.success("Product created", 1);
                                     this.uploadImage = null;
                                     this.setState({visible: false});
+                                    if(this.state.productLevel === "company"){
+                                        this.props.newProductCompany(values.name);
+                                    }
+                                    else if(this.state.productLevel === "season"){
+                                        this.props.newProductSeason(values.name);
+                                    }
+                                    else if(this.state.productLevel === "collection"){
+                                        this.props.newProductCollection(values.name);
+                                    }
                                 });
                         })
                 }
@@ -253,6 +269,15 @@ class ProductsDisplay extends Component{
                                     message.success("Product created", 1);
                                     this.uploadImage = null;
                                     this.setState({visible: false});
+                                    if(this.state.productLevel === "company"){
+                                        this.props.newProductCompany(values.name);
+                                    }
+                                    else if(this.state.productLevel === "season"){
+                                        this.props.newProductSeason(values.name);
+                                    }
+                                    else if(this.state.productLevel === "collection"){
+                                        this.props.newProductCollection(values.name);
+                                    }
                                 })
                         })
                 } else {
@@ -270,6 +295,15 @@ class ProductsDisplay extends Component{
                             message.success("Product created", 1);
                             this.uploadImage = null;
                             this.setState({visible: false});
+                            if(this.state.productLevel === "company"){
+                                this.props.newProductCompany(values.name);
+                            }
+                            else if(this.state.productLevel === "season"){
+                                this.props.newProductSeason(values.name);
+                            }
+                            else if(this.state.productLevel === "collection"){
+                                this.props.newProductCollection(values.name);
+                            }
                         })
                 }
                 form.resetFields();
@@ -300,7 +334,6 @@ class ProductsDisplay extends Component{
             this.products.sort(function(a, b){
                 return a.id-b.id
             });
-            console.log(this.products)
             renderProductList = this.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
@@ -348,7 +381,11 @@ class ProductsDisplay extends Component{
                                         className="product-card-display"
                                         cover={<Link to={{
                                             pathname: url + product.name,
-                                            state: {productListUrl: this.props.match.url}
+                                            state: {
+                                                productListUrl: this.props.match.url,
+                                                seasonName:product.seasonName,
+                                                collectionName:product.collectionName
+                                            }
                                         }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
                                         actions={[
                                             <div onClick = {() => this.handleDelete(product.id)}>
@@ -358,7 +395,11 @@ class ProductsDisplay extends Component{
                                     >
                                         <Link to={{
                                             pathname: url + product.name,
-                                            state: {productListUrl: this.props.match.url}
+                                            state: {
+                                                productListUrl: this.props.match.url,
+                                                seasonName:product.seasonName,
+                                                collectionName:product.collectionName
+                                            }
                                         }}>
                                             <Meta
                                                 title={product.name}
@@ -391,7 +432,11 @@ class ProductsDisplay extends Component{
                                 className="product-card-display"
                                 cover={<Link to={{
                                     pathname: url + product.name,
-                                    state: {productListUrl: this.props.match.url}
+                                    state: {
+                                        productListUrl: this.props.match.url,
+                                        seasonName:product.seasonName,
+                                        collectionName:product.collectionName
+                                    }
                                 }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
                                 actions={[
                                     <div onClick = {() => this.handleDelete(product.id)}>
@@ -401,7 +446,11 @@ class ProductsDisplay extends Component{
                             >
                                 <Link to={{
                                     pathname: url + product.name,
-                                    state: {productListUrl: this.props.match.url}
+                                    state: {
+                                        productListUrl: this.props.match.url,
+                                        seasonName:product.seasonName,
+                                        collectionName:product.collectionName
+                                    }
                                 }}>
                                     <Meta
                                         title={product.name}

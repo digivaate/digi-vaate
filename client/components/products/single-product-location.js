@@ -101,14 +101,32 @@ class SingleProductImg extends Component{
             if (this.state.moveToSeason) {
                 moveToSeason = <Redirect from={`${this.props.match.url}`} to={{
                     pathname: this.state.newSeasonUrl,
-                    state: {moveToNewLocation: true}
+                    state: {
+                        moveToNewLocation: true,
+                        collectionName:"None",
+                        seasonName: this.state.value
+                    }
                 }}/>
             }
             if (this.state.moveToCollection) {
-                moveToCollection = <Redirect to={{
-                    pathname: this.state.newCollectionUrl,
-                    state: {moveToNewLocation: true}
-                }}/>
+                for(let i=0;i<this.collections.length;i++){
+                    if(this.state.value === this.collections[i][1]) {
+                        for (let j = 0; j < this.seasons.length; j++) {
+                            if (this.collections[i][2] === this.seasons[j][0]) {
+                                moveToCollection = <Redirect to={{
+                                    pathname: this.state.newCollectionUrl,
+                                    state: {
+                                        moveToNewLocation: true,
+                                        collectionName:this.state.value,
+                                        seasonName: this.seasons[j][1]
+                                    }
+                                }}/>
+                            }
+                        }
+                    }
+                }
+
+
             }
             if (this.props.editModeStatus === true) {
                 changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;

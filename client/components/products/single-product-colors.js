@@ -63,7 +63,7 @@ class SingleProductColors extends Component{
         let renderDefaultColors = [];
         let renderProductColors = <p>This product does not have any colors yet</p>;
         let editColorBtn = <div style={{height:40,width:40}}></div>;
-        if (colorOptions.length > 0) {
+        if (colorOptions && colorOptions.length > 0) {
             renderColorOptions = colorOptions.map(color =>
                 <Option key={color.name} style={{color: color.value}}>
                     {color.name}
