@@ -1,7 +1,7 @@
 import React,{Component,Fragment} from 'react';
 import ColorPage from './create-color';
 import { API_ROOT } from '../../api-config';
-import { Card, Icon, Button, Modal,Row,Col,Input,List } from 'antd';
+import { Card, Spin, Button, Modal,Row,Col,Input,List } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
 const confirm = Modal.confirm;
@@ -22,7 +22,7 @@ class ColorCollection extends Component{
         };
     }
 
-    colorCard = [];
+    colorCard = null;
     colorsArray=[];
 
     componentDidUpdate(prevProps){
@@ -171,7 +171,7 @@ class ColorCollection extends Component{
     };
 
     render(){
-        if(this.colorCard.length === 0){
+        if(this.colorCard && this.colorCard.length === 0){
             return (
                 <div>
                     <h1>Colors</h1>
@@ -181,6 +181,19 @@ class ColorCollection extends Component{
                     />
                     <Card title="Color Collection">
                         <h4>No colors</h4>
+                    </Card>
+                </div>
+            )
+        } else if(!this.colorCard){
+            return (
+                <div>
+                    <h1>Colors</h1>
+                    <ColorPage
+                        createColor = {(newColor) => this.createColor(newColor)}
+                        colorsLevel = {this.state.colorsLevel}
+                    />
+                    <Card title="Color Collection">
+                        <Spin/>
                     </Card>
                 </div>
             )

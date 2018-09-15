@@ -149,14 +149,14 @@ class SideBar extends Component{
                             Products
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key={`budget-season-${season.id}`}>
-                        <NavLink to={`/seasons/${season.name}/budget`} className={'nav-text'}>
-                            Budget
-                        </NavLink>
-                    </Menu.Item>
                     <Menu.Item key={`colors-season-${season.id}`}>
                         <NavLink to={`/seasons/${season.name}/colors`} className={'nav-text'}>
                             Colors
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key={`budget-season-${season.id}`}>
+                        <NavLink to={`/seasons/${season.name}/budget`} className={'nav-text'}>
+                            Budget
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item>

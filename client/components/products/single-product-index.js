@@ -26,8 +26,6 @@ class SingleProduct extends Component {
             productSizes:null,
             editModeStatus:false,
             seasons:null,
-            collectionName:null,
-            seasonName:null,
             productColors: null,
             colorOptions: null,
             originalProductImg: null,
@@ -36,8 +34,6 @@ class SingleProduct extends Component {
             originalProductName: null,
             originalLoadedProduct:null,
             saved: false,
-            backToBudget: false,
-            backToOrder:false,
         }
     }
 
