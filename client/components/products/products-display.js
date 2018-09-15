@@ -43,36 +43,24 @@ class ProductsDisplay extends Component{
     load = () => {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
         const { location } = this.props;
-        const pathSnippetsName = location.pathname.split('/').filter(i => i);
         if(pathSnippetsLevel[0] === "company"){
-            axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                .then(response => {
-                    this.setState({
-                        productLevel: pathSnippetsLevel[0],
-                        productLevelId: response.data[0].id
-                    });
-                })
+            this.setState({
+                productLevel: pathSnippetsLevel[0],
+            });
         }
         if(pathSnippetsLevel[0] === "season"){
-            axios.get(`${API_ROOT}/season?name=${pathSnippetsName[1]}`)
-                .then(response => {
-                    this.setState({
-                        productLevel: pathSnippetsLevel[0],
-                        productLevelId: response.data[0].id
-                    });
-                })
+            this.setState({
+                productLevel: pathSnippetsLevel[0],
+            });
 
         }
         if(pathSnippetsLevel[0] === "collection"){
-            axios.get(`${API_ROOT}/collection?name=${pathSnippetsName[3]}`)
-                .then(response => {
-                    this.setState({
-                        productLevel: pathSnippetsLevel[0],
-                        productLevelId: response.data[0].id
-                    });
-                })
+            this.setState({
+                productLevel: pathSnippetsLevel[0]
+            })
+        };
 
-        }
+        console.log(this.props.requestPath)
 
 
         axios.get(`${API_ROOT}${this.props.requestPath}`)
@@ -308,7 +296,11 @@ class ProductsDisplay extends Component{
         let renderProductCollectionList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
-        if (this.products && this.state.productLevel && this.state.productLevelId) {
+        if (this.products && this.state.productLevel) {
+            this.products.sort(function(a, b){
+                return a.id-b.id
+            });
+            console.log(this.products)
             renderProductList = this.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
@@ -463,7 +455,7 @@ class ProductsDisplay extends Component{
                             </Button>
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
-                                productLevelId = {this.state.productLevelId}
+                                productLevelId = {(productLevelId) => this.setState({productLevelId})}
                                 {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
@@ -529,7 +521,7 @@ class ProductsDisplay extends Component{
                             </Button>
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
-                                productLevelId = {this.state.productLevelId}
+                                productLevelId = {(productLevelId) => this.setState({productLevelId})}
                                 {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
@@ -580,7 +572,7 @@ class ProductsDisplay extends Component{
                         </Button>
                         <ProductCreateForm
                             productLevelName = {this.state.productLevel}
-                            productLevelId = {this.state.productLevelId}
+                            productLevelId = {(productLevelId) => this.setState({productLevelId})}
                             {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
@@ -618,7 +610,7 @@ class ProductsDisplay extends Component{
                             </Button>
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
-                                productLevelId = {this.state.productLevelId}
+                                productLevelId = {(productLevelId) => this.setState({productLevelId})}
                                 {...this.props}
                                 wrappedComponentRef={this.saveFormRef}
                                 visible={this.state.visible}
@@ -645,7 +637,7 @@ class ProductsDisplay extends Component{
                         </Button>
                         <ProductCreateForm
                             productLevelName = {this.state.productLevel}
-                            productLevelId = {this.state.productLevelId}
+                            productLevelId = {(productLevelId) => this.setState({productLevelId})}
                             {...this.props}
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}

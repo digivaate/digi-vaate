@@ -55,27 +55,29 @@ class SingleProductMaterials extends Component{
 
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`)
-            .then(response => {
-                if(response.data[0].materials[0]){
-                    this.setState({
-                        [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
-                    });
-                }
-                if(response.data[0].materials[0] && response.data[0].materials[1]){
-                    this.setState({
-                        [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
-                        [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
-                    });
-                }
-                if(response.data[0].materials[0] && response.data[0].materials[1] && response.data[0].materials[2])
-                    this.setState({
-                        [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
-                        [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
-                        [response.data[0].materials[2].name]: response.data[0].materials[2].material_product.consumption,
-                    });
+        if(this.props.editModeStatus && this.props.productMaterials.length > 0) {
+            axios.get(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`)
+                .then(response => {
+                    if (response.data[0].materials[0]) {
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                        });
+                    }
+                    if (response.data[0].materials[0] && response.data[0].materials[1]) {
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                            [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                        });
+                    }
+                    if (response.data[0].materials[0] && response.data[0].materials[1] && response.data[0].materials[2])
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                            [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                            [response.data[0].materials[2].name]: response.data[0].materials[2].material_product.consumption,
+                        });
 
-            })
+                })
+        }
     }
 
     /*Edit material*/
@@ -206,9 +208,6 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
-        if(this.props.location.state){
-            console.log(this.props.location.state.productListUrl)
-        }
         let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
         let materialSelected1 = null;
         let materialSelected2 = null;
@@ -223,7 +222,7 @@ class SingleProductMaterials extends Component{
                     <Icon type="edit"/>
                 </Button>;
         }
-        if (this.state.materialOptions.length > 0) {
+        if (this.state.materialOptions && this.state.materialOptions.length > 0) {
             renderMaterialOptions = this.state.materialOptions.map(material =>
                 <Option key={material.name}>
                     {material.name}

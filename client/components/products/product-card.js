@@ -26,24 +26,28 @@ const ProductCreateForm = Form.create()(
             }
         }
 
-        componentDidMount(){
-            this.loadColors();
-            this.loadMaterials();
-            this.loadSizes();
+        componentDidUpdate(prevProps){
+            if(this.props.visible && this.props.visible !== prevProps.visible){
+                this.loadColors();
+                this.loadMaterials();
+                this.loadSizes();
+            }
         }
 
         loadColors = () => {
             if(this.props.productLevelName === "company"){
-                axios.get(`${API_ROOT}/company?id=${this.props.productLevelId}`)
+                axios.get(`${API_ROOT}/company?name=Demo%20company`)
                     .then(response => {
+                        this.props.productLevelId(response.data[0].id)
                         this.setState({
                             colorOptions: response.data[0].colors
                         })
                     })
             }
             if(this.props.productLevelName === "season"){
-                axios.get(`${API_ROOT}/season?id=${this.props.productLevelId}`)
+                axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
                     .then(response => {
+                        this.props.productLevelId(response.data[0].id)
                         axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`)
                             .then(res => {
                                 this.setState({
@@ -53,8 +57,9 @@ const ProductCreateForm = Form.create()(
                     })
             }
             if(this.props.productLevelName === "collection"){
-                axios.get(`${API_ROOT}/collection?id=${this.props.productLevelId}`)
+                axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
                     .then(response => {
+                        this.props.productLevelId(response.data[0].id)
                         axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
                             .then(res => {
                                 axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`)

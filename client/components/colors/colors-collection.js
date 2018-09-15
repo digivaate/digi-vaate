@@ -37,46 +37,32 @@ class ColorCollection extends Component{
 
     loadColors = () => {
         if (this.props.match.params.seasonId && this.props.match.params.collectionId){
-            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
-                .then(res => {
-                    axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`)
-                        .then(response => {
-                            this.colorCard = response.data;
-                            this.colorsArray = response.data.map(color => color.id)
-                            this.setState({
-                                colorsLevel: "collection",
-                                colorsLevelId : res.data[0].id,
-                            })
-                        });
-
+            axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`)
+                .then(response => {
+                    this.colorCard = response.data;
+                    this.colorsArray = response.data.map(color => color.id)
+                    this.setState({
+                        colorsLevel: "collection",
+                    })
                 })
         } else if (this.props.match.params.seasonId){
-            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
-                .then(res => {
-                    axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`)
-                        .then(response => {
-                            this.colorCard = response.data;
-                            this.colorsArray = response.data.map(color => color.id)
-                            this.setState({
-                                colorsLevel: "season",
-                                colorsLevelId : res.data[0].id,
-                            })
-                        });
-
+            axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`)
+                .then(response => {
+                    this.colorCard = response.data;
+                    this.colorsArray = response.data.map(color => color.id)
+                    this.setState({
+                        colorsLevel: "season",
+                    })
                 })
         } else {
-            axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                .then(res => {
-                    axios.get(`${API_ROOT}/company/colors?name=Demo%20company`)
-                        .then(response => {
-                            this.colorCard = response.data;
-                            this.colorsArray = response.data.map(color => color.id);
-                            this.setState({
-                                colorsLevel: "company",
-                                colorsLevelId : res.data[0].id,
-                            })
-                        });
-                })
+            axios.get(`${API_ROOT}/company/colors?name=Demo%20company`)
+                .then(response => {
+                    this.colorCard = response.data;
+                    this.colorsArray = response.data.map(color => color.id);
+                    this.setState({
+                        colorsLevel: "company",
+                    })
+                });
         }
     };
 
@@ -192,7 +178,6 @@ class ColorCollection extends Component{
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
-                        colorsLevelId = {this.state.colorsLevelId}
                     />
                     <Card title="Color Collection">
                         <h4>No colors</h4>
@@ -228,7 +213,6 @@ class ColorCollection extends Component{
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
-                        colorsLevelId = {this.state.colorsLevelId}
                     />
                     <Card title="Color Collection">
                         {colorCard}

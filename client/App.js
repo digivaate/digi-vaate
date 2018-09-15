@@ -192,6 +192,7 @@ class App extends React.Component {
                                 <Route path="/orders" exact component={OrderList}/>
                                 <Route path='/products' exact render={(props) =>
                                     <ProductsDisplay
+                                        key={window.location.href}
                                         {...props}
                                         newProductCompany={newProductCompany => this.newProductCompanyFunc(newProductCompany)}
                                         requestPath={`/company/products?name=Demo%20company`}
@@ -214,6 +215,7 @@ class App extends React.Component {
                                 {productsCompanyRoute}
                                 <Route path="/seasons/:seasonId/products" exact render={(props) =>
                                     <ProductsDisplay
+                                        key={window.location.href}
                                         {...props}
                                         newProductSeason={newProductSeason => this.newProductSeasonFunc(newProductSeason)}
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
@@ -244,6 +246,7 @@ class App extends React.Component {
                                 <Route path="/seasons/:seasonId/collections/:collectionId/colors" exact component={ColorCollection} />
                                 <Route path="/seasons/:seasonId/collections/:collectionId/products" exact render={(props) =>
                                     <ProductsDisplay
+                                        key={window.location.href}
                                         {...props}
                                         requestPath={`/collection/products?name=${props.match.params.collectionId}`}
                                         newProductCollection = {(newProductCollection) => this.newProductCollectionFunc(newProductCollection)}

@@ -11,7 +11,6 @@ class SingleProductSize extends Component{
         this.state = {
             sizeVisible: false,
             sizes: this.props.sizes,
-            sizeOptions: null,
             createNewSize: false,
             numberOfNewSize:0
         }
@@ -28,18 +27,6 @@ class SingleProductSize extends Component{
         }
     }
 
-    componentDidMount(){
-        this.loadSizes()
-    }
-
-    loadSizes = () => {
-        axios.get(`${API_ROOT}/size`)
-            .then(response => {
-                this.setState({
-                    sizeOptions: response.data
-                })
-            })
-    };
 
     showSizeModal = () => {
         this.setState({
@@ -98,7 +85,7 @@ class SingleProductSize extends Component{
 
 
     render(){
-        let {sizeOptions} = this.state;
+        let {sizeOptions} = this.props;
         let renderSizeOptions = [];
         let renderDefaultSizes = [];
         let editSizeInfo = <div style={{height:40,width:40}}></div>;

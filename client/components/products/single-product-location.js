@@ -19,8 +19,8 @@ class SingleProductImg extends Component{
         }
     }
 
-    seasons = null;
-    collections = null;
+    seasons = [];
+    collections = [];
     treeData = [];
 
     //Change location of product
@@ -84,50 +84,61 @@ class SingleProductImg extends Component{
     };
 
     render(){
-        const {seasons,collections} = this.props;
+        const {seasons} = this.props;
+        let collectionsInTree = [];
+        let changeLocationBtn = <div style={{height: 32}}></div>;
+        let currentLocation = null;
         let moveToSeason = null;
         let moveToCollection = null;
-        if(this.state.moveToSeason){
-            moveToSeason = <Redirect from={`${this.props.match.url}`} to={{
+        if(seasons) {
+            for (let i = 0; i < seasons.length; i++) {
+                for (let j = 0; j < seasons[i].collections.length; j++) {
+                    this.collections.push(seasons[i].collections[j]);
+                    collectionsInTree.push(seasons[i].collections[j]);
+                }
+            }
+
+            if (this.state.moveToSeason) {
+                moveToSeason = <Redirect from={`${this.props.match.url}`} to={{
                     pathname: this.state.newSeasonUrl,
                     state: {moveToNewLocation: true}
                 }}/>
-        }
-        if(this.state.moveToCollection){
-            moveToCollection = <Redirect to={{
+            }
+            if (this.state.moveToCollection) {
+                moveToCollection = <Redirect to={{
                     pathname: this.state.newCollectionUrl,
                     state: {moveToNewLocation: true}
                 }}/>
-        }
-        let changeLocationBtn = <div style={{height:32}}></div>;
-        let currentLocation = null;
-        if(this.props.editModeStatus === true) {
-            changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;
-        }
-        this.seasons = seasons.map(season => {
-            return [season.id,season.name]
-        });
-        this.collections = collections.map(collection => {
-            return [collection.id,collection.name,collection.seasonId]
-        });
-        this.treeData = seasons.map(season => {
-            let collectionsChild = collections.reduce((collections,collection) => {
-                if(collection.seasonId === season.id) {
-                    collections.push({
-                        title: "Collection: " + collection.name,
-                        value: collection.name,
-                        key: collection.name + collection.id
-                    });
-                }
-                return collections
-            },[]);
-            return {
-                title: "Season: " + season.name,
-                value: season.name,
-                key: season.name + season.id,
-                children: collectionsChild
             }
-        });
+            if (this.props.editModeStatus === true) {
+                changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;
+            }
+            this.seasons = seasons.map(season => {
+                return [season.id, season.name]
+            });
+
+            this.collections = this.collections.map(collection => {
+                return [collection.id, collection.name, collection.seasonId]
+            });
+            this.treeData = seasons.map(season => {
+                let collectionsChild = collectionsInTree.reduce((collections, collection) => {
+                    if (collection.seasonId === season.id) {
+                        collections.push({
+                            title: "Collection: " + collection.name,
+                            value: collection.name,
+                            key: collection.name + collection.id
+                        });
+                    }
+                    return collections
+                }, []);
+                return {
+                    title: "Season: " + season.name,
+                    value: season.name,
+                    key: season.name + season.id,
+                    children: collectionsChild
+                }
+            });
+        }
         if(this.props.collectionName === "None" && this.props.seasonName === "None"){
             currentLocation = (
                 <div>

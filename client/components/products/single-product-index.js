@@ -26,7 +26,6 @@ class SingleProduct extends Component {
             productSizes:null,
             editModeStatus:false,
             seasons:null,
-            collections:null,
             collectionName:null,
             seasonName:null,
             productColors: null,
@@ -50,18 +49,14 @@ class SingleProduct extends Component {
 
     componentDidMount(){
         this.loadProduct();
-        this.loadSeason();
-        this.loadCollection();
-        this.loadMaterials();
+
     }
 
-
-
-    loadColors = () => {
-        axios.get(`${API_ROOT}/color`)
+    loadSizes = () => {
+        axios.get(`${API_ROOT}/size`)
             .then(response => {
                 this.setState({
-                    colorOptions: response.data
+                    sizeOptions: response.data
                 })
             })
     };
@@ -84,18 +79,15 @@ class SingleProduct extends Component {
             })
     };
 
-    loadCollection = () => {
-        axios.get(`${API_ROOT}/collection`)
-            .then(response => {
-                this.setState({
-                    collections: response.data
-                })
-            })
-    };
-
     activateEditMode = () => {
         this.setState({
             editModeStatus: !this.state.editModeStatus
+        },() => {
+            if(this.state.editModeStatus){
+                this.loadSizes();
+                this.loadSeason();
+                this.loadMaterials();
+            }
         })
     };
 
@@ -493,7 +485,7 @@ class SingleProduct extends Component {
                     </Fragment>
             }
         }
-        if(this.state.loadedProduct && this.state.seasons && this.state.collections){
+        if(this.state.loadedProduct){
             const tabList = [{
                 key: 'tab1',
                 tab: 'General',
@@ -537,6 +529,7 @@ class SingleProduct extends Component {
                     />
                 </div>,
                 tab3: <SingleProductSize
+                    sizeOptions = {this.state.sizeOptions}
                     sizes={this.state.productSizes}
                     editModeStatus = {this.state.editModeStatus}
                     newSizes = {newSizes => this.receiveNewSizes(newSizes)}
@@ -575,7 +568,6 @@ class SingleProduct extends Component {
                                 editModeStatus = {this.state.editModeStatus}
                                 seasons = {this.state.seasons}
                                 seasonName = {this.state.seasonName}
-                                collections = {this.state.collections}
                                 collectionName = {this.state.collectionName}
                                 loadedProduct = {this.state.loadedProduct}
                                 changeLocation = {() => this.props.changeLocation()}
