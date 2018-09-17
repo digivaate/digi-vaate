@@ -15,6 +15,7 @@ class OrderList extends Component{
             collectionId:null,
             orders: null,
             isDeleted:false,
+            productsCollection: []
         }
     }
 
@@ -23,6 +24,7 @@ class OrderList extends Component{
             axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
                 .then(response => {
                     this.setState({
+                        productsCollection: response.data[0].products,
                         collectionId: response.data[0].id,
                         orders: response.data[0].orders
                     })
@@ -34,6 +36,7 @@ class OrderList extends Component{
         axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
                 this.setState({
+                    productsCollection: response.data[0].products,
                     collectionId: response.data[0].id,
                     orders: response.data[0].orders
                 })
@@ -121,7 +124,10 @@ class OrderList extends Component{
                     <List.Item actions={[
                         <Link to={{
                             pathname: this.props.match.url + '/' + item.id,
-                            state:{orderListUrl: this.props.match.url}
+                            state:{
+                                orderListUrl: this.props.match.url,
+                                productsCollection: this.state.productsCollection
+                            }
                         }}>
                         <button
                             className="view-order-btn">View order

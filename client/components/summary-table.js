@@ -199,7 +199,11 @@ class SummaryTable extends React.Component {
                                     <div>
                                         <Link to={{
                                             pathname: `/seasons/${this.props.match.params.seasonId}/collections/${d.collectionName}/products/${d.name}`,
-                                            state: {historyBudgetUrl: this.props.match.url}
+                                            state: {
+                                                historyBudgetUrl: this.props.match.url,
+                                                seasonName:this.props.match.params.seasonId,
+                                                collectionName: d.collectionName
+                                            }
                                         }}>
                                         <span className="link-to-product">{d.name}</span>
                                         </Link>
@@ -210,7 +214,11 @@ class SummaryTable extends React.Component {
                                 <div>
                                     <Link to={{
                                         pathname: `/seasons/${this.props.match.params.seasonId}/products/${d.name}`,
-                                        state: {historyBudgetUrl: this.props.match.url}
+                                        state: {
+                                            historyBudgetUrl: this.props.match.url,
+                                            seasonName:this.props.match.params.seasonId,
+                                            collectionName: "None"
+                                        }
                                     }}>
                                     <span className="link-to-product">{d.name}</span>
                                     </Link>
@@ -219,7 +227,11 @@ class SummaryTable extends React.Component {
                                 return (
                                     <Link to={{
                                         pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.name}`,
-                                        state: {historyBudgetUrl: this.props.match.url}
+                                        state: {
+                                            historyBudgetUrl: this.props.match.url,
+                                            seasonName:this.props.match.params.seasonId,
+                                            collectionName: this.props.match.params.collectionId
+                                        }
                                     }}>
                                         <span className="link-to-product">{d.name}</span>
                                     </Link>

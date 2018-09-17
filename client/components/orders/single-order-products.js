@@ -34,14 +34,19 @@ class ProductTable extends Component {
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`)
-            .then(response => {
-                this.productsCollection = response.data[0].products
-                this.formatProduct();
-                this.setState({
-                    productsCollection: response.data[0].products
-                })
-            });
+        if(this.props.location.state){
+            this.productsCollection = this.props.location.state.productsCollection;
+            this.formatProduct();
+        } else {
+            axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`)
+                .then(response => {
+                    this.productsCollection = response.data[0].products
+                    this.formatProduct();
+                    this.setState({
+                        productsCollection: response.data[0].products
+                    })
+                });
+        }
 
         axios.get(`${API_ROOT}/size`)
             .then(response => {
@@ -322,7 +327,10 @@ class ProductTable extends Component {
                                 pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.name}`,
                                 state: {
                                     historyOrderUrl: this.props.match.url,
-                                    orderListUrl:this.props.location.state.orderListUrl,
+                                    orderListUrl:this.props.location.state ? this.props.location.state.orderListUrl : null,
+                                    seasonName: this.props.match.params.seasonId,
+                                    collectionName: this.props.match.params.collectionId,
+                                    productsCollection: this.props.location.state ? this.props.location.state.productsCollection: this.state.productsCollection
                                 }
                             }}>
                             <span className="link-to-product">{d.name}</span>
@@ -389,7 +397,7 @@ class ProductTable extends Component {
                 visible={this.state.visible}
                 onCancel={this.handleCancel}
                 onCreate={this.handleCreate}
-                productList = {this.state.productsCollection}
+                productList = {this.props.location.state ? this.props.location.state.productsCollection : this.state.productsCollection}
             />
         }
         if(this.sizeInOrderProduct.length > 0){

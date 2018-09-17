@@ -28,9 +28,11 @@ const ProductCreateForm = Form.create()(
 
         componentDidUpdate(prevProps){
             if(this.props.visible && this.props.visible !== prevProps.visible){
-                this.loadColors();
-                this.loadMaterials();
-                this.loadSizes();
+                setTimeout(() => {
+                    this.loadColors();
+                    this.loadMaterials();
+                    this.loadSizes();
+                },1500)
             }
         }
 

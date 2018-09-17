@@ -52,6 +52,9 @@ const OrderProductCreateForm = Form.create()(
                             state: {
                                 historyOrderUrl: this.props.match.url,
                                 orderListUrl:this.props.location.state.orderListUrl,
+                                seasonName: this.props.match.params.seasonId,
+                                collectionName: this.props.match.params.collectionId,
+                                productsCollection: productList
                             }
                         }}>
                         <Button>

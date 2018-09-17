@@ -42,7 +42,6 @@ class ProductsDisplay extends Component{
 
     load = () => {
         const pathSnippetsLevel = this.props.requestPath.split('/').filter(i => i);
-        const { location } = this.props;
         if(pathSnippetsLevel[0] === "company"){
             this.setState({
                 productLevel: pathSnippetsLevel[0],
@@ -58,7 +57,7 @@ class ProductsDisplay extends Component{
             this.setState({
                 productLevel: pathSnippetsLevel[0]
             })
-        };
+        }
 
         axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(res => {
@@ -77,7 +76,6 @@ class ProductsDisplay extends Component{
                     }
                 }
                 this.setState({isFetched:true})
-
             });
     };
 
@@ -115,12 +113,7 @@ class ProductsDisplay extends Component{
     handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-            form.resetFields();
-        })
+        form.resetFields();
     };
 
     handleCreate = (colorOptions,materialOptions,sizeOptions) => {

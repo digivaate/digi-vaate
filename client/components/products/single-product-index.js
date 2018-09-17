@@ -372,7 +372,8 @@ class SingleProduct extends Component {
                             pathname: `${this.props.location.state.historyOrderUrl}`,
                             state:{
                                 backToOrderList: this.props.location.state.backToOrderList,
-                                orderListUrl:this.props.location.state.orderListUrl,
+                                orderListUrl:this.props.location.state? this.props.location.state.orderListUrl: null,
+                                productsCollection: this.props.location.state.productsCollection
                             }
                         }}>
                             <Button>

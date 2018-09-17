@@ -383,8 +383,11 @@ class SingleMaterial extends Component{
                                 {
                                     productListUrl:this.props.location.state.historyProductListUrl,
                                     historyOrderUrl: this.props.location.state.historyOrderUrl,
-                                    orderListUrl:this.props.location.state.orderListUrl,
-                                    historyBudgetUrl: this.props.location.state.historyBudgetUrl
+                                    orderListUrl:this.props.location.state? this.props.location.state.orderListUrl: null,
+                                    historyBudgetUrl: this.props.location.state.historyBudgetUrl,
+                                    seasonName: this.props.location.state.seasonName,
+                                    collectionName: this.props.location.state.collectionName,
+                                    productsCollection: this.props.location.state.productsCollection
                                 }
                         }}>
                             <Button>

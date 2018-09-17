@@ -246,7 +246,10 @@ class SingleProductMaterials extends Component{
                                         historyProductListUrl: this.props.location.state.productListUrl,
                                         historyOrderUrl: this.props.location.state.historyOrderUrl,
                                         orderListUrl:this.props.location.state.orderListUrl,
-                                        historyBudgetUrl: this.props.location.state.historyBudgetUrl
+                                        historyBudgetUrl: this.props.location.state.historyBudgetUrl,
+                                        seasonName: this.props.location.state.seasonName,
+                                        collectionName: this.props.location.state.collectionName,
+                                        productsCollection: this.props.location.state.productsCollection
                                     }
                             }}>
                             <Card
