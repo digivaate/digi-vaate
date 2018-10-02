@@ -119,8 +119,8 @@ class ProductTable extends Component {
         this.setState({
             data: dataCollected,
             pageSize: dataCollected.length
-        });
-        this.sumOfOrderPrice()
+        },() => this.sumOfOrderPrice());
+
     };
 
     formatProductForEdit = () => {

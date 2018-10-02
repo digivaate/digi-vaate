@@ -20,6 +20,14 @@ class SideBar extends Component{
         }
     }
 
+    shouldComponentUpdate(nextProps,nextState) {
+        return nextProps.newDeleteSeason !== this.props.newDeleteSeason
+            || nextProps.newDeleteCollection !== this.props.newDeleteCollection
+            || nextProps.newSeason !== this.props.newSeason
+            || nextProps.newCollection !== this.props.newCollection
+            || nextState.seasons !== this.state.seasons
+    }
+
     componentDidUpdate(prevProps){
         if(prevProps.newDeleteSeason !== this.props.newDeleteSeason){
             let seasons = [...this.state.seasons];
