@@ -289,6 +289,7 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         className: 'alignRight',
                         accessor: "coverAmount",
+                        Footer: this.sumOfCoverAmount
                     }
                 ]
             },

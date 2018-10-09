@@ -24,7 +24,7 @@ class ProductController extends Controller {
         product.dataValues.materials.forEach(material => {
             materialCosts += material.unitPrice * material.material_product.consumption + material.freight;
         });
-        return materialCosts;
+        return parseFloat(materialCosts.toFixed(2));
     }
 
     static calcPurchasingPrice(product) {
