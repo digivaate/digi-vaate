@@ -85,7 +85,7 @@ class BreadCrumbDigi extends Component{
                                 .then(res => {
                                     this.materials = res.data;
                                     for(let m = 0 ; m<this.materials.length; m++) {
-                                        this.breadcrumbNameMap["/materials/"+this.materials[m].name] = this.materials[m].name
+                                        this.breadcrumbNameMap["/materials/"+this.materials[m].id + "-" + this.materials[m].name] = this.materials[m].name
                                     }
                                     this.setState({})
                                 })

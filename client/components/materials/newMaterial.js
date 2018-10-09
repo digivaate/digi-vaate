@@ -190,8 +190,8 @@ const MaterialCreateForm = Form.create()(
                                 </FormItem>
                             </Col>
                             <Col span={12}>
-                                <FormItem label="Minimum Quality">
-                                    {getFieldDecorator('minQuality',{
+                                <FormItem label="Minimum Quantity">
+                                    {getFieldDecorator('minQuantity',{
                                         rules: [
                                             { validator: this.checkWholeNumber}
                                         ]

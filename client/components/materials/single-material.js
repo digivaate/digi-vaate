@@ -2,7 +2,7 @@ import React,{ Component,Fragment } from "react";
 import axios from 'axios';
 import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
-import {Link} from 'react-router-dom'
+import {Link,Redirect} from 'react-router-dom'
 import '../../utils/compare-obj';
 import './materials.css'
 import FormData from 'form-data';
@@ -19,7 +19,7 @@ class SingleMaterial extends Component{
             name:'',
             freight:0,
             consumption:0,
-            minQuality:0,
+            minQuantity:0,
             unitPrice:0,
             manufacturer:'',
             instructions:'',
@@ -33,7 +33,7 @@ class SingleMaterial extends Component{
             nameOri:'',
             freightOri:0,
             consumptionOri:0,
-            minQualityOri:0,
+            minQuantityOri:0,
             unitPriceOri:0,
             manufacturerOri:'',
             instructionsOri:'',
@@ -46,16 +46,16 @@ class SingleMaterial extends Component{
             modified: false
         }
     }
-
-    material =[];
+    materialId = this.props.match.params.materialId.split('-')[0];
+    material = [];
     componentDidMount(){
-        axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
+        axios.get(`${API_ROOT}/material?id=${this.materialId}`)
             .then(response => {
                 this.setState({
                     loadedMaterial: response.data[0],
                     name: response.data[0].name,
                     freight: response.data[0].freight,
-                    minQuality:response.data[0].minQuality,
+                    minQuantity:response.data[0].minQuantity,
                     unitPrice:response.data[0].unitPrice,
                     manufacturer:response.data[0].manufacturer,
                     instructions:response.data[0].instructions,
@@ -68,7 +68,7 @@ class SingleMaterial extends Component{
                     loadedMaterialOri: response.data[0],
                     nameOri: response.data[0].name,
                     freightOri: response.data[0].freight,
-                    minQualityOri:response.data[0].minQuality,
+                    minQuantityOri:response.data[0].minQuantity,
                     unitPriceOri:response.data[0].unitPrice,
                     manufacturerOri:response.data[0].manufacturer,
                     instructionsOri:response.data[0].instructions,
@@ -86,7 +86,7 @@ class SingleMaterial extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/${this.state.loadedMaterial.id}/image`, data)
+        axios.patch(`${API_ROOT}/material/${this.materialId}/image`, data)
             .then(() => {
                 axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
                     .then(response => {
@@ -114,7 +114,7 @@ class SingleMaterial extends Component{
     handleOk = () =>{
         const materialChanges = {
             freight: this.state.freight,
-            minQuality:this.state.minQuality,
+            minQuantity:this.state.minQuantity,
             unitPrice:this.state.unitPrice,
             manufacturer:this.state.manufacturer,
             instructions:this.state.instructions,
@@ -127,7 +127,7 @@ class SingleMaterial extends Component{
         };
         const materialOri = {
             freight: this.state.freightOri,
-            minQuality:this.state.minQualityOri,
+            minQuantity:this.state.minQuantityOri,
             unitPrice:this.state.unitPriceOri,
             manufacturer:this.state.manufacturerOri,
             instructions:this.state.instructionsOri,
@@ -140,7 +140,7 @@ class SingleMaterial extends Component{
         };
         this.setState({
             freight: this.state.freight,
-            minQuality:this.state.minQuality,
+            minQuantity:this.state.minQuantity,
             unitPrice:this.state.unitPrice,
             manufacturer:this.state.manufacturer,
             instructions:this.state.instructions,
@@ -247,29 +247,11 @@ class SingleMaterial extends Component{
         });
     };
 
-    handleNameOk = () =>{
-        axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,{name:this.state.name})
-            .then(res => {
-                axios.get(`${API_ROOT}/material?name=${this.state.name}`)
-                    .then(response => {
-                        this.setState({
-                            loadedMaterial: response.data[0],
-                            name:response.data[0].name,
-                            freight: response.data[0].freight,
-                            minQuality:response.data[0].minQuality,
-                            unitPrice:response.data[0].unitPrice,
-                            manufacturer:response.data[0].manufacturer,
-                            instructions:response.data[0].instructions,
-                            composition:response.data[0].composition,
-                            code: response.data[0].code,
-                            widthUnit:response.data[0].widthUnit,
-                            weightUnit:response.data[0].weightUnit,
-                            width:response.data[0].width,
-                            weight:response.data[0].weight,
-                            visible:false
-                        });
-                        window.location.href= `http://localhost:3000/${this.props.match.params.seasonId}/${this.props.match.params.collectionId}/materials/${this.state.name}`                    });
-            })
+    handleNameOk = () => {
+        this.setState({
+            nameVisible: false,
+            modified: !Object.compare(this.state.loadedMaterial.name, this.state.name)
+        });
     };
 
 
@@ -281,13 +263,13 @@ class SingleMaterial extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                axios.get(`${API_ROOT}/material?name=${self.props.match.params.materialId}`)
+                axios.get(`${API_ROOT}/material?id=${self.materialId}`)
                     .then(response => {
                         self.setState({
                             loadedMaterial: response.data[0],
                             name: response.data[0].name,
                             freight: response.data[0].freight,
-                            minQuality:response.data[0].minQuality,
+                            minQuantity:response.data[0].minQuantity,
                             unitPrice:response.data[0].unitPrice,
                             manufacturer:response.data[0].manufacturer,
                             instructions:response.data[0].instructions,
@@ -300,7 +282,7 @@ class SingleMaterial extends Component{
                             loadedMaterialOri: response.data[0],
                             nameOri: response.data[0].name,
                             freightOri: response.data[0].freight,
-                            minQualityOri:response.data[0].minQuality,
+                            minQuantityOri:response.data[0].minQuantity,
                             unitPriceOri:response.data[0].unitPrice,
                             manufacturerOri:response.data[0].manufacturer,
                             instructionsOri:response.data[0].instructions,
@@ -319,8 +301,9 @@ class SingleMaterial extends Component{
 
     saveInfo = () => {
         const materialChanges = {
+            name: this.state.name,
             freight: this.state.freight,
-            minQuality:this.state.minQuality,
+            minQuantity:this.state.minQuantity,
             unitPrice:this.state.unitPrice,
             manufacturer:this.state.manufacturer,
             instructions:this.state.instructions,
@@ -331,16 +314,15 @@ class SingleMaterial extends Component{
             width:this.state.width,
             weight:this.state.weight
         };
-        axios.patch(`${API_ROOT}/material?name=${this.props.match.params.materialId}`,materialChanges)
+        axios.patch(`${API_ROOT}/material?id=${this.materialId}`,materialChanges)
             .then(res => {
-                axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
+                axios.get(`${API_ROOT}/material?id=${this.materialId}`)
                     .then(response => {
                         message.success("Material updated!",1);
                         this.setState({
                             loadedMaterial: response.data[0],
-                            name: response.data[0].name,
                             freight: response.data[0].freight,
-                            minQuality:response.data[0].minQuality,
+                            minQuantity:response.data[0].minQuantity,
                             unitPrice:response.data[0].unitPrice,
                             manufacturer:response.data[0].manufacturer,
                             instructions:response.data[0].instructions,
@@ -353,7 +335,7 @@ class SingleMaterial extends Component{
                             loadedMaterialOri: response.data[0],
                             nameOri: response.data[0].name,
                             freightOri: response.data[0].freight,
-                            minQualityOri:response.data[0].minQuality,
+                            minQuantityOri:response.data[0].minQuantity,
                             unitPriceOri:response.data[0].unitPrice,
                             manufacturerOri:response.data[0].manufacturer,
                             instructionsOri:response.data[0].instructions,
@@ -364,15 +346,42 @@ class SingleMaterial extends Component{
                             widthOri:response.data[0].width,
                             weightOri:response.data[0].weight,
                             modified:false,
+                        } , () => {
+                            if(this.state.name !== this.state.loadedMaterial){
+                                this.setState({
+                                    nameChange:true,
+                                    name: response.data[0].name
+                                })
+                            } else {
+                                this.setState({
+                                    name: response.data[0].name
+                                })
+                            }
                         });
                     });
             })
-    }
+    };
 
     render(){
         let backToMaterialListBtn = null;
         let backToProductBtn = null;
-        let backToProduct = null;
+        let newNameRedirect = null;
+        if(this.state.nameChange){
+            newNameRedirect = <Redirect to = {{
+                pathname: `/materials/${this.materialId}-${this.state.loadedMaterial.name}`,
+                state: {
+                    productListUrl:this.props.location.state.historyProductListUrl,
+                    historyOrderUrl: this.props.location.state.historyOrderUrl,
+                    orderListUrl:this.props.location.state? this.props.location.state.orderListUrl: null,
+                    historyBudgetUrl: this.props.location.state.historyBudgetUrl,
+                    seasonName: this.props.location.state.seasonName,
+                    collectionName: this.props.location.state.collectionName,
+                    productsCollection: this.props.location.state.productsCollection,
+                    materialListUrl: this.props.location.state.materialListUrl
+                }
+            }}
+            />
+        }
         if(this.props.location.state) {
             if (this.props.location.state.historyProductUrl) {
                 backToProductBtn =
@@ -433,7 +442,7 @@ class SingleMaterial extends Component{
                     <p>Total Consumption: {totalConsumption}</p>
                     <p>Freight: <span style={ this.state.freight !== this.state.freightOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.freight} </span></p>
                     <p>Manufacturer: <span style={ this.state.manufacturer !== this.state.manufacturerOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.manufacturer}</span></p>
-                    <p>Min Quality: <span style={ this.state.minQuality !== this.state.minQualityOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.minQuality}</span></p>
+                    <p>Minimum Quantity: <span style={ this.state.minQuantity !== this.state.minQuantityOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.minQuantity}</span></p>
                     <p>Unit Price: <span style={ this.state.unitPrice !== this.state.unitPriceOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.unitPrice}</span></p>
                     <p>Width: <span style={ this.state.width !== this.state.widthOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.width}</span> <span style={ this.state.widthUnit !== this.state.widthUnitOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.widthUnit}</span></p>
                     <p>Weight: <span style={ this.state.weight !== this.state.weightOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.weight}</span> <span style={ this.state.weightUnit !== this.state.weightUnitOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.weightUnit}</span></p>
@@ -452,10 +461,11 @@ class SingleMaterial extends Component{
                 <div>
                     {backToProductBtn}
                     {backToMaterialListBtn}
+                    {newNameRedirect}
                     <Row>
                     <Col span={8}>
                     <Row type="flex">
-                        <h1>{this.state.name}&nbsp;</h1>
+                        <h1><span style={ this.state.name !== this.state.loadedMaterial.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.name} </span>&nbsp;</h1>
                         <Button className="edit-btn"
                                 onClick={this.showNameModal}
                         >
@@ -540,8 +550,8 @@ class SingleMaterial extends Component{
                                             Min Quality:
                                             <Input
                                                 className="input-style"
-                                                value={this.state.minQuality}
-                                                name="minQuality"
+                                                value={this.state.minQuantity}
+                                                name="minQuantity"
                                                 onChange={this.handleNumberChange}
                                                 onKeyDown={this.checkNumber}
                                                 onBlur={this.handleComma}

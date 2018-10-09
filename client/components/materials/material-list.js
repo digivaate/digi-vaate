@@ -89,8 +89,8 @@ class MaterialList extends Component{
             if(!values.weight){
                 values.weight = 0;
             }
-            if(!values.minQuality){
-                values.minQuality = 0;
+            if(!values.minQuantity){
+                values.minQuantity = 0;
             }
             if(!values.freight){
                 values.freight = 0;
@@ -141,7 +141,7 @@ class MaterialList extends Component{
                                     bodyStyle={{height:90}}
                                     className="material-card-display"
                                     cover={<Link to={{
-                                        pathname: this.props.match.url + "/" + material.name,
+                                        pathname: `${this.props.match.url}/${material.id}-${material.name}`,
                                         state:{materialListUrl: this.props.match.url}
                                     }}><img alt="example" className="material-img" src={`${imgUrl}`} /></Link>}
                                     actions={[
@@ -150,7 +150,7 @@ class MaterialList extends Component{
                                         </div>
                                     ]}>
                                     <Link to={{
-                                        pathname: this.props.match.url + "/" + material.name,
+                                        pathname: `${this.props.match.url}/${material.id}-${material.name}`,
                                         state:{materialListUrl: this.props.match.url}
                                     }}>
                                     <Meta
