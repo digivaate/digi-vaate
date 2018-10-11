@@ -11,28 +11,30 @@ const EditForm = Form.create()(
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        return(
-            <Form layout="inline" onSubmit={this.submit}>
-                <FormItem label={'Name'}>
-                    {getFieldDecorator('name',
-                        {initialValue: this.props.season.name} )(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem label={'Budget'}>
-                    {getFieldDecorator('budget',
-                        {initialValue: this.props.season.budget} )(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem label={'Cover percentage'}>
-                    {getFieldDecorator('coverPercent',
-                        {initialValue: this.props.season.coverPercent} )(
-                        <Input />
-                    )}
-                </FormItem>
-            </Form>
-        );
+        if(this.props.season){
+            return (
+                <Form layout="inline">
+                    <FormItem label={'Name'}>
+                        {getFieldDecorator('name',
+                            {initialValue: this.props.season.name})(
+                            <Input />
+                        )}
+                    </FormItem>
+                    <FormItem label={'Budget'}>
+                        {getFieldDecorator('budget',
+                            {initialValue: this.props.season.budget})(
+                            <Input />
+                        )}
+                    </FormItem>
+                    <FormItem label={'Cover percentage'}>
+                        {getFieldDecorator('coverPercent',
+                            {initialValue: this.props.season.coverPercent})(
+                            <Input />
+                        )}
+                    </FormItem>
+                </Form>
+            );
+        }
     }
 });
 
@@ -44,32 +46,24 @@ class EditSeason extends React.Component {
             visible: false,
             formRef: null
         };
-        /*
-        this.close = this.close.bind(this);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        */
+
     }
 
     close = () => {
-        if (this.props.hide) this.props.hide();
+        if (this.props.hide) {
+            this.props.hide();
+            this.formRef.props.form.resetFields();
+        }
     };
 
-    handleSave = () => {
+    handleOk = () => {
         this.setState({ loading: true });
         this.formRef.props.form.validateFields((err, values) => {
             if (err) console.error(err);
-            axios.patch(API_ROOT + '/season/?id=' + this.props.season.id, values )
-                .then(res => {
-                    this.props.editSeason(res.data[0]);
-                    this.close();
-                    this.setState({ loading: false });
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.close();
-                    this.setState({ loading: false });
-                });
+            this.props.editSeason(values);
+            this.close();
+            this.setState({ loading: false });
+            this.formRef.props.form.resetFields();
         });
     };
 
@@ -107,8 +101,8 @@ class EditSeason extends React.Component {
                     <Button key="submit"
                             type="primary"
                             loading={loading}
-                            onClick={this.handleSave}
-                    >Save</Button>
+                            onClick={this.handleOk}
+                    >OK</Button>
                 ]}
             >
                 <EditForm season={this.props.season}

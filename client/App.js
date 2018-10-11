@@ -109,7 +109,13 @@ class App extends React.Component {
                 changeLocation: !prevState.changeLocation
             }}
         )
-    }
+    };
+
+    updateSeason = (newSeasonEdit) => {
+        this.setState({
+            newSeasonEdit: newSeasonEdit
+        })
+    };
 
     componentDidMount(){
         axios.get(`${API_ROOT}/product`)
@@ -162,7 +168,6 @@ class App extends React.Component {
                             />}
                     />
                     <div className="sider">
-                        <Switch>
                             <Route path="/"  render ={(props) =>
                                 <SideBar
                                     {...props}
@@ -170,21 +175,9 @@ class App extends React.Component {
                                     newCollection = {this.state.newCollectionName}
                                     newDeleteSeason = {this.state.newDeleteSeasonName}
                                     newDeleteCollection = {this.state.newDeleteCollectionName}
+                                    newSeasonEdit = {this.state.newSeasonEdit}
                                 />}
                             />
-                            <Route path="/seasons" render ={(props) =>
-                                <SideBar
-                                    {...props}
-                                    newSeason = {this.state.newSeasonName}
-                                />}
-                            />
-                            <Route path="/:seasonId/collections" exact render={(props) =>
-                                <SeasonSideBar
-                                    {...props}
-                                    newCollection = {this.state.newCollectionName}
-                                />}
-                            />
-                        </Switch>
                     </div>
                     <div className="content">
                         <div>
@@ -202,6 +195,7 @@ class App extends React.Component {
                                     <SeasonsList
                                         sendNewSeason={seasonName => this.newSeasonNameFunc(seasonName)}
                                         deleteSeason = {seasonName => this.deleteSeason(seasonName)}
+                                        updateSeason = {newSeasonEdit => this.updateSeason(newSeasonEdit)}
                                     />}
                                 />
                                 <Route path="/materials" exact render={(props) =>

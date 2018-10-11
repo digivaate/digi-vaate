@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import { List,Button,Spin,Icon } from 'antd';
+import { List,Button,Spin,Icon,message } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
@@ -25,9 +25,20 @@ class SeasonsList extends Component{
             .then(response => {
                 this.setState({
                     seasons: response.data[0].seasons,
+                    seasonsOri: response.data[0].seasons,
                     company: response.data[0]
+                }, () => {
+                    this.stateForButtons()
                 })
             })
+    };
+
+    stateForButtons = () => {
+        for (let i = 0; i< this.state.seasons.length; i++){
+            this.setState({
+                [`${this.state.seasons[i].id}-modified`]:false
+            })
+        }
     };
 
     createNewSeason = () => {
@@ -57,10 +68,14 @@ class SeasonsList extends Component{
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
                     let seasons = [...this.state.seasons];
+                    let seasonsOri = [...this.state.seasonsOri];
                     seasons.push(res.data);
+                    seasonsOri.push(res.data);
                     this.setState({
                         seasons:seasons,
-                        visible:false
+                        seasonsOri:seasonsOri,
+                        visible:false,
+                        [`${res.data.id}-modified`]:false
                     })
                 });
             form.resetFields();
@@ -71,8 +86,8 @@ class SeasonsList extends Component{
         this.formRef = formRef;
     };
 
-    showEdit = (e) => {
-        this.setState({ editVisible: true, editableId: parseInt(e.target.id) });
+    showEdit = (season) => {
+        this.setState({ editVisible: true, editableId: season.id });
     };
 
     hideEdit = () => {
@@ -98,16 +113,90 @@ class SeasonsList extends Component{
         })
     };
 
-    saveEdit = (editInfo) => {
+    receiveNewEdit = (editInfo) => {
         let seasons = [...this.state.seasons];
         for(let i = 0; i< seasons.length;i++){
-            if(seasons[i].id === editInfo.id){
-                seasons[i] = {...editInfo}
+            if(seasons[i].id === this.state.editableId){
+                if(seasons[i].name !== editInfo.name
+                || seasons[i].budget.toString() !== editInfo.budget.toString()
+                || seasons[i].coverPercent.toString() !== editInfo.coverPercent.toString()){
+                    this.setState({
+                        [`${seasons[i].id}-modified`]: true
+                    })
+                }
+                seasons[i] = {
+                    ...seasons[i],
+                    name:editInfo.name,
+                    budget: editInfo.budget,
+                    coverPercent: editInfo.coverPercent
+                }
             }
         }
         this.setState({
-            seasons: seasons
+            seasons: seasons,
         })
+    };
+
+    discardEdit = (season) => {
+        let seasons = [...this.state.seasons];
+        for(let i = 0; i < seasons.length; i++){
+            if(season.id === seasons[i].id){
+                for(let j = 0; j < this.state.seasonsOri.length; j++){
+                    if(seasons[i].id === this.state.seasonsOri[j].id){
+                        seasons[i] = {...this.state.seasonsOri[j]}
+                    }
+                }
+            }
+        }
+        this.setState({seasons: seasons,[`${season.id}-modified`]:false})
+    };
+
+    saveEdit = (season) => {
+        let seasons = [...this.state.seasons];
+        let seasonsOri = [...this.state.seasonsOri];
+        let newInfo = {
+            budget: season.budget,
+            coverPercent: season.coverPercent,
+            name: season.name
+        };
+        axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo )
+            .then(res => {
+                for(let i = 0; i < seasonsOri.length;i++) {
+                    if (seasonsOri[i].id === res.data[0].id) {
+                        if(seasonsOri[i].name !== res.data[0].name){
+                            this.props.updateSeason(res.data[0])
+                        }
+                    }
+                }
+                for(let i = 0; i< seasons.length;i++) {
+                    if (seasons[i].id === res.data[0].id) {
+                        seasons[i] = {...res.data[0]};
+                        seasonsOri[i] = {...res.data[0]};
+                    }
+                }
+                this.setState({
+                    seasons:seasons,
+                    seasonsOri:seasonsOri,
+                    [`${season.id}-modified`]:false
+                });
+                message.success("Updated!",1);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+    }
+
+    showDescription = (season) => {
+        let budgetHtml = null;
+        let coverPercentHtml = null;
+        for(let i = 0; i < this.state.seasonsOri.length;i ++){
+            if(season.id === this.state.seasonsOri[i].id){
+                budgetHtml = <span style={ season.budget !== this.state.seasonsOri[i].budget ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{season.budget}</span>;
+                coverPercentHtml = <span style={ season.coverPercent !== this.state.seasonsOri[i].coverPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{season.coverPercent}</span>;
+            }
+        }
+        return <p>Budget: {budgetHtml}, Cover percentage: {coverPercentHtml}%</p>
     };
 
     render(){
@@ -138,7 +227,7 @@ class SeasonsList extends Component{
                                     visible={this.state.editVisible}
                                     hide={this.hideEdit}
                                     season={this.getEditableSeason()}
-                                    editSeason={(editInfo) => this.saveEdit(editInfo)}
+                                    editSeason={(editInfo) => this.receiveNewEdit(editInfo)}
                                     deleteSeason ={seasonName => this.deleteSeason(seasonName)}
                         />
                         <br/>
@@ -148,13 +237,19 @@ class SeasonsList extends Component{
                             bordered
                             dataSource={this.state.seasons}
                             renderItem={item => (
-                                <List.Item>
-                                    <Link style={{marginRight: 'auto'}} to={''}>
-                                        <List.Item.Meta
-                                            title={item.name}
-                                            description={`Budget: ${item.budget}, Cover percent: ${item.coverPercent}%`} />
-                                    </Link>
-                                    <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
+                                <List.Item
+                                    actions={[
+                                        <Button onClick={() => this.showEdit(item)}>Edit</Button> ,
+                                        <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.discardEdit(item)}>Discard</Button>,
+                                        <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.saveEdit(item)}>Save</Button>
+                                    ]}
+                                >
+                                    <List.Item.Meta
+                                        title={item.name}
+                                        description={
+                                            this.showDescription(item)
+                                        }
+                                    />
                                 </List.Item>)}
                         />
                     </div>

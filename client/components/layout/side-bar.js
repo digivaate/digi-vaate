@@ -26,6 +26,7 @@ class SideBar extends Component{
             || nextProps.newSeason !== this.props.newSeason
             || nextProps.newCollection !== this.props.newCollection
             || nextState.seasons !== this.state.seasons
+            || nextProps.newSeasonEdit !== this.props.newSeasonEdit
     }
 
     componentDidUpdate(prevProps){
@@ -68,6 +69,21 @@ class SideBar extends Component{
             for(let i = 0 ; i < seasons.length; i++){
                 if(seasons[i].id === this.props.newCollection.seasonId){
                     seasons[i].collections.push(newCollection);
+                    this.setState({
+                        seasons:seasons
+                    })
+                }
+            }
+        }
+        if(prevProps.newSeasonEdit !== this.props.newSeasonEdit){
+            let seasons = [...this.state.seasons];
+            let newSeasonEdit = {...this.props.newSeasonEdit}
+            for(let i = 0 ; i < seasons.length; i++){
+                if(seasons[i].id === newSeasonEdit.id){
+                    seasons[i] = {
+                        ...seasons[i],
+                        name: newSeasonEdit.name
+                    };
                     this.setState({
                         seasons:seasons
                     })
