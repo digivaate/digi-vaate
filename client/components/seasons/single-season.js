@@ -1,11 +1,10 @@
 import React,{Component} from 'react';
-import { List,Button,Spin } from 'antd';
+import { List,Button,Spin,message } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './seasons.css'
 import CollectionCreateForm from './newCollection'
 import EditCollection from "./edit-collection";
-import {Link} from "react-router-dom";
 
 
 class SingleSeason extends Component{
@@ -37,21 +36,10 @@ class SingleSeason extends Component{
             .then(response => {
                 this.setState({
                     collections: response.data[0].collections,
+                    collectionsOri: response.data[0].collections,
                     seasons: response.data[0]
                 })
             })
-    };
-
-    saveEdit = (editInfo) => {
-        let collections = [...this.state.collections];
-        for(let i = 0; i< collections.length;i++){
-            if(collections[i].id === editInfo.id){
-                collections[i] = {...editInfo}
-            }
-        }
-        this.setState({
-            collections: collections
-        })
     };
 
     createNewCollection = () => {
@@ -93,8 +81,8 @@ class SingleSeason extends Component{
         this.formRef = formRef;
     };
 
-    showEdit = (e) => {
-        this.setState({ editVisible: true, editableId: parseInt(e.target.id) });
+    showEdit = (collection) => {
+        this.setState({ editVisible: true, editableId: collection.id });
     };
 
     hideEdit = () => {
@@ -118,6 +106,78 @@ class SingleSeason extends Component{
             collections: collections
         })
     };
+
+    receiveNewEdit = (editInfo) => {
+        let collections = [...this.state.collections];
+        for(let i = 0; i< collections.length;i++){
+            if(collections[i].id === this.state.editableId){
+                if(collections[i].name !== editInfo.name
+                    || collections[i].coverPercent.toString() !== editInfo.coverPercent.toString()){
+                    this.setState({
+                        [`${collections[i].id}-modified`]: true
+                    })
+                }
+                collections[i] = {
+                    ...collections[i],
+                    name: editInfo.name,
+                    coverPercent: editInfo.coverPercent
+                }
+            }
+        }
+        this.setState({
+            collections: collections
+        });
+    };
+
+    discardEdit = (collection) => {
+        let collections = [...this.state.collections];
+        for(let i = 0; i < collections.length; i++){
+            if(collection.id === collections[i].id){
+                for(let j = 0; j < this.state.collectionsOri.length; j++){
+                    if(collections[i].id === this.state.collectionsOri[j].id){
+                        collections[i] = {...this.state.collectionsOri[j]}
+                    }
+                }
+            }
+        }
+        this.setState({collections: collections,[`${collection.id}-modified`]:false})
+    };
+
+    saveEdit = (collection) => {
+        let collections = [...this.state.collections];
+        let collectionsOri = [...this.state.collectionsOri];
+        let newInfo = {
+            coverPercent: collection.coverPercent,
+            name: collection.name
+        };
+        axios.patch(API_ROOT + '/collection/?id=' + collection.id, newInfo )
+            .then(res => {
+                for(let i = 0; i < collectionsOri.length;i++) {
+                    if (collectionsOri[i].id === res.data[0].id) {
+                        if(collectionsOri[i].name !== res.data[0].name){
+                            this.props.updateCollection(res.data[0])
+                        }
+                    }
+                }
+                for(let i = 0; i< collections.length;i++) {
+                    if (collections[i].id === res.data[0].id) {
+                        collections[i] = {...res.data[0]};
+                        collectionsOri[i] = {...res.data[0]};
+                    }
+                }
+                this.setState({
+                    collections:collections,
+                    collectionsOri:collectionsOri,
+                    [`${collection.id}-modified`]:false
+                });
+                message.success("Updated!",1);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+    }
+
     render() {
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
@@ -147,8 +207,8 @@ class SingleSeason extends Component{
                                         visible={this.state.editVisible}
                                         hide={this.hideEdit}
                                         collection={this.getEditableCollection()}
-                                        editCollection={(editInfo) => this.saveEdit(editInfo)}
                                         deleteCollection ={collectionName => this.deleteCollection(collectionName)}
+                                        editCollection={(editInfo) => this.receiveNewEdit(editInfo)}
 
                         />
                         <br/>
@@ -158,13 +218,17 @@ class SingleSeason extends Component{
                             bordered
                             dataSource={this.state.collections}
                             renderItem={item => (
-                                <List.Item>
-                                    <Link style={{marginRight: 'auto'}} to={''}>
+                                <List.Item
+                                    actions={[
+                                        <Button onClick={() => this.showEdit(item)}>Edit</Button> ,
+                                        <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.discardEdit(item)}>Discard</Button>,
+                                        <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.saveEdit(item)}>Save</Button>
+                                    ]}
+                                >
                                         <List.Item.Meta
                                             title={item.name}
-                                            description={`Cover percent: ${item.coverPercent}%`} />
-                                    </Link>
-                                    <Button htmlType={'button'} id={item.id} onClick={this.showEdit}>Edit</Button>
+                                            description={`Cover percent: ${item.coverPercent}%`}
+                                        />
                                 </List.Item>
                             )}
                         />

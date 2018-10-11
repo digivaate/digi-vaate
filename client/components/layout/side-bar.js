@@ -25,6 +25,7 @@ class SideBar extends Component{
             || nextProps.newCollection !== this.props.newCollection
             || nextState.seasons !== this.state.seasons
             || nextProps.newSeasonEdit !== this.props.newSeasonEdit
+            || nextProps.newCollectionEdit !== this.props.newCollectionEdit
     }
 
     componentDidUpdate(prevProps){
@@ -87,6 +88,25 @@ class SideBar extends Component{
                     })
                 }
             }
+        }
+        if(prevProps.newCollectionEdit !== this.props.newCollectionEdit){
+            let seasons = [...this.state.seasons];
+            let newCollectionEdit = {...this.props.newCollectionEdit}
+            for(let i = 0 ; i < seasons.length; i++){
+                if(seasons[i].id === newCollectionEdit.seasonId){
+                    for(let j = 0; j < seasons[i].collections.length; j++) {
+                        if(seasons[i].collections[j].id === newCollectionEdit.id) {
+                            seasons[i].collections[j] = {
+                                ...seasons[i].collections[j],
+                                name: newCollectionEdit.name
+                            };
+                        }
+                    }
+                }
+            }
+            this.setState({
+                seasons: seasons
+            })
         }
         /*if(prevProps.newCollection !== this.props.newCollection
             || prevProps.newSeason !== this.props.newSeason

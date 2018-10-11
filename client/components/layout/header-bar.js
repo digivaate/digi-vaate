@@ -5,7 +5,7 @@ import './layout.css';
 
 class HeaderBar extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             refresh: false
         }
@@ -16,7 +16,11 @@ class HeaderBar extends Component{
             prevProps.newCollectionName !== this.props.newCollectionName ||
                 prevProps.newProduct !== this.props.newProduct ||
                 prevProps.newMaterial !== this.props.newMaterial ||
-                prevProps.changeLocation !== this.props.changeLocation
+                prevProps.changeLocation !== this.props.changeLocation||
+                prevProps.newSeasonEdit !== this.props.newSeasonEdit ||
+                prevProps.newCollectionEdit !== this.props.newCollectionEdit||
+                prevProps.newProductName !== this.props.newProductName||
+                prevProps.newMaterialName !== this.props.newMaterialName
         ){
 
             this.setState({

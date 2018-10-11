@@ -1,6 +1,6 @@
 import React, {Component,Fragment} from "react";
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
@@ -329,6 +329,7 @@ class SingleProduct extends Component {
                             saved: true
                         }, () => {
                             if(res.data[0].name !== this.state.originalProductName){
+                                this.props.newProductName(res.data[0]);
                                 this.setState({
                                     nameChange:true,
                                     originalProductName: response.data[0].name

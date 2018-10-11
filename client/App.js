@@ -107,7 +107,27 @@ class App extends React.Component {
             newSeasonEdit: newSeasonEdit
         })
     };
-    render(){
+
+    updateCollection = (newCollectionEdit) => {
+        this.setState({
+            newCollectionEdit: newCollectionEdit
+        })
+    };
+
+    newProductName = (newProductName) => {
+        this.setState({
+            newProductName:newProductName
+        })
+    };
+
+    newMaterialName = (newMaterialName) => {
+        this.setState({
+            newMaterialName:newMaterialName
+        })
+    };
+
+
+render(){
         return(
             <BrowserRouter>
                 <div className="App">
@@ -120,6 +140,10 @@ class App extends React.Component {
                                 newProduct = {this.state.newProduct}
                                 newMaterial = {this.state.newMaterial}
                                 changeLocation = {this.state.changeLocation}
+                                newSeasonEdit = {this.state.newSeasonEdit}
+                                newCollectionEdit = {this.state.newCollectionEdit}
+                                newProductName = {this.state.newProductName}
+                                newMaterialName = {this.state.newMaterialName}
                             />}
                     />
                     <div className="sider">
@@ -131,6 +155,7 @@ class App extends React.Component {
                                     newDeleteSeason = {this.state.newDeleteSeasonName}
                                     newDeleteCollection = {this.state.newDeleteCollectionName}
                                     newSeasonEdit = {this.state.newSeasonEdit}
+                                    newCollectionEdit = {this.state.newCollectionEdit}
                                 />}
                             />
                     </div>
@@ -164,9 +189,15 @@ class App extends React.Component {
                                         {...props}
                                         key={window.location.href}
                                         changeLocation = {() => this.changeLocation()}
+                                        newProductName = {(newProductName) => this.newProductName(newProductName)}
                                     />
                                 }/>
-                                <Route path="/materials/:materialId" exact component={SingleMaterial} />
+                                <Route path="/materials/:materialId" exact render={(props) =>
+                                    <SingleMaterial
+                                        {...props}
+                                        newMaterialName = {(newMaterialName) => this.newMaterialName(newMaterialName)}
+                                    />
+                                } />
                                 <Route path="/colors" exact component={ColorCollection}/>
                                 <Route path="/seasons/:seasonId/products" exact render={(props) =>
                                     <ProductsDisplay
@@ -181,6 +212,7 @@ class App extends React.Component {
                                         {...props}
                                         key = {window.location.href}
                                         changeLocation = {() => this.changeLocation()}
+                                        newProductName = {(newProductName) => this.newProductName(newProductName)}
                                     />
                                 }/>
                                 <Route path={'/seasons/:seasonId/budget'} exact render={(props) =>
@@ -196,6 +228,7 @@ class App extends React.Component {
                                         {...props}
                                         sendNewCollection = {collectionName => this.newCollectionNameFunc(collectionName)}
                                         deleteCollection = {collectionName => this.deleteCollection(collectionName)}
+                                        updateCollection = {newCollectionEdit => this.updateCollection(newCollectionEdit)}
                                     />
                                 }/>
                                 <Route path="/seasons/:seasonId/collections/:collectionId/budget" exact render={(props) =>
@@ -221,6 +254,7 @@ class App extends React.Component {
                                         {...props}
                                         key={window.location.href}
                                         changeLocation = {() => this.changeLocation()}
+                                        newProductName = {(newProductName) => this.newProductName(newProductName)}
                                     />
                                 } />
                             </Switch>

@@ -333,7 +333,6 @@ class SingleMaterial extends Component{
                             width:response.data[0].width,
                             weight:response.data[0].weight,
                             loadedMaterialOri: response.data[0],
-                            nameOri: response.data[0].name,
                             freightOri: response.data[0].freight,
                             minQuantityOri:response.data[0].minQuantity,
                             unitPriceOri:response.data[0].unitPrice,
@@ -347,14 +346,21 @@ class SingleMaterial extends Component{
                             weightOri:response.data[0].weight,
                             modified:false,
                         } , () => {
-                            if(this.state.name !== this.state.loadedMaterial.name){
+                            if(response.data[0].name !== this.state.nameOri){
+                                this.props.newMaterialName(response.data[0])
                                 this.setState({
                                     nameChange:true,
-                                    name: response.data[0].name
+                                    name: response.data[0].name,
+                                    nameOri:response.data[0].name
+                                },() => {
+                                    this.setState({
+                                        nameChange:false
+                                    })
                                 })
                             } else {
                                 this.setState({
-                                    name: response.data[0].name
+                                    name: response.data[0].name,
+                                    nameOri:response.data[0].name
                                 })
                             }
                         });

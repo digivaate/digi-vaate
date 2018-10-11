@@ -8,7 +8,6 @@ const confirm = Modal.confirm;
 
 const EditForm = Form.create()(
     class extends React.Component {
-
         render() {
             const { getFieldDecorator } = this.props.form;
             return(
@@ -38,32 +37,23 @@ class EditCollection extends React.Component {
             visible: false,
             formRef: null
         };
-        /*
-        this.close = this.close.bind(this);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        */
     }
 
     close = () => {
-        if (this.props.hide) this.props.hide();
+        if (this.props.hide) {
+            this.props.hide();
+            this.formRef.props.form.resetFields();
+        }
     };
 
-    handleSave = () => {
+    handleOk = () => {
         this.setState({ loading: true });
         this.formRef.props.form.validateFields((err, values) => {
             if (err) console.error(err);
-            axios.patch(API_ROOT + '/collection/?id=' + this.props.collection.id, values )
-                .then(res => {
-                    this.props.editCollection(res.data[0]);
-                    this.close();
-                    this.setState({ loading: false });
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.close();
-                    this.setState({ loading: false });
-                });
+            this.props.editCollection(values);
+            this.close();
+            this.setState({ loading: false });
+            this.formRef.props.form.resetFields();
         });
     };
 
@@ -99,8 +89,8 @@ class EditCollection extends React.Component {
                     <Button key="submit"
                             type="primary"
                             loading={loading}
-                            onClick={this.handleSave}
-                    >Save</Button>
+                            onClick={this.handleOk}
+                    >OK</Button>
                 ]}
             >
                 <EditForm collection={this.props.collection}
