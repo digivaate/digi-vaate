@@ -44,7 +44,7 @@ function createEntities() {
             freight: 3,
             weight: 200,
             width: 0.5,
-            minQuality: 4,
+            minQuantity: 4,
             instructions: 'instructions',
             manufacturer: 'manufacturer name',
             composition: 'composition description'
@@ -57,7 +57,7 @@ function createEntities() {
             freight: 1,
             weight: 100,
             width: 0.8,
-            minQuality: 3,
+            minQuantity: 3,
             instructions: 'instructions',
             manufacturer: 'manufacturer name',
             composition: 'composition description'
