@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
-const FormItem = Form.Item;
 const { Meta } = Card;
 
 

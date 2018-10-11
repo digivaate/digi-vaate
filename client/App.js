@@ -1,6 +1,5 @@
 import React from "react";
 import 'antd/dist/antd.css'
-import { render } from "react-dom";
 import "react-table/react-table.css";
 import axios from 'axios';
 import {API_ROOT} from './api-config';
@@ -12,21 +11,13 @@ import ColorCollection from './components/colors/colors-collection'
 import MaterialList from './components/materials/material-list'
 import ProductsDisplay from './components/products/products-display'
 import SingleProduct from './components/products/single-product-index'
-import SeasonSideBar from './components/layout/season-side-bar'
-import CollectionSideBar from './components/layout/collection-side-bar'
-import SingleCollection from './components/collections/single_collection'
 import ThemeList from './components/themes/theme-list'
 import SingleMaterial from './components/materials/single-material'
 import SingleSeason from './components/seasons/single-season'
 import SeasonsList from './components/company/seasons-list'
-import OrderIndex from './components/orders/orders-index'
 import OrderList from './components/orders/order-list'
 import SingleOrder from './components/orders/single-order'
-import OrderSideBar from './components/layout/order-side-bar'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
-import { BackTop } from 'antd';
-import ProductCard from "./components/products/product-card";
-
 
 class App extends React.Component {
     constructor(props){

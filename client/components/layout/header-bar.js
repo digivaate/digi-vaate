@@ -1,9 +1,6 @@
 import React,{ Component } from "react";
 import 'antd/dist/antd.css';
 import BreadCrumbDisplay from './breadcrumb';
-import { Layout, Menu,Row, Col,Button } from 'antd';
-import {NavLink} from 'react-router-dom'
-const { Header } = Layout;
 import './layout.css';
 
 class HeaderBar extends Component{
@@ -15,11 +12,11 @@ class HeaderBar extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.newSeasonName != this.props.newSeasonName ||
-            prevProps.newCollectionName != this.props.newCollectionName ||
-                prevProps.newProduct != this.props.newProduct ||
-                prevProps.newMaterial != this.props.newMaterial ||
-                prevProps.changeLocation != this.props.changeLocation
+        if(prevProps.newSeasonName !== this.props.newSeasonName ||
+            prevProps.newCollectionName !== this.props.newCollectionName ||
+                prevProps.newProduct !== this.props.newProduct ||
+                prevProps.newMaterial !== this.props.newMaterial ||
+                prevProps.changeLocation !== this.props.changeLocation
         ){
 
             this.setState({

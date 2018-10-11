@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import {Card,Button, Modal, Select, message,TreeSelect} from 'antd';
+import {Card,Button, Modal, message,TreeSelect} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 

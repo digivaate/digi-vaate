@@ -1,14 +1,8 @@
-import React,{Component} from 'react';
-import axios from 'axios';
-import {Col,Row,Select,Modal,Button,Divider,Icon,Form,DatePicker,Input} from 'antd'
-import {Redirect} from 'react-router-dom'
-import {API_ROOT} from '../../api-config'
+import React from 'react';
+import {Col,Row,Modal,Divider,Form,DatePicker,Input} from 'antd'
 import './orders.css'
-import ProductTable from './single-order-products'
 import {comaToPeriod} from "../../utils/coma-convert";
-const confirm = Modal.confirm;
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 const OrderCreateForm = Form.create()(
     class extends React.Component {

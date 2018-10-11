@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         weightUnit: DataTypes.STRING,
         width: DataTypes.FLOAT,
         widthUnit: DataTypes.STRING,
-        minQuality: DataTypes.INTEGER,
+        minQuantity: DataTypes.INTEGER,
         instructions: DataTypes.STRING,
         manufacturer: DataTypes.STRING,
         composition: DataTypes.STRING

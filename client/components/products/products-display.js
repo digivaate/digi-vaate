@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import { Card, Row, Col,Icon,Modal,Button,message,Spin,List,Divider,BackTop } from 'antd';
-import {Redirect,Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const { Meta } = Card;

@@ -1,6 +1,6 @@
 import React,{ Component,Fragment } from "react";
 import axios from 'axios';
-import { Card, Col,Row,Divider,Input,Button,Icon,Modal,Select,message } from 'antd';
+import { Card, Col,Row,Input,Button,Icon,Modal,Select,message } from 'antd';
 import { API_ROOT } from '../../api-config';
 import {Link,Redirect} from 'react-router-dom'
 import '../../utils/compare-obj';

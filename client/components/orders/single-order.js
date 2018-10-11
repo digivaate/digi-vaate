@@ -1,6 +1,6 @@
 import React,{Component,Fragment} from 'react';
 import axios from 'axios';
-import {Col,Row,Anchor,Spin,List,Button,Divider,Icon,Card} from 'antd'
+import {Col,Row,Spin,Button,Icon,Card} from 'antd'
 import {Link} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'

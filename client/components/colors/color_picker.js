@@ -1,5 +1,4 @@
 import React from 'react';
-import reactCSS from 'reactcss';
 import {message} from 'antd';
 import {PhotoshopPicker } from 'react-color';
 import './colors.css'
