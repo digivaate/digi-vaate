@@ -53,7 +53,7 @@ class SingleProductImg extends Component{
                             message.success("Change successfully",1);
                             this.setState({
                                 moveToSeason: true,
-                                newSeasonUrl:`/seasons/${this.state.value}/products/${this.props.loadedProduct.name}`,
+                                newSeasonUrl:`/seasons/${this.state.value}/products/${this.props.loadedProduct.id}-${this.props.loadedProduct.name}`,
                             })
                         })
                 }
@@ -73,7 +73,7 @@ class SingleProductImg extends Component{
                                     this.props.changeLocation();
                                     this.setState({
                                         moveToCollection: true,
-                                        newCollectionUrl: `/seasons/${this.seasons[j][1]}/collections/${this.state.value}/products/${this.props.loadedProduct.name}`,
+                                        newCollectionUrl: `/seasons/${this.seasons[j][1]}/collections/${this.state.value}/products/${this.props.loadedProduct.id}-${this.props.loadedProduct.name}`,
                                     });
                                 }
                             }

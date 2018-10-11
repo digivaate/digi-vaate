@@ -42,7 +42,7 @@ class SingleProduct extends Component {
     seasons = null;
     collections = null;
     displaySelectedMaterial = [];
-
+    productId = "";
     componentDidMount(){
         this.loadProduct();
 
@@ -95,8 +95,9 @@ class SingleProduct extends Component {
         if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
+            this.productId = pathSnippets[pathSnippets.length-1].split("-")[0];
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`)
                     .then(response => {
                         if (response.data[0].companyId) {
                             axios.get(`${API_ROOT}/company?name=Demo%20company`)
@@ -119,21 +120,17 @@ class SingleProduct extends Component {
 
                         }
                         if (response.data[0].collectionId) {
-                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
-                                .then(resp => {
-                                    axios.get(`${API_ROOT}/collection?id=${resp.data[0].collectionId}`)
-                                        .then(res => {
-                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
-                                                .then(re => {
-                                                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
-                                                        .then(re1 => {
-                                                            this.setState({
-                                                                colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))
-                                                            })
-                                                        })
-
-                                                });
-                                        })
+                            axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                .then(res => {
+                                    axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                        .then(re => {
+                                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                                                .then(re1 => {
+                                                    this.setState({
+                                                        colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))
+                                                    })
+                                                })
+                                        });
                                 })
                         }
                         this.setState({
@@ -162,7 +159,7 @@ class SingleProduct extends Component {
         }
         else if(this.props.match.params.productId){
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`)
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
@@ -268,7 +265,7 @@ class SingleProduct extends Component {
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                axios.get(`${API_ROOT}/product?name=${self.state.loadedProduct.name}`)
+                axios.get(`${API_ROOT}/product?id=${self.productId}`)
                     .then(response => {
                         self.setState({
                             loadedProduct: response.data[0],
@@ -303,7 +300,7 @@ class SingleProduct extends Component {
             }
         });
         let newSizesPatch = this.state.productSizes.map(size => size.id)
-        axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{
+        axios.patch(`${API_ROOT}/product?id=${this.productId}`,{
             name: this.state.productName,
             colors: newColorsPatch,
             materials: newMaterialsPatch,
@@ -314,7 +311,7 @@ class SingleProduct extends Component {
             subcCostTotal: this.state.loadedProduct.subcCostTotal,
         })
             .then(res => {
-                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`)
                     .then(response => {
                         message.success("Updated!",1.5);
                         this.setState({
@@ -328,9 +325,19 @@ class SingleProduct extends Component {
                             originalProductImg: response.data[0].imagePath,
                             originalProductColors: response.data[0].colors,
                             originalProductMaterials: response.data[0].materials,
-                            originalProductName: response.data[0].name,
                             modified: false,
                             saved: true
+                        }, () => {
+                            if(res.data[0].name !== this.state.originalProductName){
+                                this.setState({
+                                    nameChange:true,
+                                    originalProductName: response.data[0].name
+                                })
+                            } else {
+                                this.setState({
+                                    originalProductName: response.data[0].name
+                                })
+                            }
                         });
                     })
                     .then(() => {
@@ -340,12 +347,13 @@ class SingleProduct extends Component {
                             this.displaySelectedMaterial = this.state.productMaterials.map(material => material.name);
                         }
                         this.setState({})
-                        const { location } = this.props;
+                        /*const { location } = this.props;
                         const pathSnippets = location.pathname.split('/').filter(i => i);
                         if(pathSnippets[pathSnippets.length-1] !== this.state.productName){
-                            pathSnippets[pathSnippets.length-1] = this.state.productName
+                            pathSnippets[pathSnippets.length-1] = this.state.productName;
                             window.location.href=`/${pathSnippets.join("/")}`
                         }
+                        */
                     });
             })
     };
@@ -362,6 +370,25 @@ class SingleProduct extends Component {
         let backToOrderBtn = null;
         let backToBudgetBtn = null;
         let backToProductListBtn = null;
+        let nameChangeRedirect = null;
+        if(this.state.nameChange){
+            const { location } = this.props;
+            const pathSnippets = location.pathname.split('/').filter(i => i);
+            pathSnippets[pathSnippets.length-1] = `${this.productId}-${this.state.productName}`;
+            nameChangeRedirect = <Redirect to = {{
+                pathname:`/${pathSnippets.join("/")}`,
+                state:{
+                    backToOrderList: this.props.location.state.backToOrderList,
+                    orderListUrl:this.props.location.state? this.props.location.state.orderListUrl: null,
+                    productsCollection: this.props.location.state.productsCollection,
+                    historyBudgetUrl: this.props.match.historyBudgetUrl,
+                    productListUrl: this.props.location.state.productListUrl,
+                    seasonName : this.props.location.state.seasonName,
+                    collectionName : this.props.location.state.collectionName,
+                }
+            }}
+            />
+        }
         if(this.props.location.state){
             seasonName = this.props.location.state.seasonName;
             collectionName = this.props.location.state.collectionName;
@@ -472,6 +499,7 @@ class SingleProduct extends Component {
                     {backToOrderBtn}
                     {backToBudgetBtn}
                     {backToProductListBtn}
+                    {nameChangeRedirect}
                     <Row>
                         <Col span={8}>
                             <SingleProductName

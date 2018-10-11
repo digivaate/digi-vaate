@@ -373,7 +373,7 @@ class ProductsDisplay extends Component{
                                         bodyStyle={{height:200}}
                                         className="product-card-display"
                                         cover={<Link to={{
-                                            pathname: url + product.name,
+                                            pathname: `${url}${product.id}-${product.name}`,
                                             state: {
                                                 productListUrl: this.props.match.url,
                                                 seasonName:product.seasonName,
@@ -387,7 +387,7 @@ class ProductsDisplay extends Component{
                                         ]}
                                     >
                                         <Link to={{
-                                            pathname: url + product.name,
+                                            pathname: `${url}${product.id}-${product.name}`,
                                             state: {
                                                 productListUrl: this.props.match.url,
                                                 seasonName:product.seasonName,
@@ -424,7 +424,7 @@ class ProductsDisplay extends Component{
                                 bodyStyle={{height:200}}
                                 className="product-card-display"
                                 cover={<Link to={{
-                                    pathname: url + product.name,
+                                    pathname: `${url}${product.id}-${product.name}`,
                                     state: {
                                         productListUrl: this.props.match.url,
                                         seasonName:product.seasonName,
@@ -438,7 +438,7 @@ class ProductsDisplay extends Component{
                                 ]}
                             >
                                 <Link to={{
-                                    pathname: url + product.name,
+                                    pathname: `${url}${product.id}-${product.name}`,
                                     state: {
                                         productListUrl: this.props.match.url,
                                         seasonName:product.seasonName,

@@ -17,12 +17,12 @@ class SingleProductMaterials extends Component{
             productMaterials: this.props.productMaterials.map(material => {
                 return {
                     id:material.id,
-                    consumption: parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
+                    consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                     name:material.name,
                     imagePath: material.imagePath,
                     unitPrice: material.unitPrice,
                     freight:material.freight,
-                    materialCosts: material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
+                    materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
                 }
             }),
             materialOptions: this.props.materialOptions,
@@ -40,12 +40,12 @@ class SingleProductMaterials extends Component{
                 productMaterials: this.props.productMaterials.map(material => {
                     return {
                         id:material.id,
-                        consumption: parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
+                        consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                         name:material.name,
                         imagePath: material.imagePath,
                         unitPrice: material.unitPrice,
                         freight:material.freight,
-                        materialCosts: material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
+                        materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
                     }
                 }),
                 materialOptions: this.props.materialOptions,
@@ -162,7 +162,7 @@ class SingleProductMaterials extends Component{
                     })
             }
             let objUpdateMaterials = null;
-            if(typeof this.updatedMaterials[0].id !== "number"){
+            if(this.updatedMaterials[0] && typeof this.updatedMaterials[0].id !== "number"){
                 for(let i = 0; i < this.displaySelectedMaterial.length; i++){
                     this.materialPairs.push(
                         {
@@ -208,6 +208,7 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
+        console.log(this.state.productMaterials)
         let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
         let materialSelected1 = null;
         let materialSelected2 = null;
@@ -239,7 +240,7 @@ class SingleProductMaterials extends Component{
                     return (
                         <Col key={material.id} span={8}>
                             <Link to={{
-                                pathname: `/materials/${material.name}`,
+                                pathname: `/materials/${material.id}-${material.name}`,
                                 state:
                                     {
                                         historyProductUrl:this.props.match.url,

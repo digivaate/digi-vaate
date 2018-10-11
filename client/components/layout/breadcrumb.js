@@ -76,7 +76,7 @@ class BreadCrumbDigi extends Component{
                                 this.breadcrumbNameMap["/materials"] = "Materials";
                                 this.breadcrumbNameMap["/seasons"] = "Seasons";
                                 this.breadcrumbNameMap["/orders"] = "Orders";
-                                this.breadcrumbNameMap["/products/"+this.companiesProductsMap[m]] = this.companiesProductsMap[m];
+                                this.breadcrumbNameMap["/products/"+this.companiesProduct[m].id + "-" + this.companiesProductsMap[m]] = this.companiesProductsMap[m];
                             }
                             this.setState({})
                         })
@@ -123,7 +123,7 @@ class BreadCrumbDigi extends Component{
                                 this.seasonProducts = response.data;
                                 for(let m = 0 ; m<this.seasonProducts.length; m++){
                                     this.seasonProductsMap[m] = this.seasonProducts[m].name;
-                                    this.breadcrumbNameMap["/seasons/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProductsMap[m]] = this.seasonProductsMap[m];
+                                    this.breadcrumbNameMap["/seasons/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProducts[m] + "-" + this.seasonProductsMap[m]] = this.seasonProductsMap[m];
                                 }
                                 this.setState({})
                             })
@@ -143,7 +143,7 @@ class BreadCrumbDigi extends Component{
                                 this.products = this.collections[i].products;
                                 for (let j = 0; j < this.products.length; j++) {
                                     this.productsMap[j] = this.products[j].name;
-                                    this.breadcrumbNameMap["/seasons/" + this.seasonsMap[k] + "/collections/" + this.collectionsMap[i] + "/products/" + this.productsMap[j]] = this.products[j].name;
+                                    this.breadcrumbNameMap["/seasons/" + this.seasonsMap[k] + "/collections/" + this.collectionsMap[i] + "/products/" + this.products[j].id + "-" + this.productsMap[j]] = this.products[j].name;
 
                                 }
                                 this.orders = this.collections[i].orders;

@@ -116,43 +116,7 @@ class App extends React.Component {
             newSeasonEdit: newSeasonEdit
         })
     };
-
-    componentDidMount(){
-        axios.get(`${API_ROOT}/product`)
-            .then(response => {
-                for(let i = 0; i< response.data.length; i++){
-                    this.productsCompany.push(response.data[i].name);
-                    if(response.data[i].collectionId !== null || response.data[i].seasonId !== null){
-                        this.productsSeason.push(response.data[i].name);
-                    }
-                }
-                this.setState({})
-            })
-    }
     render(){
-        let productsCompanyRoute = null;
-        let productsSeasonRoute = null;
-        if(this.productsCompany.length > 0){
-            productsCompanyRoute = this.productsCompany.map(product =>
-                <Route path={`/products/${product}`} key={`company-${product.id}`} exact render={(props) =>
-                    <SingleProduct
-                        {...props}
-                        key={window.location.href}
-                        changeLocation = {() => this.changeLocation()}
-                    />
-                }/>
-            );
-            productsSeasonRoute = this.productsCompany.map(product =>
-                <Route path={`/seasons/:seasonId/products/${product}`} key={`season-${product.id}`} exact render={(props) =>
-                    <SingleProduct
-                        {...props}
-                        key = {window.location.href}
-                        changeLocation = {() => this.changeLocation()}
-                    />
-                }/>
-            );
-        }
-
         return(
             <BrowserRouter>
                 <div className="App">
@@ -204,9 +168,15 @@ class App extends React.Component {
                                         newMaterial={newMaterial => this.newMaterialFunc(newMaterial)}
                                     />}
                                 />
+                                <Route path={`/products/:productId`} exact render={(props) =>
+                                    <SingleProduct
+                                        {...props}
+                                        key={window.location.href}
+                                        changeLocation = {() => this.changeLocation()}
+                                    />
+                                }/>
                                 <Route path="/materials/:materialId" exact component={SingleMaterial} />
                                 <Route path="/colors" exact component={ColorCollection}/>
-                                {productsCompanyRoute}
                                 <Route path="/seasons/:seasonId/products" exact render={(props) =>
                                     <ProductsDisplay
                                         key={window.location.href}
@@ -215,6 +185,13 @@ class App extends React.Component {
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
                                     />}
                                 />
+                                <Route path={`/seasons/:seasonId/products/:productId`} exact render={(props) =>
+                                    <SingleProduct
+                                        {...props}
+                                        key = {window.location.href}
+                                        changeLocation = {() => this.changeLocation()}
+                                    />
+                                }/>
                                 <Route path={'/seasons/:seasonId/budget'} exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}
@@ -230,7 +207,6 @@ class App extends React.Component {
                                         deleteCollection = {collectionName => this.deleteCollection(collectionName)}
                                     />
                                 }/>
-                                {productsSeasonRoute}
                                 <Route path="/seasons/:seasonId/collections/:collectionId/budget" exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}

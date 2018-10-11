@@ -347,7 +347,7 @@ class SingleMaterial extends Component{
                             weightOri:response.data[0].weight,
                             modified:false,
                         } , () => {
-                            if(this.state.name !== this.state.loadedMaterial){
+                            if(this.state.name !== this.state.loadedMaterial.name){
                                 this.setState({
                                     nameChange:true,
                                     name: response.data[0].name
@@ -547,7 +547,7 @@ class SingleMaterial extends Component{
                                     <br/>
                                     <Row gutter={8}>
                                         <Col span={12}>
-                                            Min Quality:
+                                            Minimum Quantity:
                                             <Input
                                                 className="input-style"
                                                 value={this.state.minQuantity}
