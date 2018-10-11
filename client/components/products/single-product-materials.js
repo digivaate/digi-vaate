@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect,Popover} from 'antd';
+import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import {Link} from 'react-router-dom';
-import FormData from 'form-data';
 import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
 const Option = Select.Option;

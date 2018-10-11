@@ -1,11 +1,9 @@
 import React,{ Component } from "react";
 import 'antd/dist/antd.css'
-import { render } from "react-dom";
 import "react-table/react-table.css";
 import {Link, NavLink} from 'react-router-dom'
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
 const { SubMenu } = Menu;
-const MenuItemGroup = Menu.ItemGroup;
 const {  Sider } = Layout;
 import axios from'axios';
 import { API_ROOT } from '../../api-config';

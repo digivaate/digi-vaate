@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {API_ROOT} from "../api-config";
 import axios from "axios";
-import {Redirect,Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Button, Popover, message, Icon} from "antd";
 import ReactTable from "react-table";
 import '../utils/compare-obj';

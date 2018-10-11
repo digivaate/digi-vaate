@@ -1,6 +1,6 @@
 import React, {Component,Fragment} from "react";
 import axios from 'axios';
-import {Redirect,Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Card, Col, Row, Divider, Button, Spin,message,Modal,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'

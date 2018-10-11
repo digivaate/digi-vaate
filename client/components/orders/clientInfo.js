@@ -3,7 +3,6 @@ import axios from 'axios';
 import {Col,Row,DatePicker,Modal,Button,Card,Input} from 'antd'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
-import ProductTable from './single-order-products'
 import {comaToPeriod} from "../../utils/coma-convert";
 const { TextArea } = Input;
 

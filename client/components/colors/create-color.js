@@ -1,8 +1,6 @@
 import React from 'react';
 import ColorPicker from './color_picker'
 import { Button, Modal, Form, Input, message } from 'antd';
-import { API_ROOT } from '../../api-config';
-import axios from 'axios';
 const FormItem = Form.Item;
 import './colors.css'
 

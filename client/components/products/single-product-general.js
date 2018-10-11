@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import axios from 'axios';
 import {Row,Col,Input, Button, Icon, Modal,message} from 'antd';
 import './products.css'
 import { comaToPeriod } from "../../utils/coma-convert";

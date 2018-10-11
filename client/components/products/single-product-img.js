@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Card,Icon,  Select,} from 'antd';
+import {Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';

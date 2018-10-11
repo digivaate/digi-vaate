@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Row,Col,Input, Button, Icon, Modal,Spin,Card,Select,Divider} from 'antd';
+import {Row,Button, Icon, Modal,Spin,Card,Select} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 

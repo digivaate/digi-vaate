@@ -1,4 +1,4 @@
-import React,{Component,Fragment} from 'react';
+import React,{Component} from 'react';
 import ColorPage from './create-color';
 import { API_ROOT } from '../../api-config';
 import { Card, Spin, Button, Modal,Row,Col,Input,List } from 'antd';

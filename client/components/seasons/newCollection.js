@@ -1,4 +1,4 @@
-import React,{ Component } from "react";
+import React from "react";
 import { Modal,Form,Input} from 'antd';
 const FormItem = Form.Item;
 import "./seasons.css"

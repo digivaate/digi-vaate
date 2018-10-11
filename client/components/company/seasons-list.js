@@ -4,7 +4,6 @@ import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
 import SeasonCreateForm from './newSeason'
-import {Link} from "react-router-dom";
 import EditSeason from "./edit-season";
 
 

@@ -1,9 +1,5 @@
-import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Divider,Button,Form,Input,Radio,Select,Upload } from 'antd';
-import axios from 'axios';
-import { API_ROOT } from '../../api-config';
-const { Meta } = Card;
-const confirm = Modal.confirm;
+import React from "react";
+import { Row, Col, Modal, Form, Input, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import FormData from 'form-data';

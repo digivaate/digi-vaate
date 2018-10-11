@@ -1,10 +1,6 @@
 import React, {Component} from "react";
-import axios from 'axios';
-import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spin,TreeSelect,Popover} from 'antd';
-import {API_ROOT} from '../../api-config';
+import {Card, Col,Button, Icon, Modal, Select, message,Popover} from 'antd';
 import './products.css'
-import FormData from 'form-data';
-const { Meta } = Card;
 const Option = Select.Option;
 
 class SingleProductColors extends Component{

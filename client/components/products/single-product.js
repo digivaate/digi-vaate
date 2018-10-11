@@ -4,7 +4,6 @@ import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spi
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
-import {comaToPeriod} from "../../utils/coma-convert";
 const { Meta } = Card;
 const Option = Select.Option;
 
