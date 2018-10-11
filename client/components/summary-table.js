@@ -198,7 +198,7 @@ class SummaryTable extends React.Component {
                                 return (
                                     <div>
                                         <Link to={{
-                                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${d.collectionName}/products/${d.name}`,
+                                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${d.collectionName}/products/${d.id}-${d.name}`,
                                             state: {
                                                 historyBudgetUrl: this.props.match.url,
                                                 seasonName:this.props.match.params.seasonId,
@@ -213,7 +213,7 @@ class SummaryTable extends React.Component {
                             return (
                                 <div>
                                     <Link to={{
-                                        pathname: `/seasons/${this.props.match.params.seasonId}/products/${d.name}`,
+                                        pathname: `/seasons/${this.props.match.params.seasonId}/products/${d.id}-${d.name}`,
                                         state: {
                                             historyBudgetUrl: this.props.match.url,
                                             seasonName:this.props.match.params.seasonId,
@@ -226,7 +226,7 @@ class SummaryTable extends React.Component {
                             )}} else if(this.props.match.params.seasonId && this.props.match.params.collectionId) {
                                 return (
                                     <Link to={{
-                                        pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.name}`,
+                                        pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.id}-${d.name}`,
                                         state: {
                                             historyBudgetUrl: this.props.match.url,
                                             seasonName:this.props.match.params.seasonId,

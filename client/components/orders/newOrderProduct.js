@@ -30,6 +30,7 @@ const OrderProductCreateForm = Form.create()(
                 .then(response => {
                     this.setState({
                         productNameSelected: valueObj[0].name,
+                        productIdSelected: value,
                         sizeOptions: response.data[0].sizes
                     })
                 })
@@ -37,7 +38,7 @@ const OrderProductCreateForm = Form.create()(
 
 
         render(){
-            const {sizeOptions,productNameSelected} = this.state;
+            const {sizeOptions,productNameSelected,productIdSelected} = this.state;
             const { visible, onCancel, onCreate, form ,productList } = this.props;
             const { getFieldDecorator } = form;
             let noSizeFormItem = null;
@@ -48,7 +49,7 @@ const OrderProductCreateForm = Form.create()(
                     <div>
                         <p> For more size options, click the button below: </p>
                         <Link to={{
-                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${productNameSelected}`,
+                            pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${productIdSelected}-${productNameSelected}`,
                             state: {
                                 historyOrderUrl: this.props.match.url,
                                 orderListUrl:this.props.location.state.orderListUrl,
