@@ -126,15 +126,6 @@ class SideBar extends Component{
             .then(response => {
                 this.setState({
                     seasons: response.data
-                },() => {
-                    this.state.seasons.sort(function(a, b){
-                        return a.id-b.id
-                    });
-                    for(let i = 0; i< this.state.seasons.length;i++){
-                        this.state.seasons[i].collections.sort(function(a, b){
-                            return a.id-b.id
-                        });
-                    }
                 })
             })
             .then(() => this.setState({}))
@@ -146,6 +137,14 @@ class SideBar extends Component{
         let renderSeasonList = null;
         let renderCollectionList = null;
         if(seasons){
+            seasons.sort(function(a, b){
+                return a.id-b.id
+            });
+            for(let i = 0; i< this.state.seasons.length;i++){
+                seasons[i].collections.sort(function(a, b){
+                    return a.id-b.id
+                });
+            }
             renderSeasonList = seasons.map(season => {
                 renderCollectionList = season.collections.map(collection =>
                     <SubMenu
