@@ -1,13 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
+    //odoo attribute variants as comments
     const Product = sequelize.define('products', {
-        name: {
+        name: { //name
             type: DataTypes.STRING,
             allowNull: false
         },
-        imagePath: {
+        imagePath: {//image - needs to be in binary
             type: DataTypes.STRING,
         },
-        sellingPrice: {
+        sellingPrice: { //list_price
             type: DataTypes.FLOAT
         },
         resellerProfitPercent: {

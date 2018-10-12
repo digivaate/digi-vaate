@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
+    //odoo attribute variants as comments
     const Order = sequelize.define('orders', {
-        price: DataTypes.FLOAT,
+        price: DataTypes.FLOAT, //amount_total - monetary
         status: DataTypes.STRING,
         deliveryCosts: DataTypes.FLOAT,
-        taxPercent: DataTypes.FLOAT,
+        taxPercent: DataTypes.FLOAT, //amount_tax - monetary
         supplier: DataTypes.STRING,
         vat: DataTypes.STRING,
         invoicingAddress: DataTypes.STRING,

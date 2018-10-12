@@ -2,10 +2,12 @@ module.exports = (sequelize, DataTypes) => {
     const Color = sequelize.define('colors', {
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         code: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            unique: true
         },
         value: {
             type: DataTypes.STRING
