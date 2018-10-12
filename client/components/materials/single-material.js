@@ -496,6 +496,7 @@ class SingleMaterial extends Component{
                     </Col>
                     <Col span={8} offset={8}>
                         <Row type="flex">
+                            <Button size="large" onClick={this.handleEdit}>Edit</Button>
                             <Button size="large" disabled={!this.state.modified} onClick={this.discardChanges}>Discard changes</Button>
                             <Button size="large" disabled={!this.state.modified} onClick={this.saveInfo}>Save</Button>
                         </Row>
@@ -515,7 +516,6 @@ class SingleMaterial extends Component{
                             <Card
                                 className="material-card-info"
                                 title="Material information"
-                                extra={<Button onClick={this.handleEdit}>Edit</Button>}
                                 tabList={tabList}
                                 defaultActiveTabKey = "tab1"
                                 onTabChange={(key) => { this.onTabChange(key, 'key'); }}

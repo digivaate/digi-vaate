@@ -511,8 +511,9 @@ class SingleProduct extends Component {
                         </Col>
                         <Col span={8} offset={8}>
                             <Row type="flex">
-                            <Button size="large" disabled={!this.state.modified} onClick={this.discardChanges}>Discard changes</Button>
-                            <Button size="large" disabled={!this.state.modified} onClick={this.saveInfo}>Save</Button>
+                                <Button size="large" onClick={this.activateEditMode}>Edit</Button>
+                                <Button size="large" disabled={!this.state.modified} onClick={this.discardChanges}>Discard changes</Button>
+                                <Button size="large" disabled={!this.state.modified} onClick={this.saveInfo}>Save</Button>
                             </Row>
                         </Col>
                     </Row>
@@ -537,7 +538,6 @@ class SingleProduct extends Component {
                             <Card
                                 title="Product information"
                                 className="product-card-information"
-                                extra={<Button onClick={this.activateEditMode}>Edit</Button>}
                                 tabList={tabList}
                                 defaultActiveTabKey = "tab1"
                                 onTabChange={(key) => { this.onTabChange(key, 'key'); }}
