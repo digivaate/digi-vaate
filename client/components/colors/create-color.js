@@ -67,6 +67,7 @@ class ColorPage extends React.Component {
     };
     handleCancel = () => {
         this.setState({ visible: false });
+        this.formRef.props.form.resetFields();
     };
     handleCreate = () => {
         const form = this.formRef.props.form;
@@ -81,15 +82,25 @@ class ColorPage extends React.Component {
                 values.hexCode = "";
                 this.colorsCollection = values;
                 this.colorsCollection.hexCode = this.hexCodeValues;
-                form.resetFields();
-                this.setState({ visible: false });
-                message.success('Successfully created',1);
+
                 const newColor = {
                     name: this.colorsCollection.name,
                     value: this.colorsCollection.hexCode,
                     code: this.colorsCollection.colorCode
                 };
+                for(let i = 0; i < this.props.allColors.length; i++){
+                    if(newColor.name === this.props.allColors[i].name){
+                         message.error("Color name is already used ! Please use another name");
+                        return null;
+                    } else if(newColor.code === this.props.allColors[i].code){
+                        message.error("Color code is already used ! Please use another code");
+                        return null;
+                    }
+                }
                 this.props.createColor(newColor);
+                message.success('Successfully created',1);
+                this.setState({ visible: false });
+                form.resetFields();
             });
             this.hexCodeValues = "";
         }

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ColorPage from './create-color';
 import { API_ROOT } from '../../api-config';
-import { Card, Spin, Button, Modal,Row,Col,Input,List } from 'antd';
+import { Card, Spin, Button, Modal,Row,Col,Input,List,message } from 'antd';
 import axios from 'axios';
 const { Meta } = Card;
 const confirm = Modal.confirm;
@@ -116,6 +116,7 @@ class ColorCollection extends Component{
     showColorModal = (element) => {
         this.setState({
             colorVisible: true,
+            colorSelected: element,
             id: element.id,
             name: element.name,
             code:element.code,
@@ -125,7 +126,16 @@ class ColorCollection extends Component{
     };
 
     handleColorOk = (event) => {
-        axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code})
+        for(let i = 0; i < this.colorCard.length; i++){
+            if(this.state.name === this.colorCard[i].name && this.state.name !== this.state.colorSelected.name){
+                message.error("Color name is already used ! Please use another name");
+                return null;
+            } else if(this.state.code === this.colorCard[i].code && this.state.code !== this.state.colorSelected.code){
+                message.error("Color code is already used ! Please use another code");
+                return null;
+            }
+        }
+        axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code, value:this.state.hexCode})
             .then(response => {
                 this.loadColors();
             })
@@ -178,6 +188,7 @@ class ColorCollection extends Component{
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
+                        allColors = {this.colorCard}
                     />
                     <Card title="Color Collection">
                         <h4>No colors</h4>
@@ -191,6 +202,7 @@ class ColorCollection extends Component{
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
+                        allColors = {this.colorCard}
                     />
                     <Card title="Color Collection">
                         <Spin/>
@@ -226,6 +238,7 @@ class ColorCollection extends Component{
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
+                        allColors = {this.colorCard}
                     />
                     <Card title="Color Collection">
                         {colorCard}
@@ -260,7 +273,13 @@ class ColorCollection extends Component{
                                 </Col>
                             </Row>
                             <br/>
-                            <p>Hex code: {this.state.hexCode}</p>
+                            Hex code:
+                            <Input
+                                className="input-style"
+                                value={this.state.hexCode}
+                                name="hexCode"
+                                onChange={this.handleChange}
+                            />
                             <p>List of products used this colors:</p>
                             <List
                                 size="small"

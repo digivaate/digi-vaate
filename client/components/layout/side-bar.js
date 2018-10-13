@@ -200,14 +200,14 @@ class SideBar extends Component{
                             Budget
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item>
-                        <Link to={`/seasons/${season.name}/collections`}>
-                            Summary
-                        </Link>
-                    </Menu.Item>
                     <SubMenu key={`collections-season-${season.id}`}
                              title={<span>Collections</span>}
                     >
+                        <Menu.Item>
+                            <Link to={`/seasons/${season.name}/collections`}>
+                                Summary
+                            </Link>
+                        </Menu.Item>
                         {renderCollectionList}
                     </SubMenu>
                 </SubMenu>
@@ -231,15 +231,14 @@ class SideBar extends Component{
                             Materials
                         </Link>
                     </Menu.Item>
-                    <Menu.Item>
-                        <Link to="/seasons">
-                            Summary
-                        </Link>
-                    </Menu.Item>
                     <SubMenu key="seasons"
                         title={<span>Seasons</span>
                     }>
-
+                        <Menu.Item>
+                            <Link to="/seasons">
+                                Summary
+                            </Link>
+                        </Menu.Item>
                         {renderSeasonList}
                     </SubMenu>
                 </Menu>
