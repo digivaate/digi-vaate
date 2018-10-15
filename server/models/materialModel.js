@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         code: DataTypes.STRING,
-        imagePath: DataTypes.STRING,
         unitPrice: DataTypes.FLOAT,
         freight: DataTypes.FLOAT,
         weight: DataTypes.FLOAT,

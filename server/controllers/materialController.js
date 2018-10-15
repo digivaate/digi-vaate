@@ -12,36 +12,42 @@ class MaterialController extends Controller {
     }
 
     uploadImage(req, res, next) {
-        Models.Material.findById(req.params.id)
-            .then(ent => {
-                if (fs.existsSync('./uploads/' + ent.imagePath)) {
-                    fs.unlinkSync('./uploads/' + ent.imagePath);
-                }
-                ent.set('imagePath', req.file.filename);
-                return ent.save();
-            })
-            .then(ent => res.send(ent) )
-            .catch(err => {
-                console.error(err);
-                res.status(500).json(err);
-            })
+        Models.Image.create(req.file)
+            .then(img => {
+                Models.Material.findById(req.query.id)
+                    .then(ent => {
+                        if (ent.imageId) {
+                            Models.Image.destroy({
+                                where: { id: ent.imageId }
+                            });
+                        }
+                        ent.set('imageId', img.id);
+                        return ent.save();
+                    })
+                    .then(ent => res.send(ent) )
+                    .catch(err => {
+                        console.error(err);
+                        res.status(500).json(err);
+                    })
+            });
     }
 
-    deleteImage(req,res,next) {
-        Models.Material.findById(req.params.id)
+    getImage(req, res, next) {
+        Models.Material.findById(req.query.id, {
+            attributes: ['imageId']
+        })
             .then(ent => {
-                if (fs.existsSync('./uploads/' + ent.imagePath)) {
-                    fs.unlinkSync('./uploads/' + ent.imagePath);
+                if (!ent) {
+                    res.send(404).json({ error: 'No material found with id: ' + req.query.id });
                 }
-                ent.set('imagePath', null);
-                return ent.save();
+                if (!ent.imageId) {
+                    res.send(404).json({ error: 'No image found' });
+                }
+                return Models.Image.findById(ent.imageId);
             })
-            .then(ent => {
-                res.send(ent);
-            })
-            .catch(err => {
-                console.error(err);
-                res.status(500).json(err);
+            .then(image => {
+                res.contentType(image.mimetype);
+                res.end(image.buffer);
             })
     }
 }

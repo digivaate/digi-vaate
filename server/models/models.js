@@ -68,7 +68,8 @@ let modules = [
     require('./themeModel'),
     require('./sizeModel'),
     require('./orderModel'),
-    require('./orderProductModel')
+    require('./orderProductModel'),
+    require('./imageModel')
 ];
 
 modules.forEach(module => {

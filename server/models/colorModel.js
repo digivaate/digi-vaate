@@ -3,11 +3,10 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
         },
         code: {
             type: DataTypes.STRING,
-            unique: true
+            unique: 'code'
         },
         value: {
             type: DataTypes.STRING
@@ -23,21 +22,3 @@ module.exports = (sequelize, DataTypes) => {
 
     return Color;
 };
-
-/*
-const colorSchema = mongoose.Schema({
-    _id: {type: mongoose.Schema.Types.ObjectId},
-    name: {type: String, required: true },
-    value: {type: String,
-        validate: {
-            validator: (v) => {
-                //Hexadecimal value
-                return /^#(?:[0-9a-f]{3}){1,2}$/i.test(v);
-            },
-            message: '{VALUE} is not a valid phone number!'
-        }
-    },
-});
-
-module.exports = mongoose.model('Color', colorSchema);
-*/

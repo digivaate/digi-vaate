@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        imagePaths: {
-            type: DataTypes.ARRAY(DataTypes.STRING)
+        images: {
+            type: DataTypes.ARRAY(DataTypes.BLOB('long'))
         },
         filePaths: {
             type: DataTypes.ARRAY(DataTypes.STRING)

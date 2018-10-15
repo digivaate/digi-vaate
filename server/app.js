@@ -14,8 +14,8 @@ if (!fs.existsSync('./uploads')) {
 models.sequelize.sync()
     .catch(err => console.error('Postgre sync error: ' + err));
 
-app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 //Log requests
 if (process.env.NODE_ENV === 'production') {
     app.use(morgan('common'));
@@ -49,19 +49,3 @@ app.use((error, req, res) => {
 });
 
 module.exports = app;
-
-//handle cross origin requests
-/*
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE');
-        return res.status(200).json({});
-    }
-    next();
-});
-*/
