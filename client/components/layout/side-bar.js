@@ -203,7 +203,9 @@ class SideBar extends Component{
                     <SubMenu key={`collections-season-${season.id}`}
                              title={<span>Collections</span>}
                     >
-                        <Menu.Item>
+                        <Menu.Item
+                            className="collection-menu"
+                        >
                             <Link to={`/seasons/${season.name}/collections`}>
                                 Summary
                             </Link>
@@ -234,7 +236,9 @@ class SideBar extends Component{
                     <SubMenu key="seasons"
                         title={<span>Seasons</span>
                     }>
-                        <Menu.Item>
+                        <Menu.Item
+                            className="season-menu"
+                        >
                             <Link to="/seasons">
                                 Summary
                             </Link>
