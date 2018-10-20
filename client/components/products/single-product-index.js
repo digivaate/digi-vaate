@@ -135,13 +135,13 @@ class SingleProduct extends Component {
                         }
                         this.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
                             productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
-                            originalProductImg: response.data[0].imagePath,
+                            originalProductImg: response.data[0].imageId,
                             originalProductColors: response.data[0].colors,
                             originalProductMaterials: response.data[0].materials,
                             originalProductName: response.data[0].name,
@@ -163,13 +163,13 @@ class SingleProduct extends Component {
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
                             productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
-                            originalProductImg: response.data[0].imagePath,
+                            originalProductImg: response.data[0].imageId,
                             originalProductColors: response.data[0].colors,
                             originalProductMaterials: response.data[0].materials,
                             originalProductName: response.data[0].name,
@@ -269,7 +269,7 @@ class SingleProduct extends Component {
                     .then(response => {
                         self.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
@@ -316,13 +316,13 @@ class SingleProduct extends Component {
                         message.success("Updated!",1.5);
                         this.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
                             productSizes: response.data[0].sizes,
                             originalLoadedProduct: response.data[0],
-                            originalProductImg: response.data[0].imagePath,
+                            originalProductImg: response.data[0].imageId,
                             originalProductColors: response.data[0].colors,
                             originalProductMaterials: response.data[0].materials,
                             modified: false,
@@ -520,6 +520,7 @@ class SingleProduct extends Component {
                     <Row>
                         <Col span={8}>
                             <SingleProductImg
+                                productId={this.state.loadedProduct.id}
                                 singleProductImg={this.state.productImg}
                                 editModeStatus = {this.state.editModeStatus}
                                 productName = {this.state.productName}

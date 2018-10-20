@@ -18,12 +18,12 @@ class SingleProductImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data)
+        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                axios.get(`${API_ROOT}/product?id=${this.props.productId}`)
                     .then(response => {
                         this.setState({
-                            singleProductImg: response.data[0].imagePath
+                            singleProductImg: response.data[0].imageId
                         });
                     });
             })
@@ -38,8 +38,8 @@ class SingleProductImg extends Component{
                 <button className="btn-upload"><Icon type="upload"/></button>
             </div>;
         }
-        if (this.state.singleProductImg !== null) {
-            imgUrl = `${API_ROOT}/${this.state.singleProductImg}`
+        if (this.state.singleProductImg) {
+            imgUrl = `${API_ROOT}/image?id=${this.state.singleProductImg}`
         }
         return (
             <div className="img-container">

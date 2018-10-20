@@ -113,7 +113,7 @@ class SingleProduct extends Component {
                         }
                         this.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name,
@@ -153,7 +153,7 @@ class SingleProduct extends Component {
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
-                            productImg: response.data[0].imagePath,
+                            productImg: response.data[0].imageId,
                             productColors: response.data[0].colors,
                             productMaterials: response.data[0].materials,
                             productName: response.data[0].name
@@ -426,7 +426,7 @@ class SingleProduct extends Component {
                 axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
                     .then(response => {
                         this.setState({
-                            productImg: response.data[0].imagePath
+                            productImg: response.data[0].imageId
                         });
                     });
             })
@@ -659,8 +659,8 @@ class SingleProduct extends Component {
                 renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
                 renderProductMaterials = this.state.productMaterials.map(material => {
                     let materialImgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
-                    if (material.imagePath !== null) {
-                        materialImgUrl = `${API_ROOT}/${material.imagePath}`
+                    if (material.imageId) {
+                        materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
                     }
                         return (
                             <Col key={material.id} span={8}>

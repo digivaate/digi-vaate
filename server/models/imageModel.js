@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Image.associate = (models) => {
         Image.hasOne(models.Material);
+        Image.hasOne(models.Product);
     };
     return Image;
 };

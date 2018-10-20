@@ -176,7 +176,7 @@ class ProductsDisplay extends Component{
             else if(this.state.productLevel === "collection"){
                 values.collectionId = this.state.productLevelId;
             }
-            values.imagePath = null;
+            values.imageId = null;
             if(this.uploadImage) {
                 if(newSizes.length > 0){
                     axios.post(`${API_ROOT}/size`,newSizes)
@@ -330,8 +330,8 @@ class ProductsDisplay extends Component{
             renderProductList = this.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
-                if(product.imagePath !== null){
-                    imgUrl = `${API_ROOT}/${product.imagePath}`
+                if(product.imageId){
+                    imgUrl = `${API_ROOT}/image?id=${product.imageId}`
                 }
                     if(product.colors) {
                         if(product.colors.length > 0){

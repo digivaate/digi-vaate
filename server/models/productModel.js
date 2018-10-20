@@ -5,9 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        image: {//image - needs to be in binary
-            type: DataTypes.BLOB('long')
-        },
         sellingPrice: { //list_price
             type: DataTypes.FLOAT
         },

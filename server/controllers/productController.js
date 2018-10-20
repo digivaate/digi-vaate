@@ -113,55 +113,47 @@ class ProductController extends Controller {
             });
     };
 
-    //saves the file path to entity that is saved to the server in the previous function
     uploadImage(req, res, next) {
-        const properties = Controller.collectProperties(req.query, Models.Product);
-        if (properties.error) {
-            res.stat(500).json(properties.error);
-            return;
-        }
-        //save the file path for entity
-        Models.Product.findAll({
-            where: properties,
-            include: [{ all: true }]
-        })
-            .then(async ents => {
-                const updatedEnts = [];
-                ents.forEach(ent => {
-                    updatedEnts.push(
-                        ent.updateAttributes({imagePath: req.file.filename})
-                    );
-                });
-                await Promise.all(updatedEnts);
-                res.send(ents);
-            })
-            .catch(err => next(err));
-    }
-
-    deleteImage(req, res, next) {
-        const properties = Controller.collectProperties(req.query, Models.Product);
-        if (properties.error) {
-            res.stat(500).json(properties.error);
-            return;
-        }
-        Models.Product.findAll({ where: properties })
-            .then(ents => {
-                //delete file if exist
-                if (fs.existsSync('./uploads/' + ents[0].imagePath)) {
-                    fs.unlinkSync('./uploads/' + ents[0].imagePath);
-                }
-                const updatedEnts = [];
-                //remove file path from all the products
-                ents.forEach(ent => {
-                    ent.imagePath = null;
-                    updatedEnts.push( ent.save() );
-                });
-                Promise.all(updatedEnts)
-                    .then(resolved => {
-                        next();
-                    });
+        Models.Image.create(req.file)
+            .then(img => {
+                Models.Product.findById(req.query.id)
+                    .then(ent => {
+                        if (ent.imageId) {
+                            Models.Image.destroy({
+                                where: { id: ent.imageId }
+                            });
+                        }
+                        ent.set('imageId', img.id);
+                        return ent.save();
+                    })
+                    .then(ent => res.send(ent) )
+                    .catch(err => {
+                        console.error(err);
+                        res.status(500).json(err);
+                    })
             });
     }
+
+    getImage(req, res, next) {
+        Models.Product.findById(req.query.id, {
+            attributes: ['imageId']
+        })
+            .then(ent => {
+                if (!ent) {
+                    res.status(404).json({ error: 'No product found with id: ' + req.query.id });
+                }
+                if (!ent.imageId) {
+                    res.status(404).json({ error: 'No image found' });
+                }
+                return Models.Image.findById(ent.imageId);
+            })
+            .then(image => {
+                res.contentType(image.mimetype);
+                res.end(image.buffer);
+            })
+            .catch(err => res.status(500).json({ error: err }));
+    }
+
 }
 
 module.exports = ProductController;

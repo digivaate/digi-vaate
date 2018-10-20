@@ -12,9 +12,7 @@ class MaterialController extends Controller {
     }
 
     uploadImage(req, res, next) {
-        if (!req.query.id) res.status(500).json({ error: 'no material id given'});
-
-        Models.Image.create(req.file)
+       Models.Image.create(req.file)
             .then(img => {
                 Models.Material.findById(req.query.id)
                     .then(ent => {
@@ -35,7 +33,7 @@ class MaterialController extends Controller {
     }
 
     getImage(req, res, next) {
-        Models.Material.findById(req.query.id, {
+        Models.Product.findById(req.query.id, {
             attributes: ['imageId']
         })
             .then(ent => {

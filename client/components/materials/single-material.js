@@ -86,15 +86,17 @@ class SingleMaterial extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/${this.materialId}/image`, data)
+        axios.patch(`${API_ROOT}/material/image?id=${this.state.loadedMaterial.id}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/material?name=${this.props.match.params.materialId}`)
+                console.log('material:', this.state);
+                axios.get(`${API_ROOT}/material?id=${this.state.loadedMaterial.id}`)
                     .then(response => {
                         this.setState({
                             loadedMaterial: response.data[0]
                         });
                     });
             })
+            .catch(err => console.error(err));
     };
 
     onTabChange = (key, type) => {
