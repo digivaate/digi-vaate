@@ -12,6 +12,8 @@ class MaterialController extends Controller {
     }
 
     uploadImage(req, res, next) {
+        if (!req.query.id) res.status(500).json({ error: 'no material id given'});
+
         Models.Image.create(req.file)
             .then(img => {
                 Models.Material.findById(req.query.id)
@@ -38,10 +40,10 @@ class MaterialController extends Controller {
         })
             .then(ent => {
                 if (!ent) {
-                    res.send(404).json({ error: 'No material found with id: ' + req.query.id });
+                    res.status(404).json({ error: 'No material found with id: ' + req.query.id });
                 }
                 if (!ent.imageId) {
-                    res.send(404).json({ error: 'No image found' });
+                    res.status(404).json({ error: 'No image found' });
                 }
                 return Models.Image.findById(ent.imageId);
             })
@@ -49,6 +51,7 @@ class MaterialController extends Controller {
                 res.contentType(image.mimetype);
                 res.end(image.buffer);
             })
+            .catch(err => res.status(500).json({ error: err }));
     }
 }
 

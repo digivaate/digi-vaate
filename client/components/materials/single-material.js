@@ -460,8 +460,8 @@ class SingleMaterial extends Component{
                     <p><span style={ this.state.composition !== this.state.compositionOri ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.composition}</span></p>
                 </div>
             };
-            if(this.state.loadedMaterial.imagePath !== null){
-                imgUrl = `${API_ROOT}/${this.state.loadedMaterial.imagePath}`;
+            if(this.state.loadedMaterial.imageId){
+                imgUrl = `${API_ROOT}/image?id=${this.state.loadedMaterial.imageId}`;
             }
             return (
                 <div>
@@ -509,7 +509,7 @@ class SingleMaterial extends Component{
                                     <input type="file" name="file" onChange={this.onFileChange}/>
                                     <button className="btn-upload"><Icon type="upload"/></button>
                                 </div>
-                                <img className="material-ava-img" src={`${imgUrl}`} />
+                                <img className="material-ava-img" src={imgUrl} />
                             </div>
                         </Col>
                         <Col span={16}>

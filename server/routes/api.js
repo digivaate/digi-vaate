@@ -11,5 +11,6 @@ router.use('/theme', require('./themeRoute'));
 router.use('/size', require('./sizeRoute'));
 router.use('/order', require('./orderRoute'));
 router.use('/orderproduct', require('./oderProductRoute'));
+router.use('/image', require('./imageRoute'));
 
 module.exports = router;

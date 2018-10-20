@@ -129,8 +129,8 @@ class MaterialList extends Component{
         if (this.materials) {
             renderMaterialList = this.materials.map(material =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
-                if(material.imagePath !== null){
-                    imgUrl = `${API_ROOT}/${material.imagePath}`
+                if(material.imageId){
+                    imgUrl = `${API_ROOT}/image?id=${material.imageId}`
                 }
                     return(
                         <Col span={6} key={material.id}>

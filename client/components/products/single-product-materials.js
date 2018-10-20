@@ -18,7 +18,7 @@ class SingleProductMaterials extends Component{
                     id:material.id,
                     consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                     name:material.name,
-                    imagePath: material.imagePath,
+                    imageId: material.imageId,
                     unitPrice: material.unitPrice,
                     freight:material.freight,
                     materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
@@ -41,7 +41,7 @@ class SingleProductMaterials extends Component{
                         id:material.id,
                         consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                         name:material.name,
-                        imagePath: material.imagePath,
+                        imageId: material.imageId,
                         unitPrice: material.unitPrice,
                         freight:material.freight,
                         materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
@@ -174,7 +174,7 @@ class SingleProductMaterials extends Component{
                         id:materialPair.id,
                         consumption: parseFloat(parseFloat(materialPair.consumption).toFixed(2)),
                         name:materialPair.name,
-                        imagePath: materialPair.imagePath,
+                        imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
                         materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
@@ -186,7 +186,7 @@ class SingleProductMaterials extends Component{
                         id:materialPair.id,
                         consumption: parseFloat(parseFloat(materialPair.consumption).toFixed(2)),
                         name:materialPair.name,
-                        imagePath: materialPair.imagePath,
+                        imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
                         materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
@@ -230,11 +230,10 @@ class SingleProductMaterials extends Component{
             )
         }
         if (this.state.productMaterials.length > 0) {
-            renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
                     let materialImgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
-                    if (material.imagePath !== null) {
-                        materialImgUrl = `${API_ROOT}/${material.imagePath}`
+                    if (material.imageId) {
+                        materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
                     }
                     return (
                         <Col key={material.id} span={8}>
