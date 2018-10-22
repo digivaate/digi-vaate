@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        taxPercent: DataTypes.INTEGER
+        taxPercent: DataTypes.FLOAT
     });
 
     Company.associate = (models) => {

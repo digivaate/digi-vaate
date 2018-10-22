@@ -1,8 +1,6 @@
 import React from "react";
 import 'antd/dist/antd.css'
 import "react-table/react-table.css";
-import axios from 'axios';
-import {API_ROOT} from './api-config';
 import BudgetPlanningTable from './components/summary-table'
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
@@ -144,8 +142,8 @@ render(){
                                 newCollectionEdit = {this.state.newCollectionEdit}
                                 newProductName = {this.state.newProductName}
                                 newMaterialName = {this.state.newMaterialName}
-                            />}
-                    />
+                            />
+                    }/>
                     <div className="sider">
                             <Route path="/"  render ={(props) =>
                                 <SideBar
