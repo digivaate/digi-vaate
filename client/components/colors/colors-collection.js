@@ -55,7 +55,7 @@ class ColorCollection extends Component{
                     })
                 })
         } else {
-            axios.get(`${API_ROOT}/company/colors?name=Demo%20company`)
+            axios.get(`${API_ROOT}/company/colors?id=1`)
                 .then(response => {
                     this.colorCard = response.data;
                     this.colorsArray = response.data.map(color => color.id);
@@ -71,9 +71,9 @@ class ColorCollection extends Component{
             axios.post(`${API_ROOT}/color`,newColor)
                 .then((response) => {
                     this.colorsArray.push(response.data.id);
-                    axios.patch(`${API_ROOT}/company?name=Demo%20company`,{colors:this.colorsArray})
+                    axios.patch(`${API_ROOT}/company?id=1`,{colors:this.colorsArray})
                         .then(() => {
-                            axios.get(`${API_ROOT}/company/colors?name=Demo%20company`)
+                            axios.get(`${API_ROOT}/company/colors?id=1`)
                                 .then(response => {
                                     this.colorCard = response.data;
                                     this.setState({})

@@ -100,7 +100,7 @@ class SingleProduct extends Component {
                 axios.get(`${API_ROOT}/product?id=${this.productId}`)
                     .then(response => {
                         if (response.data[0].companyId) {
-                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                            axios.get(`${API_ROOT}/company?id=1`)
                                 .then(res => {
                                     this.setState({
                                         colorOptions: res.data[0].colors
@@ -110,7 +110,7 @@ class SingleProduct extends Component {
                         if (response.data[0].seasonId) {
                             axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
                                 .then(res => {
-                                    axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                                    axios.get(`${API_ROOT}/company?id=1`)
                                         .then(re => {
                                             this.setState({
                                                 colorOptions: res.data[0].colors.concat(re.data[0].colors)
@@ -124,7 +124,7 @@ class SingleProduct extends Component {
                                 .then(res => {
                                     axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
                                         .then(re => {
-                                            axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                                            axios.get(`${API_ROOT}/company?id=1`)
                                                 .then(re1 => {
                                                     this.setState({
                                                         colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))

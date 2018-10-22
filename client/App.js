@@ -166,7 +166,7 @@ render(){
                                         key={window.location.href}
                                         {...props}
                                         newProductCompany={newProductCompany => this.newProductCompanyFunc(newProductCompany)}
-                                        requestPath={`/company/products?name=Demo%20company`}
+                                        requestPath={`/company/products?id=1`}
                                     />}
                                 />
                                 <Route path="/seasons" exact render={() =>

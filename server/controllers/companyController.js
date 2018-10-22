@@ -53,6 +53,7 @@ class CompanyController extends Controller {
             res.status(500).json(properties);
             return;
         }
+        console.log('Properties', properties);
         models.Company.findOne({
             where: properties,
             include: [

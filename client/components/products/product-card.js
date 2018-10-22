@@ -36,7 +36,7 @@ const ProductCreateForm = Form.create()(
 
         loadColors = () => {
             if(this.props.productLevelName === "company"){
-                axios.get(`${API_ROOT}/company?name=Demo%20company`)
+                axios.get(`${API_ROOT}/company?id=1`)
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
                         this.setState({
