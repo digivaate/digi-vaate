@@ -120,6 +120,13 @@ class SummaryTable extends React.Component {
         });
     }
 
+    convertDecimals = (value) => {
+        if (value - Math.floor(value) === 0) {
+            return value;
+        }
+        return value.toFixed(2);
+    };
+
     saveData() {
         if (this.state.overBudget) {
             console.error('Over budget unable to save');
@@ -243,7 +250,8 @@ class SummaryTable extends React.Component {
                     {
                         Header: 'Material costs',
                         headerClassName: 'wordwrap',
-                        accessor: 'materialCosts'
+                        id: 'materialCosts',
+                        accessor: d => (this.convertDecimals(d.materialCosts)),
                     },
                     {
                         Header:
@@ -288,7 +296,8 @@ class SummaryTable extends React.Component {
                             </Popover>,
                         headerClassName: "wordwrap",
                         className: 'alignRight',
-                        accessor: "coverAmount",
+                        id: "coverAmount",
+                        accessor: d => (this.convertDecimals(d.coverAmount)),
                         Footer: this.sumOfCoverAmount
                     }
                 ]
