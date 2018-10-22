@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import {Button, Form, Input} from "antd";
 import {comaToPeriod} from "../utils/coma-convert";
 import {API_ROOT} from "../api-config";
@@ -19,12 +20,17 @@ class CompanyForm extends Component {
         })
             .then(res => {
                 console.log(res);
-                window.location
+                location.reload();
             })
             .catch(err => console.error(err));
     };
 
+    handleChange = (e) => {
+        this.setState({ name: e.target.value });
+    };
+
     handleNumberChange = (e) => {
+        console.log(this.state);
         const number = comaToPeriod(e.target.value);
         if (isNaN(number)) {
             return;
@@ -58,7 +64,9 @@ class CompanyForm extends Component {
                     {...formItemLayout}
                     label={'Name'}
                 >
-                    <Input />
+                    <Input
+                        onChange={this.handleChange}
+                    />
                 </Item>
                 <Item
                     {...formItemLayout}
