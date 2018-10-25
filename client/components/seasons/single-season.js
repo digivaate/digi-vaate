@@ -176,7 +176,17 @@ class SingleSeason extends Component{
                 console.error(err);
             });
 
-    }
+    };
+
+    showDescription = (collection) => {
+        let coverPercentHtml = null;
+        for(let i = 0; i < this.state.collectionsOri.length;i ++){
+            if(collection.id === this.state.collectionsOri[i].id){
+                coverPercentHtml = <span style={ collection.coverPercent !== this.state.collectionsOri[i].coverPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{collection.coverPercent}</span>;
+            }
+        }
+        return <p>Cover percentage: {coverPercentHtml}%</p>
+    };
 
     render() {
         let renderCollectionsOfSeason = [];
@@ -227,7 +237,9 @@ class SingleSeason extends Component{
                                 >
                                         <List.Item.Meta
                                             title={item.name}
-                                            description={`Cover percent: ${item.coverPercent}%`}
+                                            description={
+                                                this.showDescription(item)
+                                            }
                                         />
                                 </List.Item>
                             )}
