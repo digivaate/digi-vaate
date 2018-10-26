@@ -11,7 +11,7 @@ if (!fs.existsSync('./uploads')) {
     fs.mkdirSync('./uploads');
 }
 //synchronise sequelize models with database
-models.sequelize.sync()
+models.sequelize.sync({force: true})
     .catch(err => console.error('Postgre sync error: ' + err));
 
 app.use(bodyParser.json());
