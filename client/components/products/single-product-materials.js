@@ -21,8 +21,7 @@ class SingleProductMaterials extends Component{
                     imageId: material.imageId,
                     unitPrice: material.unitPrice,
                     freight:material.freight,
-                    materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
-                }
+                    materialCosts: material.material_product.consumption === null ? material.freight : parseFloat((material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight).toFixed(2))                }
             }),
             materialOptions: this.props.materialOptions,
         }
@@ -34,6 +33,7 @@ class SingleProductMaterials extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps != this.props){
+            console.log(this.props.productMaterials)
             this.setState({
                 materialVisible: false,
                 productMaterials: this.props.productMaterials.map(material => {
@@ -44,19 +44,43 @@ class SingleProductMaterials extends Component{
                         imageId: material.imageId,
                         unitPrice: material.unitPrice,
                         freight:material.freight,
-                        materialCosts: material.material_product.consumption === null ? material.freight : material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight
+                        materialCosts: material.material_product.consumption === null ? material.freight : parseFloat((material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight).toFixed(2))
                     }
                 }),
                 materialOptions: this.props.materialOptions,
             })
+        }
+        if(!prevProps.editModeStatus && this.props.editModeStatus && this.props.productMaterials.length > 0){
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
+                .then(response => {
+                    if (response.data[0].materials[0]) {
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                        });
+                    }
+                    if (response.data[0].materials[0] && response.data[0].materials[1]) {
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                            [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                        });
+                    }
+                    if (response.data[0].materials[0] && response.data[0].materials[1] && response.data[0].materials[2])
+                        this.setState({
+                            [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
+                            [response.data[0].materials[1].name]: response.data[0].materials[1].material_product.consumption,
+                            [response.data[0].materials[2].name]: response.data[0].materials[2].material_product.consumption,
+                        });
+
+                })
         }
     }
 
 
     componentDidMount(){
         if(this.props.editModeStatus && this.props.productMaterials.length > 0) {
-            axios.get(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`)
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
                 .then(response => {
+                    console.log(response.data[0])
                     if (response.data[0].materials[0]) {
                         this.setState({
                             [response.data[0].materials[0].name]: response.data[0].materials[0].material_product.consumption,
@@ -157,7 +181,7 @@ class SingleProductMaterials extends Component{
                 this.materialPairs.push(
                     {
                         ...this.updatedMaterials[i],
-                        consumption:this.state[this.displaySelectedMaterial[i]],
+                        consumption:this.state[this.displaySelectedMaterial[i]] ? this.state[this.displaySelectedMaterial[i]] : 0,
                     })
             }
             let objUpdateMaterials = null;
@@ -166,7 +190,7 @@ class SingleProductMaterials extends Component{
                     this.materialPairs.push(
                         {
                             ...this.updatedMaterials[i],
-                            consumption:this.state[this.displaySelectedMaterial[i]],
+                            consumption:this.state[this.displaySelectedMaterial[i]] ? this.state[this.displaySelectedMaterial[i]] : 0,
                         })
                 }
                 objUpdateMaterials = this.materialPairs.map(materialPair => {
@@ -177,7 +201,7 @@ class SingleProductMaterials extends Component{
                         imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
-                        materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
+                        materialCosts: parseFloat((materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight).toFixed(2))
                     }
                 });
             } else {
@@ -189,10 +213,11 @@ class SingleProductMaterials extends Component{
                         imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
-                        materialCosts: materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight
+                        materialCosts: parseFloat((materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight).toFixed(2))
                     }
                 });
             }
+            console.log(objUpdateMaterials)
             if(this.displaySelectedMaterial){
                 let materialCost = objUpdateMaterials.map(material => material.unitPrice * material.consumption + material.freight);
                 let materialCosts = materialCost.reduce((a,b) => a+b,0);
@@ -207,8 +232,8 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
-        console.log(this.state.productMaterials)
         let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
+        sumMaterialCost = parseFloat(sumMaterialCost.toFixed(2));
         let materialSelected1 = null;
         let materialSelected2 = null;
         let materialSelected3 = null;
@@ -231,6 +256,8 @@ class SingleProductMaterials extends Component{
             )
         }
         if (this.state.productMaterials.length > 0) {
+            this.state.productMaterials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
+            renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
                     let materialImgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                     if (material.imageId) {

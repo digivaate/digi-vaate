@@ -70,7 +70,6 @@ class SingleProductName extends Component{
 
 
     render(){
-        console.log(this.props)
         let editNameBtn = null;
         if(this.props.editModeStatus === true) {
             editNameBtn =

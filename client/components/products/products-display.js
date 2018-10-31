@@ -333,9 +333,9 @@ class ProductsDisplay extends Component{
         let renderProductCollectionList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
+        let renderProductPrice = null;
+        let renderProductSizes = null;
         if (this.products && this.state.productLevel) {
-            let string1 = "Sky-Blue"
-            string1 = string1.replace(/[-' '_]/g,'').toUpperCase();
             /*
             Sort by id of product
             this.products.sort(function(a, b){
@@ -361,25 +361,43 @@ class ProductsDisplay extends Component{
                             )
                         }
                         else {
-                            renderProductColors = <p>No colors</p>;
+                            renderProductColors = `No colors`;
                         }
                     }
 
                     if(product.materials){
                         if(product.materials.length > 0){
                             renderProductMaterials = product.materials.map(material =>
-                                <Col key={material.id} span={6}>
-                                    <div
-                                    >
-                                        <p>{material.name}</p>
-                                    </div>
-                                </Col>
+                                <div key={material.id}>
+                                    {material.name} &nbsp; &nbsp;
+                                </div>
                             )
                         }
                         else {
-                            renderProductMaterials = <p>No materials</p>
+                            renderProductMaterials = `No materials`
                         }
                     }
+
+                if(product.sizes){
+                    if(product.sizes.length > 0){
+                        renderProductSizes = product.sizes.map(size =>
+                            <Col key={size.id} span={3}>
+                                <div>
+                                    {size.value}
+                                </div>
+                            </Col>
+                        )
+                    }
+                    else {
+                        renderProductSizes = `No sizes`
+                    }
+                }
+                if(product.sellingPrice) {
+                    renderProductPrice = `€${product.sellingPrice}`
+                }
+                else {
+                    renderProductPrice = `No price`
+                }
 
                     if(this.state.productLevel === "collection"){
                         return (
@@ -387,7 +405,7 @@ class ProductsDisplay extends Component{
                                 <div className="product-card-wrapper">
                                     <Card
                                         hoverable
-                                        bodyStyle={{height:200}}
+                                        bodyStyle={{height:230}}
                                         className="product-card-display"
                                         cover={<Link to={{
                                             pathname: `${url}${product.id}-${product.name}`,
@@ -412,17 +430,28 @@ class ProductsDisplay extends Component{
                                             }
                                         }}>
                                             <Meta
-                                                title={product.name}
+                                                title= {
+                                                    <div>
+                                                        {product.name}
+                                                        <div className="product-price">
+                                                            {renderProductPrice}
+                                                        </div>
+                                                    </div>
+                                                }
                                                 description={
                                                     <div>
                                                         <br/>
                                                         <br/>
-                                                        <Row gutter={8}>
+                                                        <Row>
                                                             { renderProductColors }
                                                         </Row>
-                                                        <Row gutter={16}>
-                                                            <hr />
+                                                        <hr/>
+                                                        <Row>
                                                             {renderProductMaterials}
+                                                        </Row>
+                                                        <hr />
+                                                        <Row>
+                                                            {renderProductSizes}
                                                         </Row>
                                                     </div>
                                                 }
@@ -438,7 +467,7 @@ class ProductsDisplay extends Component{
                         <div className="product-card-wrapper">
                             <Card
                                 hoverable
-                                bodyStyle={{height:200}}
+                                bodyStyle={{height:230}}
                                 className="product-card-display"
                                 cover={<Link to={{
                                     pathname: `${url}${product.id}-${product.name}`,
@@ -463,17 +492,28 @@ class ProductsDisplay extends Component{
                                     }
                                 }}>
                                     <Meta
-                                        title={product.name}
+                                        title= {
+                                            <div>
+                                                {product.name}
+                                                <div className="product-price">
+                                                {renderProductPrice}
+                                                </div>
+                                            </div>
+                                        }
                                         description={
                                             <div>
                                                 <p>Season: {product.seasonName} </p>
                                                 <p>Collection: {product.collectionName}</p>
-                                                <Row gutter={8}>
+                                                <Row>
                                                     { renderProductColors }
                                                 </Row>
-                                                <Row gutter={16}>
-                                                    <hr />
+                                                <hr/>
+                                                <Row type="flex">
                                                     {renderProductMaterials}
+                                                </Row>
+                                                <hr />
+                                                <Row>
+                                                    {renderProductSizes}
                                                 </Row>
                                             </div>
                                         }
