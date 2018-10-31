@@ -60,9 +60,20 @@ class SingleProductColors extends Component{
         let renderProductColors = <p>This product does not have any colors yet</p>;
         let editColorBtn = <div style={{height:40,width:40}}></div>;
         if (colorOptions && colorOptions.length > 0) {
+            colorOptions.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             renderColorOptions = colorOptions.map(color =>
-                <Option key={color.name} style={{color: color.value}}>
-                    {color.name}
+                <Option key={color.name}>
+                    <div>
+                        {color.name} - {color.code} &nbsp;
+                        <div style = {{
+                            backgroundColor: `${color.value}`,
+                            height:20,
+                            width:20,
+                            float:"right",
+                            marginRight:20,
+                            border:"1px solid"
+                        }}></div>
+                    </div>
                 </Option>
             )
         }

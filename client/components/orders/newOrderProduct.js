@@ -44,6 +44,7 @@ const OrderProductCreateForm = Form.create()(
             let noSizeFormItem = null;
             let redirectToProduct = null;
             let renderSizeFormItems = null;
+            productList.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             if(productNameSelected){
                 redirectToProduct =
                     <div>

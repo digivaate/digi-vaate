@@ -223,6 +223,7 @@ class SingleProductMaterials extends Component{
                 </Button>;
         }
         if (this.state.materialOptions && this.state.materialOptions.length > 0) {
+            this.state.materialOptions.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderMaterialOptions = this.state.materialOptions.map(material =>
                 <Option key={material.name}>
                     {material.name}

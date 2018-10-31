@@ -213,7 +213,7 @@ render(){
                                         newProductName = {(newProductName) => this.newProductName(newProductName)}
                                     />
                                 }/>
-                                <Route path={'/seasons/:seasonId/budget'} exact render={(props) =>
+                                <Route path={'/seasons/:seasonId/budgeting'} exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}
                                         requestPath={`/season/products?name=${props.match.params.seasonId}`}
@@ -229,7 +229,7 @@ render(){
                                         updateCollection = {newCollectionEdit => this.updateCollection(newCollectionEdit)}
                                     />
                                 }/>
-                                <Route path="/seasons/:seasonId/collections/:collectionId/budget" exact render={(props) =>
+                                <Route path="/seasons/:seasonId/collections/:collectionId/budgeting" exact render={(props) =>
                                     <BudgetPlanningTable
                                         {...props}
                                         requestPath={`/collection/products?name=${props.match.params.collectionId}`}

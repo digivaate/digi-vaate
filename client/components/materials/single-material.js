@@ -47,8 +47,12 @@ class SingleMaterial extends Component{
         }
     }
     materialId = this.props.match.params.materialId.split('-')[0];
-    material = [];
+    materials = [];
     componentDidMount(){
+        axios.get(`${API_ROOT}/material`)
+            .then(response => {
+                this.materials = response.data
+            });
         axios.get(`${API_ROOT}/material?id=${this.materialId}`)
             .then(response => {
                 this.setState({
@@ -246,10 +250,20 @@ class SingleMaterial extends Component{
     handleNameCancel = (e) =>{
         this.setState({
             nameVisible: false,
+            name: this.state.loadedMaterialOri.name
         });
     };
 
     handleNameOk = () => {
+        let newMaterialName = this.state.name.slice(0);
+        newMaterialName = newMaterialName.replace(/[-' '_]/g,'').toUpperCase();
+        for(let i = 0; i<this.materials.length;i++){
+            let materialName = this.materials[i].name.replace(/[-' '_]/g,'').toUpperCase();
+            if(newMaterialName === materialName){
+                message.error("Material name is already used! Please use another name");
+                return null;
+            }
+        }
         this.setState({
             nameVisible: false,
             modified: !Object.compare(this.state.loadedMaterial.name, this.state.name)
@@ -371,6 +385,7 @@ class SingleMaterial extends Component{
     };
 
     render(){
+        console.log(this.props)
         let backToMaterialListBtn = null;
         let backToProductBtn = null;
         let newNameRedirect = null;

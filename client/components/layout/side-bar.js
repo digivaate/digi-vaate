@@ -163,8 +163,8 @@ class SideBar extends Component{
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`budget-collections-${collection.id}`}>
-                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/budget`} className="nav-text">
-                                Budget
+                            <NavLink to={`/seasons/${season.name}/collections/${collection.name}/budgeting`} className="nav-text">
+                                Budgeting
                             </NavLink>
                         </Menu.Item>
                         <Menu.Item key={`themes-collections-${collection.id}`}>
@@ -196,8 +196,8 @@ class SideBar extends Component{
                         </NavLink>
                     </Menu.Item>
                     <Menu.Item key={`budget-season-${season.id}`}>
-                        <NavLink to={`/seasons/${season.name}/budget`} className={'nav-text'}>
-                            Budget
+                        <NavLink to={`/seasons/${season.name}/budgeting`} className={'nav-text'}>
+                            Budgeting
                         </NavLink>
                     </Menu.Item>
                     <SubMenu key={`collections-season-${season.id}`}
@@ -207,7 +207,7 @@ class SideBar extends Component{
                             className="collection-menu"
                         >
                             <Link to={`/seasons/${season.name}/collections`}>
-                                Summary
+                                Managing collections
                             </Link>
                         </Menu.Item>
                         {renderCollectionList}
@@ -240,7 +240,7 @@ class SideBar extends Component{
                             className="season-menu"
                         >
                             <Link to="/seasons">
-                                Summary
+                                Managing seasons
                             </Link>
                         </Menu.Item>
                         {renderSeasonList}

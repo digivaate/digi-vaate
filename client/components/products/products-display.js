@@ -122,6 +122,16 @@ class ProductsDisplay extends Component{
             if (err) {
                 return;
             }
+            /*
+            let newProductName = values.name.replace(/[-' '_]/g,'').toUpperCase();
+            for(let i = 0; i< this.products.length;i++){
+                let productName = this.products[i].name.replace(/[-' '_]/g,'').toUpperCase();
+                if(newProductName === productName){
+                    message.error("Product name is already used! Please use another name")
+                    return null;
+                }
+            }
+            */
             if(!values.sellingPrice){
                 values.sellingPrice = 0;
             }
@@ -324,9 +334,16 @@ class ProductsDisplay extends Component{
         let renderProductColors = null;
         let renderProductMaterials = null;
         if (this.products && this.state.productLevel) {
+            let string1 = "Sky-Blue"
+            string1 = string1.replace(/[-' '_]/g,'').toUpperCase();
+            /*
+            Sort by id of product
             this.products.sort(function(a, b){
+
                 return a.id-b.id
             });
+            */
+            this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderProductList = this.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";

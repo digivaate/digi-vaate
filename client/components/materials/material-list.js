@@ -76,6 +76,14 @@ class MaterialList extends Component{
             if (err) {
                 return;
             }
+            let newMaterialName = values.name.replace(/[-' '_]/g,'').toUpperCase();
+            for(let i = 0; i< this.materials.length;i++){
+                let materialName = this.materials[i].name.replace(/[-' '_]/g,'').toUpperCase();
+                if(newMaterialName === materialName){
+                    message.error("Material name is already used! Please use another name");
+                    return null;
+                }
+            }
             //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
             values.imagePath = null;
             console.log('Received values of form: ', values);
@@ -127,6 +135,7 @@ class MaterialList extends Component{
     render() {
         let renderMaterialList = null;
         if (this.materials) {
+            this.materials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderMaterialList = this.materials.map(material =>{
                 let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
                 if(material.imageId){
@@ -141,7 +150,10 @@ class MaterialList extends Component{
                                     className="material-card-display"
                                     cover={<Link to={{
                                         pathname: `${this.props.match.url}/${material.id}-${material.name}`,
-                                        state:{materialListUrl: this.props.match.url}
+                                        state:{
+                                            materialListUrl: this.props.match.url,
+                                            materialList: this.materials
+                                        }
                                     }}><img alt="example" className="material-img" src={`${imgUrl}`} /></Link>}
                                     actions={[
                                         <div onClick = {() => this.handleDelete(material.id)}>
@@ -150,7 +162,10 @@ class MaterialList extends Component{
                                     ]}>
                                     <Link to={{
                                         pathname: `${this.props.match.url}/${material.id}-${material.name}`,
-                                        state:{materialListUrl: this.props.match.url}
+                                        state:{
+                                            materialListUrl: this.props.match.url,
+                                            materialList: this.materials
+                                        }
                                     }}>
                                     <Meta
                                         title= {

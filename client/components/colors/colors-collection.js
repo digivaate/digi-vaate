@@ -126,23 +126,37 @@ class ColorCollection extends Component{
     };
 
     handleColorOk = (event) => {
+        let colorName = this.state.name.slice(0);
+        let colorCode = this.state.code.slice(0);
+        let colorSelected = {...this.state.colorSelected};
+        colorName = colorName.replace(/[-' '_]/g,'').toUpperCase();
+        colorCode = colorCode.replace(/[-' '_]/g,'').toUpperCase();
+        colorSelected.name = colorSelected.name.replace(/[-' '_]/g,'').toUpperCase();
+        colorSelected.code = colorSelected.code.replace(/[-' '_]/g,'').toUpperCase();
         for(let i = 0; i < this.colorCard.length; i++){
-            if(this.state.name === this.colorCard[i].name && this.state.name !== this.state.colorSelected.name){
+            let colorCardName = this.colorCard[i].name.slice(0);
+            let colorCardCode = this.colorCard[i].code.slice(0);
+            colorCardName = colorCardName.replace(/[-' '_]/g,'').toUpperCase();
+            colorCardCode = colorCardCode.replace(/[-' '_]/g,'').toUpperCase();
+            if(colorName === colorCardName && colorName !== colorSelected.name){
                 message.error("Color name is already used ! Please use another name");
                 return null;
-            } else if(this.state.code === this.colorCard[i].code && this.state.code !== this.state.colorSelected.code){
+            } else if(colorCardCode && colorSelected.code && colorCode === colorCardCode && colorCode !== colorSelected.code){
+                message.error("Color code is already used ! Please use another code");
+                return null;
+            } else if(colorCardCode && !colorSelected.code && colorCode === colorCardCode && colorCode !== colorSelected.code){
                 message.error("Color code is already used ! Please use another code");
                 return null;
             }
         }
         axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code, value:this.state.hexCode})
-            .then(response => {
+            .then(() => {
                 this.loadColors();
             })
             .then(() => this.setState({colorVisible:false}))
     };
 
-    handleColorCancel = (e) => {
+    handleColorCancel = () => {
         this.setState({
             colorVisible: false,
         });
@@ -211,6 +225,7 @@ class ColorCollection extends Component{
             )
         }
         else {
+            this.colorCard.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             const colorCard = this.colorCard.map(element => {
                 return(
                     <Card.Grid

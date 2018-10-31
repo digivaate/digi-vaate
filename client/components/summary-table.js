@@ -84,7 +84,7 @@ class SummaryTable extends React.Component {
         this.state.data.forEach(row => {
             componentValue.push(parseFloat((parseFloat(row.sellingPrice) * parseFloat(row.amount)).toFixed(2)));
         });
-        return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(2)),0)
+        return componentValue.reduce((a,b) => parseFloat((a+b).toFixed(0)),0)
     }
 
     sumOfCoverAmount(){
@@ -245,7 +245,14 @@ class SummaryTable extends React.Component {
                                 )
                             }},
                         width: 140,
-                        Footer: 'Total:'
+                        Footer: () => {
+                            return(
+                                <div>
+                                    <div>Total:</div>
+                                    <div>Budget:</div>
+                                </div>
+                            )
+                        }
                     },
                     {
                         Header: 'Material costs',
@@ -365,7 +372,7 @@ class SummaryTable extends React.Component {
         product.purchasePrice = (product.materialCosts + product.subcCostTotal).toFixed(2);
         product.coverPercent = ((1 - product.purchasePrice / product.sellingPrice) * 100).toFixed(2);
         product.coverAmount = product.sellingPrice - product.purchasePrice;
-        product.totalSale = (product.sellingPrice * product.amount).toFixed(2);
+        product.totalSale = (product.sellingPrice * product.amount).toFixed(0);
         product.purchasePriceSum = (product.purchasePrice * product.amount).toFixed(2);
     }
     //React functions
@@ -374,6 +381,7 @@ class SummaryTable extends React.Component {
         axios.get(`${API_ROOT}${this.props.requestPath}`, { cancelToken: this.source.token})
             .then(response => {
                 this.products = response.data;
+                this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
                 this.products.forEach(product => {
                     this.calculateValues(product);
                     dataCollected.push(product);
@@ -440,7 +448,7 @@ class SummaryTable extends React.Component {
         return(
             <Fragment>
                 <div className={'table-header'}>
-                    <h1>Budget plan</h1>
+                    <h1>Budgeting</h1>
                     <div>
                         <Button onClick={this.resetData} disabled={!this.state.modified}>Reset</Button>
                         <Button onClick={this.saveData} disabled={!this.state.modified}>Save</Button>

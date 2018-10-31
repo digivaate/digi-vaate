@@ -132,6 +132,8 @@ const ProductCreateForm = Form.create()(
             let renderMaterialOptions = [];
             let renderSizeOptions = [];
             if (this.state.colorOptions && this.state.materialOptions && this.state.sizeOptions) {
+                this.state.materialOptions.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
+                this.state.colorOptions.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
                 if (this.state.materialOptions.length > 0) {
                     renderMaterialOptions = this.state.materialOptions.map(material =>
                         <Option key={material.name}>
@@ -141,8 +143,18 @@ const ProductCreateForm = Form.create()(
                 }
                 if (this.state.colorOptions.length > 0) {
                     renderColorOptions = this.state.colorOptions.map(color =>
-                        <Option key={color.name} style={{color: color.value}}>
-                            {color.name}
+                        <Option key={color.name}>
+                            <div>
+                                {color.name} - {color.code} &nbsp;
+                                <div style = {{
+                                    backgroundColor: `${color.value}`,
+                                    height:20,
+                                    width:20,
+                                    float:"right",
+                                    marginRight:20,
+                                    border:"1px solid"
+                                }}></div>
+                            </div>
                         </Option>
                     )
                 }

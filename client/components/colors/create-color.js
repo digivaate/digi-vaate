@@ -88,11 +88,20 @@ class ColorPage extends React.Component {
                     value: this.colorsCollection.hexCode,
                     code: this.colorsCollection.colorCode
                 };
+
+                const newColorCompare = {
+                    name: this.colorsCollection.name.replace(/[-' '_]/g,'').toUpperCase(),
+                    value: this.colorsCollection.hexCode.replace(/[-' '_]/g,'').toUpperCase(),
+                };
                 for(let i = 0; i < this.props.allColors.length; i++){
-                    if(newColor.name === this.props.allColors[i].name){
+                    let colorCardName = this.props.allColors[i].name.slice(0);
+                    let colorCardCode = this.props.allColors[i].code.slice(0);
+                    colorCardName = colorCardName.replace(/[-' '_]/g,'').toUpperCase();
+                    colorCardCode = colorCardCode.replace(/[-' '_]/g,'').toUpperCase();
+                    if(newColorCompare.name === colorCardName){
                          message.error("Color name is already used ! Please use another name");
                         return null;
-                    } else if(newColor.code === this.props.allColors[i].code){
+                    } else if(colorCardCode && newColorCompare.code === colorCardCode){
                         message.error("Color code is already used ! Please use another code");
                         return null;
                     }
