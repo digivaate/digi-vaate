@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,Spin,List,Divider,BackTop } from 'antd';
+import { Skeleton,Card, Row, Col,Icon,Modal,Button,message,List,Divider,BackTop } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -7,7 +7,7 @@ const { Meta } = Card;
 const confirm = Modal.confirm;
 import "./products.css"
 import ProductCreateForm from './product-card';
-
+import RenderInitialCard from '../renderInitialCard';
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -720,7 +720,14 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             {showTotalProducts}
-                            <Spin/>
+                            <RenderInitialCard
+                                numberOfCard={4}
+                                cardTypeWrapper="product-card-wrapper"
+                                bodyHeight={{height:230}}
+                                cardTypeDisplay="product-card-display"
+                                coverStyle={{height: 160,width: 278, background:"#f2f2f2"}}
+                                numberOfRow={{ rows: 6 }}
+                            />
                         </div>
                     )
             }

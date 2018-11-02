@@ -1,11 +1,12 @@
 import React,{ Component } from "react";
 import MaterialCreateForm from './newMaterial'
-import { Card, List, Col,Icon,Spin,Button,Form,message,Modal } from 'antd';
+import { Card, List, Col,Icon,Button,message,Modal } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
 const { Meta } = Card;
+import RenderInitialCard from '../renderInitialCard'
 
 
 class MaterialList extends Component{
@@ -146,7 +147,7 @@ class MaterialList extends Component{
                             <div className="material-card-wrapper">
                                 <Card
                                     hoverable
-                                    bodyStyle={{height:90}}
+                                    bodyStyle={{height:100}}
                                     className="material-card-display"
                                     cover={<Link to={{
                                         pathname: `${this.props.match.url}/${material.id}-${material.name}`,
@@ -167,12 +168,14 @@ class MaterialList extends Component{
                                             materialList: this.materials
                                         }
                                     }}>
-                                    <Meta
+                                        <Meta
                                         title= {
                                             <div>
                                                 <p>{material.name}</p>
-                                                <p>Code: {material.code ? material.code : "None"}</p>
                                             </div>
+                                        }
+                                        description = {
+                                            <p>Code: {material.code ? material.code : "None"}</p>
                                         }
                                     />
                                     </Link>
@@ -257,7 +260,14 @@ class MaterialList extends Component{
                         uploadImage={(data) => this.uploadImage = data}
                     />
                     <br/>
-                    <Spin/>
+                    <RenderInitialCard
+                        numberOfCard={4}
+                        cardTypeWrapper="material-card-wrapper"
+                        bodyHeight={{height:100}}
+                        cardTypeDisplay="material-card-display"
+                        coverStyle={{height: 120,width: 264, background:"#f2f2f2"}}
+                        numberOfRow={{ rows: 1 }}
+                    />
                 </div>
             )
         }
