@@ -127,17 +127,17 @@ class ColorCollection extends Component{
 
     handleColorOk = (event) => {
         let colorName = this.state.name.slice(0);
-        let colorCode = this.state.code.slice(0);
+        let colorCode = this.state.code ? this.state.code.slice(0) : null;
         let colorSelected = {...this.state.colorSelected};
         colorName = colorName.replace(/[-' '_]/g,'').toUpperCase();
-        colorCode = colorCode.replace(/[-' '_]/g,'').toUpperCase();
+        colorCode = colorCode ? colorCode.replace(/[-' '_]/g,'').toUpperCase(): null;
         colorSelected.name = colorSelected.name.replace(/[-' '_]/g,'').toUpperCase();
-        colorSelected.code = colorSelected.code.replace(/[-' '_]/g,'').toUpperCase();
+        colorSelected.code = colorSelected.code ? colorSelected.code.replace(/[-' '_]/g,'').toUpperCase() : null;
         for(let i = 0; i < this.colorCard.length; i++){
             let colorCardName = this.colorCard[i].name.slice(0);
-            let colorCardCode = this.colorCard[i].code.slice(0);
+            let colorCardCode = this.colorCard[i].code ? this.colorCard[i].code.slice(0) : null;
             colorCardName = colorCardName.replace(/[-' '_]/g,'').toUpperCase();
-            colorCardCode = colorCardCode.replace(/[-' '_]/g,'').toUpperCase();
+            colorCardCode = colorCardCode ? colorCardCode.replace(/[-' '_]/g,'').toUpperCase() : null;
             if(colorName === colorCardName && colorName !== colorSelected.name){
                 message.error("Color name is already used ! Please use another name");
                 return null;
@@ -204,7 +204,7 @@ class ColorCollection extends Component{
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection">
+                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
                         <h4>No colors</h4>
                     </Card>
                 </div>
@@ -218,7 +218,7 @@ class ColorCollection extends Component{
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection">
+                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
                         <Spin/>
                     </Card>
                 </div>
@@ -255,7 +255,7 @@ class ColorCollection extends Component{
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection">
+                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
                         {colorCard}
                         <Modal
                             title="Edit color"

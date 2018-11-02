@@ -14,6 +14,10 @@ class SingleProductColors extends Component{
     /*Edit color*/
     updatedColors = this.props.updatedColors;
 
+    componentDidMount(){
+        this.props.colorOptions.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
+    }
+
     handleColorChange = (value) => {
         this.setState(prevState => prevState);
         let valueObj = [];
@@ -60,7 +64,6 @@ class SingleProductColors extends Component{
         let renderProductColors = <p>This product does not have any colors yet</p>;
         let editColorBtn = <div style={{height:40,width:40}}></div>;
         if (colorOptions && colorOptions.length > 0) {
-            colorOptions.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             renderColorOptions = colorOptions.map(color =>
                 <Option key={color.name}>
                     <div>

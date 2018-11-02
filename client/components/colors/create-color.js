@@ -95,9 +95,9 @@ class ColorPage extends React.Component {
                 };
                 for(let i = 0; i < this.props.allColors.length; i++){
                     let colorCardName = this.props.allColors[i].name.slice(0);
-                    let colorCardCode = this.props.allColors[i].code.slice(0);
+                    let colorCardCode = this.props.allColors[i].code ? this.props.allColors[i].code.slice(0) : null;
                     colorCardName = colorCardName.replace(/[-' '_]/g,'').toUpperCase();
-                    colorCardCode = colorCardCode.replace(/[-' '_]/g,'').toUpperCase();
+                    colorCardCode = colorCardCode ? colorCardCode.replace(/[-' '_]/g,'').toUpperCase() : null;
                     if(newColorCompare.name === colorCardName){
                          message.error("Color name is already used ! Please use another name");
                         return null;

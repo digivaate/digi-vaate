@@ -26,14 +26,15 @@
     "cleardb": "babel-node server/resetdb.js"
   },
   "dependencies": {
-    "antd": "^3.7.0",
+    "antd": "^3.10.3",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
+    "debug": "latest",
     "express": "^4.16.3",
     "form-data": "^2.3.2",
-    "multer": "^1.3.1",
     "morgan": "^1.9.0",
+    "multer": "^1.3.1",
     "npm": "^6.3.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
@@ -44,8 +45,7 @@
     "react-scripts": "1.1.4",
     "react-table": "^6.8.6",
     "reactcss": "latest",
-    "sequelize": "^4.37.10",
-    "debug": "latest"
+    "sequelize": "^4.37.10"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
