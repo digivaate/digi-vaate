@@ -218,7 +218,12 @@ class ThemeList extends Component{
                 )
             }
         } else {
-            return <Spin/>
+            return (
+                <div>
+                    <h1>Themes</h1>
+                    <Spin/>
+                </div>
+            )
         }
 
     }
