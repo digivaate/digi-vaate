@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const port = process.env.PORT || 3000;
 const outputDir = "dist";
 
@@ -30,7 +30,13 @@ const clientConfig = {
     output: {
         path: path.resolve(__dirname, outputDir +'/client/'),
         publicPath: '/',
-        filename: "[name].bundle.js"
+        filename: "[name].bundle.js",
+        chunkFilename: '[name].bundle.js'
+    },
+    optimization:{
+        splitChunks:{
+            chunks: 'all'
+        }
     },
     module: {
         rules: [
@@ -67,13 +73,16 @@ const clientConfig = {
         new CleanWebpackPlugin([outputDir]),
         new HtmlWebpackPlugin({
             template: "./client/index.html",
-            favicon: "./client/public/favicon.ico"
+            favicon: "./client/public/favicon.ico",
+            filename:'index.html',
+            inject:'body'
         }),
         new webpack.DefinePlugin({
             'process.env': {
                 'PORT': JSON.stringify(port)
             }
-        })
+        }),
+        new BundleAnalyzerPlugin()
     ]
 };
 
