@@ -292,7 +292,7 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         className: 'alignRight',
                         id: 'coverPercent',
-                        accessor: d => (d.coverPercent.toFixed(2) + '%'),
+                        accessor: d => (d.coverPercent ? d.coverPercent.toFixed(2) + '%' : null),
                     },
                     {
                         Header:

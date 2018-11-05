@@ -102,7 +102,7 @@ class BreadCrumbDigi extends Component{
                         this.seasonsMap[i] = this.seasons[i].name;
                         this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]] = this.seasonsMap[i];
                         this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/products"] = "Products";
-                        this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/budget"] = "Budget";
+                        this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/budgeting"] = "Budgetting";
                         this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/colors"] = "Colors";
                         this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections"] = "Collections";
                         for(let j=0;j<this.collections.length;j++){
@@ -111,7 +111,7 @@ class BreadCrumbDigi extends Component{
                             this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/products"] = "Products";
                             this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/colors"] = "Colors";
                             this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/materials"] = "Materials";
-                            this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/budget"] = "Budget";
+                            this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/budgeting"] = "Budgeting";
                             this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/themes"] = "Themes";
                             this.breadcrumbNameMap["/seasons/"+this.seasonsMap[i]+"/collections/"+this.collectionsMap[j]+"/orders"] = "Orders";
 
@@ -123,7 +123,7 @@ class BreadCrumbDigi extends Component{
                                 this.seasonProducts = response.data;
                                 for(let m = 0 ; m<this.seasonProducts.length; m++){
                                     this.seasonProductsMap[m] = this.seasonProducts[m].name;
-                                    this.breadcrumbNameMap["/seasons/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProducts[m] + "-" + this.seasonProductsMap[m]] = this.seasonProductsMap[m];
+                                    this.breadcrumbNameMap["/seasons/"+this.seasonsMap[n]+"/products"+"/"+this.seasonProducts[m].id + "-" + this.seasonProductsMap[m]] = this.seasonProductsMap[m];
                                 }
                                 this.setState({})
                             })
