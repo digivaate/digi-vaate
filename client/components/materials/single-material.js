@@ -385,7 +385,6 @@ class SingleMaterial extends Component{
     };
 
     render(){
-        console.log(this.props)
         let backToMaterialListBtn = null;
         let backToProductBtn = null;
         let newNameRedirect = null;

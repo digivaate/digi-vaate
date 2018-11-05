@@ -121,7 +121,10 @@ class SingleProductGeneralInfo extends Component{
         }
         return (
             <div>
-                {editGeneralInfo}
+                <Row type="flex">
+                    <h3>Details&nbsp;&nbsp;</h3>
+                    {editGeneralInfo}
+                </Row>
                 <Modal
                     title="Edit information"
                     visible={this.state.infoVisible}

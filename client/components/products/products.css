@@ -1,3 +1,40 @@
+/*single product layout */
+.single-product-layout {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 36% auto;
+    grid-template-rows: 4em 4em 60px 330px auto;
+    grid-template-areas:
+            'back-button back-button'
+            'edit-group edit-group'
+            'img-layout name-layout'
+            'img-layout size-color-material-layout'
+            'product-description-layout size-color-material-layout'
+}
+
+.back-button {
+    grid-area: back-button;
+}
+
+.edit-group {
+    grid-area: edit-group;
+}
+
+.img-layout {
+    grid-area: img-layout;
+}
+
+.product-description-layout {
+    grid-area: product-description-layout;
+}
+.name-layout {
+    grid-area: name-layout
+}
+.size-color-material-layout {
+    grid-area: size-color-material-layout;
+}
+
+
 /* single-product-index.js */
 .product-color{
     width: 40px;
@@ -15,7 +52,7 @@
 
 .product-description{
     width: 376px;
-    height: 250px;
+    height: 330px;
 }
 
 .product-card-information{
@@ -25,7 +62,7 @@
 
 .product-material-card{
     width: 210px;
-    height: 320px;
+    height: 280px;
 }
 
 .edit-btn{
@@ -63,13 +100,56 @@
     font-weight: bold;
 }
 
-
 .upload-btn-wrapper input[type=file] {
     font-size: 100px;
     position: absolute;
     left: 0;
     top: 0;
     opacity: 0;
+}
+
+.size-card{
+    width: 40px;
+    height: 40px;
+    border: 1px solid #b2b2b2;
+    text-align: center;
+}
+
+.size-value{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media only screen and (max-width: 1370px){
+    .single-product-layout {
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 390px auto;
+        grid-template-rows: 4em 4em 60px 330px auto;
+        grid-template-areas:
+                'back-button back-button'
+                'edit-group edit-group'
+                'img-layout name-layout'
+                'img-layout product-description-layout'
+                'size-color-material-layout size-color-material-layout'
+    }
+}
+
+@media only screen and (max-width: 1060px){
+    .single-product-layout {
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 4em 4em 60px 390px auto;
+        grid-template-areas:
+                'back-button'
+                'edit-group'
+                'name-layout'
+                'img-layout'
+                'product-description-layout'
+                'size-color-material-layout'
+    }
 }
 
 /* products-display.js */

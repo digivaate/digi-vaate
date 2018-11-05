@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React, {Component,Fragment} from "react";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import {Card,Button, Modal, message,TreeSelect} from 'antd';
+import {Row,Button, Modal, message,TreeSelect} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 
@@ -180,10 +180,13 @@ class SingleProductImg extends Component{
         }
 
         return (
-            <Card className="product-description">
+            <Fragment>
+                <Row type="flex">
+                    <h3>Location&nbsp;&nbsp;</h3>
+                    {changeLocationBtn}
+                </Row>
                 {moveToSeason}
                 {moveToCollection}
-                {changeLocationBtn}
                 <Modal
                     title="Change Location"
                     visible={this.state.changeLocationVisible}
@@ -205,7 +208,7 @@ class SingleProductImg extends Component{
                 </Modal>
                 <p>Season:{this.props.seasonName}</p>
                 <p>Collection:{this.props.collectionName}</p>
-            </Card>
+            </Fragment>
         )
     }
 }

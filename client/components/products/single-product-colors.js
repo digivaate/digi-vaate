@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Col,Button, Icon, Modal, Select, message,Popover} from 'antd';
+import {Card, Row,Col,Button, Icon, Modal, Select, message,Popover} from 'antd';
 import './products.css'
 const Option = Select.Option;
 
@@ -82,6 +82,7 @@ class SingleProductColors extends Component{
         }
         if (productColors.length > 0) {
             renderDefaultColors = productColors.map(color => color.name);
+            productColors.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             renderProductColors = productColors.map(color =>{
                     const colorContent =(
                         <div>
@@ -90,7 +91,7 @@ class SingleProductColors extends Component{
                         </div>
                     );
                     return(
-                        <Col span={2} key={color.id}>
+                        <Col key={color.id}>
                             <Popover content={colorContent}>
                                 <Card hoverable className="product-color" style={{
                                     backgroundColor: color.value,
@@ -110,9 +111,11 @@ class SingleProductColors extends Component{
 
         return (
             <div>
-                <h4>Colors</h4>
-                {renderProductColors}
-                {editColorBtn}
+                <h2>Colors</h2>
+                <Row type="flex" gutter={8}>
+                    {renderProductColors}
+                    {editColorBtn}
+                </Row>
                 <Modal
                     title="Edit color"
                     visible={this.state.colorVisible}

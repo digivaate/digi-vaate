@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from 'axios';
-import {Row,Button, Icon, Modal,Spin,Card,Select} from 'antd';
+import {Row,Button, Icon, Modal,Spin,Col,Select,Card} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 
@@ -106,13 +106,20 @@ class SingleProductSize extends Component{
         if(this.state.sizes){
             renderDefaultSizes = this.state.sizes.map(size => size.value);
             sizesDisplay = this.state.sizes.map(size =>
-                <Card key={size.id} style={{ width: 100,textAlign:'center' }} hoverable>
-                    <p>{size.value}</p>
-                </Card>
+            <Col key={size.id}>
+            <div className="size-card" >
+                <div className="size-value">
+                    {size.value}
+                </div>
+            </div>
+            </Col>
             );
             return (
                 <div>
-                    {editSizeInfo}
+                    <Row type="flex">
+                        <h2>Sizes&nbsp;&nbsp;</h2>
+                        {editSizeInfo}
+                    </Row>
                     <Modal
                         title="Edit size"
                         visible={this.state.sizeVisible}
@@ -132,8 +139,8 @@ class SingleProductSize extends Component{
                             {renderSizeOptions}
                         </Select>
                     </Modal>
-                    <Row type="flex">
-                    {sizesDisplay}
+                    <Row type="flex" gutter={8}>
+                        {sizesDisplay.length > 0 ? sizesDisplay : <div style={{height: 50}}>No size</div>}
                     </Row>
                 </div>
             )

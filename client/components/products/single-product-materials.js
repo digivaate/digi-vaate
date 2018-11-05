@@ -33,7 +33,6 @@ class SingleProductMaterials extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps != this.props){
-            console.log(this.props.productMaterials)
             this.setState({
                 materialVisible: false,
                 productMaterials: this.props.productMaterials.map(material => {
@@ -264,7 +263,7 @@ class SingleProductMaterials extends Component{
                         materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
                     }
                     return (
-                        <Col key={material.id} span={8}>
+                        <Col key={material.id}>
                             <Link to={{
                                 pathname: `/materials/${material.id}-${material.name}`,
                                 state:
@@ -366,11 +365,13 @@ class SingleProductMaterials extends Component{
             <div>
                 <Row gutter={8}>
                     <Row type="flex">
-                        <h4>Materials&nbsp;&nbsp;</h4>
+                        <h2>Materials&nbsp;&nbsp;</h2>
                         {editMaterialBtn}
                     </Row>
                     <br/>
-                    {renderProductMaterials}
+                    <Row type="flex" gutter={8}>
+                        {renderProductMaterials}
+                    </Row>
                     <Modal
                         title="Edit material"
                         visible={this.state.materialVisible}
@@ -397,7 +398,6 @@ class SingleProductMaterials extends Component{
                         {materialSelected3}
                     </Modal>
                 </Row>
-                <br/>
                 <br/>
                 <h3>Total materials cost: {sumMaterialCost}</h3>
             </div>
