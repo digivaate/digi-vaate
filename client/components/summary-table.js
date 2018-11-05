@@ -120,13 +120,6 @@ class SummaryTable extends React.Component {
         });
     }
 
-    convertDecimals = (value) => {
-        if (value - Math.floor(value) === 0) {
-            return value;
-        }
-        return value.toFixed(2);
-    };
-
     saveData() {
         if (this.state.overBudget) {
             console.error('Over budget unable to save');
@@ -257,8 +250,9 @@ class SummaryTable extends React.Component {
                     {
                         Header: 'Material costs',
                         headerClassName: 'wordwrap',
+                        className: 'alignRight',
                         id: 'materialCosts',
-                        accessor: d => (this.convertDecimals(d.materialCosts)),
+                        accessor: d => d.materialCosts.toFixed(2),
                     },
                     {
                         Header:
@@ -266,7 +260,9 @@ class SummaryTable extends React.Component {
                                 <p>Subcontracting costs</p>
                             </Popover>,
                         headerClassName: 'wordwrap',
-                        accessor: 'subcCostTotal'
+                        className: 'alignRight',
+                        id: 'subcCostTotal',
+                        accessor: d => d.subcCostTotal.toFixed(2)
                     },
                     {
                         Header:
@@ -274,7 +270,9 @@ class SummaryTable extends React.Component {
                                 <p>Purchasing price</p>
                             </Popover>,
                         headerClassName: 'wordwrap',
-                        accessor: 'purchasePrice'
+                        className: 'alignRight',
+                        id: 'purchasePrice',
+                        accessor: d => d.purchasePrice.toFixed(2)
                     },
                     {
                         Header:
@@ -294,7 +292,7 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         className: 'alignRight',
                         id: 'coverPercent',
-                        accessor: d => (d.coverPercent + '%'),
+                        accessor: d => (d.coverPercent.toFixed(2) + '%'),
                     },
                     {
                         Header:
@@ -304,7 +302,7 @@ class SummaryTable extends React.Component {
                         headerClassName: "wordwrap",
                         className: 'alignRight',
                         id: "coverAmount",
-                        accessor: d => (this.convertDecimals(d.coverAmount)),
+                        accessor: d => d.coverAmount.toFixed(2),
                         Footer: this.sumOfCoverAmount
                     }
                 ]
@@ -327,11 +325,12 @@ class SummaryTable extends React.Component {
                             </Popover>,
                         headerClassName: "wordwrap sum-values",
                         className: 'alignRight',
-                        accessor: 'purchasePriceSum',
+                        id: 'purchasePriceSum',
+                        accessor: d => d.purchasePriceSum.toFixed(2),
                         Footer: () => {
                             return(
                                 <div style={this.state.overBudget ? {color: 'red'} : {}}>
-                                    <div>{this.sumOfPurchasePrice()}</div>
+                                    <div>{this.sumOfPurchasePrice().toFixed(0)}</div>
                                     <div style={{fontWeight: 'bold'}}>{this.state.budget}</div>
                                 </div>
                             )
@@ -344,7 +343,8 @@ class SummaryTable extends React.Component {
                             </Popover>,
                         headerClassName: "wordwrap sum-values",
                         className: 'alignRight',
-                        accessor: 'totalSale',
+                        id: 'totalSale',
+                        accessor: d => d.totalSale.toFixed(2),
                         Footer: this.sumOfTotalSale
                     }
                 ]
@@ -369,11 +369,11 @@ class SummaryTable extends React.Component {
     }
 
     calculateValues(product) {
-        product.purchasePrice = (product.materialCosts + product.subcCostTotal).toFixed(2);
-        product.coverPercent = ((1 - product.purchasePrice / product.sellingPrice) * 100).toFixed(2);
+        product.purchasePrice = product.materialCosts + product.subcCostTotal;
+        product.coverPercent = (1 - product.purchasePrice / product.sellingPrice) * 100;
         product.coverAmount = product.sellingPrice - product.purchasePrice;
-        product.totalSale = (product.sellingPrice * product.amount).toFixed(0);
-        product.purchasePriceSum = (product.purchasePrice * product.amount).toFixed(2);
+        product.totalSale = product.sellingPrice * product.amount;
+        product.purchasePriceSum = product.purchasePrice * product.amount;
     }
     //React functions
     componentDidMount() {
