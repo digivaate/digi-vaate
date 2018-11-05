@@ -1,20 +1,7 @@
 import React from "react";
-import 'antd/dist/antd.css'
-import "react-table/react-table.css";
-//import BudgetPlanningTable from './components/summary-table'
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
-//import ColorCollection from './components/colors/colors-collection'
-//import MaterialList from './components/materials/material-list'
-//import ProductsDisplay from './components/products/products-display'
-//import SingleProduct from './components/products/single-product-index'
-//import ThemeList from './components/themes/theme-list'
-//import SingleMaterial from './components/materials/single-material'
-//import SingleSeason from './components/seasons/single-season'
-//import SeasonsList from './components/company/seasons-list'
-//import OrderList from './components/orders/order-list'
-//import SingleOrder from './components/orders/single-order'
 import asyncRoute from './asyncRoutes'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 
@@ -28,9 +15,7 @@ const AsyncThemeList = asyncRoute.asyncThemeList;
 const AsyncColor = asyncRoute.asyncColor;
 const AsyncCollectionList = asyncRoute.asyncCollectionList;
 const AsyncSeasonList = asyncRoute.asyncSeasonList;
-const AsyncBudgetPlanningTable = asyncRoute.asyncBudgetPlanningTable
-
-
+const AsyncBudgetPlanningTable = asyncRoute.asyncBudgetPlanningTable;
 
 class App extends React.Component {
     constructor(props){
@@ -144,33 +129,26 @@ render(){
         return(
             <BrowserRouter>
                 <div className="App">
-                    <Route path="/" render={
-                        (props) =>
-                            <HeaderBar
-                                {...props}
-                                newSeasonName = {this.state.newSeasonName}
-                                newCollectionName = {this.state.newCollectionName}
-                                newProduct = {this.state.newProduct}
-                                newMaterial = {this.state.newMaterial}
-                                changeLocation = {this.state.changeLocation}
-                                newSeasonEdit = {this.state.newSeasonEdit}
-                                newCollectionEdit = {this.state.newCollectionEdit}
-                                newProductName = {this.state.newProductName}
-                                newMaterialName = {this.state.newMaterialName}
-                            />
-                    }/>
+                    <HeaderBar
+                        newSeasonName = {this.state.newSeasonName}
+                        newCollectionName = {this.state.newCollectionName}
+                        newProduct = {this.state.newProduct}
+                        newMaterial = {this.state.newMaterial}
+                        changeLocation = {this.state.changeLocation}
+                        newSeasonEdit = {this.state.newSeasonEdit}
+                        newCollectionEdit = {this.state.newCollectionEdit}
+                        newProductName = {this.state.newProductName}
+                        newMaterialName = {this.state.newMaterialName}
+                    />
                     <div className="sider">
-                            <Route path="/"  render ={(props) =>
-                                <SideBar
-                                    {...props}
-                                    newSeason = {this.state.newSeasonName}
-                                    newCollection = {this.state.newCollectionName}
-                                    newDeleteSeason = {this.state.newDeleteSeasonName}
-                                    newDeleteCollection = {this.state.newDeleteCollectionName}
-                                    newSeasonEdit = {this.state.newSeasonEdit}
-                                    newCollectionEdit = {this.state.newCollectionEdit}
-                                />}
-                            />
+                        <SideBar
+                            newSeason = {this.state.newSeasonName}
+                            newCollection = {this.state.newCollectionName}
+                            newDeleteSeason = {this.state.newDeleteSeasonName}
+                            newDeleteCollection = {this.state.newDeleteCollectionName}
+                            newSeasonEdit = {this.state.newSeasonEdit}
+                            newCollectionEdit = {this.state.newCollectionEdit}
+                        />
                     </div>
                     <div className="content">
                         <div>

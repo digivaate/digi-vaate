@@ -1,7 +1,13 @@
 import React,{ Component } from "react";
+import {Route} from 'react-router-dom'
 import 'antd/dist/antd.css';
-import BreadCrumbDisplay from './breadcrumb';
+//import BreadCrumbDisplay from './breadcrumb';
 import './layout.css';
+import asyncComponent from '../../hoc/asyncComponent'
+
+const AsyncBreadCrumb = asyncComponent(() => {
+    return import(/* webpackChunkName: "breadcrumb" */'./breadcrumb')
+});
 
 class HeaderBar extends Component{
     constructor(props){
@@ -33,9 +39,10 @@ class HeaderBar extends Component{
         return(
             <div className={'header'}>
                 <h1 className={'logo'}>DigiVaate</h1>
-                <BreadCrumbDisplay
+                <Route path="/" render={(props) => <AsyncBreadCrumb
                     className={'bread-crumb'}
                     refresh = {this.state.refresh}
+                />}
                 />
             </div>
         )
