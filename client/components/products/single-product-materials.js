@@ -258,7 +258,7 @@ class SingleProductMaterials extends Component{
             this.state.productMaterials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
-                    let materialImgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+                    let materialImgUrl = null;
                     if (material.imageId) {
                         materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
                     }
@@ -281,7 +281,13 @@ class SingleProductMaterials extends Component{
                             <Card
                                 hoverable
                                 className="product-material-card"
-                                cover={<img className="material-img" src={`${materialImgUrl}`}/>}
+                                cover={materialImgUrl ?
+                                    <img className="single-product-material-img" src={`${materialImgUrl}`}/> :
+                                    <div className="single-product-material-no-img">
+                                        <div className="no-image-text">
+                                            NO IMAGE AVAILABLE
+                                        </div>
+                                    </div>}
                             >
                                 <Meta
                                     title={material.name}

@@ -346,7 +346,7 @@ class ProductsDisplay extends Component{
             this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderProductList = this.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
-                let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+                let imgUrl = null;
                 if(product.imageId){
                     imgUrl = `${API_ROOT}/image?id=${product.imageId}`
                 }
@@ -414,7 +414,14 @@ class ProductsDisplay extends Component{
                                                 seasonName:product.seasonName,
                                                 collectionName:product.collectionName
                                             }
-                                        }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
+                                        }}> {imgUrl ?
+                                            <img alt="example" className="product-img" src={`${imgUrl}`} /> :
+                                            <div className="products-display-material-no-img">
+                                                <div className="no-image-text">
+                                                    NO IMAGE AVAILABLE
+                                                </div>
+                                            </div>}
+                                            </Link>}
                                         actions={[
                                             <div onClick = {() => this.handleDelete(product.id)}>
                                                 <Icon type="delete" />
@@ -476,7 +483,16 @@ class ProductsDisplay extends Component{
                                         seasonName:product.seasonName,
                                         collectionName:product.collectionName
                                     }
-                                }}><img alt="example" className="product-img" src={`${imgUrl}`} /></Link>}
+                                }}>
+                                    {imgUrl ?
+                                        <img alt="example" className="products-display-img" src={`${imgUrl}`} /> :
+                                        <div className="products-display-no-img">
+                                            <div className="no-image-text">
+                                                NO IMAGE AVAILABLE
+                                            </div>
+                                        </div>
+                                    }
+                                </Link>}
                                 actions={[
                                     <div onClick = {() => this.handleDelete(product.id)}>
                                         <Icon type="delete" />

@@ -139,8 +139,8 @@ class SingleProductSize extends Component{
                             {renderSizeOptions}
                         </Select>
                     </Modal>
-                    <Row type="flex" gutter={8}>
-                        {sizesDisplay.length > 0 ? sizesDisplay : <div style={{height: 50}}>No size</div>}
+                    <Row type="flex" gutter={8} style={{margin:0}}>
+                        {sizesDisplay.length > 0 ? sizesDisplay : <div style={{height: 50}}>No sizes</div>}
                     </Row>
                 </div>
             )

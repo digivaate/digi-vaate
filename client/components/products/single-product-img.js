@@ -30,7 +30,7 @@ class SingleProductImg extends Component{
     };
 
     render(){
-        let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+        let imgUrl = null;
         let changeImgBtn = <div style={{height:40}}></div>;
         if(this.props.editModeStatus === true) {
             changeImgBtn = <div className="upload-btn-wrapper">
@@ -42,9 +42,16 @@ class SingleProductImg extends Component{
             imgUrl = `${API_ROOT}/image?id=${this.state.singleProductImg}`
         }
         return (
-            <div className="img-container">
+            <div className="single-product-img-container">
                 {changeImgBtn}
-                <img alt="example" className="product-big-ava-img" src={`${imgUrl}`}/>
+                { imgUrl ?
+                    <img alt="example" className="product-big-ava-img" src={`${imgUrl}`}/> :
+                    <div className="product-big-ava-no-img">
+                        <div className="no-image-text">
+                            NO IMAGE AVAILABLE
+                        </div>
+                    </div>
+                }
             </div>
         )
     }

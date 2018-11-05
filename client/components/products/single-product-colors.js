@@ -112,7 +112,7 @@ class SingleProductColors extends Component{
         return (
             <div>
                 <h2>Colors</h2>
-                <Row type="flex" gutter={8}>
+                <Row type="flex" gutter={8} style={{margin:0}}>
                     {renderProductColors}
                     {editColorBtn}
                 </Row>
