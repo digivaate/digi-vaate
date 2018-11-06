@@ -138,7 +138,7 @@ class MaterialList extends Component{
         if (this.materials) {
             this.materials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderMaterialList = this.materials.map(material =>{
-                let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+                let imgUrl = null;
                 if(material.imageId){
                     imgUrl = `${API_ROOT}/image?id=${material.imageId}`
                 }
@@ -155,7 +155,16 @@ class MaterialList extends Component{
                                             materialListUrl: this.props.match.url,
                                             materialList: this.materials
                                         }
-                                    }}><img alt="example" className="material-img" src={`${imgUrl}`} /></Link>}
+                                    }}>
+                                        {imgUrl ?
+                                            <img alt="example" className="material-list-img" src={`${imgUrl}`}/> :
+                                            <div className="material-list-no-img">
+                                                <div className="no-image-text">
+                                                    NO IMAGE AVAILABLE
+                                                </div>
+                                            </div>
+                                        }
+                                    </Link>}
                                     actions={[
                                         <div onClick = {() => this.handleDelete(material.id)}>
                                             <Icon type="delete" />

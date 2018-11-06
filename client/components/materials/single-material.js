@@ -446,7 +446,7 @@ class SingleMaterial extends Component{
         }
         if(this.state.loadedMaterial){
             let totalConsumption = this.state.loadedMaterial.products.reduce((sum,product) => sum + product.material_product.consumption,0);
-            let imgUrl = "http://www.51allout.co.uk/wp-content/uploads/2012/02/Image-not-found.gif";
+            let imgUrl = null;
             const tabList = [{
                 key: 'tab1',
                 tab: 'Price',
@@ -480,55 +480,63 @@ class SingleMaterial extends Component{
                 imgUrl = `${API_ROOT}/image?id=${this.state.loadedMaterial.imageId}`;
             }
             return (
-                <div>
+                <div className="single-material-layout">
+                    <div className="back-button">
                     {backToProductBtn}
                     {backToMaterialListBtn}
                     {newNameRedirect}
-                    <Row>
-                    <Col span={8}>
-                    <Row type="flex">
-                        <h1><span style={ this.state.name !== this.state.loadedMaterial.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.name} </span>&nbsp;</h1>
-                        <Button className="edit-btn"
-                                onClick={this.showNameModal}
-                        >
-                            <Icon type="edit"/>
-                        </Button>
-                        <Modal
-                            title="Edit name"
-                            visible={this.state.nameVisible}
-                            onOk={this.handleNameOk}
-                            onCancel={this.handleNameCancel}
-                            bodyStyle={{maxHeight:300,overflow:'auto'}}
-                        >
-                            <Input
-                                placeholder="Material name"
-                                name = "name"
-                                value={this.state.name}
-                                onChange={this.handleNameChange}
-                                onKeyDown={this.checkName}
-                            />
-                        </Modal>
-                    </Row>
-                    </Col>
-                    <Col span={8} offset={8}>
+                    </div>
+                    <div className="edit-group">
                         <Row type="flex">
                             <Button size="large" onClick={this.handleEdit}>Edit</Button>
                             <Button size="large" disabled={!this.state.modified} onClick={this.discardChanges}>Discard changes</Button>
                             <Button size="large" disabled={!this.state.modified} onClick={this.saveInfo}>Save</Button>
                         </Row>
-                    </Col>
-                    </Row>
-                    <Row>
-                        <Col span={8}>
-                            <div className="img-container">
-                                <div className="upload-btn-wrapper">
-                                    <input type="file" name="file" onChange={this.onFileChange}/>
-                                    <button className="btn-upload"><Icon type="upload"/></button>
-                                </div>
-                                <img className="material-ava-img" src={imgUrl} />
+                    </div>
+                    <div className="img-layout">
+                        <div className="img-container">
+                            <div className="upload-btn-wrapper">
+                                <input type="file" name="file" onChange={this.onFileChange}/>
+                                <button className="btn-upload"><Icon type="upload"/></button>
                             </div>
-                        </Col>
-                        <Col span={16}>
+                            {
+                                imgUrl ?
+                                    <img className="single-material-big-ava-img" src={imgUrl} /> :
+                                    <div className="single-material-big-ava-no-img">
+                                        <div className="no-image-text">
+                                                NO IMAGE AVAILABLE
+                                        </div>
+                                    </div>
+                            }
+
+                        </div>
+                    </div>
+                    <div className="name-layout">
+                        <Row type="flex">
+                            <h1><span style={ this.state.name !== this.state.loadedMaterial.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.name} </span>&nbsp;</h1>
+                            <Button className="edit-btn"
+                                    onClick={this.showNameModal}
+                            >
+                                <Icon type="edit"/>
+                            </Button>
+                            <Modal
+                                title="Edit name"
+                                visible={this.state.nameVisible}
+                                onOk={this.handleNameOk}
+                                onCancel={this.handleNameCancel}
+                                bodyStyle={{maxHeight:300,overflow:'auto'}}
+                            >
+                                <Input
+                                    placeholder="Material name"
+                                    name = "name"
+                                    value={this.state.name}
+                                    onChange={this.handleNameChange}
+                                    onKeyDown={this.checkName}
+                                />
+                            </Modal>
+                        </Row>
+                    </div>
+                        <div className="info-card-layout">
                             <Card
                                 className="material-card-info"
                                 title="Material information"
@@ -677,8 +685,7 @@ class SingleMaterial extends Component{
                                 </Modal>
                                 {contentList[this.state.key]}
                             </Card>
-                        </Col>
-                    </Row>
+                        </div>
                 </div>
             )
         }

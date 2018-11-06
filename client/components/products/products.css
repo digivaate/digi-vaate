@@ -2,7 +2,7 @@
 .single-product-layout {
     height: 100vh;
     display: grid;
-    grid-template-columns: 36% auto;
+    grid-template-columns: 390px auto;
     grid-template-rows: 4em 4em 60px 330px auto;
     grid-template-areas:
             'back-button back-button'

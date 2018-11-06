@@ -415,8 +415,8 @@ class ProductsDisplay extends Component{
                                                 collectionName:product.collectionName
                                             }
                                         }}> {imgUrl ?
-                                            <img alt="example" className="product-img" src={`${imgUrl}`} /> :
-                                            <div className="products-display-material-no-img">
+                                            <img alt="example" className="products-display-img" src={`${imgUrl}`} /> :
+                                            <div className="products-display-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE
                                                 </div>

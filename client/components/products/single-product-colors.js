@@ -86,8 +86,9 @@ class SingleProductColors extends Component{
             renderProductColors = productColors.map(color =>{
                     const colorContent =(
                         <div>
-                            <p>{color.name}</p>
-                            <p>{color.value}</p>
+                            <p>Name: {color.name}</p>
+                            <p>Code: {color.code ? color.code : "None"}</p>
+                            <p>Hex: {color.value}</p>
                         </div>
                     );
                     return(

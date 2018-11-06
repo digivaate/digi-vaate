@@ -269,13 +269,13 @@ class SingleProductMaterials extends Component{
                                 state:
                                     {
                                         historyProductUrl:this.props.match.url,
-                                        historyProductListUrl: this.props.location.state.productListUrl,
-                                        historyOrderUrl: this.props.location.state.historyOrderUrl,
-                                        orderListUrl:this.props.location.state.orderListUrl,
-                                        historyBudgetUrl: this.props.location.state.historyBudgetUrl,
-                                        seasonName: this.props.location.state.seasonName,
-                                        collectionName: this.props.location.state.collectionName,
-                                        productsCollection: this.props.location.state.productsCollection
+                                        historyProductListUrl: this.props.location.state ? this.props.location.state.productListUrl : null,
+                                        historyOrderUrl: this.props.location.state ?this.props.location.state.historyOrderUrl:null,
+                                        orderListUrl:this.props.location.state ?this.props.location.state.orderListUrl:null,
+                                        historyBudgetUrl: this.props.location.state ?this.props.location.state.historyBudgetUrl:null,
+                                        seasonName: this.props.location.state ? this.props.location.state.seasonName:null,
+                                        collectionName: this.props.location.state ? this.props.location.state.collectionName:null,
+                                        productsCollection: this.props.location.state ? this.props.location.state.productsCollection:null
                                     }
                             }}>
                             <Card
