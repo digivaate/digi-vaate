@@ -10,7 +10,6 @@ class SingleMaterialImg extends Component{
         super(props);
         this.state = {
             singleMaterialImg: this.props.loadedMaterial.imageId,
-            productName: this.props.productName
         }
     }
 
@@ -18,12 +17,12 @@ class SingleMaterialImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data)
+        axios.patch(`${API_ROOT}/material/image?id=${this.props.loadedMaterial.id}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/product?id=${this.props.productId}`)
+                axios.get(`${API_ROOT}/material?id=${this.props.loadedMaterial.id}`)
                     .then(response => {
                         this.setState({
-                            singleProductImg: response.data[0].imageId
+                            singleMaterialImg: response.data[0].imageId
                         });
                     });
             })

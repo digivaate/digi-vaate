@@ -78,9 +78,9 @@ class SingleMaterial extends Component{
             onOk(){
                 axios.get(`${API_ROOT}/material?id=${self.materialId}`)
                     .then(response => {
+                        this.loadedMaterialOri = response.data[0];
                         self.setState({
                             loadedMaterial: response.data[0],
-                            loadedMaterialOri: response.data[0],
                             nameOri: response.data[0].name,
                             modified:false
                         })
