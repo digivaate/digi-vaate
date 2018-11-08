@@ -125,7 +125,7 @@ class ColorCollection extends Component{
         });
     };
 
-    handleColorOk = (event) => {
+    handleColorOk = () => {
         let colorName = this.state.name.slice(0);
         let colorCode = this.state.code ? this.state.code.slice(0) : null;
         let colorSelected = {...this.state.colorSelected};

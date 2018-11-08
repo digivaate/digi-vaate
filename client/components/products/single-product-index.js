@@ -87,10 +87,6 @@ class SingleProduct extends Component {
         })
     };
 
-    onTabChange = (key, type) => {
-        this.setState({ [type]: key });
-    };
-
     loadProduct = () => {
         if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;

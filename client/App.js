@@ -125,7 +125,7 @@ class App extends React.Component {
     };
 
 
-render(){
+    render(){
         return(
             <BrowserRouter>
                 <div className="App">
