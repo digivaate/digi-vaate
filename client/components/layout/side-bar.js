@@ -216,8 +216,8 @@ class SideBar extends Component{
                 )
             });
         }return (
-            <Sider width={250}>
-                <Menu className="side-bar-menu" mode="inline">
+            <Sider theme="light" className="side-bar-menu" width={250}>
+                <Menu mode="inline">
                     <Menu.Item key="products">
                         <Link to={"/products"}>
                             Products

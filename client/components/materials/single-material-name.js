@@ -65,10 +65,14 @@ class SingleMaterialName extends Component{
             if (newMaterialName === materialName && this.props.loadedMaterial.id === this.props.materialList[i].id) {
                 this.setState({
                     nameVisible:false
-                })
+                });
                 return null;
             } else if (newMaterialName === materialName) {
                 message.error("Material name is already used! Please use another name");
+                return null;
+            }
+            if(newMaterialName.trim() == ""){
+                message.error("The name cannot be empty!")
                 return null;
             }
         }
@@ -90,7 +94,7 @@ class SingleMaterialName extends Component{
         }
         return (
             <Row type="flex">
-                <h1><span style={ this.state.materialName !== this.props.loadedMaterialOri.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.materialName} </span>&nbsp;</h1>
+                <h1><span style={ this.props.loadedMaterial.name !== this.props.loadedMaterialOri.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.props.loadedMaterial.name} </span>&nbsp;</h1>
                 {editNameBtn}
                 <Modal
                     title="Edit name"

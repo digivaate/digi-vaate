@@ -321,10 +321,11 @@ class ProductTable extends Component {
                 Header: 'Product',
                 id:'name',
                 accessor: d =>{
+                    console.log(d)
                     return (
                         <div>
                             <Link to={{
-                                pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.orderProductId}-${d.name}`,
+                                pathname: `/seasons/${this.props.match.params.seasonId}/collections/${this.props.match.params.collectionId}/products/${d.productId}-${d.name}`,
                                 state: {
                                     historyOrderUrl: this.props.match.url,
                                     orderListUrl:this.props.location.state ? this.props.location.state.orderListUrl : null,

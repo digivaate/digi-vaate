@@ -56,6 +56,12 @@ class SingleProductGeneralInfo extends Component{
     handleInfoCancel = (e) => {
         this.setState({
             infoVisible: false,
+            loadedProduct: this.props.loadedProduct,
+            sellingPrice: this.props.loadedProduct.sellingPrice,
+            resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
+            taxPercent: this.props.loadedProduct.taxPercent,
+            amount: this.props.loadedProduct.amount,
+            subcCostTotal: this.props.loadedProduct.subcCostTotal,
         });
     };
 
@@ -98,11 +104,11 @@ class SingleProductGeneralInfo extends Component{
     handleInfoOk = () => {
         let newInfo = {
             ...this.state.loadedProduct,
-            sellingPrice: parseFloat(parseFloat(this.state.sellingPrice).toFixed(2)),
-            resellerProfitPercent: parseFloat(parseFloat(this.state.resellerProfitPercent).toFixed(2)),
-            taxPercent: parseFloat(parseFloat(this.state.taxPercent).toFixed(2)),
-            amount: parseFloat(parseFloat(this.state.amount).toFixed(2)),
-            subcCostTotal: parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2))
+            sellingPrice: this.state.sellingPrice ? parseFloat(parseFloat(this.state.sellingPrice).toFixed(2)) : 0,
+            resellerProfitPercent: this.state.resellerProfitPercent ? parseFloat(parseFloat(this.state.resellerProfitPercent).toFixed(2)) : 0,
+            taxPercent: this.state.taxPercent ? parseFloat(parseFloat(this.state.taxPercent).toFixed(2)) : 0,
+            amount: this.state.amount ? parseFloat(parseFloat(this.state.amount).toFixed(2)) : 0,
+            subcCostTotal: this.state.subcCostTotal ? parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2)) : 0
         };
         this.props.newInfo(newInfo);
         this.props.refreshCheck(this.state.saved);
@@ -182,10 +188,10 @@ class SingleProductGeneralInfo extends Component{
                         </Col>
                     </Row>
                 </Modal>
-                <p>Selling price: <span style={ this.state.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.sellingPrice} </span></p>
-                <p>Reseller profit percentage: <span style={ this.state.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.resellerProfitPercent}</span></p>
-                <p>Amount:<span style={ this.state.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.amount}</span></p>
-                <p>Subcontracting cost:<span style={ this.state.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.state.subcCostTotal}</span></p>
+                <p>Selling price: <span style={ this.props.loadedProduct.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.sellingPrice} </span></p>
+                <p>Reseller profit percentage: <span style={ this.props.loadedProduct.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.resellerProfitPercent}</span></p>
+                <p>Amount:<span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
+                <p>Subcontracting cost:<span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
             </div>
         )
     }

@@ -42,6 +42,22 @@ class SingleMaterialGeneral extends Component{
                 instructions:this.props.loadedMaterial.instructions,
                 composition:this.props.loadedMaterial.composition,
             })
+        } else if(prevProps != this.props){
+            this.setState({
+                infoVisible: false,
+                loadedMaterial: this.props.loadedMaterial,
+                freight:this.props.loadedMaterial.freight,
+                minQuantity:this.props.loadedMaterial.minQuantity,
+                unitPrice:this.props.loadedMaterial.unitPrice,
+                manufacturer:this.props.loadedMaterial.manufacturer,
+                code: this.props.loadedMaterial.code,
+                widthUnit:this.props.loadedMaterial.widthUnit,
+                weightUnit:this.props.loadedMaterial.weightUnit,
+                width:this.props.loadedMaterial.width,
+                weight:this.props.loadedMaterial.weight,
+                instructions:this.props.loadedMaterial.instructions,
+                composition:this.props.loadedMaterial.composition,
+            })
         }
     }
 
@@ -54,6 +70,17 @@ class SingleMaterialGeneral extends Component{
     handleInfoCancel = (e) => {
         this.setState({
             infoVisible: false,
+            freight:this.props.loadedMaterial.freight,
+            minQuantity:this.props.loadedMaterial.minQuantity,
+            unitPrice:this.props.loadedMaterial.unitPrice,
+            manufacturer:this.props.loadedMaterial.manufacturer,
+            code: this.props.loadedMaterial.code,
+            widthUnit:this.props.loadedMaterial.widthUnit,
+            weightUnit:this.props.loadedMaterial.weightUnit,
+            width:this.props.loadedMaterial.width,
+            weight:this.props.loadedMaterial.weight,
+            instructions:this.props.loadedMaterial.instructions,
+            composition:this.props.loadedMaterial.composition,
         });
     };
 
@@ -100,15 +127,15 @@ class SingleMaterialGeneral extends Component{
 
     handleInfoOk = () => {
         let newInfo = {
-            freight: parseFloat(parseFloat(this.state.freight).toFixed(2)),
-            minQuantity:parseFloat(parseFloat(this.state.minQuantity).toFixed(2)),
-            unitPrice:parseFloat(parseFloat(this.state.unitPrice).toFixed(2)),
+            freight: this.state.freight ? parseFloat(parseFloat(this.state.freight).toFixed(2)) : 0,
+            minQuantity:this.state.minQuantity ? parseFloat(parseFloat(this.state.minQuantity).toFixed(2)) : 0,
+            unitPrice:this.state.unitPrice ? parseFloat(parseFloat(this.state.unitPrice).toFixed(2)) : 0,
             manufacturer:this.state.manufacturer,
             code: this.state.code,
             widthUnit:this.state.widthUnit,
             weightUnit:this.state.weightUnit,
-            width:parseFloat(parseFloat(this.state.width).toFixed(2)),
-            weight:parseFloat(parseFloat(this.state.weight).toFixed(2)),
+            width:this.state.width ? parseFloat(parseFloat(this.state.width).toFixed(2)) : 0,
+            weight:this.state.weight ? parseFloat(parseFloat(this.state.weight).toFixed(2)) : 0,
             instructions:this.state.instructions,
             composition:this.state.composition,
         };
@@ -296,16 +323,16 @@ class SingleMaterialGeneral extends Component{
                     </Row>
                 </Modal>
                 <div>
-                    <p>Code: <span style={ this.state.code !== this.props.loadedMaterialOri.code ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.code?this.state.code: "None"}</span> </p>
+                    <p>Code: <span style={ this.props.loadedMaterial.code !== this.props.loadedMaterialOri.code ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.code?this.props.loadedMaterial.code: "None"}</span> </p>
                     <p>Total Consumption: {totalConsumption}</p>
-                    <p>Freight: <span style={ this.state.freight !== this.props.loadedMaterialOri.freight ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.state.freight} </span></p>
-                    <p>Manufacturer: <span style={ this.state.manufacturer !== this.props.loadedMaterialOri.manufacturer ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.manufacturer}</span></p>
-                    <p>Minimum Quantity: <span style={ this.state.minQuantity !== this.props.loadedMaterialOri.minQuantity ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.minQuantity}</span></p>
-                    <p>Unit Price: <span style={ this.state.unitPrice !== this.props.loadedMaterialOri.unitPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.unitPrice}</span></p>
-                    <p>Width: <span style={ this.state.width !== this.props.loadedMaterialOri.width ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.width}</span> <span style={ this.props.loadedMaterialOri.widthUnit !== this.state.widthUnit ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.widthUnit}</span></p>
-                    <p>Weight: <span style={ this.state.weight !== this.props.loadedMaterialOri.weight ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.weight}</span> <span style={ this.props.loadedMaterialOri.weightUnit !== this.state.weightUnit ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.weightUnit}</span></p>
-                    <p>Instructions: <span style={ this.state.instructions !== this.props.loadedMaterialOri.instructions ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.instructions}</span></p>
-                    <p>Compositions: <span style={ this.state.composition !== this.props.loadedMaterialOri.composition ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.state.composition}</span></p>
+                    <p>Freight: <span style={ this.props.loadedMaterial.freight !== this.props.loadedMaterialOri.freight ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.props.loadedMaterial.freight} </span></p>
+                    <p>Manufacturer: <span style={ this.props.loadedMaterial.manufacturer !== this.props.loadedMaterialOri.manufacturer ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.manufacturer}</span></p>
+                    <p>Minimum Quantity: <span style={ this.props.loadedMaterial.minQuantity !== this.props.loadedMaterialOri.minQuantity ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.minQuantity}</span></p>
+                    <p>Unit Price: <span style={ this.props.loadedMaterial.unitPrice !== this.props.loadedMaterialOri.unitPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.unitPrice}</span></p>
+                    <p>Width: <span style={ this.props.loadedMaterial.width !== this.props.loadedMaterialOri.width ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.width}</span> <span style={ this.props.loadedMaterialOri.widthUnit !== this.props.loadedMaterial.widthUnit ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.widthUnit}</span></p>
+                    <p>Weight: <span style={ this.props.loadedMaterial.weight !== this.props.loadedMaterialOri.weight ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.weight}</span> <span style={ this.props.loadedMaterialOri.weightUnit !== this.props.loadedMaterial.weightUnit ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.weightUnit}</span></p>
+                    <p>Instructions: <span style={ this.props.loadedMaterial.instructions !== this.props.loadedMaterialOri.instructions ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.instructions}</span></p>
+                    <p>Compositions: <span style={ this.props.loadedMaterial.composition !== this.props.loadedMaterialOri.composition ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedMaterial.composition}</span></p>
                 </div>
             </div>
         )

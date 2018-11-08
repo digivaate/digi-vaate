@@ -60,11 +60,15 @@ class SingleProductName extends Component{
     };
 
     handleNameOk = () => {
-        this.props.newName(this.state.productName)
-        this.setState({
-            productName: this.state.productName,
-            nameVisible:false
-        })
+        if(this.state.productName.trim() !== ""){
+            this.props.newName(this.state.productName)
+            this.setState({
+                productName: this.state.productName,
+                nameVisible:false
+            })
+        } else{
+            message.error("The name cannot be empty!")
+        }
     };
 
 
@@ -79,7 +83,7 @@ class SingleProductName extends Component{
         }
         return (
             <Row type="flex">
-                <h1 style={ this.state.productName !== this.state.productNameOri ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight: 'bold'} }>{this.state.productName}&nbsp;</h1>
+                <h1 style={ this.props.singleProductName !== this.state.productNameOri ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight: 'bold'} }>{this.props.singleProductName}&nbsp;</h1>
                 {editNameBtn}
                 <Modal
                     title="Edit name"
