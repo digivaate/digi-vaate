@@ -1,6 +1,5 @@
 const Models = require('../models/models');
 const Controller = require('./Controller');
-const fs = require('fs');
 
 class ImageController extends Controller {
     constructor() { super(Models.Image); }

@@ -5,7 +5,7 @@ import {comaToPeriod} from "../utils/coma-convert";
 import {API_ROOT} from "../api-config";
 const { Item } = Form;
 
-class CompanyForm extends Component {
+class CreateCompany extends Component {
     state = {
         name: '',
         percent: 0,
@@ -85,4 +85,4 @@ class CompanyForm extends Component {
     }
 }
 
-export default CompanyForm;
+export default CreateCompany;

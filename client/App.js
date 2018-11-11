@@ -4,6 +4,13 @@ import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
 import asyncRoute from './asyncRoutes'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import Login from "./components/login";
+import {API_ROOT} from "./api-config";
+import axios from "axios/index";
+import CreateCompany from "./components/createCompany";
+import MainScreen from "./components/mainScreen";
+const FormItem = Form.Item;
 
 const AsyncProduct = asyncRoute.asyncProduct;
 const AsyncSingleProduct = asyncRoute.asyncSingleProduct;
@@ -124,8 +131,7 @@ class App extends React.Component {
         })
     };
 
-
-    render(){
+    renderApp = () => {
         return(
             <BrowserRouter>
                 <div className="App">
@@ -254,6 +260,20 @@ class App extends React.Component {
                 </div>
             </BrowserRouter>
         )
+    };
+
+    render(){
+        if (localStorage.getItem("userName")) {
+            axios.get(`${API_ROOT}/company`)
+                .then(response => {
+                    if (response.data.length === 0)
+                        return(<CreateCompany/>);
+                    else
+                        return this.renderApp();
+                });
+        } else {
+            return (<Login/>)
+        }
     }
 }
 
