@@ -1,3 +1,4 @@
+const Sequelize = require('../models/models').Sequelize;
 
 module.exports = class Controller {
     constructor(model) {
@@ -37,6 +38,10 @@ module.exports = class Controller {
             })
             .then(() => {
                 res.send(entity);
+            })
+            .catch(Sequelize.ValidationError, function (err) {
+                // respond with validation errors
+                return res.status(422).send(err.errors);
             })
             .catch(err => {
                 console.error('Error: ' + err);

@@ -1,8 +1,28 @@
+const normalizeString = require('../normalizeString');
+
 module.exports = (sequelize, DataTypes) => {
     const Color = sequelize.define('colors', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                isUnique: (value, next) => {
+                    Color.findAll({
+                        attributes: [ 'name' ]
+                    })
+                        .then((colors) => {
+                            let normValue = normalizeString(value);
+                            colors.forEach(color => {
+                                if (normalizeString(color.name) == normValue)
+                                    return next('Color with similar name exists');
+                            });
+                            next()
+                        })
+                        .catch((err) => {
+                            return next(err)
+                        })
+                }
+            }
         },
         code: {
             type: DataTypes.STRING,
