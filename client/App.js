@@ -4,13 +4,7 @@ import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
 import asyncRoute from './asyncRoutes'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import Login from "./components/login";
-import {API_ROOT} from "./api-config";
-import axios from "axios/index";
-import CreateCompany from "./components/createCompany";
 import MainScreen from "./components/mainScreen";
-const FormItem = Form.Item;
 
 const AsyncProduct = asyncRoute.asyncProduct;
 const AsyncSingleProduct = asyncRoute.asyncSingleProduct;
@@ -160,6 +154,7 @@ class App extends React.Component {
                 <div className="content">
                     <div>
                         <Switch>
+                            <Route path={'/'} exact component={MainScreen}/>
                             <Route path='/products' exact render={(props) =>
                                 <AsyncProduct
                                     key={window.location.href}

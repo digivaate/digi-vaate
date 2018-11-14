@@ -6,9 +6,7 @@ import App from './App';
 import {API_ROOT} from "./api-config";
 import axios from "axios/index";
 import CreateCompany from "./components/createCompany";
-
-console.log(API_ROOT);
-console.log(process.env.PORT);
+import Login from "./components/login";
 
 if (localStorage.getItem("userName")) {
     axios.get(`${API_ROOT}/company`)
