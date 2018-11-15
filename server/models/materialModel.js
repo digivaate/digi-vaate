@@ -1,8 +1,28 @@
+const normalizeString = require('../normalizeString');
+
 module.exports = (sequelize, DataTypes) => {
     const Material = sequelize.define('materials', {
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isUnique: (value, next) => {
+                    Material.findAll({
+                        attributes: [ 'name' ]
+                    })
+                        .then((materials) => {
+                            let normValue = normalizeString(value);
+                            materials.forEach(material => {
+                                if (normalizeString(material.name) == normValue)
+                                    return next('Material with ' + normValue + ' like name exists');
+                            });
+                            next()
+                        })
+                        .catch((err) => {
+                            return next(err)
+                        })
+                }
+            }
         },
         code: DataTypes.STRING,
         unitPrice: DataTypes.FLOAT,

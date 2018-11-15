@@ -1,9 +1,29 @@
+const normalizeString = require('../normalizeString');
+
 module.exports = (sequelize, DataTypes) => {
     //odoo attribute variants as comments
     const Product = sequelize.define('products', {
         name: { //name
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                isUnique: (value, next) => {
+                    Product.findAll({
+                        attributes: [ 'name' ]
+                    })
+                        .then((products) => {
+                            let normValue = normalizeString(value);
+                            products.forEach(product => {
+                                if (normalizeString(product.name) == normValue)
+                                    return next('Product with ' + normValue + ' like name exists');
+                            });
+                            next()
+                        })
+                        .catch((err) => {
+                            return next(err)
+                        })
+                }
+            }
         },
         sellingPrice: { //list_price
             type: DataTypes.FLOAT

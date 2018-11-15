@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
                             let normValue = normalizeString(value);
                             colors.forEach(color => {
                                 if (normalizeString(color.name) == normValue)
-                                    return next('Color with similar name exists');
+                                    return next('Color with ' + normValue + ' like name exists');
                             });
                             next()
                         })
