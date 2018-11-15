@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
+                //No record can be created with similar name
                 isUnique: (value, next) => {
                     Material.findAll({
                         attributes: [ 'name' ]
