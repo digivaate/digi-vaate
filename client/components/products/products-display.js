@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Skeleton,Card, Row, Col,Icon,Modal,Button,message,List,Divider,BackTop } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,List,Divider,BackTop } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -8,11 +8,13 @@ const confirm = Modal.confirm;
 import "./products.css"
 import ProductCreateForm from './product-card';
 import RenderInitialCard from '../renderInitialCard';
+import FilterArea from '../layout/Filter/FilterArea'
 
 class ProductsDisplay extends Component{
     constructor(props){
         super(props);
         this.state ={
+            products: [],
             isFetched: false,
             isSelected:false,
             productName:null,
@@ -62,6 +64,8 @@ class ProductsDisplay extends Component{
         axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(res => {
                 this.products = res.data;
+                this.productsOri = res.data
+                this.productsForFilter = res.data
                 for(let i = 0;i < this.products.length; i++){
                     if(this.products[i].companyId){
                         this.products[i].seasonName = "None";
@@ -75,7 +79,12 @@ class ProductsDisplay extends Component{
                         this.products[i].collectionName = this.props.match.params.collectionId;
                     }
                 }
-                this.setState({isFetched:true})
+                this.setState({
+                    products: this.products,
+                    productsForFilter: this.products,
+                    productsOri: this.products,
+                    isFetched: true,
+                })
             });
     };
 
@@ -96,7 +105,7 @@ class ProductsDisplay extends Component{
                             }
                         }
                         self.products = [...products];
-                        self.setState({})
+                        self.setState({products: self.products})
                     })
             },
             onCancel() {
@@ -196,19 +205,22 @@ class ProductsDisplay extends Component{
                             values.sizes = existedSizes.slice(0);
                             axios.post(`${API_ROOT}/product`, values)
                                 .then(response => {
-                                    axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
+                                    axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                         .then((re) => {
-                                            if (re.data[0].companyId) {
-                                                re.data[0].seasonName = "None";
-                                                re.data[0].collectionName = "None";
+                                            if (re.data.companyId) {
+                                                re.data.seasonName = "None";
+                                                re.data.collectionName = "None";
                                             }
-                                            else if (re.data[0].seasonId) {
-                                                re.data[0].collectionName = "None";
+                                            else if (re.data.seasonId) {
+                                                re.data.collectionName = "None";
                                             }
-                                            this.products.push(re.data[0]);
+                                            this.products.push(re.data);
                                             message.success("Product created", 1);
                                             this.uploadImage = null;
-                                            this.setState({visible: false});
+                                            this.setState({
+                                                products: this.products,
+                                                visible: false
+                                            });
                                             if(this.state.productLevel === "company"){
                                                 this.props.newProductCompany(values.name);
                                             }
@@ -225,19 +237,22 @@ class ProductsDisplay extends Component{
                     values.sizes = existedSizes.slice(0);
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
-                            axios.patch(`${API_ROOT}/product/image?name=${values.name}`, this.uploadImage)
+                            axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                 .then((re) => {
-                                    if (re.data[0].companyId) {
-                                        re.data[0].seasonName = "None";
-                                        re.data[0].collectionName = "None";
+                                    if (re.data.companyId) {
+                                        re.data.seasonName = "None";
+                                        re.data.collectionName = "None";
                                     }
-                                    else if (re.data[0].seasonId) {
-                                        re.data[0].collectionName = "None";
+                                    else if (re.data.seasonId) {
+                                        re.data.collectionName = "None";
                                     }
-                                    this.products.push(re.data[0]);
+                                    this.products.push(re.data);
                                     message.success("Product created", 1);
                                     this.uploadImage = null;
-                                    this.setState({visible: false});
+                                    this.setState({
+                                        products: this.products,
+                                        visible: false
+                                    });
                                     if(this.state.productLevel === "company"){
                                         this.props.newProductCompany(values.name);
                                     }
@@ -271,7 +286,10 @@ class ProductsDisplay extends Component{
                                     this.products.push(response.data);
                                     message.success("Product created", 1);
                                     this.uploadImage = null;
-                                    this.setState({visible: false});
+                                    this.setState({
+                                        products: this.products,
+                                        visible: false
+                                    });
                                     if(this.state.productLevel === "company"){
                                         this.props.newProductCompany(values.name);
                                     }
@@ -297,7 +315,10 @@ class ProductsDisplay extends Component{
                             this.products.push(response.data);
                             message.success("Product created", 1);
                             this.uploadImage = null;
-                            this.setState({visible: false});
+                            this.setState({
+                                products: this.products,
+                                visible: false
+                            });
                             if(this.state.productLevel === "company"){
                                 this.props.newProductCompany(values.name);
                             }
@@ -319,13 +340,156 @@ class ProductsDisplay extends Component{
         this.formRef = formRef;
     };
 
+    receiveFilterValues = (filterValues) => {
+        let productsForFilter = [...this.productsForFilter];
+        const keys = Object.keys(filterValues)
+        for(let i = 0; i < keys.length-1; i++){
+            if(keys[i] === "material"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    let materials = productsForFilter[j].materials.map(material => material.name);
+                    if(filterValues.material.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.material.length > 0) {
+                        for (let m = 0; m < materials.length; m++) {
+                            if (filterValues.material.indexOf(materials[m]) > -1) {
+                                count += 1
+                            }
+                        }
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            }
+            if(keys[i] === "color"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    let colors = productsForFilter[j].colors.map(color => color.name);
+                    if(filterValues.color.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.color.length > 0) {
+                        for (let m = 0; m < colors.length; m++) {
+                            if (filterValues.color.indexOf(colors[m]) > -1) {
+                                count += 1
+                            }
+                        }
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            }
+            if(keys[i] === "size"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    let sizes = productsForFilter[j].sizes.map(size => size.value);
+                    if(filterValues.size.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.size.length > 0) {
+                        for (let m = 0; m < sizes.length; m++) {
+                            if (filterValues.size.indexOf(sizes[m]) > -1) {
+                                count += 1
+                            }
+                        }
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            };
+            if(keys[i] === "season"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    if(filterValues.season.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.season.length > 0) {
+                        if (filterValues.season.indexOf(productsForFilter[j].seasonName) > -1) {
+                            count += 1
+                        }
+
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            }
+            if(keys[i] === "collection"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    if(filterValues.collection.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.collection.length > 0) {
+                        if (filterValues.collection.indexOf(productsForFilter[j].collectionName) > -1) {
+                            count += 1
+                        }
+
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            }
+        }
+    };
+
     render() {
         let showTotalProducts = (
             this.products.length <= 1
                 ?
-                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> product</h2>
+                <h2 style={{textAlign:'center'}}>Total <strong>{this.state.products.length}</strong> product</h2>
                 :
-                <h2 style={{textAlign:'center'}}>Total <strong>{this.products.length}</strong> products</h2>
+                <h2 style={{textAlign:'center'}}>Total <strong>{this.state.products.length}</strong> products</h2>
         );
         let renderProductList = null;
         let renderProductCompanyList = null;
@@ -335,16 +499,9 @@ class ProductsDisplay extends Component{
         let renderProductMaterials = null;
         let renderProductPrice = null;
         let renderProductSizes = null;
-        if (this.products && this.state.productLevel) {
-            /*
-            Sort by id of product
-            this.products.sort(function(a, b){
-
-                return a.id-b.id
-            });
-            */
-            this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
-            renderProductList = this.products.map(product =>{
+        if (this.state.products && this.state.productLevel) {
+            this.state.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
+            renderProductList = this.state.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
                 let imgUrl = null;
                 if(product.imageId){
@@ -556,7 +713,7 @@ class ProductsDisplay extends Component{
             });
 
 
-            if(this.products.length > 0) {
+            if(this.state.products.length >= 0 && this.products.length > 0) {
                 if(this.state.productLevel === "company"){
                     return (
                         <div>
@@ -568,6 +725,13 @@ class ProductsDisplay extends Component{
                             >
                                 Create new product
                             </Button>
+                            <br/>
+                            <br/>
+                            <FilterArea
+                                sections={["Season","Collection","Color","Material","Size"]}
+                                sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
+                                products = {this.products}
+                            />
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
                                 productLevelId = {(productLevelId) => this.setState({productLevelId})}
@@ -581,6 +745,8 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             {showTotalProducts}
+                            <br/>
+                            <br/>
                             <Divider> Company Products </Divider>
                             <List
                                 dataSource={renderProductCompanyList}
@@ -634,6 +800,13 @@ class ProductsDisplay extends Component{
                             >
                                 Create new product
                             </Button>
+                            <br/>
+                            <br/>
+                            <FilterArea
+                                sections={["Season","Collection","Color","Material","Size"]}
+                                sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
+                                products = {this.products}
+                            />
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
                                 productLevelId = {(productLevelId) => this.setState({productLevelId})}
@@ -685,6 +858,13 @@ class ProductsDisplay extends Component{
                         >
                             Create new product
                         </Button>
+                        <br/>
+                        <br/>
+                        <FilterArea
+                            sections={["Season","Collection","Color","Material","Size"]}
+                            products = {this.products}
+                            sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
+                        />
                         <ProductCreateForm
                             productLevelName = {this.state.productLevel}
                             productLevelId = {(productLevelId) => this.setState({productLevelId})}
@@ -713,7 +893,7 @@ class ProductsDisplay extends Component{
                     </div>
                 )
             }
-            else if(this.products.length === 0 && this.state.isFetched === false){
+            else if(this.state.products.length === 0 && this.state.isFetched === false){
                 return (
                         <div>
                             <h1>Products</h1>
@@ -748,6 +928,7 @@ class ProductsDisplay extends Component{
                     )
             }
             else{
+                console.log("A")
                 return (
                     <div>
                         <h1>Products</h1>
@@ -757,6 +938,13 @@ class ProductsDisplay extends Component{
                         >
                             Create new product
                         </Button>
+                        <br/>
+                        <br/>
+                        <FilterArea
+                            sections={["Season","Collection","Color","Material","Size"]}
+                            products = {this.products}
+                            sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
+                        />
                         <ProductCreateForm
                             productLevelName = {this.state.productLevel}
                             productLevelId = {(productLevelId) => this.setState({productLevelId})}
@@ -783,6 +971,13 @@ class ProductsDisplay extends Component{
                     >
                         Create new product
                     </Button>
+                    <br/>
+                    <br/>
+                    <FilterArea
+                        sections={["Season","Collection","Color","Material","Size"]}
+                        products = {this.products}
+                        sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
+                    />
                 </div>
                 )
 

@@ -1,0 +1,52 @@
+/* FilterBar.js */
+.filter-bar {
+    width: 100%;
+}
+.filter-section{
+    width: 20%
+}
+
+/* FilterSection.js */
+
+.filter-header{
+    width: 160px;
+    height: 30px;
+    border: 2px solid;
+}
+
+.filter-header:hover{
+    cursor: pointer;
+}
+
+.filter-header-active{
+    width: 160px;
+    height: 30px;
+    border: 2px solid;
+    background-color: #1890ff;
+    color: white;
+}
+
+.filter-header-active:hover{
+    cursor: pointer;
+}
+
+.filter-header-content{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 3px;
+    font-weight: bold;
+}
+
+/* FilterItem.js */
+
+.filter-items-container{
+    height:100%;
+    width: 100%;
+    border:1px solid;
+}
+
+.filter-items-checkboxgroup{
+    margin: 10px;
+    font-weight: 600;
+}
