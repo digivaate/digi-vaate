@@ -1,4 +1,5 @@
 import React,{Component,Fragment} from 'react';
+import FilterReset from './FilterReset'
 import {Icon} from 'antd';
 import './filter.css'
 class FilterSection extends Component{
@@ -32,9 +33,18 @@ class FilterSection extends Component{
             }
         })
     };
+
+    resetFilter = (sectionToReset) => {
+        this.props.resetFilter(sectionToReset)
+    };
+
     render(){
         return (
         <Fragment>
+            <FilterReset
+                header={this.props.header}
+                resetFilter = {(sectionToReset) => this.resetFilter(sectionToReset)}
+            />
             <div className={this.state.openSelectBox && this.props.header === this.props.selectedSection ? "filter-header-active" : "filter-header"} onClick = {(e) => this.onSelectSection(e)}>
                 <div className="filter-header-content">
                     {this.props.header}

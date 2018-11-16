@@ -15,6 +15,9 @@ const FilterBar = (props) => {
                         onSelectSection = {(section) => {
                             props.onSelectSection(section)}
                         }
+                        resetFilter = {(sectionToReset => {
+                            props.resetFilter(sectionToReset)
+                        })}
                     />
                 </div>
             )}

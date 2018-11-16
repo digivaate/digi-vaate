@@ -66,3 +66,15 @@
     margin: 10px;
     font-weight: 600;
 }
+
+
+/* FilterReset.js */
+
+.filter-reset{
+}
+
+.filter-reset:hover{
+    font-weight: bold;
+    cursor: pointer;
+    width:100%
+}

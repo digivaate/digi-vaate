@@ -69,7 +69,7 @@ class FilterItems extends Component{
                         <CheckboxGroup
                             key={this.props.selectedSection}
                             options={options}
-                            defaultValue={this.props.defaultFilterValues}
+                            value={this.props.defaultFilterValues}
                             onChange={this.onChange}
                         />
                     </div>

@@ -33,9 +33,14 @@ class FilterArea extends Component {
             ...this.state,
             ...filterValues
         }, () => {
-            console.log(this.state)
             this.props.sendFilterValues(this.state)
         })
+    };
+
+    resetFilter = (sectionToReset) => {
+        this.setState({
+            [sectionToReset.toLowerCase()]: []
+        }, () => this.props.sendFilterValues(this.state))
     };
 
     render(){
@@ -49,6 +54,7 @@ class FilterArea extends Component {
                     sections = {this.props.sections}
                     selectedSection = {this.state.selectedSection}
                     onSelectSection = {(section => this.onSelectSection(section))}
+                    resetFilter = {sectionToReset => this.resetFilter(sectionToReset)}
                 />
                 <br/>
                 <FilterItems
