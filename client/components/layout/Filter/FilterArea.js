@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import FilterBar from './FilterBar'
 import FilterItems from './FilterItems'
+import FilterTag from './FilterTags'
 class FilterArea extends Component {
     constructor(props){
         super(props);
@@ -27,9 +28,23 @@ class FilterArea extends Component {
         })
     };
 
+    updateFilterValuesFromTag = (filterValues) => {
+        this.setState({
+            ...this.state,
+            ...filterValues
+        }, () => {
+            console.log(this.state)
+            this.props.sendFilterValues(this.state)
+        })
+    };
+
     render(){
         return(
             <div>
+                <FilterTag
+                    filterValues = {this.state}
+                    updateFilterValuesFromTag = {(filterValues) => this.updateFilterValuesFromTag(filterValues)}
+                />
                 <FilterBar
                     sections = {this.props.sections}
                     selectedSection = {this.state.selectedSection}

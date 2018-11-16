@@ -38,6 +38,22 @@
     font-weight: bold;
 }
 
+@media only screen and (max-width: 1110px){
+    .filter-header{
+        width: 100px;
+        height: 30px;
+        border: 2px solid;
+    }
+
+    .filter-header-active{
+        width: 100px;
+        height: 30px;
+        border: 2px solid;
+        background-color: #1890ff;
+        color: white;
+    }
+}
+
 /* FilterItem.js */
 
 .filter-items-container{

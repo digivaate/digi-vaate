@@ -745,8 +745,6 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             {showTotalProducts}
-                            <br/>
-                            <br/>
                             <Divider> Company Products </Divider>
                             <List
                                 dataSource={renderProductCompanyList}
