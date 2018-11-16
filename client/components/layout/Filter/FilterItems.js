@@ -9,7 +9,22 @@ class FilterItems extends Component{
         this.state ={}
     }
 
+    componentDidUpdate(prevProps){
+        if(this.props.products){
+            this.props.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
+            prevProps.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
+            let productsName = this.props.products.map(product => product.name);
+            let productsNameOfPrev = prevProps.products.map(product => product.name)
+            if(JSON.stringify(productsName) !== JSON.stringify(productsNameOfPrev)){
+                this.initilizedFilterItems();
+            }
+        }
+    }
+
     componentDidMount(){
+        this.initilizedFilterItems();
+    }
+    initilizedFilterItems = () => {
         if(this.props.products){
             let material = [];
             let color = [];
@@ -48,7 +63,7 @@ class FilterItems extends Component{
             })
 
         }
-    }
+    };
 
     onChange = (checkedValues) => {
         this.props.newFilterValues({[this.props.selectedSection.toLowerCase()]:checkedValues});

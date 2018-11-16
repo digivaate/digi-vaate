@@ -212,6 +212,7 @@ class ProductsDisplay extends Component{
                                                 re.data.collectionName = "None";
                                             }
                                             else if (re.data.seasonId) {
+                                                re.data.seasonName = this.props.match.params.seasonId
                                                 re.data.collectionName = "None";
                                             }
                                             this.products.push(re.data);
@@ -244,6 +245,7 @@ class ProductsDisplay extends Component{
                                         re.data.collectionName = "None";
                                     }
                                     else if (re.data.seasonId) {
+                                        re.data.seasonName = this.props.match.params.seasonId
                                         re.data.collectionName = "None";
                                     }
                                     this.products.push(re.data);
@@ -281,6 +283,7 @@ class ProductsDisplay extends Component{
                                         response.data.collectionName = "None";
                                     }
                                     else if (response.data.seasonId) {
+                                        response.data.seasonName = this.props.match.params.seasonId
                                         response.data.collectionName = "None";
                                     }
                                     this.products.push(response.data);
@@ -310,6 +313,7 @@ class ProductsDisplay extends Component{
                                 response.data.collectionName = "None";
                             }
                             else if (response.data.seasonId) {
+                                response.data.seasonName = this.props.match.params.seasonId
                                 response.data.collectionName = "None";
                             }
                             this.products.push(response.data);
@@ -801,7 +805,7 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             <FilterArea
-                                sections={["Season","Collection","Color","Material","Size"]}
+                                sections={["Collection","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                                 products = {this.products}
                             />
@@ -859,7 +863,7 @@ class ProductsDisplay extends Component{
                         <br/>
                         <br/>
                         <FilterArea
-                            sections={["Season","Collection","Color","Material","Size"]}
+                            sections={["Color","Material","Size"]}
                             products = {this.products}
                             sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                         />
@@ -926,7 +930,6 @@ class ProductsDisplay extends Component{
                     )
             }
             else{
-                console.log("A")
                 return (
                     <div>
                         <h1>Products</h1>
@@ -939,7 +942,13 @@ class ProductsDisplay extends Component{
                         <br/>
                         <br/>
                         <FilterArea
-                            sections={["Season","Collection","Color","Material","Size"]}
+                            sections={
+                                this.state.productLevel === "company" ?
+                                    ["Season","Collection","Color","Material","Size"] :
+                                        this.state.productLevel === "season" ?
+                                            ["Collection","Color","Material","Size"] :
+                                            ["Color","Material","Size"]
+                            }
                             products = {this.products}
                             sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                         />
