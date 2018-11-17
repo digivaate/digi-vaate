@@ -335,7 +335,7 @@ class ProductsDisplay extends Component{
                             console.log('Received values of form: ', response.data);
                         })
                         .catch(err => {
-
+                            console.error(err);
                         });
                 }
                 form.resetFields();
