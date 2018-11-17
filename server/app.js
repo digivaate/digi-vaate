@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res) => {
+    console.error(error);
     res.json({
         error: {
             message: error.message

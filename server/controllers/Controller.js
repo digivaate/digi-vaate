@@ -39,13 +39,14 @@ module.exports = class Controller {
             .then(() => {
                 res.send(entity);
             })
-            .catch(Sequelize.ValidationError, function (err) {
+            .catch(Sequelize.ValidationError, (err) => {
                 // respond with validation errors
+                console.error(err);
                 return res.status(422).send(err.errors);
             })
             .catch(err => {
-                console.error('Error: ' + err);
-                res.status(500).json({ error: err });
+                console.error(err);
+                res.status(500).json(err);
             });
     };
 

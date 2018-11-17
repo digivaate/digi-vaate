@@ -6,7 +6,7 @@ import { API_ROOT } from '../../api-config';
 const { Meta } = Card;
 const confirm = Modal.confirm;
 import "./products.css"
-import ProductCreateForm from './product-card';
+import ProductCreateForm from './poduct-create-form';
 import RenderInitialCard from '../renderInitialCard';
 import FilterArea from '../layout/Filter/FilterArea'
 
@@ -332,11 +332,14 @@ class ProductsDisplay extends Component{
                             else if(this.state.productLevel === "collection"){
                                 this.props.newProductCollection(values.name);
                             }
+                            console.log('Received values of form: ', response.data);
                         })
+                        .catch(err => {
+
+                        });
                 }
                 form.resetFields();
             }
-            console.log('Received values of form: ', values);
         });
     };
 
