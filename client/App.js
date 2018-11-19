@@ -5,18 +5,8 @@ import FooterArea from './components/layout/footer'
 import asyncRoute from './asyncRoutes'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import MainScreen from "./components/mainScreen";
-import BudgetPlanningTable from './components/summary-table'
-import ColorCollection from './components/colors/colors-collection'
-import MaterialList from './components/materials/material-list'
-import ProductsDisplay from './components/products/products-display'
-import SingleProduct from './components/products/single-product-index'
-import ThemeList from './components/themes/theme-list'
-import SingleMaterial from './components/materials/single-material'
-import SingleSeason from './components/seasons/single-season'
-import SeasonsList from './components/company/seasons-list'
-import OrderList from './components/orders/order-list'
-import SingleOrder from './components/orders/single-order'
-/*const AsyncProduct = asyncRoute.asyncProduct;
+
+const AsyncProduct = asyncRoute.asyncProduct;
 const AsyncSingleProduct = asyncRoute.asyncSingleProduct;
 const AsyncMaterial = asyncRoute.asyncMaterial;
 const AsyncSingleMaterial = asyncRoute.asyncSingleMaterial;
@@ -27,7 +17,6 @@ const AsyncColor = asyncRoute.asyncColor;
 const AsyncCollectionList = asyncRoute.asyncCollectionList;
 const AsyncSeasonList = asyncRoute.asyncSeasonList;
 const AsyncBudgetPlanningTable = asyncRoute.asyncBudgetPlanningTable;
-*/
 
 class App extends React.Component {
     constructor(props) {
@@ -167,7 +156,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path={'/'} exact component={MainScreen}/>
                             <Route path='/products' exact render={(props) =>
-                                <ProductsDisplay
+                                <AsyncProduct
                                     key={window.location.href}
                                     {...props}
                                     newProductCompany={newProductCompany => this.newProductCompanyFunc(newProductCompany)}
@@ -175,20 +164,20 @@ class App extends React.Component {
                                 />}
                             />
                             <Route path="/seasons" exact render={() =>
-                                <SeasonsList
+                                <AsyncSeasonList
                                     sendNewSeason={seasonName => this.newSeasonNameFunc(seasonName)}
                                     deleteSeason={seasonName => this.deleteSeason(seasonName)}
                                     updateSeason={newSeasonEdit => this.updateSeason(newSeasonEdit)}
                                 />}
                             />
                             <Route path="/materials" exact render={(props) =>
-                                <MaterialList
+                                <AsyncMaterial
                                     {...props}
                                     newMaterial={newMaterial => this.newMaterialFunc(newMaterial)}
                                 />}
                             />
                             <Route path={`/products/:productId`} exact render={(props) =>
-                                <SingleProduct
+                                <AsyncSingleProduct
                                     {...props}
                                     key={window.location.href}
                                     changeLocation={() => this.changeLocation()}
@@ -196,14 +185,14 @@ class App extends React.Component {
                                 />
                             }/>
                             <Route path="/materials/:materialId" exact render={(props) =>
-                                <SingleMaterial
+                                <AsyncSingleMaterial
                                     {...props}
                                     newMaterialName={(newMaterialName) => this.newMaterialName(newMaterialName)}
                                 />
                             }/>
-                            <Route path="/colors" exact component={ColorCollection}/>
+                            <Route path="/colors" exact component={AsyncColor}/>
                             <Route path="/seasons/:seasonId/products" exact render={(props) =>
-                                <ProductsDisplay
+                                <AsyncProduct
                                     key={window.location.href}
                                     {...props}
                                     newProductSeason={newProductSeason => this.newProductSeasonFunc(newProductSeason)}
@@ -211,7 +200,7 @@ class App extends React.Component {
                                 />}
                             />
                             <Route path={`/seasons/:seasonId/products/:productId`} exact render={(props) =>
-                                <SingleProduct
+                                <AsyncSingleProduct
                                     {...props}
                                     key={window.location.href}
                                     changeLocation={() => this.changeLocation()}
@@ -219,15 +208,15 @@ class App extends React.Component {
                                 />
                             }/>
                             <Route path={'/seasons/:seasonId/budgeting'} exact render={(props) =>
-                                <BudgetPlanningTable
+                                <AsyncBudgetPlanningTable
                                     {...props}
                                     requestPath={`/season/products?name=${props.match.params.seasonId}`}
                                     showCollection={true}
                                 />}
                             />
-                            <Route path={'/seasons/:seasonId/colors'} exact component={ColorCollection}/>
+                            <Route path={'/seasons/:seasonId/colors'} exact component={AsyncColor}/>
                             <Route path="/seasons/:seasonId/collections" exact render={(props) =>
-                                <SingleSeason
+                                <AsyncCollectionList
                                     {...props}
                                     sendNewCollection={collectionName => this.newCollectionNameFunc(collectionName)}
                                     deleteCollection={collectionName => this.deleteCollection(collectionName)}
@@ -236,16 +225,16 @@ class App extends React.Component {
                             }/>
                             <Route path="/seasons/:seasonId/collections/:collectionId/budgeting" exact
                                    render={(props) =>
-                                       <BudgetPlanningTable
+                                       <AsyncBudgetPlanningTable
                                            {...props}
                                            requestPath={`/collection/products?name=${props.match.params.collectionId}`}
                                        />}
                             />
                             <Route path="/seasons/:seasonId/collections/:collectionId/colors" exact
-                                   component={ColorCollection}/>
+                                   component={AsyncColor}/>
                             <Route path="/seasons/:seasonId/collections/:collectionId/products" exact
                                    render={(props) =>
-                                       <ProductsDisplay
+                                       <AsyncProduct
                                            key={window.location.href}
                                            {...props}
                                            requestPath={`/collection/products?name=${props.match.params.collectionId}`}
@@ -253,14 +242,14 @@ class App extends React.Component {
                                        />}
                             />
                             <Route path="/seasons/:seasonId/collections/:collectionId/themes" exact
-                                   component={ThemeList}/>
+                                   component={AsyncThemeList}/>
                             <Route path="/seasons/:seasonId/collections/:collectionId/orders" exact
-                                   component={OrderList}/>
+                                   component={AsyncOrderList}/>
                             <Route path="/seasons/:seasonId/collections/:collectionId/orders/:orderId" exact
-                                   component={SingleOrder}/>
+                                   component={AsyncSingleOrder}/>
                             <Route path="/seasons/:seasonId/collections/:collectionId/products/:productId" exact
                                    render={(props) =>
-                                       <SingleProduct
+                                       <AsyncSingleProduct
                                            {...props}
                                            key={window.location.href}
                                            changeLocation={() => this.changeLocation()}
