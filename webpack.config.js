@@ -31,12 +31,6 @@ const clientConfig = {
         path: path.resolve(__dirname, outputDir +'/client/'),
         publicPath: '/',
         filename: "[name].bundle.js",
-        chunkFilename: '[name].bundle.js'
-    },
-    optimization:{
-        splitChunks:{
-            chunks: 'all'
-        }
     },
     module: {
         rules: [
@@ -74,15 +68,12 @@ const clientConfig = {
         new HtmlWebpackPlugin({
             template: "./client/index.html",
             favicon: "./client/public/favicon.ico",
-            filename:'index.html',
-            inject:'body'
         }),
         new webpack.DefinePlugin({
             'process.env': {
                 'PORT': JSON.stringify(port)
             }
-        }),
-        new BundleAnalyzerPlugin()
+        })
     ]
 };
 
