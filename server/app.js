@@ -4,12 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const models = require('./models/models');
-const fs = require('fs');
 
-//create image uploads folder
-if (!fs.existsSync('./uploads')) {
-    fs.mkdirSync('./uploads');
-}
 //synchronise sequelize models with database
 models.sequelize.sync()
     .catch(err => console.error('Postgre sync error: ' + err));
