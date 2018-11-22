@@ -98,14 +98,18 @@ class ProductsDisplay extends Component{
             onOk() {
                 axios.delete(`${API_ROOT}/product?id=${productId}`)
                     .then(() => {
-                        const products = [...self.products];
+                        const products = [...self.state.products];
                         for(let i = 0; i < products.length; i++){
                             if(products[i].id === productId){
                                 products.splice(i,1)
                             }
-                        }
-                        self.products = [...products];
-                        self.setState({products: self.products})
+                        };
+                        for(let i = 0; i < self.productsForFilter.length; i++){
+                            if(self.productsForFilter[i].id === productId){
+                                self.productsForFilter.splice(i,1)
+                            }
+                        };
+                        self.setState({products: products})
                     })
             },
             onCancel() {
@@ -519,7 +523,6 @@ class ProductsDisplay extends Component{
                 <h2 style={{textAlign:'center'}}>Total <strong>{this.state.products.length}</strong> products</h2>
         );
         let renderProductList = null;
-        let renderProductCompanyList = null;
         let renderProductSeasonList = null;
         let renderProductCollectionList = null;
         let renderProductColors = null;
@@ -527,6 +530,7 @@ class ProductsDisplay extends Component{
         let renderProductPrice = null;
         let renderProductSizes = null;
         if (this.state.products && this.state.productLevel) {
+            console.log(this.state.products)
             this.state.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderProductList = this.state.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
@@ -585,7 +589,7 @@ class ProductsDisplay extends Component{
 
                     if(this.state.productLevel === "collection"){
                         return (
-                            <Col span={6} key={product.id}>
+                            <div key={product.id}>
                                 <div className="product-card-wrapper">
                                     <Card
                                         hoverable
@@ -650,11 +654,11 @@ class ProductsDisplay extends Component{
                                         </Link>
                                     </Card>
                                 </div>
-                            </Col>
+                            </div>
                         )
                     }
                 return(
-                    <Col span={6} key={`${product.id}/${product.seasonName}/${product.collectionName}`}>
+                    <div key={`${product.id}/${product.seasonName}/${product.collectionName}`}>
                         <div className="product-card-wrapper">
                             <Card
                                 hoverable
@@ -721,7 +725,7 @@ class ProductsDisplay extends Component{
                                 </Link>
                             </Card>
                         </div>
-                    </Col>
+                    </div>
                 )
             });
             renderProductSeasonList = renderProductList.filter(element => {

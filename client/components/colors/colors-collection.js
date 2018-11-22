@@ -230,7 +230,7 @@ class ColorCollection extends Component{
                 return(
                     <Card.Grid
                         className="single-color-card"
-                        style={{backgroundColor: element.value}}
+                        style={{backgroundColor: element.value, border: "1px solid"}}
                         key={element.id}
                         onClick = {() => this.showColorModal(element)}
                     >
