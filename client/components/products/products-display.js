@@ -232,7 +232,13 @@ class ProductsDisplay extends Component{
                                                 this.props.newProductCollection(values.name);
                                             }
                                         });
+                                    form.resetFields();
                                 })
+                                .catch(err => {
+                                    if(err.response.status === 422){
+                                        message.error('Product name is used! Please choose another name.')
+                                    }
+                                });
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
@@ -265,7 +271,13 @@ class ProductsDisplay extends Component{
                                         this.props.newProductCollection(values.name);
                                     }
                                 });
+                            form.resetFields();
                         })
+                        .catch(err => {
+                            if(err.response.status === 422){
+                                message.error('Product name is used! Please choose another name.')
+                            }
+                        });
                 }
                 form.resetFields();
             }
@@ -302,7 +314,13 @@ class ProductsDisplay extends Component{
                                     else if(this.state.productLevel === "collection"){
                                         this.props.newProductCollection(values.name);
                                     }
+                                    form.resetFields();
                                 })
+                                .catch(err => {
+                                    if(err.response.status === 422){
+                                        message.error('Product name is used! Please choose another name.')
+                                    }
+                                });
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
@@ -333,12 +351,14 @@ class ProductsDisplay extends Component{
                                 this.props.newProductCollection(values.name);
                             }
                             console.log('Received values of form: ', response.data);
+                            form.resetFields();
                         })
                         .catch(err => {
-                            console.error(err);
+                            if(err.response.status === 422){
+                                message.error('Product name is used! Please choose another name.')
+                            }
                         });
                 }
-                form.resetFields();
             }
         });
     };
@@ -704,11 +724,6 @@ class ProductsDisplay extends Component{
                     </Col>
                 )
             });
-            renderProductCompanyList = renderProductList.filter(element => {
-                const pathSnippetsName = element.key.split('/').filter(i => i);
-                return pathSnippetsName[pathSnippetsName.length-1] === "None" && pathSnippetsName[pathSnippetsName.length-2] === "None"
-            });
-
             renderProductSeasonList = renderProductList.filter(element => {
                 const pathSnippetsName = element.key.split('/').filter(i => i);
                 return pathSnippetsName[pathSnippetsName.length-1] === "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
@@ -718,7 +733,6 @@ class ProductsDisplay extends Component{
                 const pathSnippetsName = element.key.split('/').filter(i => i);
                 return pathSnippetsName[pathSnippetsName.length-1] !== "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
             });
-
 
             if(this.state.products.length >= 0 && this.products.length > 0) {
                 if(this.state.productLevel === "company"){
@@ -752,35 +766,8 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             {showTotalProducts}
-                            <Divider> Company Products </Divider>
                             <List
-                                dataSource={renderProductCompanyList}
-                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
-                                pagination={{
-                                    pageSize: 8,
-                                    hideOnSinglePage: true,
-                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
-
-                                }}
-                                renderItem={item => <List.Item>{item}</List.Item>}
-                            >
-                            </List>
-                            <Divider> Season Products </Divider>
-                            <List
-                                dataSource={renderProductSeasonList}
-                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
-                                pagination={{
-                                    pageSize: 8,
-                                    hideOnSinglePage: true,
-                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
-
-                                }}
-                                renderItem={item => <List.Item>{item}</List.Item>}
-                            >
-                            </List>
-                            <Divider> Collection Products </Divider>
-                            <List
-                                dataSource={renderProductCollectionList}
+                                dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
@@ -827,20 +814,7 @@ class ProductsDisplay extends Component{
                             {showTotalProducts}
                             <Divider> Season Products </Divider>
                             <List
-                                dataSource={renderProductSeasonList}
-                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
-                                pagination={{
-                                    pageSize: 8,
-                                    hideOnSinglePage: true,
-                                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
-
-                                }}
-                                renderItem={item => <List.Item>{item}</List.Item>}
-                            >
-                            </List>
-                            <Divider> Collection Products </Divider>
-                            <List
-                                dataSource={renderProductCollectionList}
+                                dataSource={[...renderProductSeasonList,...renderProductCollectionList]}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
