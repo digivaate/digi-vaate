@@ -60,22 +60,22 @@ class BreadCrumbDigi extends Component{
     componentDidMount(){
         //Breadcrumbs for all company stuffs
         axios.get(`${API_ROOT}/company`)
-            .then(response => {
-                this.companies = response.data;
+            .then(res => {
+                this.companies = res.data;
                 for(let i=0;i<this.companies.length;i++) {
                     this.companiesMap[i] = this.companies[i].name;
                 }
-                for(let j=0; j<this.companiesMap.length; j++){
-                    axios.get(`${API_ROOT}/company/products?name=${this.companiesMap[j]}`)
+                for(let j=0; j<this.companies.length; j++){
+                    this.breadcrumbNameMap["/products"] = "Products";
+                    this.breadcrumbNameMap["/colors"] = "Colors";
+                    this.breadcrumbNameMap["/materials"] = "Materials";
+                    this.breadcrumbNameMap["/seasons"] = "Seasons";
+                    this.breadcrumbNameMap["/orders"] = "Orders";
+                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`)
                         .then(response => {
                             this.companiesProduct = response.data;
                             for(let m = 0 ; m<this.companiesProduct.length; m++){
                                 this.companiesProductsMap[m] = this.companiesProduct[m].name;
-                                this.breadcrumbNameMap["/products"] = "Products";
-                                this.breadcrumbNameMap["/colors"] = "Colors";
-                                this.breadcrumbNameMap["/materials"] = "Materials";
-                                this.breadcrumbNameMap["/seasons"] = "Seasons";
-                                this.breadcrumbNameMap["/orders"] = "Orders";
                                 this.breadcrumbNameMap["/products/"+this.companiesProduct[m].id + "-" + this.companiesProductsMap[m]] = this.companiesProductsMap[m];
                             }
                             this.setState({})

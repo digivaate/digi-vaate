@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,List,Divider,BackTop } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,List,BackTop } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -363,6 +363,7 @@ class ProductsDisplay extends Component{
                             }
                         });
                 }
+                form.resetFields();
             }
         });
     };
@@ -523,14 +524,11 @@ class ProductsDisplay extends Component{
                 <h2 style={{textAlign:'center'}}>Total <strong>{this.state.products.length}</strong> products</h2>
         );
         let renderProductList = null;
-        let renderProductSeasonList = null;
-        let renderProductCollectionList = null;
         let renderProductColors = null;
         let renderProductMaterials = null;
         let renderProductPrice = null;
         let renderProductSizes = null;
         if (this.state.products && this.state.productLevel) {
-            console.log(this.state.products)
             this.state.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderProductList = this.state.products.map(product =>{
                 let url = (this.props.match.url === "/") ? this.props.match.url : (this.props.match.url + '/')
@@ -728,16 +726,6 @@ class ProductsDisplay extends Component{
                     </div>
                 )
             });
-            renderProductSeasonList = renderProductList.filter(element => {
-                const pathSnippetsName = element.key.split('/').filter(i => i);
-                return pathSnippetsName[pathSnippetsName.length-1] === "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
-            });
-
-            renderProductCollectionList = renderProductList.filter(element => {
-                const pathSnippetsName = element.key.split('/').filter(i => i);
-                return pathSnippetsName[pathSnippetsName.length-1] !== "None" && pathSnippetsName[pathSnippetsName.length-2] !== "None"
-            });
-
             if(this.state.products.length >= 0 && this.products.length > 0) {
                 if(this.state.productLevel === "company"){
                     return (
@@ -816,9 +804,8 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             {showTotalProducts}
-                            <Divider> Season Products </Divider>
                             <List
-                                dataSource={[...renderProductSeasonList,...renderProductCollectionList]}
+                                dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
                                 pagination={{
                                     pageSize: 8,
