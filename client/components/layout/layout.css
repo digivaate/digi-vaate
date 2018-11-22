@@ -33,6 +33,14 @@
     background: inherit;
 }
 
+.ant-menu-submenu ul[id^='seasons$Menu'] {
+    background-color: #EBECF8;
+}
+
+.ant-menu-submenu ul[id^='collections-season-'] {
+    background-color: #D6D8DF;
+}
+
 /* breadcrumb.js */
 .bread-crumb{
     font-size:17px;
