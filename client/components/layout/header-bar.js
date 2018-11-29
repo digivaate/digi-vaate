@@ -42,11 +42,19 @@ class HeaderBar extends Component{
                 <Link to={'/'}>
                     <h1 className={'logo'}>DigiVaate</h1>
                 </Link>
+
                 <Route path="/" render={(props) => <BreadCrumbDisplay
                     className={'bread-crumb'}
                     refresh = {this.state.refresh}
                 />}
                 />
+                <a
+                    className="header-section"
+                    target="_blank"
+                    href="https://ems-v12.yritysohjelmisto.fi/web/login?db=dgv-181127"
+                >
+                    SALES
+                </a>
             </div>
         )
     }
