@@ -15,7 +15,6 @@ const config = {
             acquire: 30000,
             idle: 10000
         },
-        // disable logging; default: console.log
         logging: false
     }
 };
@@ -69,7 +68,8 @@ let modules = [
     require('./sizeModel'),
     require('./orderModel'),
     require('./orderProductModel'),
-    require('./imageModel')
+    require('./imageModel'),
+    require('./productGroupModel')
 ];
 
 modules.forEach(module => {

@@ -12,5 +12,6 @@ router.use('/size', require('./sizeRoute'));
 router.use('/order', require('./orderRoute'));
 router.use('/orderproduct', require('./oderProductRoute'));
 router.use('/image', require('./imageRoute'));
+router.use('/productgroup', require('./prodGroupRoute'));
 
 module.exports = router;
