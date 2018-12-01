@@ -18,7 +18,6 @@
     "start": "node ./server/server.js",
     "build": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
-    "postinstall": "npm run cleardb",
     "heroku-postbuild": "npm run build",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "dev:server": "nodemon --exec babel-node server/server",
