@@ -131,30 +131,21 @@ class ProductsDisplay extends Component{
 
     handleCreate = (colorOptions,materialOptions,sizeOptions) => {
         const form = this.formRef.props.form;
-        form.validateFields((err, values) => {
+        form.validateFields(async (err, values) => {
+            console.log('Values', values);
             if (err) {
                 return;
             }
-            /*
-            let newProductName = values.name.replace(/[-' '_]/g,'').toUpperCase();
-            for(let i = 0; i< this.products.length;i++){
-                let productName = this.products[i].name.replace(/[-' '_]/g,'').toUpperCase();
-                if(newProductName === productName){
-                    message.error("Product name is already used! Please use another name")
-                    return null;
-                }
-            }
-            */
-            if(!values.sellingPrice){
+            if (!values.sellingPrice) {
                 values.sellingPrice = 0;
             }
-            if(!values.taxPercent){
+            if (!values.taxPercent) {
                 values.taxPercent = 0;
             }
-            if(!values.resellerProfitPercent){
+            if (!values.resellerProfitPercent) {
                 values.resellerProfitPercent = 0;
             }
-            if(!values.subcCostTotal){
+            if (!values.subcCostTotal) {
                 values.subcCostTotal = 0;
             }
             for (let i = 0; i < values.colors.length; i++) {
@@ -168,7 +159,7 @@ class ProductsDisplay extends Component{
             for (let i = 0; i < values.materials.length; i++) {
                 for (let j = 0; j < materialOptions.length; j++) {
                     if (values.materials[i] === materialOptions[j].name) {
-                        values.materials[i] = {id:materialOptions[j].id}
+                        values.materials[i] = {id: materialOptions[j].id}
                     }
                 }
             }
@@ -182,27 +173,37 @@ class ProductsDisplay extends Component{
                         existedSizes.push(sizeOptions[j])
                     }
                 }
-                if (sizeOptionsValue.indexOf(values.sizes[i]) < 0){
+                if (sizeOptionsValue.indexOf(values.sizes[i]) < 0) {
                     newSizes.push({
-                        value:values.sizes[i]
+                        value: values.sizes[i]
                     })
                 }
             }
             existedSizes = existedSizes.map(size => size.id);
 
-            if(this.state.productLevel === "company"){
+            if (this.state.productLevel === "company") {
                 values.companyId = this.state.productLevelId;
-            }
-            else if(this.state.productLevel === "season"){
+            } else if (this.state.productLevel === "season") {
                 values.seasonId = this.state.productLevelId;
-            }
-            else if(this.state.productLevel === "collection"){
+            } else if (this.state.productLevel === "collection") {
                 values.collectionId = this.state.productLevelId;
             }
             values.imageId = null;
-            if(this.uploadImage) {
-                if(newSizes.length > 0){
-                    axios.post(`${API_ROOT}/size`,newSizes)
+
+            //Create new product group if one does not exist
+            if (!(typeof values.productGroup === 'number')) {
+                await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup})
+                    .then(response => {
+                        values.productGroupId = response.data.id;
+                    })
+                    .catch(err => console.error(err));
+            } else {
+                values.productGroupId = values.productGroup;
+            }
+
+            if (this.uploadImage) {
+                if (newSizes.length > 0) {
+                    axios.post(`${API_ROOT}/size`, newSizes)
                         .then(response => {
                             newSizeId = response.data.map(ele => ele.id);
                             existedSizes = existedSizes.concat(newSizeId);
@@ -214,8 +215,7 @@ class ProductsDisplay extends Component{
                                             if (re.data.companyId) {
                                                 re.data.seasonName = "None";
                                                 re.data.collectionName = "None";
-                                            }
-                                            else if (re.data.seasonId) {
+                                            } else if (re.data.seasonId) {
                                                 re.data.seasonName = this.props.match.params.seasonId
                                                 re.data.collectionName = "None";
                                             }
@@ -226,20 +226,18 @@ class ProductsDisplay extends Component{
                                                 products: this.products,
                                                 visible: false
                                             });
-                                            if(this.state.productLevel === "company"){
+                                            if (this.state.productLevel === "company") {
                                                 this.props.newProductCompany(values.name);
-                                            }
-                                            else if(this.state.productLevel === "season"){
+                                            } else if (this.state.productLevel === "season") {
                                                 this.props.newProductSeason(values.name);
-                                            }
-                                            else if(this.state.productLevel === "collection"){
+                                            } else if (this.state.productLevel === "collection") {
                                                 this.props.newProductCollection(values.name);
                                             }
                                         });
                                     form.resetFields();
                                 })
                                 .catch(err => {
-                                    if(err.response.status === 422){
+                                    if (err.response.status === 422) {
                                         message.error('Product name is used! Please choose another name.')
                                     }
                                 });
@@ -253,8 +251,7 @@ class ProductsDisplay extends Component{
                                     if (re.data.companyId) {
                                         re.data.seasonName = "None";
                                         re.data.collectionName = "None";
-                                    }
-                                    else if (re.data.seasonId) {
+                                    } else if (re.data.seasonId) {
                                         re.data.seasonName = this.props.match.params.seasonId
                                         re.data.collectionName = "None";
                                     }
@@ -265,29 +262,26 @@ class ProductsDisplay extends Component{
                                         products: this.products,
                                         visible: false
                                     });
-                                    if(this.state.productLevel === "company"){
+                                    if (this.state.productLevel === "company") {
                                         this.props.newProductCompany(values.name);
-                                    }
-                                    else if(this.state.productLevel === "season"){
+                                    } else if (this.state.productLevel === "season") {
                                         this.props.newProductSeason(values.name);
-                                    }
-                                    else if(this.state.productLevel === "collection"){
+                                    } else if (this.state.productLevel === "collection") {
                                         this.props.newProductCollection(values.name);
                                     }
                                 });
                             form.resetFields();
                         })
                         .catch(err => {
-                            if(err.response.status === 422){
+                            if (err.response.status === 422) {
                                 message.error('Product name is used! Please choose another name.')
                             }
                         });
                 }
                 form.resetFields();
-            }
-            else if(!this.uploadImage){
-                if(newSizes.length > 0){
-                    axios.post(`${API_ROOT}/size`,newSizes)
+            } else if (!this.uploadImage) {
+                if (newSizes.length > 0) {
+                    axios.post(`${API_ROOT}/size`, newSizes)
                         .then(response => {
                             newSizeId = response.data.map(ele => ele.id);
                             existedSizes = existedSizes.concat(newSizeId);
@@ -297,8 +291,7 @@ class ProductsDisplay extends Component{
                                     if (response.data.companyId) {
                                         response.data.seasonName = "None";
                                         response.data.collectionName = "None";
-                                    }
-                                    else if (response.data.seasonId) {
+                                    } else if (response.data.seasonId) {
                                         response.data.seasonName = this.props.match.params.seasonId
                                         response.data.collectionName = "None";
                                     }
@@ -309,19 +302,17 @@ class ProductsDisplay extends Component{
                                         products: this.products,
                                         visible: false
                                     });
-                                    if(this.state.productLevel === "company"){
+                                    if (this.state.productLevel === "company") {
                                         this.props.newProductCompany(values.name);
-                                    }
-                                    else if(this.state.productLevel === "season"){
+                                    } else if (this.state.productLevel === "season") {
                                         this.props.newProductSeason(values.name);
-                                    }
-                                    else if(this.state.productLevel === "collection"){
+                                    } else if (this.state.productLevel === "collection") {
                                         this.props.newProductCollection(values.name);
                                     }
                                     form.resetFields();
                                 })
                                 .catch(err => {
-                                    if(err.response.status === 422){
+                                    if (err.response.status === 422) {
                                         message.error('Product name is used! Please choose another name.')
                                     }
                                 });
@@ -333,8 +324,7 @@ class ProductsDisplay extends Component{
                             if (response.data.companyId) {
                                 response.data.seasonName = "None";
                                 response.data.collectionName = "None";
-                            }
-                            else if (response.data.seasonId) {
+                            } else if (response.data.seasonId) {
                                 response.data.seasonName = this.props.match.params.seasonId
                                 response.data.collectionName = "None";
                             }
@@ -345,20 +335,18 @@ class ProductsDisplay extends Component{
                                 products: this.products,
                                 visible: false
                             });
-                            if(this.state.productLevel === "company"){
+                            if (this.state.productLevel === "company") {
                                 this.props.newProductCompany(values.name);
-                            }
-                            else if(this.state.productLevel === "season"){
+                            } else if (this.state.productLevel === "season") {
                                 this.props.newProductSeason(values.name);
-                            }
-                            else if(this.state.productLevel === "collection"){
+                            } else if (this.state.productLevel === "collection") {
                                 this.props.newProductCollection(values.name);
                             }
                             console.log('Received values of form: ', response.data);
                             form.resetFields();
                         })
                         .catch(err => {
-                            if(err.response.status === 422){
+                            if (err.response.status === 422) {
                                 message.error('Product name is used! Please choose another name.')
                             }
                         });

@@ -2,7 +2,6 @@ import React from "react";
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import FooterArea from './components/layout/footer'
-import asyncRoute from './asyncRoutes'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import MainScreen from "./components/mainScreen";
 import BudgetPlanningTable from './components/summary-table'

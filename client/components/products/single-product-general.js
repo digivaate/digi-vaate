@@ -192,6 +192,7 @@ class SingleProductGeneralInfo extends Component{
                 <p>Reseller profit percentage: <span style={ this.props.loadedProduct.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.resellerProfitPercent}</span></p>
                 <p>Amount:<span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
                 <p>Subcontracting cost:<span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
+                <p>Subcontracting cost:<span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
             </div>
         )
     }

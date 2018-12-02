@@ -8,6 +8,7 @@ import FormData from 'form-data';
 
 import "./products.css"
 import {comaToPeriod} from "../../utils/coma-convert";
+import ProdGroupPicker from "./product-create-form/prodGroupPicker";
 
 
 
@@ -130,6 +131,7 @@ const ProductCreateForm = Form.create()(
             let renderColorOptions = [];
             let renderMaterialOptions = [];
             let renderSizeOptions = [];
+
             if (this.state.colorOptions && this.state.materialOptions && this.state.sizeOptions) {
                 this.state.materialOptions.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
                 this.state.colorOptions.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
@@ -246,6 +248,11 @@ const ProductCreateForm = Form.create()(
                         </Row>
                         <FormItem label="Description">
                             {getFieldDecorator('description')(<Input type="textarea" />)}
+                        </FormItem>
+                        <FormItem label="Product group">
+                            {getFieldDecorator('productGroup', {
+                                initialValue: { value: null},
+                            })(<ProdGroupPicker/>)}
                         </FormItem>
                         <FormItem label="Sizes">
                             {getFieldDecorator('sizes', {

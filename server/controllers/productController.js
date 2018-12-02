@@ -1,7 +1,6 @@
 const Models = require('../models/models');
 const Controller = require('./Controller');
 const Sequelize = require('../models/models').Sequelize;
-const fs = require('fs');
 
 class ProductController extends Controller {
     constructor() { super(Models.Product); }
