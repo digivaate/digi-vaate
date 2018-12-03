@@ -305,6 +305,7 @@ class SingleProduct extends Component {
             resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
             amount: this.state.loadedProduct.amount,
             subcCostTotal: this.state.loadedProduct.subcCostTotal,
+            productGroupId: this.state.loadedProduct.productGroupId
         })
             .then(res => {
                 axios.get(`${API_ROOT}/product?id=${this.productId}`)

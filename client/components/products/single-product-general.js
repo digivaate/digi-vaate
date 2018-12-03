@@ -1,7 +1,11 @@
 import React, {Component} from "react";
-import {Row,Col,Input, Button, Icon, Modal,message} from 'antd';
+import {Row, Col, Input, Button, Icon, Modal, message, Select} from 'antd';
 import './products.css'
 import { comaToPeriod } from "../../utils/coma-convert";
+import {API_ROOT} from "../../api-config";
+
+const Option = Select.Option;
+const axios = require("axios");
 
 
 class SingleProductGeneralInfo extends Component{
@@ -15,6 +19,8 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
+            productGroups: [],
+            productGroup: undefined,
             saved:this.props.saved
         }
     }
@@ -47,6 +53,22 @@ class SingleProductGeneralInfo extends Component{
         }
     }
 
+    loadProductGroups = () => {
+        axios.get(`${API_ROOT}/productgroup`)
+            .then(response => {
+                let prodGroup = undefined;
+                response.data.forEach(group => {
+                    if (this.state.loadedProduct.productGroupId === group.id)
+                        prodGroup = group;
+                });
+                this.setState({
+                    productGroups: response.data,
+                    productGroup: prodGroup
+                });
+            })
+            .catch(err => console.error(err))
+    };
+
     showInfoModal = () => {
         this.setState({
             infoVisible: true,
@@ -75,8 +97,14 @@ class SingleProductGeneralInfo extends Component{
 
     handleComa = (event) => {
         event.target.value = comaToPeriod(event.target.value);
-        console.log(event.target.value);
         this.handleChange(event);
+    };
+
+    handleProdGroup = (value) => {
+        this.state.productGroups.forEach(group => {
+            if (group.id === value)
+                this.setState({ productGroup: group});
+        });
     };
 
     checkNumber = (event) => {
@@ -108,8 +136,10 @@ class SingleProductGeneralInfo extends Component{
             resellerProfitPercent: this.state.resellerProfitPercent ? parseFloat(parseFloat(this.state.resellerProfitPercent).toFixed(2)) : 0,
             taxPercent: this.state.taxPercent ? parseFloat(parseFloat(this.state.taxPercent).toFixed(2)) : 0,
             amount: this.state.amount ? parseFloat(parseFloat(this.state.amount).toFixed(2)) : 0,
-            subcCostTotal: this.state.subcCostTotal ? parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2)) : 0
+            subcCostTotal: this.state.subcCostTotal ? parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2)) : 0,
+            productGroupId: this.state.productGroup.id
         };
+        console.log(newInfo);
         this.props.newInfo(newInfo);
         this.props.refreshCheck(this.state.saved);
         this.setState({
@@ -125,6 +155,10 @@ class SingleProductGeneralInfo extends Component{
                     <Icon type="edit"/>
                 </Button>;
         }
+        const prodGroupOptions = this.state.productGroups.map(prodGroup => (
+            <Option key={prodGroup.id} value={prodGroup.id}>{ prodGroup.name }</Option>
+        ));
+        const productG = this.state.productGroup ? this.state.productGroup.name : '';
         return (
             <div>
                 <Row type="flex">
@@ -186,15 +220,30 @@ class SingleProductGeneralInfo extends Component{
                                 onBlur={this.handleComa}
                             />
                         </Col>
+                        <Col span={12}>
+                            Product group:
+                            <Select
+                                placeholder="Select product group"
+                                style={{ width: '100%'}}
+                                value={productG}
+                                onChange={this.handleProdGroup}
+                            >
+                                {prodGroupOptions}
+                            </Select>
+                        </Col>
                     </Row>
                 </Modal>
                 <p>Selling price: <span style={ this.props.loadedProduct.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.sellingPrice} </span></p>
                 <p>Reseller profit percentage: <span style={ this.props.loadedProduct.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.resellerProfitPercent}</span></p>
-                <p>Amount:<span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
-                <p>Subcontracting cost:<span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
-                <p>Subcontracting cost:<span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
+                <p>Amount: <span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
+                <p>Subcontracting cost: <span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
+                <p>Product group: <span>{productG}</span></p>
             </div>
         )
+    }
+
+    componentDidMount() {
+        this.loadProductGroups();
     }
 }
 
