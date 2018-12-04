@@ -25,6 +25,7 @@ class SingleSeason extends Component{
                 .then(response => {
                     this.setState({
                         collections: response.data[0].collections,
+                        collectionsOri: response.data[0].collections,
                         seasons: response.data[0]
                     })
                 })
@@ -67,9 +68,12 @@ class SingleSeason extends Component{
                 .then((res) => {
                     this.props.sendNewCollection(res.data);
                     let collections = [...this.state.collections];
+                    let collectionsOri = [...this.state.collectionsOri];
+                    collectionsOri.push(res.data);
                     collections.push(res.data);
                     this.setState({
                         collections:collections,
+                        collectionsOri: collectionsOri,
                         visible:false
                     });
                 });
@@ -196,7 +200,7 @@ class SingleSeason extends Component{
             })
             for (let i = 0; i < this.state.collections.length; i++) {
                 renderCollectionsOfSeason[i] = this.state.collections[i].name + ", Cover percentage: " + this.state.collections[i].coverPercent +"%"
-            }
+            };
             if(this.state.collections.length > 0){
                 return (
                     <div>
