@@ -3,13 +3,13 @@
     width: 100%;
 }
 .filter-section{
-    width: 20%
+    width: 16.5%
 }
 
 /* FilterSection.js */
 
 .filter-header{
-    width: 160px;
+    width: 120px;
     height: 30px;
     border: 2px solid;
 }
@@ -19,7 +19,7 @@
 }
 
 .filter-header-active{
-    width: 160px;
+    width: 120px;
     height: 30px;
     border: 2px solid;
     background-color: #1890ff;
@@ -39,18 +39,8 @@
 }
 
 @media only screen and (max-width: 1110px){
-    .filter-header{
-        width: 100px;
-        height: 30px;
-        border: 2px solid;
-    }
-
-    .filter-header-active{
-        width: 100px;
-        height: 30px;
-        border: 2px solid;
-        background-color: #1890ff;
-        color: white;
+    .filter-section{
+        width: 33%
     }
 }
 

@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import FilterBar from './FilterBar'
+import axios from 'axios';
+import { API_ROOT } from '../../../api-config';
 import FilterItems from './FilterItems'
 import FilterTag from './FilterTags'
 class FilterArea extends Component {
@@ -11,6 +13,15 @@ class FilterArea extends Component {
                 [this.props.sections[i].toLowerCase()]: []
             }
         }
+    }
+
+    componentDidMount(){
+        axios.get(`${API_ROOT}/productGroup`)
+            .then(res => {
+                this.setState({
+                    productGroupFromDb: res.data
+                })
+            })
     }
 
     onSelectSection = (section) => {
@@ -44,27 +55,32 @@ class FilterArea extends Component {
     };
 
     render(){
-        return(
-            <div>
-                <FilterTag
-                    filterValues = {this.state}
-                    updateFilterValuesFromTag = {(filterValues) => this.updateFilterValuesFromTag(filterValues)}
-                />
-                <FilterBar
-                    sections = {this.props.sections}
-                    selectedSection = {this.state.selectedSection}
-                    onSelectSection = {(section => this.onSelectSection(section))}
-                    resetFilter = {sectionToReset => this.resetFilter(sectionToReset)}
-                />
-                <br/>
-                <FilterItems
-                    products = {this.props.products}
-                    selectedSection = {this.state.selectedSection}
-                    newFilterValues = {(filterValuesObj) => this.onReceiveNewFilterValues(filterValuesObj)}
-                    defaultFilterValues = {this.state.selectedSection ? this.state[this.state.selectedSection.toLowerCase()] : []}
-                />
-            </div>
-        )
+        if(this.state.productGroupFromDb) {
+            return (
+                <div>
+                    <FilterBar
+                        sections={this.props.sections}
+                        selectedSection={this.state.selectedSection}
+                        onSelectSection={(section => this.onSelectSection(section))}
+                        resetFilter={sectionToReset => this.resetFilter(sectionToReset)}
+                    />
+                    <br/>
+                    <FilterItems
+                        productGroupFromDb={this.state.productGroupFromDb}
+                        products={this.props.products}
+                        selectedSection={this.state.selectedSection}
+                        newFilterValues={(filterValuesObj) => this.onReceiveNewFilterValues(filterValuesObj)}
+                        defaultFilterValues={this.state.selectedSection ? this.state[this.state.selectedSection.toLowerCase()] : []}
+                    />
+                    <br/>
+                    <FilterTag
+                        productGroupFromDb = {this.state.productGroupFromDb}
+                        filterValues={this.state}
+                        updateFilterValuesFromTag={(filterValues) => this.updateFilterValuesFromTag(filterValues)}
+                    />
+                </div>
+            )
+        } else return null;
     }
 }
 

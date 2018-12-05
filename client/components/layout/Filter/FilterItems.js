@@ -1,4 +1,6 @@
 import React,{Component} from 'react';
+import axios from 'axios';
+import { API_ROOT } from '../../../api-config';
 import './filter.css'
 import { Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
@@ -22,8 +24,9 @@ class FilterItems extends Component{
     }
 
     componentDidMount(){
-        this.initilizedFilterItems();
+        this.initilizedFilterItems()
     }
+
     initilizedFilterItems = () => {
         if(this.props.products){
             let material = [];
@@ -31,7 +34,13 @@ class FilterItems extends Component{
             let size = [];
             let season = [];
             let collection = [];
+            let category = [];
             for(let i = 0; i < this.props.products.length; i++){
+                for(let j = 0; j < this.props.productGroupFromDb.length; j++){
+                    if(this.props.products[i].productGroupId === this.props.productGroupFromDb[j].id){
+                        category = [...category, this.props.productGroupFromDb[j].name]
+                    }
+                }
                 const productMaterials = this.props.products[i].materials.map(material => material.name);
                 const productColors = this.props.products[i].colors.map(color => color.name);
                 const productSizes = this.props.products[i].sizes.map(size => size.value);
@@ -54,19 +63,33 @@ class FilterItems extends Component{
             size = [...new Set(size)];
             season = [...new Set(season)];
             collection = [...new Set(collection)];
+            category = [...new Set(category)]
             this.setState({
                 material,
                 color,
                 size,
                 season,
-                collection
+                collection,
+                category
             })
 
         }
     };
 
     onChange = (checkedValues) => {
-        this.props.newFilterValues({[this.props.selectedSection.toLowerCase()]:checkedValues});
+        if(this.props.selectedSection.toLowerCase() === "category"){
+            let checkedValuesConverted = [];
+            for(let i = 0; i < checkedValues.length; i++){
+                for(let j = 0; j < this.props.productGroupFromDb.length; j++){
+                    if(checkedValues[i] === this.props.productGroupFromDb[j].name ){
+                        checkedValuesConverted.push(this.props.productGroupFromDb[j].id)
+                    }
+                }
+            }
+            this.props.newFilterValues({[this.props.selectedSection.toLowerCase()]:checkedValuesConverted});
+        } else {
+            this.props.newFilterValues({[this.props.selectedSection.toLowerCase()]:checkedValues});
+        }
     };
 
     render(){
@@ -77,6 +100,29 @@ class FilterItems extends Component{
                     value: ele
                 }
             });
+            if(this.props.selectedSection.toLowerCase() === "category"){
+                let defaultFilterValuesConverted = [];
+                for(let i = 0; i < this.props.defaultFilterValues.length; i++){
+                    for(let j = 0; j < this.props.productGroupFromDb.length; j++){
+                        if(this.props.defaultFilterValues[i] === this.props.productGroupFromDb[j].id ){
+                            defaultFilterValuesConverted.push(this.props.productGroupFromDb[j].name)
+                        }
+                    }
+                }
+                return(
+                    <div className="filter-items-container">
+                        <div className="filter-items-checkboxgroup">
+                            <h3>{this.props.selectedSection}</h3>
+                            <CheckboxGroup
+                                key={this.props.selectedSection}
+                                options={options}
+                                value={defaultFilterValuesConverted}
+                                onChange={this.onChange}
+                            />
+                        </div>
+                    </div>
+                )
+            }
             return (
                 <div className="filter-items-container">
                     <div className="filter-items-checkboxgroup">

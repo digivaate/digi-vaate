@@ -191,7 +191,7 @@ class ProductsDisplay extends Component{
             values.imageId = null;
 
             //Create new product group if one does not exist
-            if (!(typeof values.productGroup === 'number')) {
+            /*if (!(typeof values.productGroup === 'number')) {
                 await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup})
                     .then(response => {
                         values.productGroupId = response.data.id;
@@ -200,6 +200,7 @@ class ProductsDisplay extends Component{
             } else {
                 values.productGroupId = values.productGroup;
             }
+            */
 
             if (this.uploadImage) {
                 if (newSizes.length > 0) {
@@ -448,6 +449,36 @@ class ProductsDisplay extends Component{
                     });
                 };
             };
+
+            if(keys[i] === "category"){
+                let change = false;
+                for(let j = 0; j< productsForFilter.length; j++){
+                    let count = 0;
+                    let categories = [productsForFilter[j].productGroupId];
+                    if(filterValues.category.length === 0){
+                        this.setState({
+                            products: productsForFilter
+                        })
+                    } else if(filterValues.category.length > 0) {
+                        for (let m = 0; m < categories.length; m++) {
+                            if (filterValues.category.indexOf(categories[m]) > -1) {
+                                count += 1
+                            }
+                        }
+                        if (count === 0) {
+                            change = true;
+                            productsForFilter[j] = '';
+                        }
+                    }
+                }
+                productsForFilter = productsForFilter.filter(product => product !== '');
+                if(change){
+                    this.setState({
+                        products: productsForFilter
+                    });
+                };
+            };
+
             if(keys[i] === "season"){
                 let change = false;
                 for(let j = 0; j< productsForFilter.length; j++){
@@ -729,7 +760,7 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             <FilterArea
-                                sections={["Season","Collection","Color","Material","Size"]}
+                                sections={["Season","Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                                 products = {this.products}
                             />
@@ -743,8 +774,6 @@ class ProductsDisplay extends Component{
                                 onCreate={(colorOptions,materialOptions,sizeOptions) => this.handleCreate(colorOptions,materialOptions,sizeOptions)}
                                 uploadImage={(data) => this.uploadImage = data}
                             />
-                            <br/>
-                            <br/>
                             {showTotalProducts}
                             <List
                                 dataSource={renderProductList}
@@ -775,7 +804,7 @@ class ProductsDisplay extends Component{
                             <br/>
                             <br/>
                             <FilterArea
-                                sections={["Collection","Color","Material","Size"]}
+                                sections={["Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                                 products = {this.products}
                             />
@@ -819,7 +848,7 @@ class ProductsDisplay extends Component{
                         <br/>
                         <br/>
                         <FilterArea
-                            sections={["Color","Material","Size"]}
+                            sections={["Category","Color","Material","Size"]}
                             products = {this.products}
                             sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                         />

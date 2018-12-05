@@ -1,7 +1,7 @@
 import React, {Component,Fragment} from "react";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import {Row,Button, Modal, message,TreeSelect} from 'antd';
+import {Row,Button, Modal, message,TreeSelect,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 
@@ -86,7 +86,7 @@ class SingleProductImg extends Component{
     render(){
         const {seasons} = this.props;
         let collectionsInTree = [];
-        let changeLocationBtn = <div style={{height: 32}}></div>;
+        let changeLocationBtn = <div style={{height:40,width:40}}></div>;
         let currentLocation = null;
         let moveToSeason = null;
         let moveToCollection = null;
@@ -129,7 +129,11 @@ class SingleProductImg extends Component{
 
             }
             if (this.props.editModeStatus === true) {
-                changeLocationBtn = <Button onClick={this.changeLocation}>Change</Button>;
+                changeLocationBtn =
+                    <Button className="edit-btn" onClick={this.changeLocation}>
+                        <Icon type="edit"/>
+                    </Button>
+
             }
             this.seasons = seasons.map(season => {
                 return [season.id, season.name]
