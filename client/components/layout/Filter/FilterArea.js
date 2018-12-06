@@ -15,6 +15,24 @@ class FilterArea extends Component {
         }
     }
 
+    componentDidUpdate(){
+        let allProductGroupId = this.props.products.map(product => product.productGroupId);
+        allProductGroupId = allProductGroupId.filter(id => id);
+        let allProductGroupIdFromDb = this.state.productGroupFromDb.map(productG => productG.id);
+        for(let i = 0; i< allProductGroupId.length; i++){
+            if(allProductGroupIdFromDb.indexOf(allProductGroupId[i]) < 0){
+                axios.get(`${API_ROOT}/productGroup`)
+                    .then(res => {
+                        this.setState({
+                            productGroupFromDb: res.data
+                        })
+                    })
+
+
+            }
+        }
+    }
+
     componentDidMount(){
         axios.get(`${API_ROOT}/productGroup`)
             .then(res => {
@@ -80,7 +98,11 @@ class FilterArea extends Component {
                     />
                 </div>
             )
-        } else return null;
+        } else {
+            return (
+                <div style={{height:210}}></div>
+            )
+        };
     }
 }
 

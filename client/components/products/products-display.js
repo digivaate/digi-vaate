@@ -207,22 +207,23 @@ class ProductsDisplay extends Component{
             if (this.uploadImage) {
                 if (newSizes.length > 0) {
                     axios.post(`${API_ROOT}/size`, newSizes)
-                        .then(response => {
-                            newSizeId = response.data.map(ele => ele.id);
+                        .then(resp => {
+                            newSizeId = resp.data.map(ele => ele.id);
                             existedSizes = existedSizes.concat(newSizeId);
                             values.sizes = existedSizes.slice(0);
                             axios.post(`${API_ROOT}/product`, values)
                                 .then(response => {
                                     axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                         .then((re) => {
-                                            if (re.data.companyId) {
-                                                re.data.seasonName = "None";
-                                                re.data.collectionName = "None";
+                                            if (response.data.companyId) {
+                                                response.data.seasonName = "None";
+                                                response.data.collectionName = "None";
                                             } else if (re.data.seasonId) {
-                                                re.data.seasonName = this.props.match.params.seasonId
-                                                re.data.collectionName = "None";
+                                                response.data.seasonName = this.props.match.params.seasonId
+                                                response.data.collectionName = "None";
                                             }
-                                            this.products.push(re.data);
+                                            response.data.imageId = re.data.imageId
+                                            this.products.push(response.data);
                                             message.success("Product created", 1);
                                             this.uploadImage = null;
                                             this.setState({
@@ -237,7 +238,6 @@ class ProductsDisplay extends Component{
                                                 this.props.newProductCollection(values.name);
                                             }
                                         });
-                                    form.resetFields();
                                 })
                                 .catch(err => {
                                     if (err.response.status === 422) {
@@ -251,14 +251,15 @@ class ProductsDisplay extends Component{
                         .then(response => {
                             axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                 .then((re) => {
-                                    if (re.data.companyId) {
-                                        re.data.seasonName = "None";
-                                        re.data.collectionName = "None";
-                                    } else if (re.data.seasonId) {
-                                        re.data.seasonName = this.props.match.params.seasonId
-                                        re.data.collectionName = "None";
+                                    if (response.data.companyId) {
+                                        response.data.seasonName = "None";
+                                        response.data.collectionName = "None";
+                                    } else if (response.data.seasonId) {
+                                        response.data.seasonName = this.props.match.params.seasonId
+                                        response.data.collectionName = "None";
                                     }
-                                    this.products.push(re.data);
+                                    response.data.imageId = re.data.imageId
+                                    this.products.push(response.data);
                                     message.success("Product created", 1);
                                     this.uploadImage = null;
                                     this.setState({
@@ -273,7 +274,6 @@ class ProductsDisplay extends Component{
                                         this.props.newProductCollection(values.name);
                                     }
                                 });
-                            form.resetFields();
                         })
                         .catch(err => {
                             if (err.response.status === 422) {
@@ -281,7 +281,6 @@ class ProductsDisplay extends Component{
                             }
                         });
                 }
-                form.resetFields();
             } else if (!this.uploadImage) {
                 if (newSizes.length > 0) {
                     axios.post(`${API_ROOT}/size`, newSizes)
@@ -312,7 +311,6 @@ class ProductsDisplay extends Component{
                                     } else if (this.state.productLevel === "collection") {
                                         this.props.newProductCollection(values.name);
                                     }
-                                    form.resetFields();
                                 })
                                 .catch(err => {
                                     if (err.response.status === 422) {
@@ -346,7 +344,6 @@ class ProductsDisplay extends Component{
                                 this.props.newProductCollection(values.name);
                             }
                             console.log('Received values of form: ', response.data);
-                            form.resetFields();
                         })
                         .catch(err => {
                             if (err.response.status === 422) {
@@ -354,10 +351,9 @@ class ProductsDisplay extends Component{
                             }
                         });
                 }
-                form.resetFields();
             }
+            form.resetFields();
         });
-        form.resetFields();
     };
 
     saveFormRef = (formRef) => {

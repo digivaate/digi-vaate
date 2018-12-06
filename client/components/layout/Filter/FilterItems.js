@@ -11,9 +11,10 @@ class FilterItems extends Component{
         this.state ={}
     }
 
-    componentDidUpdate(){
+    componentDidUpdate(prevProps){
         if(this.props.products){
-            if(this.state.totalProducts !== this.props.products.length){
+            if(this.state.totalProducts !== this.props.products.length ||
+                this.props.productGroupFromDb.length !== prevProps.productGroupFromDb.length){
                 this.initilizedFilterItems();
             }
         }
