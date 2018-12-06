@@ -190,17 +190,19 @@ class ProductsDisplay extends Component{
             }
             values.imageId = null;
 
+
             //Create new product group if one does not exist
-            /*if (!(typeof values.productGroup === 'number')) {
-                await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup})
-                    .then(response => {
-                        values.productGroupId = response.data.id;
-                    })
-                    .catch(err => console.error(err));
-            } else {
-                values.productGroupId = values.productGroup;
+            if(values.productGroup) {
+                if (!(typeof values.productGroup === 'number')) {
+                    await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup})
+                        .then(response => {
+                            values.productGroupId = response.data.id;
+                        })
+                        .catch(err => console.error(err));
+                } else {
+                    values.productGroupId = values.productGroup;
+                }
             }
-            */
 
             if (this.uploadImage) {
                 if (newSizes.length > 0) {
@@ -355,6 +357,7 @@ class ProductsDisplay extends Component{
                 form.resetFields();
             }
         });
+        form.resetFields();
     };
 
     saveFormRef = (formRef) => {

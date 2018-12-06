@@ -11,13 +11,9 @@ class FilterItems extends Component{
         this.state ={}
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(){
         if(this.props.products){
-            this.props.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
-            prevProps.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
-            let productsName = this.props.products.map(product => product.name);
-            let productsNameOfPrev = prevProps.products.map(product => product.name)
-            if(JSON.stringify(productsName) !== JSON.stringify(productsNameOfPrev)){
+            if(this.state.totalProducts !== this.props.products.length){
                 this.initilizedFilterItems();
             }
         }
@@ -65,6 +61,7 @@ class FilterItems extends Component{
             collection = [...new Set(collection)];
             category = [...new Set(category)]
             this.setState({
+                totalProducts: this.props.products.length,
                 material,
                 color,
                 size,

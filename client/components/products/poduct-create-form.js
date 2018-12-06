@@ -251,7 +251,7 @@ const ProductCreateForm = Form.create()(
                         </FormItem>
                         <FormItem label="Product group">
                             {getFieldDecorator('productGroup', {
-                                initialValue: { value: null},
+                                initialValue: null,
                             })(<ProdGroupPicker/>)}
                         </FormItem>
                         <FormItem label="Sizes">
