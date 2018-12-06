@@ -10,8 +10,6 @@ import "./products.css"
 import {comaToPeriod} from "../../utils/coma-convert";
 import ProdGroupPicker from "./product-create-form/prodGroupPicker";
 
-
-
 const ProductCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
@@ -22,16 +20,22 @@ const ProductCreateForm = Form.create()(
                 sizeOptions:null,
                 fileList: [],
                 uploading: false,
+                totalColors: 0,
+                totalMaterials: 0
             }
         }
 
         componentDidUpdate(prevProps){
             if(this.props.visible && this.props.visible !== prevProps.visible){
+                this.setState({
+                    totalColors: 0,
+                    totalMaterials: 0
+                });
                 setTimeout(() => {
                     this.loadColors();
                     this.loadMaterials();
                     this.loadSizes();
-                },1500)
+                },1300)
             }
         }
 
@@ -121,6 +125,33 @@ const ProductCreateForm = Form.create()(
                 return;
             }
             callback("Invalid number")
+        };
+
+        checkColor = (rule, value, callback) => {
+            this.setState({
+                totalColors: value.length
+            });
+            if(value.length > 8){
+                callback("Maximum number of colors for a product is 8")
+            }
+            if(callback){
+                callback();
+                return;
+            }
+
+        };
+
+        checkMaterial = (rule, value, callback) => {
+            this.setState({
+                totalMaterials: value.length
+            });
+            if(value.length > 3){
+                callback("Maximum number of materials for a product is 3")
+            }
+            if(callback){
+                callback();
+                return;
+            }
         };
 
         handleComa = (event) => {
@@ -249,10 +280,12 @@ const ProductCreateForm = Form.create()(
                         <FormItem label="Description">
                             {getFieldDecorator('description')(<Input type="textarea" />)}
                         </FormItem>
-                        <FormItem label="Product group">
+                        <FormItem label="Category">
                             {getFieldDecorator('productGroup', {
                                 initialValue: null,
-                            })(<ProdGroupPicker/>)}
+                            })( this.props.visible ? <ProdGroupPicker
+                                visible = {this.props.visible}
+                            />: <div></div>)}
                         </FormItem>
                         <FormItem label="Sizes">
                             {getFieldDecorator('sizes', {
@@ -268,9 +301,14 @@ const ProductCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem label="Colors">
+                        <FormItem
+                            label={<div>Colors: <span style={this.state.totalColors > 8 ? {color: 'red',fontWeight:'bold'} : {}} >{this.state.totalColors}/8</span></div>}
+                        >
                             {getFieldDecorator('colors', {
                                 initialValue: [],
+                                rules: [
+                                    { validator: this.checkColor}
+                                ]
                             })(
                                 <Select
                                     mode="tags"
@@ -282,9 +320,15 @@ const ProductCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem label="Materials">
+                        <FormItem
+                            label={<div>Materials: <span style={this.state.totalMaterials > 3 ? {color: 'red',fontWeight:'bold'} : {}} >{this.state.totalMaterials}/3</span></div>}
+
+                        >
                             {getFieldDecorator('materials', {
                                 initialValue: [],
+                                rules: [
+                                    { validator: this.checkMaterial}
+                                ]
                             })(
                                 <Select
                                     mode="tags"
@@ -297,7 +341,7 @@ const ProductCreateForm = Form.create()(
                             )}
                         </FormItem>
                     </Form>
-                    <input type="file" onChange={this.onFileChange}/>
+                    {this.props.visible ? <input type="file" onChange={this.onFileChange}/> : null }
                 </Modal>
             );
         }

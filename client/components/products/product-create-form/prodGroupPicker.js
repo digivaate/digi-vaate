@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Input, Select, Col, message} from "antd";
+import {Input, Select, Col} from "antd";
 import axios from "axios";
 import {API_ROOT} from "../../../api-config";
 const Option = Select.Option;
@@ -8,8 +8,23 @@ class ProdGroupPicker extends Component {
     state = {
         data: [],
         createNew: false,
-        value: undefined
+        selectValue: null,
+        inputValue: null,
+        selectDisabled: false,
+        inputDisabled: false
     };
+
+    /*componentDidUpdate(prevProps){
+        if(this.props.visible && this.props.visible !== prevProps.visible){
+            this.loadProdGroups();
+            this.setState({
+                selectValue: null,
+                inputValue: null,
+                selectDisabled: false,
+                inputDisabled: false
+            });
+        }
+    }*/
 
     loadProdGroups = () => {
         axios.get(`${API_ROOT}/productgroup`)
@@ -20,10 +35,49 @@ class ProdGroupPicker extends Component {
     };
 
     //sends the changed value to parent (form) component
-    handleChange = (value) => {
-        if (!('value' in this.props)) {
-            this.setState({value});
+    handleSelectChange = (value) => {
+        if(value === this.state.selectValue){
+            this.setState({
+                selectValue: null,
+                inputDisabled: false,
+            }, () => {
+                const onChange = this.props.onChange;
+                if (onChange) {
+                    onChange(this.state.selectValue);
+                }
+            });
+            return null;
         }
+        if(value){
+            this.setState({
+                inputDisabled: true,
+                selectValue: value
+            }, () => {
+                const onChange = this.props.onChange;
+                if (onChange) {
+                    onChange(this.state.selectValue);
+                }
+            })
+        }
+
+    };
+
+    handleInputChange = (value) => {
+        if(value){
+            this.setState({
+                inputValue: value.target.value
+            })
+        }
+        if(value.target.value.length > 0){
+            this.setState({
+                selectDisabled: true,
+            })
+        } else {
+            this.setState({
+                selectDisabled: false
+            })
+        }
+
         // Should provide an event to pass value to Form.
         const onChange = this.props.onChange;
         if (onChange) {
@@ -52,9 +106,11 @@ class ProdGroupPicker extends Component {
                 >
                 <Select
                     onFocus={this.enterSelect}
-                    onChange={this.handleChange}
-                    placeholder="Select product group"
+                    onSelect={this.handleSelectChange}
+                    placeholder="Select category"
                     style={{ width: '100%'}}
+                    disabled={this.state.selectDisabled}
+                    value = {this.state.selectValue}
                 >
                     {options}
                 </Select>
@@ -62,8 +118,10 @@ class ProdGroupPicker extends Component {
                 <Col span={createNew ? 15 : 9}>
                 <Input
                     onFocus={this.enterInput}
-                    onChange={this.handleChange}
-                    placeholder={"New product group"}
+                    onChange={this.handleInputChange}
+                    placeholder={"New category"}
+                    disabled={this.state.inputDisabled}
+                    value = {this.state.inputValue}
                 />
                 </Col>
             </Input.Group>

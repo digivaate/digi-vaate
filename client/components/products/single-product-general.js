@@ -221,9 +221,9 @@ class SingleProductGeneralInfo extends Component{
                             />
                         </Col>
                         <Col span={12}>
-                            Product group:
+                            Category:
                             <Select
-                                placeholder="Select product group"
+                                placeholder="Select category"
                                 style={{ width: '100%'}}
                                 value={productG}
                                 onChange={this.handleProdGroup}
