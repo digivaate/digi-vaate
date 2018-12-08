@@ -6,8 +6,7 @@ import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
 const { Meta } = Card;
-import RenderInitialCard from '../renderInitialCard'
-
+import RenderInitialCard from '../renderInitialCard';
 
 class MaterialList extends Component{
     constructor(props){
@@ -107,9 +106,10 @@ class MaterialList extends Component{
             if(this.uploadImage) {
                 axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
-                        axios.patch(`${API_ROOT}/material/${response.data.id}/image`, this.uploadImage)
+                        axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage)
                             .then((re) => {
-                                this.materials.push(re.data);
+                                response.data.imageId = re.data.id;
+                                this.materials.push(response.data);
                                 message.success("Material created",1);
                                 this.uploadImage = null;
                                 this.setState({visible: false});
