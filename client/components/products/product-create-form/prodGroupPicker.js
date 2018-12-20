@@ -107,7 +107,7 @@ class ProdGroupPicker extends Component {
                 <Select
                     onFocus={this.enterSelect}
                     onSelect={this.handleSelectChange}
-                    placeholder="Select category"
+                    placeholder="Select a person"
                     style={{ width: '100%'}}
                     disabled={this.state.selectDisabled}
                     value = {this.state.selectValue}

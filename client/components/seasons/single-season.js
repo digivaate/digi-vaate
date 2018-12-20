@@ -64,7 +64,7 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id,coverPercent:values.coverPercent})
+            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id})
                 .then((res) => {
                     this.props.sendNewCollection(res.data);
                     let collections = [...this.state.collections];
@@ -115,16 +115,14 @@ class SingleSeason extends Component{
         let collections = [...this.state.collections];
         for(let i = 0; i< collections.length;i++){
             if(collections[i].id === this.state.editableId){
-                if(collections[i].name !== editInfo.name
-                    || collections[i].coverPercent.toString() !== editInfo.coverPercent.toString()){
+                if(collections[i].name !== editInfo.name){
                     this.setState({
                         [`${collections[i].id}-modified`]: true
                     })
                 }
                 collections[i] = {
                     ...collections[i],
-                    name: editInfo.name,
-                    coverPercent: editInfo.coverPercent
+                    name: editInfo.name
                 }
             }
         }
@@ -151,7 +149,6 @@ class SingleSeason extends Component{
         let collections = [...this.state.collections];
         let collectionsOri = [...this.state.collectionsOri];
         let newInfo = {
-            coverPercent: collection.coverPercent,
             name: collection.name
         };
         axios.patch(API_ROOT + '/collection/?id=' + collection.id, newInfo )
@@ -182,16 +179,6 @@ class SingleSeason extends Component{
 
     };
 
-    showDescription = (collection) => {
-        let coverPercentHtml = null;
-        for(let i = 0; i < this.state.collectionsOri.length;i ++){
-            if(collection.id === this.state.collectionsOri[i].id){
-                coverPercentHtml = <span style={ collection.coverPercent !== this.state.collectionsOri[i].coverPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{collection.coverPercent}</span>;
-            }
-        }
-        return <p>Cover percentage: {coverPercentHtml}%</p>
-    };
-
     render() {
         let renderCollectionsOfSeason = [];
         if (this.state.collections) {
@@ -199,7 +186,7 @@ class SingleSeason extends Component{
                 return a.id-b.id
             })
             for (let i = 0; i < this.state.collections.length; i++) {
-                renderCollectionsOfSeason[i] = this.state.collections[i].name + ", Cover percentage: " + this.state.collections[i].coverPercent +"%"
+                renderCollectionsOfSeason[i] = this.state.collections[i].name
             };
             if(this.state.collections.length > 0){
                 return (
@@ -239,12 +226,6 @@ class SingleSeason extends Component{
                                         <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.saveEdit(item)}>Save</Button>
                                     ]}
                                 >
-                                        <List.Item.Meta
-                                            title={item.name}
-                                            description={
-                                                this.showDescription(item)
-                                            }
-                                        />
                                 </List.Item>
                             )}
                         />

@@ -185,20 +185,6 @@ class SingleProductGeneralInfo extends Component{
                             />
                         </Col>
                         <Col span={12}>
-                            Reseller profit percentage:
-                            <Input
-                                className="input-style"
-                                value={this.state.resellerProfitPercent}
-                                name="resellerProfitPercent"
-                                onChange={this.handleChange}
-                                onKeyDown={this.checkNumber}
-                                onBlur={this.handleComa}
-                            />
-                        </Col>
-                    </Row>
-                    <br/>
-                    <Row gutter={8}>
-                        <Col span={12}>
                             Amount:
                             <Input
                                 className="input-style"
@@ -234,7 +220,6 @@ class SingleProductGeneralInfo extends Component{
                     </Row>
                 </Modal>
                 <p>Selling price: <span style={ this.props.loadedProduct.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.sellingPrice} </span></p>
-                <p>Reseller profit percentage: <span style={ this.props.loadedProduct.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.resellerProfitPercent}</span></p>
                 <p>Amount: <span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
                 <p>Subcontracting cost: <span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
                 <p>Product group: <span>{productG}</span></p>

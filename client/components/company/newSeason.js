@@ -64,11 +64,6 @@ const SeasonCreateForm = Form.create()(
                                 <Input />
                             )}
                         </FormItem>
-                        <FormItem label="Cover percentage">
-                            {getFieldDecorator('coverPercent')(
-                                <Input />
-                            )}
-                        </FormItem>
                     </Form>
                 </Modal>
             );

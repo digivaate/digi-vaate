@@ -22,16 +22,6 @@ const CollectionCreateForm = Form.create()(
             callback("Name of collection cannot contain special character")
         };
 
-        checkCoverPercent = (rule, value, callback) => {
-            if(/^[0-9.]+$/.test(value) || !value ){
-                if(callback){
-                    callback();
-                    return;
-                }
-                return;
-            }
-            callback("You can input only number")
-        };
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
             const { getFieldDecorator } = form;
@@ -50,15 +40,6 @@ const CollectionCreateForm = Form.create()(
                                     { required: true, message: 'Please input the name of collection' },
                                     { validator: this.checkName}
                                 ],
-                            })(
-                                <Input />
-                            )}
-                        </FormItem>
-                        <FormItem label="Default cover Percentage">
-                            {getFieldDecorator('coverPercent',{
-                                rules: [
-                                    { validator: this.checkCoverPercent}
-                                ]
                             })(
                                 <Input />
                             )}

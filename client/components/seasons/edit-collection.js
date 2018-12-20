@@ -18,12 +18,6 @@ const EditForm = Form.create()(
                             <Input />
                         )}
                     </FormItem>
-                    <FormItem label={'Default cover percentage'}>
-                        {getFieldDecorator('coverPercent',
-                            {initialValue: this.props.collection.coverPercent} )(
-                            <Input />
-                        )}
-                    </FormItem>
                 </Form>
             );
         }

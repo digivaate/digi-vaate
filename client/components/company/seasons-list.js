@@ -63,7 +63,7 @@ class SeasonsList extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget, coverPercent:values.coverPercent})
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
                     let seasons = [...this.state.seasons];
@@ -117,8 +117,7 @@ class SeasonsList extends Component{
         for(let i = 0; i< seasons.length;i++){
             if(seasons[i].id === this.state.editableId){
                 if(seasons[i].name !== editInfo.name
-                || seasons[i].budget.toString() !== editInfo.budget.toString()
-                || seasons[i].coverPercent.toString() !== editInfo.coverPercent.toString()){
+                || seasons[i].budget.toString() !== editInfo.budget.toString()){
                     this.setState({
                         [`${seasons[i].id}-modified`]: true
                     })
@@ -126,8 +125,7 @@ class SeasonsList extends Component{
                 seasons[i] = {
                     ...seasons[i],
                     name:editInfo.name,
-                    budget: editInfo.budget,
-                    coverPercent: editInfo.coverPercent
+                    budget: editInfo.budget
                 }
             }
         }
@@ -155,7 +153,6 @@ class SeasonsList extends Component{
         let seasonsOri = [...this.state.seasonsOri];
         let newInfo = {
             budget: season.budget,
-            coverPercent: season.coverPercent,
             name: season.name
         };
         axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo )
@@ -188,14 +185,12 @@ class SeasonsList extends Component{
 
     showDescription = (season) => {
         let budgetHtml = null;
-        let coverPercentHtml = null;
         for(let i = 0; i < this.state.seasonsOri.length;i ++){
             if(season.id === this.state.seasonsOri[i].id){
                 budgetHtml = <span style={ season.budget !== this.state.seasonsOri[i].budget ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{season.budget}</span>;
-                coverPercentHtml = <span style={ season.coverPercent !== this.state.seasonsOri[i].coverPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{season.coverPercent}</span>;
             }
         }
-        return <p>Budget: {budgetHtml}, Cover percentage: {coverPercentHtml}%</p>
+        return <p>Budget: {budgetHtml}</p>
     };
 
     render(){
@@ -206,8 +201,7 @@ class SeasonsList extends Component{
             });
             for(let i=0; i<this.state.seasons.length; i++){
                 renderSeasonsOfCompany[i] = <Icon type="caret-up" />;
-                //renderSeasonsOfCompany[i] = this.state.seasons[i].name + ", budget: " + this.state.seasons[i].budget + ", Cover percentage: " + this.state.seasons[i].coverPercent +"%"
-            }
+                }
             if(this.state.seasons.length > 0){
                 let elements = [<Fragment key={0}>
                     <div>

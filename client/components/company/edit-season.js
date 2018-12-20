@@ -26,12 +26,6 @@ const EditForm = Form.create()(
                             <Input />
                         )}
                     </FormItem>
-                    <FormItem label={'Cover percentage'}>
-                        {getFieldDecorator('coverPercent',
-                            {initialValue: this.props.season.coverPercent})(
-                            <Input />
-                        )}
-                    </FormItem>
                 </Form>
             );
         }

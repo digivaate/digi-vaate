@@ -209,19 +209,21 @@ const ProductCreateForm = Form.create()(
                     onOk={() => onCreate(this.state.colorOptions,this.state.materialOptions,this.state.sizeOptions)}
                 >
                     <Form layout="vertical">
-                        <FormItem label="Name">
-                            {getFieldDecorator('name', {
-                                rules: [
-                                    { required: true, message: 'Please input the name of product' },
-                                    { validator: this.checkName}
-                                ],
-                            })(
-                                <Input
-                                    onKeyDown={this.checkName}
-                                />
-                            )}
-                        </FormItem>
                         <Row gutter={16}>
+                            <Col span={12}>
+                                <FormItem label="Name">
+                                    {getFieldDecorator('name', {
+                                        rules: [
+                                            { required: true, message: 'Please input the name of product' },
+                                            { validator: this.checkName}
+                                        ],
+                                    })(
+                                        <Input
+                                            onKeyDown={this.checkName}
+                                        />
+                                    )}
+                                </FormItem>
+                            </Col>
                             <Col span={12}>
                                 <FormItem label="Selling Price">
                                     {getFieldDecorator('sellingPrice',{
@@ -235,24 +237,11 @@ const ProductCreateForm = Form.create()(
                                     )}
                                 </FormItem>
                             </Col>
-                            <Col span={12}>
-                                <FormItem label="Reseller Profit Percentage">
-                                    {getFieldDecorator('resellerProfitPercent',{
-                                        rules: [
-                                            { validator: this.checkNumber}
-                                        ]
-                                    })(
-                                        <Input
-                                            onBlur={this.handleComa}
-                                        />
-                                    )}
-                                </FormItem>
-                            </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col span={12}>
-                                <FormItem label="Tax Percentage">
-                                    {getFieldDecorator('taxPercent',{
+                                <FormItem label="Reseller Profit Percentage">
+                                    {getFieldDecorator('resellerProfitPercent',{
                                         rules: [
                                             { validator: this.checkNumber}
                                         ]
