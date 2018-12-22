@@ -17,10 +17,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     app.use(morgan('dev'));
 }
-//serve uploaded images
-app.use('/api', express.static(path.resolve(__dirname, '../uploads/')));
 
-//Back-end routes
+//Routes
 app.use('/api', require('./routes/api'));
 
 //Serve front end

@@ -69,7 +69,8 @@ let modules = [
     require('./orderModel'),
     require('./orderProductModel'),
     require('./imageModel'),
-    require('./productGroupModel')
+    require('./productGroupModel'),
+    require('./userModel'),
 ];
 
 modules.forEach(module => {
