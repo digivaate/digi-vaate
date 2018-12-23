@@ -5,9 +5,11 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const models = require('./models/models');
 
+/*
 //synchronise sequelize models with database
 models.sequelize.sync()
     .catch(err => console.error('Postgre sync error: ' + err));
+*/
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

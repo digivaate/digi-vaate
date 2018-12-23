@@ -1,23 +1,7 @@
 const Sequelize = require("sequelize");
 let sequelize = null;
 
-const config = {
-    database: 'digivaate',
-    username: 'digivaate',
-    password: 'digivaate',
-    options: {
-        host: 'localhost',
-        dialect: 'postgres',
-        operatorsAliases: false,
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
-        },
-        logging: false
-    }
-};
+const config = require('../postgres');
 
 function modifyName(string) {
     return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
@@ -28,6 +12,7 @@ if (process.env.DATABASE_URL) {
         options: {
             dialect: 'postgres',
             protocol: 'postgres',
+            logging: false,
             dialectOptions: {
                 ssl: true
             }
