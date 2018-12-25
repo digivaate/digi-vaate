@@ -1,11 +1,7 @@
 const Sequelize = require("sequelize");
-let sequelize = null;
-
 const config = require('../postgres');
 
-function modifyName(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
-}
+let sequelize = null;
 
 if (process.env.DATABASE_URL) {
     sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -25,6 +21,10 @@ if (process.env.DATABASE_URL) {
         config.password,
         config.options
     );
+}
+
+function modifyName(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
 }
 
 let models = {
@@ -76,4 +76,3 @@ Object.keys(models).forEach((modelName) => {
 models.sequelize = sequelize;
 models.Sequelize = Sequelize;
 module.exports = models;
-
