@@ -1,4 +1,4 @@
-import DatabaseConnection from "./models/DatabaseConnection";
+import {connectToDatabases} from "./database";
 
 const express = require('express');
 const path = require('path');
@@ -6,14 +6,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const digivaateConnection = new DatabaseConnection('digivaate');
-
-/*
-//synchronise sequelize models with database
-models.sequelize.sync()
-    .catch(err => console.error('Postgre sync error: ' + err));
-*/
-digivaateConnection.sequelize.sync();
+connectToDatabases()
+    .then(res => console.log('Connected to ', res));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
