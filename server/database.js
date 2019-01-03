@@ -3,30 +3,27 @@ import routes from "./routes/routes";
 const Sequelize = require('sequelize');
 const config = require('./postgres');
 
+const sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config.options
+);
+
 export async function getDatabaseNames() {
     if (!config) throw 'Postgres config missing';
-
-    const sequelize = new Sequelize(
-        config.database,
-        config.username,
-        config.password,
-        config.options
-    );
 
     const result = await sequelize.query('SELECT datname FROM pg_database WHERE datistemplate = false;')
         .spread(res => {
             return res
         });
 
-    const dbnames = [];
-    result.forEach(db => dbnames.push(db.datname));
-    sequelize.close();
-    return dbnames;
+    const dbNames = [];
+    result.forEach(db => dbNames.push(db.datname));
+    return dbNames;
 }
 
-export async function connectToDatabases() {
-    const dbNames = await getDatabaseNames();
-    console.log('DBNAMES', dbNames);
+export async function connectToDatabases(dbNames) {
     const connections = [];
     for (let i = 1; i < dbNames.length; i++) {
         let db = new DatabaseConnection(dbNames[i]);
@@ -43,8 +40,7 @@ export async function connectToDatabases() {
         });
 }
 
-export async function databaseRouting() {
-    const dbConnections = await connectToDatabases();
+export async function databaseRouting(dbConnections) {
     const dbRoutes = {};
     for (let c in dbConnections) {
         if (dbConnections.hasOwnProperty(c)) {
@@ -57,4 +53,12 @@ export async function databaseRouting() {
 
         dbRoutes[req.headers.db](req, res, next);
     }
+}
+
+export async function createDatabase(name) {
+    const dbNames = await getDatabaseNames();
+    if (dbNames.includes('digivaate_' + name)) throw 'Digivaate database with name ' + name + ' already exists';
+
+    await sequelize.query('CREATE DATABASE digivaate_' + name);
+    return connectToDatabases(['digivaate_' + name]);
 }

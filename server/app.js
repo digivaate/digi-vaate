@@ -1,4 +1,4 @@
-import {databaseRouting} from "./database";
+import {connectToDatabases, createDatabase, databaseRouting, getDatabaseNames} from "./database";
 
 const express = require('express');
 const path = require('path');
@@ -16,18 +16,37 @@ if (process.env.NODE_ENV === 'production') {
     app.use(morgan('dev'));
 }
 
-//Routes
-databaseRouting()
-    .then(routes => {
-        app.use('/api', routes);
-
-
 //Serve front end
-        if (process.env.NODE_ENV === 'production') {
-            app.use(express.static(path.resolve(__dirname, '../dist/client/')));
-            app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
-        }
-//Error handling
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
+    app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
+}
+
+let ROUTES;
+
+app.post('/db', async (req, res, next) => {
+    if (!req.body.name) throw 'name missing';
+
+    let newDbs = await createDatabase(req.body.name);
+    let newRoutes = await databaseRouting(newDbs);
+    //UPDATE ROUTING KESKEN
+    ROUTES.push(newRoutes[0]);
+});
+
+//Create connections for all databases
+getDatabaseNames()
+    .then(names => {
+        return connectToDatabases(names);
+    })
+    .then(dbConnections => {
+        return databaseRouting(dbConnections);
+    })
+    .then(routes => {
+        ROUTES = routes;
+
+        app.use('/api', ROUTES);
+
+        //Error handling
         app.use((req, res, next) => {
             const error = new Error('Not found');
             error.status = 404;
