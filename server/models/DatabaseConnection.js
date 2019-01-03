@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const config = require('../postgres');
 
 const modules = [
+    /*
     require('./materialModel'),
     require('./companyModel'),
     require('./colorModel'),
@@ -14,12 +15,12 @@ const modules = [
     require('./orderProductModel'),
     require('./imageModel'),
     require('./productGroupModel'),
+    */
     require('./userModel'),
 ];
 
 class DatabaseConnection {
     constructor(dbName) {
-        this.Sequelize = Sequelize;
         if (process.env.DATABASE_URL) {
             this.sequelize = new Sequelize(process.env.DATABASE_URL, {
                 options: {
@@ -56,11 +57,7 @@ class DatabaseConnection {
 
         modules.forEach(module => {
             const model = module(this.sequelize, Sequelize);
-            if (model.name === 'companies') {
-                this.models['Company'] = model;
-            } else {
-                this.models[modifyName(model.name)] = model;
-            }
+            this.models[model.name] = model;
         });
 
         Object.keys(this.models).forEach((modelName) => {
@@ -72,10 +69,6 @@ class DatabaseConnection {
 
     }
     
-}
-
-function modifyName(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1, string.length - 1);
 }
 
 export default DatabaseConnection;

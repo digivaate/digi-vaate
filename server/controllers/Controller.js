@@ -1,9 +1,7 @@
-const Sequelize = require('../models/models').Sequelize;
-
 module.exports = class Controller {
-    constructor(model, seqConnection) {
+    constructor(dbConnection, model) {
         this.model = model;
-        this.seqConnection = seqConnection;
+        this.dbConnection = dbConnection;
         this.find_by_attribute = this.find_by_attribute.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
@@ -11,7 +9,7 @@ module.exports = class Controller {
         Controller.collectProperties = Controller.collectProperties.bind(this);
     }
 
-    find_by_attribute(req, res) {
+    find_by_attribute = (req, res) => {
         const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
@@ -40,7 +38,7 @@ module.exports = class Controller {
             .then(() => {
                 res.send(entity);
             })
-            .catch(Sequelize.ValidationError, (err) => {
+            .catch(this.dbConnection.Sequelize.ValidationError, (err) => {
                 // respond with validation errors
                 console.error(err);
                 return res.status(422).send(err.errors);

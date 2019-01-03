@@ -1,8 +1,8 @@
 const express = require('express');
 
-exports.collectionRoute = function (seqConnection) {
+export default function (dbConnection) {
     const router = express.Router();
-    const CollectionController = require('../controllers/collectionController')(seqConnection);
+    const CollectionController = require('../controllers/CollectionController')(dbConnection);
 
     router.get('/', CollectionController.find_by_attribute);
     router.get('/products', CollectionController.getAllProducts);

@@ -1,14 +1,10 @@
-import {connectToDatabases} from "./database";
+import {databaseRouting} from "./database";
 
 const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-
-
-const connections = connectToDatabases()
-    .then(res => { return res });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,27 +17,31 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 //Routes
-app.use('/api', require('./routes/api'));
+databaseRouting()
+    .then(routes => {
+        app.use('/api', routes);
+
 
 //Serve front end
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
-    app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
-}
-//Error handling
-app.use((req, res, next) => {
-    const error = new Error('Not found');
-    error.status = 404;
-    next(error);
-});
-
-app.use((error, req, res) => {
-    console.error(error);
-    res.json({
-        error: {
-            message: error.message
+        if (process.env.NODE_ENV === 'production') {
+            app.use(express.static(path.resolve(__dirname, '../dist/client/')));
+            app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
         }
+//Error handling
+        app.use((req, res, next) => {
+            const error = new Error('Not found');
+            error.status = 404;
+            next(error);
+        });
+
+        app.use((error, req, res) => {
+            console.error(error);
+            res.json({
+                error: {
+                    message: error.message
+                }
+            });
+        });
     });
-});
 
 module.exports = app;

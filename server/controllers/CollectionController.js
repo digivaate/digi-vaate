@@ -1,9 +1,8 @@
-const Models = require('../models/models');
 const Controller = require('./Controller');
 const ProductController = require('./productController');
 
 class CollectionController extends Controller {
-    constructor(seqConnection) { super(Models.Collection, seqConnection); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.Collection); }
 
     setRelations(entity, jsonBody){
         if (jsonBody.materials) entity.setMaterials(jsonBody.materials);
@@ -12,20 +11,20 @@ class CollectionController extends Controller {
 
     //populates with products
     getAllColors(req, res) {
-        const properties = Controller.collectProperties(req.query, Models.Collection);
+        const properties = Controller.collectProperties(req.query, this.dbConnection.models.Collection);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        Models.Collection.findOne({
+        this.dbConnection.models.Collection.findOne({
             where: properties,
             include: [
                 {
-                    model: Models.Color,
+                    model: this.dbConnection.models.Color,
                     as: 'colors',
                     include: [
                         {
-                            model: Models.Product,
+                            model: this.dbConnection.models.Product,
                             as: 'products',
                             attributes: ['name', 'id']
                         }
@@ -50,7 +49,7 @@ class CollectionController extends Controller {
             res.stat(500).json(properties.error);
             return;
         }
-        this.model.findAll({
+        this.dbConnection.models.Collection.findAll({
             where: properties,
             include: [{
                 all: true,
@@ -66,6 +65,7 @@ class CollectionController extends Controller {
             });
     }
 
+    /*
     getAllProducts(req, res, next) {
         const properties = Controller.collectProperties(req.query, Models.Collection);
         if (properties.error) {
@@ -91,6 +91,7 @@ class CollectionController extends Controller {
                 res.status(500).json(err);
             });
     }
+    */
 }
 
-module.exports = new CollectionController();
+module.exports = CollectionController;

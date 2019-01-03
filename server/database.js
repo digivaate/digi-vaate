@@ -1,5 +1,5 @@
 import DatabaseConnection from "./models/DatabaseConnection";
-
+import routes from "./routes/routes";
 const Sequelize = require('sequelize');
 const config = require('./postgres');
 
@@ -24,12 +24,9 @@ export async function getDatabaseNames() {
     return dbnames;
 }
 
-/**
- * Create database connections for all databases
- * @returns {Promise<Sequelize[]>}
- */
 export async function connectToDatabases() {
     const dbNames = await getDatabaseNames();
+    console.log('DBNAMES', dbNames);
     const connections = [];
     for (let i = 1; i < dbNames.length; i++) {
         let db = new DatabaseConnection(dbNames[i]);
@@ -44,4 +41,20 @@ export async function connectToDatabases() {
             res.forEach(db => databases[db.config.database] = db);
             return databases;
         });
+}
+
+export async function databaseRouting() {
+    const dbConnections = await connectToDatabases();
+    const dbRoutes = {};
+    for (let c in dbConnections) {
+        if (dbConnections.hasOwnProperty(c)) {
+            dbRoutes[c] = routes(dbConnections[c]);
+        }
+    }
+    return function (req, res, next) {
+        if (!dbRoutes[req.headers.db])
+            throw 'database with name' + req.headers.db + ' not found';
+
+        dbRoutes[req.headers.db](req, res, next);
+    }
 }
