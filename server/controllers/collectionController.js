@@ -3,7 +3,7 @@ const Controller = require('./Controller');
 const ProductController = require('./productController');
 
 class CollectionController extends Controller {
-    constructor() { super(Models.Collection); }
+    constructor(seqConnection) { super(Models.Collection, seqConnection); }
 
     setRelations(entity, jsonBody){
         if (jsonBody.materials) entity.setMaterials(jsonBody.materials);

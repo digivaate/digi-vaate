@@ -24,6 +24,10 @@ export async function getDatabaseNames() {
     return dbnames;
 }
 
+/**
+ * Create database connections for all databases
+ * @returns {Promise<Sequelize[]>}
+ */
 export async function connectToDatabases() {
     const dbNames = await getDatabaseNames();
     const connections = [];

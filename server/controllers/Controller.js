@@ -1,8 +1,9 @@
 const Sequelize = require('../models/models').Sequelize;
 
 module.exports = class Controller {
-    constructor(model) {
+    constructor(model, seqConnection) {
         this.model = model;
+        this.seqConnection = seqConnection;
         this.find_by_attribute = this.find_by_attribute.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);

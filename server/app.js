@@ -6,8 +6,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-connectToDatabases()
-    .then(res => console.log('Connected to ', res));
+
+const connections = connectToDatabases()
+    .then(res => { return res });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
