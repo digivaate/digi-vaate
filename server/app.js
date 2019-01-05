@@ -1,10 +1,20 @@
-import {connectToDatabases, createDatabase, databaseRouting, getDatabaseNames} from "./database";
+import {
+    connectToDatabase,
+    connectToDatabases,
+    createDatabase,
+    databaseRouting,
+    getDatabaseNames
+} from "./database";
+import createApiRoutes from "./routes/createApiRoutes";
 
 const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+
+//Holds all api routes for different databases
+let apiRoutes;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,29 +32,42 @@ if (process.env.NODE_ENV === 'production') {
     app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
 }
 
-let ROUTES;
+app.use('/db', async (req, res, next) => {
+    try {
+        if (!req.body.name) throw 'name missing';
+        if (!req.body.user) throw 'user info missing';
+        if (!req.body.user.name || !req.body.user.password) throw 'user info missing';
 
-app.post('/db', async (req, res, next) => {
-    if (!req.body.name) throw 'name missing';
+        let dbName = await createDatabase(req.body.name);
+        let dbConnection = await connectToDatabase(dbName);
+        apiRoutes[dbName] = await createApiRoutes(dbConnection);
 
-    let newDbs = await createDatabase(req.body.name);
-    let newRoutes = await databaseRouting(newDbs);
-    //UPDATE ROUTING KESKEN
-    ROUTES.push(newRoutes[0]);
+        dbConnection.models.users.create(req.body.user)
+            .then(response => res.send(response));
+
+    } catch (e) {
+        next(e);
+    }
 });
 
-//Create connections for all databases
-getDatabaseNames()
-    .then(names => {
-        return connectToDatabases(names);
-    })
-    .then(dbConnections => {
-        return databaseRouting(dbConnections);
-    })
-    .then(routes => {
-        ROUTES = routes;
+app.use('/login', (req, res, next) => {
 
-        app.use('/api', ROUTES);
+});
+
+getDatabaseNames()
+    .then(connectToDatabases)
+    .then(databaseRouting)
+    .then(routes => {
+        apiRoutes = routes;
+
+        //Create connections for all databases
+        app.use('/api', (req, res, next) => {
+            if (!apiRoutes[req.headers.db])
+                throw 'database with name' + req.headers.db + ' not found';
+
+            //forward request to correct database route
+            apiRoutes[req.headers.db](req, res, next);
+        });
 
         //Error handling
         app.use((req, res, next) => {
@@ -53,14 +76,12 @@ getDatabaseNames()
             next(error);
         });
 
-        app.use((error, req, res) => {
-            console.error(error);
-            res.json({
-                error: {
-                    message: error.message
-                }
-            });
+        app.use((err, req, res, next) => {
+            console.error(err);
+            res.status(500);
+            res.send({ error: err });
         });
+
     });
 
 module.exports = app;

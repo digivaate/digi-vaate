@@ -1,5 +1,5 @@
 import DatabaseConnection from "./models/DatabaseConnection";
-import routes from "./routes/routes";
+import createApiRoutes from "./routes/createApiRoutes";
 const Sequelize = require('sequelize');
 const config = require('./postgres');
 
@@ -40,25 +40,28 @@ export async function connectToDatabases(dbNames) {
         });
 }
 
-export async function databaseRouting(dbConnections) {
-    const dbRoutes = {};
+
+export async function connectToDatabase(dbName) {
+        let db = new DatabaseConnection(dbName);
+        return db.sequelize.sync();
+}
+
+export function databaseRouting(dbConnections) {
+    const apiRoutes = {};
     for (let c in dbConnections) {
         if (dbConnections.hasOwnProperty(c)) {
-            dbRoutes[c] = routes(dbConnections[c]);
+            apiRoutes[c] = createApiRoutes(dbConnections[c]);
         }
     }
-    return function (req, res, next) {
-        if (!dbRoutes[req.headers.db])
-            throw 'database with name' + req.headers.db + ' not found';
-
-        dbRoutes[req.headers.db](req, res, next);
-    }
+    return apiRoutes;
 }
 
 export async function createDatabase(name) {
     const dbNames = await getDatabaseNames();
     if (dbNames.includes('digivaate_' + name)) throw 'Digivaate database with name ' + name + ' already exists';
 
-    await sequelize.query('CREATE DATABASE digivaate_' + name);
-    return connectToDatabases(['digivaate_' + name]);
+    await sequelize.query('CREATE DATABASE digivaate_' + name)
+        .catch(err => console.error(err) );
+
+    return 'digivaate_' + name;
 }
