@@ -15,6 +15,7 @@ const morgan = require('morgan');
 
 //Holds all api routes for different databases
 let apiRoutes;
+let databaseConnections;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -50,23 +51,50 @@ app.use('/db', async (req, res, next) => {
     }
 });
 
-app.use('/login', (req, res, next) => {
+app.use('/login', async (req, res, next) => {
+    const promises = [];
+    for (let key in databaseConnections) {
+        if (databaseConnections.hasOwnProperty(key)) {
+            promises.push(
+                databaseConnections[key].models.users.findOne({
+                    where: {
+                        name: req.body.name,
+                        password: req.body.password
+                    }
+                })
+            )
+        }
+    }
 
+    let index = null;
+    const users = await Promise.all(promises);
+    for (let i = 0; i < users.length; i++) {
+        if (users[i]) index = i;
+    }
+    if (!index) {
+        res.status(401).json({error: 'login failed'});
+        return;
+    }
+    const dbName = Object.keys(databaseConnections)[index];
+    res.json({ dbName: dbName });
 });
 
 getDatabaseNames()
     .then(connectToDatabases)
-    .then(databaseRouting)
+    .then(dbConnections => {
+        databaseConnections = dbConnections;
+        return databaseRouting(dbConnections);
+    })
     .then(routes => {
         apiRoutes = routes;
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
-            if (!apiRoutes[req.headers.db])
-                throw 'database with name' + req.headers.db + ' not found';
+            if (!apiRoutes[req.headers.dbName])
+                throw 'database with name' + req.headers.dbName + ' not found';
 
             //forward request to correct database route
-            apiRoutes[req.headers.db](req, res, next);
+            apiRoutes[req.headers.dbName](req, res, next);
         });
 
         //Error handling
@@ -77,6 +105,8 @@ getDatabaseNames()
         });
 
         app.use((err, req, res, next) => {
+            if (res.headersSent) return next(err);
+
             console.error(err);
             res.status(500);
             res.send({ error: err });
