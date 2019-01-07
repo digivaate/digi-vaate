@@ -1,13 +1,11 @@
-const Models = require('../models/models');
 const Controller = require('./Controller');
 
 class ImageController extends Controller {
-    constructor() { super(Models.Image); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.images) }
 
-    getImage(req, res, next) {
+    getImage = (req, res, next) => {
         if (!req.query.id) throw 'No image id given';
-
-        Models.Image.findById(req.query.id)
+        this.model.findById(req.query.id)
             .then(image => {
                 if (!image) throw `No image found with id: ${req.query.id}`;
 
@@ -18,5 +16,5 @@ class ImageController extends Controller {
     }
 }
 
-module.exports = new ImageController();
+module.exports = ImageController;
 

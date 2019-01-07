@@ -1,10 +1,14 @@
 const express = require('express');
-const ProdGroupController = require('../controllers/prodGroupController');
-const router = express.Router();
+const ProdGroupController = require('../controllers/ProdGroupController');
 
-router.get('/', ProdGroupController.find_by_attribute);
-router.post('/', ProdGroupController.create);
-router.patch('/', ProdGroupController.update);
-router.delete('/', ProdGroupController.delete);
+module.exports = function (dbConnection) {
+    const router = express.Router();
+    const prodGroupController = new ProdGroupController(dbConnection);
 
-module.exports = router;
+    router.get('/', prodGroupController.find_by_attribute);
+    router.post('/', prodGroupController.create);
+    router.patch('/', prodGroupController.update);
+    router.delete('/', prodGroupController.delete);
+
+    return router;
+};

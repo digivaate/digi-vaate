@@ -1,13 +1,18 @@
 const express = require('express');
-const ThemeController = require('../controllers/themeController');
+const ThemeController = require('../controllers/ThemeController');
 const multer = require("../multer");
-const router = express.Router();
 
-router.get('/', ThemeController.find_by_attribute);
-router.post('/', ThemeController.create);
-router.patch('/', ThemeController.update);
-router.patch('/:id/image/', multer.single('image'), ThemeController.uploadImage);
-router.delete('/', ThemeController.delete);
-router.delete('/:id/image/:imageName', ThemeController.deleteImage);
+/* TODO: Update routes and controllers to new image handling way */
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const themeController = new ThemeController(dbConnection);
 
-module.exports = router;
+    router.get('/', themeController.find_by_attribute);
+    router.post('/', themeController.create);
+    router.patch('/', themeController.update);
+    router.patch('/:id/image/', multer.single('image'), themeController.uploadImage);
+    router.delete('/', themeController.delete);
+    router.delete('/:id/image/:imageName', themeController.deleteImage);
+
+    return router;
+};

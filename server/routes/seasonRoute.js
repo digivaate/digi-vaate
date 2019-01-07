@@ -1,13 +1,17 @@
 const express = require('express');
 const SeasonController = require('../controllers/seasonController');
-const router = express.Router();
 
-router.get('/', SeasonController.find_by_attribute);
-router.get('/products', SeasonController.getAllProducts);
-router.get('/colors', SeasonController.getAllColors);
-router.post('/', SeasonController.create);
-router.patch('/', SeasonController.update);
-router.patch('/products', SeasonController.updateProducts);
-router.delete('/', SeasonController.delete);
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const seasonController = new SeasonController(dbConnection);
 
-module.exports = router;
+    router.get('/', seasonController.find_by_attribute);
+    router.get('/products', seasonController.getAllProducts);
+    router.get('/colors', seasonController.getAllColors);
+    router.post('/', seasonController.create);
+    router.patch('/', seasonController.update);
+    router.patch('/products', seasonController.updateProducts);
+    router.delete('/', seasonController.delete);
+
+    return router;
+};

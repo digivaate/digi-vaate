@@ -1,6 +1,5 @@
 const express = require('express');
 const ProductController = require('../controllers/productController');
-const router = express.Router();
 const multer = require('../multer');
 
 const productController = new ProductController();
@@ -12,4 +11,7 @@ router.patch('/', ProductController.clearOtherRelations, productController.updat
 router.patch('/image', multer.single('image'), productController.uploadImage);
 router.delete('/', productController.delete);
 
-module.exports = router;
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    //TODO: PRODUCT TO NEW VERSION
+};

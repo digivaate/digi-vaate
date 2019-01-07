@@ -1,12 +1,14 @@
-const SizeController = require('../controllers/sizeController');
 const express = require('express');
+const SizeController = require('../controllers/sizeController');
 
-const router = express.Router();
-const sizeController = new SizeController();
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const sizeController = new SizeController(dbConnection);
 
-router.get('/', sizeController.find_by_attribute);
-router.post('/', sizeController.create);
-router.patch('/', sizeController.update);
-router.delete('/', sizeController.delete);
+    router.get('/', sizeController.find_by_attribute);
+    router.post('/', sizeController.create);
+    router.patch('/', sizeController.update);
+    router.delete('/', sizeController.delete);
 
-module.exports = router;
+    return router;
+};

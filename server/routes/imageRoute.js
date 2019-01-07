@@ -1,7 +1,11 @@
 const express = require('express');
-const ImageController = require('../controllers/imageController');
-const router = express.Router();
+const ImageController = require('../controllers/ImageController');
 
-router.get('/', ImageController.getImage);
+module.exports = function (dbConnection) {
+    const router = express.Router();
+    const imageController = new ImageController(dbConnection);
 
-module.exports = router;
+    router.get('/', imageController.getImage);
+
+    return router;
+};

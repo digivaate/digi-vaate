@@ -1,32 +1,28 @@
-const models = require('../models/models');
 const Controller = require('./Controller');
-const ProductController = require("./productController");
 
 class SeasonController extends Controller {
-    constructor() {
-        super(models.Season);
-    }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.seasons) }
 
-    setRelations(entity, jsonBody) {
+    setRelations = (entity, jsonBody) => {
         if (jsonBody.colors) entity.setColors(jsonBody.colors);
-    }
+    };
 
     //populates with products
-    getAllColors(req, res) {
-        const properties = Controller.collectProperties(req.query, models.Season);
+    getAllColors = (req, res) => {
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        models.Season.findOne({
+        this.model.findOne({
             where: properties,
             include: [
                 {
-                    model: models.Color,
+                    model: this.dbConnection.models.colors,
                     as: 'colors',
                     include: [
                         {
-                            model: models.Product,
+                            model: this.dbConnection.models.products,
                             as: 'products',
                             attributes: ['name', 'id']
                         }
@@ -43,30 +39,30 @@ class SeasonController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
-    getAllProducts(req, res) {
+    getAllProducts = (req, res) => {
 
-        const properties = Controller.collectProperties(req.query, models.Season);
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        models.Season.findOne({
+        this.model.findOne({
             where: properties,
             include: [
                 {
-                    model: models.Product,
+                    model: this.dbConnection.models.products,
                     as: 'products',
                     include: [{all: true}],
                     separate: true,
                     order: [["name", "ASC"]],
                 },
                 {
-                    model: models.Collection,
+                    model: this.dbConnection.models.collections,
                     as: 'collections',
                     include: [{
-                        model: models.Product,
+                        model: this.dbConnection.models.products,
                         as: 'products',
                         include: [{all: true}],
                         separate: true,
@@ -87,6 +83,7 @@ class SeasonController extends Controller {
                     prod.dataValues.seasonName = season.name;
                     products.push(prod);
                 });
+                //TODO: Import product controller
                 products.forEach(product => product.dataValues.materialCosts = ProductController.calcMaterialCosts(product));
                 res.send(products);
             })
@@ -94,26 +91,25 @@ class SeasonController extends Controller {
                 console.error('Error finding all products: ' + err);
                 res.status(500).json({ error: err });
             })
-    }
+    };
 
     //updates product values that changed in table. Checks if values are in a limit of the budget
-    updateProducts(req, res) {
-
-        models.Season.findOne({
+    updateProducts = (req, res) => {
+        this.model.findOne({
             where: { name: req.body.seasonName },
             include: [
                 {
-                    model: models.Product,
+                    model: this.dbConnection.models.products,
                     as: 'products',
                     include: [{all: true}],
                     separate: true,
                     order: [["name", "ASC"]],
                 },
                 {
-                    model: models.Collection,
+                    model: this.dbConnection.models.collections,
                     as: 'collections',
                     include: [{
-                        model: models.Product,
+                        model: this.dbConnection.models.products,
                         as: 'products',
                         include: [{all: true}],
                         separate: true,
@@ -147,7 +143,7 @@ class SeasonController extends Controller {
                 if (season.budget > purchasingPrice) {
                     const promises = [];
                     req.body.products.forEach(prod => {
-                        models.Product.findById(prod.id)
+                        this.dbConnection.models.products.findById(prod.id)
                             .then(ent => {
                                 promises.push(
                                     ent.updateAttributes(prod)
@@ -169,4 +165,4 @@ class SeasonController extends Controller {
     }
 }
 
-module.exports = new SeasonController();
+module.exports = SeasonController;

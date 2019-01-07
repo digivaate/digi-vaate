@@ -1,10 +1,14 @@
 const express = require('express');
-const orderProductController = require('../controllers/orderProductController');
-const router = express.Router();
+const OrderProductController = require('../controllers/OrderProductController');
 
-router.get('/', orderProductController.find_by_attribute);
-router.post('/', orderProductController.create);
-router.patch('/', orderProductController.update);
-router.delete('/', orderProductController.delete);
+module.exports = function (dbConnection) {
+    const router = express.Router();
+    const orderProductController = new OrderProductController(dbConnection);
 
-module.exports = router;
+    router.get('/', orderProductController.find_by_attribute);
+    router.post('/', orderProductController.create);
+    router.patch('/', orderProductController.update);
+    router.delete('/', orderProductController.delete);
+
+    return router;
+};

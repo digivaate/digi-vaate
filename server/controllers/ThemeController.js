@@ -1,14 +1,13 @@
-const Models = require('../models/models');
 const Controller = require('./Controller');
 const fs = require('fs');
 
 class ThemeController extends Controller {
-    constructor() { super(Models.Theme); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.themes) }
 
-    uploadImage(req, res, next) {
+    uploadImage = (req, res, next) => {
         if (!req.file) throw 'File not send';
 
-        Models.Theme.findById(req.params.id)
+        this.model.findById(req.params.id)
             .then(ent => {
                 if (ent.imagePaths === null) {
                     ent.imagePaths = [req.file.filename];
@@ -29,8 +28,8 @@ class ThemeController extends Controller {
             });
     }
 
-    deleteImage(req, res, next) {
-        Models.Theme.findById(req.params.id)
+    deleteImage = (req, res, next) => {
+        this.model.findById(req.params.id)
             .then(ent => {
                 if (ent.imagePaths.includes(req.params.imageName)) {
                     if (fs.existsSync('./uploads/' + req.params.imageName)) {
@@ -54,4 +53,4 @@ class ThemeController extends Controller {
     }
 }
 
-module.exports = new ThemeController();
+module.exports = ThemeController;

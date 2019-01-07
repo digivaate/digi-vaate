@@ -1,16 +1,15 @@
 const Controller = require("./Controller");
-const Models = require("../models/models");
 
 class SizeController extends Controller {
-    constructor() { super(Models.Size); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.sizes) }
 
-    create(req, res, next) {
+    create = (req, res, next) => {
         if (Array.isArray(req.body)) {
-            const promeses = [];
+            const promises = [];
             req.body.forEach(ent => {
-                promeses.push( Models.Size.create(ent) );
+                promises.push( this.model.create(ent) );
             });
-            Promise.all(promeses)
+            Promise.all(promises)
                 .then(resolved => {
                     res.send(resolved);
                 })

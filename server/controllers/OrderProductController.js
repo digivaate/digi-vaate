@@ -1,14 +1,11 @@
 const Controller = require("./Controller");
-const models = require("../models/models");
 
 class OrderProductController extends Controller {
-    constructor() {
-        super(models.OrderProduct);
-        this.create = this.create.bind(this);
-        this.orderContainsProduct = this.orderContainsProduct.bind(this);
+    constructor(dbConnection) {
+        super(dbConnection, dbConnection.models.orderProducts);
     }
 
-    async setRelations(entity, jsonBody) {
+    setRelations = async (entity, jsonBody) => {
         const promises = [];
         if (jsonBody.sizes) {
             await entity.setSizes([]);
@@ -19,13 +16,13 @@ class OrderProductController extends Controller {
             });
         }
         return Promise.all(promises);
-    }
+    };
 
     //returns promise. Resolved value is boolean
-    orderContainsProduct(orderId, productId) {
-        return models.Order.findById(orderId, {
+    orderContainsProduct = (orderId, productId) => {
+        return this.dbConnection.models.orders.findById(orderId, {
             attributes: ['id'],
-            include: [{ model: models.OrderProduct, as: 'orderProducts' }]
+            include: [{ model: this.model, as: 'orderProducts' }]
         })
             .then(order => {
                 let match = false;
@@ -36,9 +33,9 @@ class OrderProductController extends Controller {
                 });
                 return match;
             });
-    }
+    };
 
-    async create(req, res, next) {
+    create = async (req, res, next) => {
         const contains = await this.orderContainsProduct(req.body.orderId, req.body.productId);
         if (contains) {
             res.status(409).json({ Error: 'product already in order' });
@@ -54,4 +51,4 @@ class OrderProductController extends Controller {
 
 }
 
-module.exports = new OrderProductController();
+module.exports = OrderProductController;

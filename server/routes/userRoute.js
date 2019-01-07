@@ -1,7 +1,7 @@
 const express = require('express');
 const UserController = require('../controllers/UserController');
 
-module.exports = function (dbConnection) {
+module.exports = (dbConnection) => {
     const router = express.Router();
     const userController = new UserController(dbConnection);
 
@@ -11,4 +11,4 @@ module.exports = function (dbConnection) {
     router.delete('/', userController.delete);
 
     return router;
-}
+};

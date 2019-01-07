@@ -2,7 +2,6 @@ const Sequelize = require("sequelize");
 const config = require('../postgres');
 
 const modules = [
-    /*
     require('./materialModel'),
     require('./companyModel'),
     require('./colorModel'),
@@ -15,7 +14,6 @@ const modules = [
     require('./orderProductModel'),
     require('./imageModel'),
     require('./productGroupModel'),
-    */
     require('./userModel'),
 ];
 
@@ -60,12 +58,13 @@ class DatabaseConnection {
             this.models[model.name] = model;
         });
 
+        /*
         Object.keys(this.models).forEach((modelName) => {
             if ('associate' in this.models[modelName]) {
                 this.models[modelName].associate(this.models);
             }
         });
-
+        */
 
     }
     

@@ -1,17 +1,14 @@
 const Controller = require("./Controller");
-const models = require("../models/models");
 
 class OrderController extends Controller {
-    constructor() {
-        super(models.Order);
-    }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.orders) }
 
-    async setRelations(entity, jsonBody) {
+    setRelations = (entity, jsonBody) => {
         if(entity.orderProducts) delete entity.orderProducts;
-    }
+    };
 
     //override
-    find_by_attribute(req, res) {
+    find_by_attribute = (req, res) => {
         let orders = null;
         const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
@@ -23,7 +20,7 @@ class OrderController extends Controller {
             include: [{
                 all: true,
                 include: [{
-                        model: models.Size,
+                        model: this.dbConnection.models.sizes,
                         as: 'sizes'
                     }]
             }]
@@ -34,7 +31,7 @@ class OrderController extends Controller {
                 ent.forEach(order => {
                     order.orderProducts.forEach(ordProd => {
                         promises.push(
-                            models.Product.findById(ordProd.productId, {
+                            this.dbConnection.models.products.findById(ordProd.productId, {
                                 attributes: ['id', 'name', 'sellingPrice']
                             }).then(res => {
                                 ordProd.dataValues.product = res;
@@ -55,4 +52,4 @@ class OrderController extends Controller {
 
 }
 
-module.exports = new OrderController();
+module.exports = OrderController;
