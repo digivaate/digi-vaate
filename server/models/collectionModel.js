@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Collection.associate = (models) => {
-        Collection.belongsToMany(models.Color, {through: 'color_collection'});
-        Collection.belongsToMany(models.Material, {through: 'material_collection'});
-        Collection.hasMany(models.Order, {as: 'orders'});
-        Collection.hasMany(models.Product, {as: 'products'});
-        Collection.hasOne(models.Theme);
+        Collection.belongsToMany(models.colors, {through: 'color_collection'});
+        Collection.belongsToMany(models.materials, {through: 'material_collection'});
+        Collection.hasMany(models.orders, {as: 'orders'});
+        Collection.hasMany(models.products, {as: 'products'});
+        Collection.hasOne(models.themes);
     };
     return Collection;
 };

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     OrderProduct.associate = (models) => {
-        OrderProduct.belongsToMany(models.Size, {through: 'orderProduct_size'});
+        OrderProduct.belongsToMany(models.sizes, {through: 'orderProduct_size'});
     };
 
     return OrderProduct;

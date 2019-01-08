@@ -1,30 +1,30 @@
 const Controller = require('./Controller');
-const ProductController = require('./productController');
+import ProductController from "./ProductController";
 
 class CollectionController extends Controller {
-    constructor(dbConnection) { super(dbConnection, dbConnection.models.Collection); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.collections) }
 
-    setRelations(entity, jsonBody){
+    setRelations = (entity, jsonBody) => {
         if (jsonBody.materials) entity.setMaterials(jsonBody.materials);
         if (jsonBody.colors) entity.setColors(jsonBody.colors);
-    }
+    };
 
     //populates with products
-    getAllColors(req, res) {
-        const properties = Controller.collectProperties(req.query, this.dbConnection.models.Collection);
+    getAllColors = (req, res) => {
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        this.dbConnection.models.Collection.findOne({
+        this.model.findOne({
             where: properties,
             include: [
                 {
-                    model: this.dbConnection.models.Color,
+                    model: this.dbConnection.models.colors,
                     as: 'colors',
                     include: [
                         {
-                            model: this.dbConnection.models.Product,
+                            model: this.dbConnection.models.products,
                             as: 'products',
                             attributes: ['name', 'id']
                         }
@@ -41,15 +41,15 @@ class CollectionController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
-    find_by_attribute(req, res) {
+    find_by_attribute = (req, res) => {
         const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
         }
-        this.dbConnection.models.Collection.findAll({
+        this.model.findAll({
             where: properties,
             include: [{
                 all: true,
@@ -63,19 +63,18 @@ class CollectionController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
-    /*
-    getAllProducts(req, res, next) {
-        const properties = Controller.collectProperties(req.query, Models.Collection);
+    getAllProducts = (req, res, next) => {
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        Models.Collection.findOne({
+        this.model.findOne({
             where: properties,
             include: [{
-                model: Models.Product,
+                model: this.dbConnection.models.products,
                 as: 'products',
                 include: [{all: true}],
                 separate: true,
@@ -90,8 +89,8 @@ class CollectionController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
-    */
+    };
+
 }
 
 module.exports = CollectionController;

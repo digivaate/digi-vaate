@@ -1,11 +1,9 @@
-const Models = require('../models/models');
 const Controller = require('./Controller');
-const Sequelize = require('../models/models').Sequelize;
 
 class ProductController extends Controller {
-    constructor() { super(Models.Product); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.products); }
 
-    static clearOtherRelations(req, res, next) {
+    static clearOtherRelations = (req, res, next) => {
         if (req.body.companyId) {
             req.body.seasonId = null;
             req.body.collectionId = null;
@@ -17,22 +15,22 @@ class ProductController extends Controller {
             req.body.companyId = null;
         }
         next();
-    }
+    };
 
-    static calcMaterialCosts(product) {
+    static calcMaterialCosts = (product) => {
         let materialCosts = 0;
         product.dataValues.materials.forEach(material => {
             materialCosts += material.unitPrice * material.material_product.consumption + material.freight;
         });
         return parseFloat(materialCosts.toFixed(2));
-    }
+    };
 
-    static calcPurchasingPrice(product) {
+    static calcPurchasingPrice = (product) => {
         const materialCosts = ProductController.calcMaterialCosts(product);
         return product.subcCostTotal + materialCosts;
-    }
+    };
 
-    async setRelations(entity, jsonBody) {
+    setRelations = async (entity, jsonBody) => {
         const promises = [];
         if (jsonBody.colors) promises.push(entity.setColors(jsonBody.colors));
         if (jsonBody.sizes) promises.push(entity.setSizes(jsonBody.sizes));
@@ -45,9 +43,9 @@ class ProductController extends Controller {
             });
         }
         return Promise.all(promises);
-    }
+    };
 
-    find_by_attribute(req, res) {
+    find_by_attribute = (req, res) => {
         const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.stat(500).json(properties.error);
@@ -65,9 +63,9 @@ class ProductController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
-    create(req, res) {
+    create = (req, res) => {
         let entity = null;
         this.model.create(req.body)
             .then(async ent => {
@@ -78,7 +76,7 @@ class ProductController extends Controller {
                 });
                 res.send(entity);
             })
-            .catch(Sequelize.ValidationError, (err) => {
+            .catch(this.dbConnection.Sequelize.ValidationError, (err) => {
                 // respond with validation errors
                 console.error(err);
                 return res.status(422).send({errors: err.errors });
@@ -88,7 +86,7 @@ class ProductController extends Controller {
             });
     };
 
-    update(req, res) {
+    update = (req, res) => {
         const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
@@ -117,13 +115,13 @@ class ProductController extends Controller {
             });
     };
 
-    uploadImage(req, res, next) {
-        Models.Image.create(req.file)
+    uploadImage = (req, res, next) => {
+        this.dbConnection.models.images.create(req.file)
             .then(img => {
-                Models.Product.findById(req.query.id)
+                this.model.findById(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {
-                            Models.Image.destroy({
+                            this.dbConnection.models.images.destroy({
                                 where: { id: ent.imageId }
                             });
                         }
@@ -136,10 +134,10 @@ class ProductController extends Controller {
                         res.status(500).json(err);
                     })
             });
-    }
+    };
 
-    getImage(req, res, next) {
-        Models.Product.findById(req.query.id, {
+    getImage = (req, res, next) => {
+        this.model.findById(req.query.id, {
             attributes: ['imageId']
         })
             .then(ent => {
@@ -149,14 +147,14 @@ class ProductController extends Controller {
                 if (!ent.imageId) {
                     res.status(404).json({ error: 'No image found' });
                 }
-                return Models.Image.findById(ent.imageId);
+                return this.dbConnection.models.images.findById(ent.imageId);
             })
             .then(image => {
                 res.contentType(image.mimetype);
                 res.end(image.buffer);
             })
             .catch(err => res.status(500).json({ error: err }));
-    }
+    };
 
 }
 

@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Material.associate = (models) => {
-        Material.belongsToMany(models.Product, {through: 'material_product'});
-        Material.belongsToMany(models.Collection, {through: 'material_collection'});
+        Material.belongsToMany(models.products, {through: 'material_product'});
+        Material.belongsToMany(models.collections, {through: 'material_collection'});
     };
     return Material;
 };

@@ -1,34 +1,33 @@
-const models = require('../models/models');
 const Controller = require('./Controller');
-const ProductController = require("./productController");
+const ProductController = require("./ProductController");
 
 class CompanyController extends Controller {
-    constructor() { super(models.Company); }
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.companies); }
 
-    setRelations(entity, jsonBody) {
+    setRelations = (entity, jsonBody) => {
         const promises = [];
         if (jsonBody.colors) {
             promises.push( entity.setColors(jsonBody.colors) );
         }
         return Promise.all(promises);
-    }
+    };
 
     //populates with products
-    getAllColors(req, res) {
-        const properties = Controller.collectProperties(req.query, models.Company);
+    getAllColors = (req, res) => {
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        models.Company.findOne({
+        this.model.findOne({
             where: properties,
             include: [
                 {
-                    model: models.Color,
+                    model: this.dbConnection.models.colors,
                     as: 'colors',
                     include: [
                         {
-                            model: models.Product,
+                            model: this.dbConnection.models.products,
                             as: 'products',
                             attributes: ['name', 'id']
                         }
@@ -45,40 +44,40 @@ class CompanyController extends Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
-    getAllProducts(req, res) {
-        const properties = Controller.collectProperties(req.query, models.Company);
+    getAllProducts = (req, res) => {
+        const properties = Controller.collectProperties(req.query, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
         }
-        console.log('Properties', properties);
-        models.Company.findOne({
+
+        this.model.findOne({
             where: properties,
             include: [
                 {
-                    model: models.Product,
+                    model: this.dbConnection.models.products,
                     as: 'products',
                     include: [{all: true}],
                     separate: true,
                     order: [["name", "ASC"]],
                 },
                 {
-                model: models.Season,
+                model: this.dbConnection.models.seasons,
                 as: 'seasons',
                 include: [
                     {
-                        model: models.Product,
+                        model: this.dbConnection.models.products,
                         as: 'products',
                         include: [{all: true}],
                         separate: true,
                         order: [["name", "ASC"]],
                     },{
-                        model: models.Collection,
+                        model: this.dbConnection.models.collections,
                         as: 'collections',
                         include: [{
-                            model: models.Product,
+                            model: this.dbConnection.models.products,
                             as: 'products',
                             include: [{all: true}],
                             separate: true,
@@ -112,7 +111,8 @@ class CompanyController extends Controller {
                 console.error(err);
                 res.send(err);
             });
-    }
+    };
+
 }
 
-module.exports = new CompanyController();
+module.exports = CompanyController;

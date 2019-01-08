@@ -83,6 +83,7 @@ getDatabaseNames()
     .then(connectToDatabases)
     .then(dbConnections => {
         databaseConnections = dbConnections;
+        console.log('MODELS', dbConnections.digivaate.models);
         return databaseRouting(dbConnections);
     })
     .then(routes => {
@@ -112,6 +113,7 @@ getDatabaseNames()
             res.send({ error: err });
         });
 
+        console.log('Routes open');
     });
 
 module.exports = app;

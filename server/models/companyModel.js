@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Company.associate = (models) => {
-        Company.hasMany(models.Season, { as: 'seasons' });
-        Company.hasMany(models.Product, {as: 'products'});
-        Company.hasMany(models.User, {as: 'users'});
-        Company.belongsToMany(models.Color, {through: 'color_company'});
+        Company.hasMany(models.seasons, { as: 'seasons' });
+        Company.hasMany(models.products, {as: 'products'});
+        Company.hasMany(models.users, {as: 'users'});
+        Company.belongsToMany(models.colors, {through: 'color_company'});
     };
     return Company;
 };

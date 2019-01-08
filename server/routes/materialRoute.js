@@ -1,13 +1,18 @@
 const express = require('express');
-const MaterialController = require('../controllers/materialController');
-const router = express.Router();
+const MaterialController = require('../controllers/MaterialController');
 const multer = require('../multer');
 
-router.get('/', MaterialController.find_by_attribute);
-router.get('/image', MaterialController.getImage);
-router.post('/', MaterialController.create);
-router.patch('/', MaterialController.update);
-router.patch('/image', multer.single('image'), MaterialController.uploadImage);
-router.delete('/', MaterialController.delete);
+//TODO multer
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const materialController = new MaterialController(dbConnection);
 
-module.exports = router;
+    router.get('/', materialController.find_by_attribute);
+    router.get('/image', materialController.getImage);
+    router.post('/', materialController.create);
+    router.patch('/', materialController.update);
+    router.patch('/image', multer.single('image'), materialController.uploadImage);
+    router.delete('/', materialController.delete);
+
+    return router;
+};

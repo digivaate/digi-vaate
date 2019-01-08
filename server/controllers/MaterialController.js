@@ -1,23 +1,23 @@
-const Models = require('../models/models');
 const Controller = require('./Controller');
 const fs = require('fs');
 
 class MaterialController extends Controller {
-    constructor() { super(Models.Material); }
-    setRelations(entity, jsonBody){
+    constructor(dbConnection) { super(dbConnection, dbConnection.models.materials) }
+
+    setRelations = (entity, jsonBody) => {
         const promises = [];
         if (jsonBody.products) promises.push( entity.setProducts(jsonBody.products) );
         if (jsonBody.collections) promises.push( entity.setCollections(jsonBody.collections) );
         return Promise.all(promises);
-    }
+    };
 
-    uploadImage(req, res, next) {
-       Models.Image.create(req.file)
+    uploadImage = (req, res, next) => {
+       this.model.create(req.file)
             .then(img => {
-                Models.Material.findById(req.query.id)
+                this.model.findById(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {
-                            Models.Image.destroy({
+                            this.dbConnection.images.destroy({
                                 where: { id: ent.imageId }
                             });
                         }
@@ -30,10 +30,10 @@ class MaterialController extends Controller {
                         res.status(500).json(err);
                     })
             });
-    }
+    };
 
-    getImage(req, res, next) {
-        Models.Product.findById(req.query.id, {
+    getImage = (req, res, next) => {
+        this.dbConnection.models.products.findById(req.query.id, {
             attributes: ['imageId']
         })
             .then(ent => {
@@ -43,14 +43,15 @@ class MaterialController extends Controller {
                 if (!ent.imageId) {
                     res.status(404).json({ error: 'No image found' });
                 }
-                return Models.Image.findById(ent.imageId);
+                return this.dbConnection.models.images.findById(ent.imageId);
             })
             .then(image => {
                 res.contentType(image.mimetype);
                 res.end(image.buffer);
             })
             .catch(err => res.status(500).json({ error: err }));
-    }
+    };
+
 }
 
-module.exports = new MaterialController();
+module.exports = MaterialController;

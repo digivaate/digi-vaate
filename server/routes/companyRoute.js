@@ -1,12 +1,16 @@
 const express = require('express');
-const CompanyController = require('../controllers/companyController');
-const router = express.Router();
+const CompanyController = require('../controllers/CompanyController');
 
-router.get('/', CompanyController.find_by_attribute);
-router.get('/products', CompanyController.getAllProducts);
-router.get('/colors', CompanyController.getAllColors);
-router.post('/', CompanyController.create);
-router.patch('/', CompanyController.update);
-router.delete('/', CompanyController.delete);
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const companyController = new CompanyController(dbConnection);
 
-module.exports = router;
+    router.get('/', companyController.find_by_attribute);
+    router.get('/products', companyController.getAllProducts);
+    router.get('/colors', companyController.getAllColors);
+    router.post('/', companyController.create);
+    router.patch('/', companyController.update);
+    router.delete('/', companyController.delete);
+
+    return router;
+};

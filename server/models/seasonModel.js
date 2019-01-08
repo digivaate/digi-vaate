@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Season.associate = (models) => {
-        Season.hasMany(models.Collection, {as: 'collections'});
-        Season.hasMany(models.Product, {as: 'products'});
-        Season.belongsToMany(models.Color, {through: 'color_season'});
+        Season.hasMany(models.collections, {as: 'collections'});
+        Season.hasMany(models.products, {as: 'products'});
+        Season.belongsToMany(models.colors, {through: 'color_season'});
     };
 
     return Season;

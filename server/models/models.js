@@ -1,3 +1,7 @@
+/**
+ * @Deprecated
+ * @type {Sequelize}
+ */
 const Sequelize = require("sequelize");
 const config = require('../postgres');
 

@@ -35,10 +35,10 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Color.associate = (models) => {
-        Color.belongsToMany(models.Product, {through: 'color_product'});
-        Color.belongsToMany(models.Collection, {through: 'color_collection'});
-        Color.belongsToMany(models.Season, {through: 'color_season'});
-        Color.belongsToMany(models.Company, {through: 'color_company'});
+        Color.belongsToMany(models.products, {through: 'color_product'});
+        Color.belongsToMany(models.collections, {through: 'color_collection'});
+        Color.belongsToMany(models.seasons, {through: 'color_season'});
+        Color.belongsToMany(models.companies, {through: 'color_company'});
     };
 
     return Color;

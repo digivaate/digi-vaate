@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Size.associate = (model) => {
-        Size.belongsToMany(model.OrderProduct, {through: 'orderProduct_size'});
-        Size.belongsToMany(model.Product, {through: 'size_product'});
+        Size.belongsToMany(model.orderProducts, {through: 'orderProduct_size'});
+        Size.belongsToMany(model.products, {through: 'size_product'});
     };
 
     return Size;

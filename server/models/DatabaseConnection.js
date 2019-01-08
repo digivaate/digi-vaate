@@ -58,13 +58,11 @@ class DatabaseConnection {
             this.models[model.name] = model;
         });
 
-        /*
         Object.keys(this.models).forEach((modelName) => {
             if ('associate' in this.models[modelName]) {
                 this.models[modelName].associate(this.models);
             }
         });
-        */
 
     }
     

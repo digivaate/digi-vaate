@@ -1,15 +1,16 @@
 const express = require('express');
+const CollectionController = require('../controllers/CollectionController');
 
-export default function (dbConnection) {
+module.exports = (dbConnection) => {
     const router = express.Router();
-    const CollectionController = require('../controllers/CollectionController')(dbConnection);
+    const collectionController = new CollectionController(dbConnection);
 
-    router.get('/', CollectionController.find_by_attribute);
-    router.get('/products', CollectionController.getAllProducts);
-    router.get('/colors', CollectionController.getAllColors);
-    router.post('/', CollectionController.create);
-    router.patch('/', CollectionController.update);
-    router.delete('/', CollectionController.delete);
+    router.get('/', collectionController.find_by_attribute);
+    router.get('/products', collectionController.getAllProducts);
+    router.get('/colors', collectionController.getAllColors);
+    router.post('/', collectionController.create);
+    router.patch('/', collectionController.update);
+    router.delete('/', collectionController.delete);
 
     return router;
 };

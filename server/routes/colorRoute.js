@@ -1,12 +1,16 @@
 const express = require('express');
-const ColorController = require('../controllers/colorController');
-const router = express.Router();
+const ColorController = require('../controllers/ColorController');
 
-router.get('/', ColorController.find_by_attribute);
-router.post('/', ColorController.validateValue);
-router.post('/', ColorController.create);
-router.patch('/', ColorController.validateValue);
-router.patch('/', ColorController.update);
-router.delete('/', ColorController.delete);
+module.exports = (dbConnection) => {
+    const router = express.Router();
+    const colorController = new ColorController(dbConnection);
 
-module.exports = router;
+    router.get('/', colorController.find_by_attribute);
+    router.post('/', colorController.validateValue);
+    router.post('/', colorController.create);
+    router.patch('/', colorController.validateValue);
+    router.patch('/', colorController.update);
+    router.delete('/', colorController.delete);
+
+    return router;
+};

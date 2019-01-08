@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Image.associate = (models) => {
-        Image.hasOne(models.Material);
-        Image.hasOne(models.Product);
+        Image.hasOne(models.materials);
+        Image.hasOne(models.products);
     };
     return Image;
 };

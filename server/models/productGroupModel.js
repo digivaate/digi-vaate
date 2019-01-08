@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     ProductGroup.associate = (models) => {
-        ProductGroup.hasMany(models.Product, {as: 'products'});
+        ProductGroup.hasMany(models.products, {as: 'products'});
     };
     return ProductGroup;
 };
