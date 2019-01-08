@@ -4,6 +4,7 @@ import axios from 'axios';
 import { API_ROOT } from '../../../api-config';
 import FilterItems from './FilterItems'
 import FilterTag from './FilterTags'
+import createAxiosConfig from "../../../createAxiosConfig";
 class FilterArea extends Component {
     constructor(props){
         super(props);
@@ -21,7 +22,7 @@ class FilterArea extends Component {
         let allProductGroupIdFromDb = this.state.productGroupFromDb.map(productG => productG.id);
         for(let i = 0; i< allProductGroupId.length; i++){
             if(allProductGroupIdFromDb.indexOf(allProductGroupId[i]) < 0){
-                axios.get(`${API_ROOT}/productGroup`)
+                axios.get(`${API_ROOT}/productGroup`, createAxiosConfig())
                     .then(res => {
                         this.setState({
                             productGroupFromDb: res.data
@@ -34,7 +35,7 @@ class FilterArea extends Component {
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/productGroup`)
+        axios.get(`${API_ROOT}/productGroup`, createAxiosConfig())
             .then(res => {
                 this.setState({
                     productGroupFromDb: res.data

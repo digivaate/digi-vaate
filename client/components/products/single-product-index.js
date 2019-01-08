@@ -12,6 +12,7 @@ import SingleProductColors from  './single-product-colors'
 import SingleProductMaterials from './single-product-materials'
 import SingleProductGeneralInfo from './single-product-general'
 import SingleProductSize from './single-product-size'
+import createAxiosConfig from "../../createAxiosConfig";
 const confirm = Modal.confirm;
 
 class SingleProduct extends Component {
@@ -49,7 +50,7 @@ class SingleProduct extends Component {
     }
 
     loadSizes = () => {
-        axios.get(`${API_ROOT}/size`)
+        axios.get(`${API_ROOT}/size`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     sizeOptions: response.data
@@ -58,7 +59,7 @@ class SingleProduct extends Component {
     };
 
     loadMaterials = () => {
-        axios.get(`${API_ROOT}/material`)
+        axios.get(`${API_ROOT}/material`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     materialOptions: response.data
@@ -67,7 +68,7 @@ class SingleProduct extends Component {
     };
 
     loadSeason = () => {
-        axios.get(`${API_ROOT}/season`)
+        axios.get(`${API_ROOT}/season`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     seasons: response.data
@@ -93,10 +94,10 @@ class SingleProduct extends Component {
             const pathSnippets = location.pathname.split('/').filter(i => i);
             this.productId = pathSnippets[pathSnippets.length-1].split("-")[0];
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?id=${this.productId}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`, createAxiosConfig())
                     .then(response => {
                         if (response.data[0].companyId) {
-                            axios.get(`${API_ROOT}/company?id=1`)
+                            axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
                                 .then(res => {
                                     this.setState({
                                         colorOptions: res.data[0].colors
@@ -104,9 +105,9 @@ class SingleProduct extends Component {
                                 });
                         }
                         if (response.data[0].seasonId) {
-                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`, createAxiosConfig())
                                 .then(res => {
-                                    axios.get(`${API_ROOT}/company?id=1`)
+                                    axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
                                         .then(re => {
                                             this.setState({
                                                 colorOptions: res.data[0].colors.concat(re.data[0].colors)
@@ -116,11 +117,11 @@ class SingleProduct extends Component {
 
                         }
                         if (response.data[0].collectionId) {
-                            axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                            axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`, createAxiosConfig())
                                 .then(res => {
-                                    axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                    axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`, createAxiosConfig())
                                         .then(re => {
-                                            axios.get(`${API_ROOT}/company?id=1`)
+                                            axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
                                                 .then(re1 => {
                                                     this.setState({
                                                         colorOptions: res.data[0].colors.concat(re.data[0].colors.concat(re1.data[0].colors))
@@ -155,7 +156,7 @@ class SingleProduct extends Component {
         }
         else if(this.props.match.params.productId){
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?id=${this.productId}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
@@ -261,7 +262,7 @@ class SingleProduct extends Component {
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                axios.get(`${API_ROOT}/product?id=${self.productId}`)
+                axios.get(`${API_ROOT}/product?id=${self.productId}`, createAxiosConfig())
                     .then(response => {
                         self.setState({
                             loadedProduct: response.data[0],
@@ -296,19 +297,23 @@ class SingleProduct extends Component {
             }
         });
         let newSizesPatch = this.state.productSizes.map(size => size.id)
-        axios.patch(`${API_ROOT}/product?id=${this.productId}`,{
-            name: this.state.productName,
-            colors: newColorsPatch,
-            materials: newMaterialsPatch,
-            sizes: newSizesPatch,
-            sellingPrice: this.state.loadedProduct.sellingPrice,
-            resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
-            amount: this.state.loadedProduct.amount,
-            subcCostTotal: this.state.loadedProduct.subcCostTotal,
-            productGroupId: this.state.loadedProduct.productGroupId
-        })
+        axios.patch(
+            `${API_ROOT}/product?id=${this.productId}`,
+            {
+                name: this.state.productName,
+                colors: newColorsPatch,
+                materials: newMaterialsPatch,
+                sizes: newSizesPatch,
+                sellingPrice: this.state.loadedProduct.sellingPrice,
+                resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
+                amount: this.state.loadedProduct.amount,
+                subcCostTotal: this.state.loadedProduct.subcCostTotal,
+                productGroupId: this.state.loadedProduct.productGroupId
+            },
+            createAxiosConfig()
+        )
             .then(res => {
-                axios.get(`${API_ROOT}/product?id=${this.productId}`)
+                axios.get(`${API_ROOT}/product?id=${this.productId}`, createAxiosConfig())
                     .then(response => {
                         message.success("Updated!",1.5);
                         this.setState({

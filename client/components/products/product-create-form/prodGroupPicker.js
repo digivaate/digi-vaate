@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Input, Select, Col} from "antd";
 import axios from "axios";
 import {API_ROOT} from "../../../api-config";
+import createAxiosConfig from "../../../createAxiosConfig";
 const Option = Select.Option;
 
 class ProdGroupPicker extends Component {
@@ -27,7 +28,7 @@ class ProdGroupPicker extends Component {
     }*/
 
     loadProdGroups = () => {
-        axios.get(`${API_ROOT}/productgroup`)
+        axios.get(`${API_ROOT}/productgroup`, createAxiosConfig())
             .then(response => {
                 this.setState({ data: response.data });
             })

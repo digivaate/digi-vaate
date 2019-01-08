@@ -4,6 +4,7 @@ import {Card, Col, Row, Divider, Input, Button, Icon, Modal, Select, message,Spi
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
+import createAxiosConfig from "../../createAxiosConfig";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -55,7 +56,7 @@ class SingleProduct extends Component {
     }
 
     loadSeason = () => {
-        axios.get(`${API_ROOT}/season`)
+        axios.get(`${API_ROOT}/season`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     seasons: response.data

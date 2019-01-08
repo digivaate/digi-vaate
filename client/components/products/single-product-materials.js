@@ -5,6 +5,7 @@ import {API_ROOT} from '../../api-config';
 import './products.css'
 import {Link} from 'react-router-dom';
 import {comaToPeriod} from "../../utils/coma-convert";
+import createAxiosConfig from "../../createAxiosConfig";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -50,7 +51,7 @@ class SingleProductMaterials extends Component{
             })
         }
         if(!prevProps.editModeStatus && this.props.editModeStatus && this.props.productMaterials.length > 0){
-            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`, createAxiosConfig())
                 .then(response => {
                     if (response.data[0].materials[0]) {
                         this.setState({
@@ -77,7 +78,7 @@ class SingleProductMaterials extends Component{
 
     componentDidMount(){
         if(this.props.editModeStatus && this.props.productMaterials.length > 0) {
-            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`, createAxiosConfig())
                 .then(response => {
                     console.log(response.data[0])
                     if (response.data[0].materials[0]) {

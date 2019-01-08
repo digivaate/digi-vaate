@@ -6,6 +6,7 @@ import {Button, Icon,Modal,Input} from "antd";
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import OrderProductCreateForm from './newOrderProduct'
+import createAxiosConfig from "../../createAxiosConfig";
 const confirm = Modal.confirm;
 
 class ProductTable extends Component {
@@ -38,7 +39,7 @@ class ProductTable extends Component {
             this.productsCollection = this.props.location.state.productsCollection;
             this.formatProduct();
         } else {
-            axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`)
+            axios.get(`${API_ROOT}/collection?name=${this.props.collectionName}`, createAxiosConfig())
                 .then(response => {
                     this.productsCollection = response.data[0].products
                     this.formatProduct();
@@ -48,7 +49,7 @@ class ProductTable extends Component {
                 });
         }
 
-        axios.get(`${API_ROOT}/size`)
+        axios.get(`${API_ROOT}/size`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     sizeOptions: response.data
@@ -93,7 +94,7 @@ class ProductTable extends Component {
                     });
                     let copyOfUpdatedSizeAvailable = updatedSizeAvailable.slice(0);
                     if(JSON.stringify(this.products[k].sizes) !== JSON.stringify(fullupdatedSizeAvailable)){
-                        axios.patch(`${API_ROOT}/orderproduct?id=${this.products[k].id}`, {sizes: copyOfUpdatedSizeAvailable})
+                        axios.patch(`${API_ROOT}/orderproduct?id=${this.products[k].id}`, {sizes: copyOfUpdatedSizeAvailable}, createAxiosConfig())
                     }
                     this.products[k].sizes = fullupdatedSizeAvailable.slice(0);
                     fullupdatedSizeAvailable = [];
@@ -154,7 +155,7 @@ class ProductTable extends Component {
 
     //Edit size of products
     editSize = (amountEachSize,productId,orderProductId) => {
-        axios.get(`${API_ROOT}/product?id=${productId}`)
+        axios.get(`${API_ROOT}/product?id=${productId}`, createAxiosConfig())
             .then(response => {
                 this.sizeInOrderProduct = response.data[0].sizes
                 this.setState({
@@ -186,9 +187,9 @@ class ProductTable extends Component {
                 })
             }
         }
-        axios.patch(`${API_ROOT}/orderproduct?id=${this.state.orderProductId}`,{sizes:sizeArray})
+        axios.patch(`${API_ROOT}/orderproduct?id=${this.state.orderProductId}`,{sizes:sizeArray}, createAxiosConfig())
             .then((response) => {
-                axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
+                axios.get(`${API_ROOT}/order?id=${this.props.orderId}`, createAxiosConfig())
                     .then(res => {
                         this.products = res.data[0].orderProducts;
                         this.formatProductForEdit();
@@ -245,9 +246,9 @@ class ProductTable extends Component {
                 sizes:sizeArray
             };
 
-            axios.post(`${API_ROOT}/orderproduct`,newProductOrder)
+            axios.post(`${API_ROOT}/orderproduct`,newProductOrder, createAxiosConfig())
                 .then(response => {
-                    axios.get(`${API_ROOT}/order?id=${this.props.orderId}`)
+                    axios.get(`${API_ROOT}/order?id=${this.props.orderId}`, createAxiosConfig())
                         .then(res => {
                             this.products = res.data[0].orderProducts;
                             this.formatProductForEdit();
@@ -277,9 +278,9 @@ class ProductTable extends Component {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/orderproduct?id=${orderProductId}`)
+                axios.delete(`${API_ROOT}/orderproduct?id=${orderProductId}`, createAxiosConfig())
                     .then(() => {
-                        axios.get(`${API_ROOT}/order?id=${self.props.orderId}`)
+                        axios.get(`${API_ROOT}/order?id=${self.props.orderId}`, createAxiosConfig())
                             .then(res => {
                                 self.products = res.data[0].orderProducts;
                                 self.formatProductForEdit();

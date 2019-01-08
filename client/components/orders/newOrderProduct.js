@@ -3,6 +3,7 @@ import { Modal,Button,Form,Input,Select} from 'antd';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
+import createAxiosConfig from "../../createAxiosConfig";
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -26,7 +27,7 @@ const OrderProductCreateForm = Form.create()(
                     }
                 }
             }
-            axios.get(`${API_ROOT}/product?id=${value}`)
+            axios.get(`${API_ROOT}/product?id=${value}`, createAxiosConfig())
                 .then(response => {
                     this.setState({
                         productNameSelected: valueObj[0].name,

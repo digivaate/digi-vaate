@@ -4,6 +4,7 @@ import {Col,Row,DatePicker,Modal,Button,Card,Input} from 'antd'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import {comaToPeriod} from "../../utils/coma-convert";
+import createAxiosConfig from "../../createAxiosConfig";
 const { TextArea } = Input;
 
 class ClientInfo extends Component{
@@ -47,7 +48,7 @@ class ClientInfo extends Component{
             brandLabel: this.state.brandLabel,
         };
         this.props.newClientInfo(newData)
-        axios.patch(`${API_ROOT}/order?id=${this.props.clientInfo.id}`,newData)
+        axios.patch(`${API_ROOT}/order?id=${this.props.clientInfo.id}`,newData, createAxiosConfig())
             .then((response) => {
                 console.log(response.data[0])
                 this.setState({

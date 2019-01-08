@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Modal } from 'antd';
 import axios from 'axios';
 import {API_ROOT} from "../../api-config";
+import createAxiosConfig from "../../createAxiosConfig";
 
 const FormItem = Form.Item;
 const confirm = Modal.confirm;
@@ -57,7 +58,7 @@ class EditCollection extends React.Component {
         confirm({
             title: 'Delete this collection?',
             onOk() {
-                return axios.delete(API_ROOT + '/collection/?id=' + collectionId)
+                return axios.delete(API_ROOT + '/collection/?id=' + collectionId, createAxiosConfig())
                     .then(res => {
                         self.props.deleteCollection(self.props.collection)
                         self.close();

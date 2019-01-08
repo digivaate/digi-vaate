@@ -4,6 +4,7 @@ import {Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
+import createAxiosConfig from "../../createAxiosConfig";
 
 class SingleProductImg extends Component{
     constructor(props){
@@ -18,9 +19,9 @@ class SingleProductImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data)
+        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data, createAxiosConfig())
             .then(() => {
-                axios.get(`${API_ROOT}/product?id=${this.props.productId}`)
+                axios.get(`${API_ROOT}/product?id=${this.props.productId}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
                             singleProductImg: response.data[0].imageId

@@ -5,6 +5,7 @@ import { API_ROOT } from '../../api-config';
 import './company.css'
 import SeasonCreateForm from './newSeason'
 import EditSeason from "./edit-season";
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SeasonsList extends Component{
@@ -20,7 +21,7 @@ class SeasonsList extends Component{
         }
     }
     componentDidMount =() => {
-        axios.get(`${API_ROOT}/company?id=1`)
+        axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     seasons: response.data[0].seasons,
@@ -155,7 +156,7 @@ class SeasonsList extends Component{
             budget: season.budget,
             name: season.name
         };
-        axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo )
+        axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo, createAxiosConfig())
             .then(res => {
                 for(let i = 0; i < seasonsOri.length;i++) {
                     if (seasonsOri[i].id === res.data[0].id) {

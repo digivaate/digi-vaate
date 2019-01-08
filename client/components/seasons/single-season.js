@@ -5,6 +5,7 @@ import { API_ROOT } from '../../api-config';
 import './seasons.css'
 import CollectionCreateForm from './newCollection'
 import EditCollection from "./edit-collection";
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SingleSeason extends Component{
@@ -21,7 +22,7 @@ class SingleSeason extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.match.params.seasonId !== this.props.match.params.seasonId){
-            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+            axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`, createAxiosConfig())
                 .then(response => {
                     this.setState({
                         collections: response.data[0].collections,
@@ -33,7 +34,7 @@ class SingleSeason extends Component{
     }
 
     componentDidMount = () => {
-        axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+        axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     collections: response.data[0].collections,
@@ -64,7 +65,7 @@ class SingleSeason extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id})
+            axios.post(`${API_ROOT}/collection`,{name: values.name, seasonId: this.state.seasons.id}, createAxiosConfig())
                 .then((res) => {
                     this.props.sendNewCollection(res.data);
                     let collections = [...this.state.collections];
@@ -151,7 +152,7 @@ class SingleSeason extends Component{
         let newInfo = {
             name: collection.name
         };
-        axios.patch(API_ROOT + '/collection/?id=' + collection.id, newInfo )
+        axios.patch(API_ROOT + '/collection/?id=' + collection.id, newInfo, createAxiosConfig())
             .then(res => {
                 for(let i = 0; i < collectionsOri.length;i++) {
                     if (collectionsOri[i].id === res.data[0].id) {

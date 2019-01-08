@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Row,Button, Icon, Modal,Spin,Col,Select,Card} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SingleProductSize extends Component{
@@ -64,7 +65,7 @@ class SingleProductSize extends Component{
     handleSizeOk = () => {
         let mergeSizes = [];
         if(this.newSizesCreated.length > 0) {
-            axios.post(`${API_ROOT}/size`, this.newSizesCreated)
+            axios.post(`${API_ROOT}/size`, this.newSizesCreated, createAxiosConfig())
                 .then((response) => {
                     mergeSizes = this.updateSizes.concat(response.data);
                     this.props.newSizes(mergeSizes);

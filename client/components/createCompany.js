@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Button, Form, Input} from "antd";
 import {comaToPeriod} from "../utils/coma-convert";
 import {API_ROOT} from "../api-config";
+import createAxiosConfig from "../createAxiosConfig";
 const { Item } = Form;
 
 class CreateCompany extends Component {
@@ -14,10 +15,14 @@ class CreateCompany extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         //LÄHETÄ UUS COMPANY
-        axios.post(API_ROOT + '/company', {
-            name: this.state.name,
-            taxPercent: this.state.percent
-        })
+        axios.post(
+            API_ROOT + '/company',
+            {
+                name: this.state.name,
+                taxPercent: this.state.percent
+            },
+            createAxiosConfig()
+        )
             .then(res => {
                 console.log(res);
                 location.reload();

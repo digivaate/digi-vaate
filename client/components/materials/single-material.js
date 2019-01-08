@@ -8,6 +8,7 @@ import './materials.css'
 import SingleMaterialGeneral from './single-material-general'
 import SingleMaterialName from './single-material-name'
 import SingleMaterialImg from './single-material-img'
+import createAxiosConfig from "../../createAxiosConfig";
 const confirm = Modal.confirm;
 
 class SingleMaterial extends Component{
@@ -21,11 +22,11 @@ class SingleMaterial extends Component{
     materialId = this.props.match.params.materialId.split('-')[0];
     materials = [];
     componentDidMount(){
-        axios.get(`${API_ROOT}/material`)
+        axios.get(`${API_ROOT}/material`, createAxiosConfig())
             .then(response => {
                 this.materials = response.data
             });
-        axios.get(`${API_ROOT}/material?id=${this.materialId}`)
+        axios.get(`${API_ROOT}/material?id=${this.materialId}`, createAxiosConfig())
             .then(response => {
                 this.loadedMaterialOri = response.data[0];
                 this.setState({
@@ -76,7 +77,7 @@ class SingleMaterial extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                axios.get(`${API_ROOT}/material?id=${self.materialId}`)
+                axios.get(`${API_ROOT}/material?id=${self.materialId}`, createAxiosConfig())
                     .then(response => {
                         console.log(response.data[0])
                         self.loadedMaterialOri = response.data[0];
@@ -105,9 +106,9 @@ class SingleMaterial extends Component{
             instructions:this.state.loadedMaterial.instructions,
             composition:this.state.loadedMaterial.composition,
         };
-        axios.patch(`${API_ROOT}/material?id=${this.materialId}`,materialChanges)
+        axios.patch(`${API_ROOT}/material?id=${this.materialId}`,materialChanges, createAxiosConfig())
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.materialId}`)
+                axios.get(`${API_ROOT}/material?id=${this.materialId}`, createAxiosConfig())
                     .then(response => {
                         message.success("Material updated!",1);
                         this.loadedMaterialOri = response.data[0];

@@ -6,6 +6,7 @@ import {API_ROOT} from '../../api-config'
 import './orders.css'
 import ProductTable from './single-order-products'
 import ClientInfo from './clientInfo'
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SingleOrder extends Component{
@@ -20,7 +21,7 @@ class SingleOrder extends Component{
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/order?id=${this.props.match.params.orderId}`)
+        axios.get(`${API_ROOT}/order?id=${this.props.match.params.orderId}`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     singleOrder: response.data[0],
@@ -67,7 +68,7 @@ class SingleOrder extends Component{
     };
 
     updateTotalPrice = (orderTotalPrice) => {
-        axios.patch(`${API_ROOT}/order?id=${this.props.match.params.orderId}`,{price:orderTotalPrice})
+        axios.patch(`${API_ROOT}/order?id=${this.props.match.params.orderId}`,{price:orderTotalPrice}, createAxiosConfig())
             .then(response => {
                 this.setState(prevState => {
                     return {

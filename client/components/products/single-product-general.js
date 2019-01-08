@@ -3,6 +3,7 @@ import {Row, Col, Input, Button, Icon, Modal, message, Select} from 'antd';
 import './products.css'
 import { comaToPeriod } from "../../utils/coma-convert";
 import {API_ROOT} from "../../api-config";
+import createAxiosConfig from "../../createAxiosConfig";
 
 const Option = Select.Option;
 const axios = require("axios");
@@ -54,7 +55,7 @@ class SingleProductGeneralInfo extends Component{
     }
 
     loadProductGroups = () => {
-        axios.get(`${API_ROOT}/productgroup`)
+        axios.get(`${API_ROOT}/productgroup`, createAxiosConfig())
             .then(response => {
                 let prodGroup = undefined;
                 response.data.forEach(group => {

@@ -9,6 +9,7 @@ import 'react-table/react-table.css';
 import './summary-table.css';
 import '../utils/coma-convert';
 import {comaToPeriod} from "../utils/coma-convert";
+import createAxiosConfig from "../createAxiosConfig";
 
 class SummaryTable extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class SummaryTable extends React.Component {
     componentDidUpdate(prevProps){
         if(prevProps.requestPath !== this.props.requestPath){
             const dataCollected = [];
-            axios.get(`${API_ROOT}${this.props.requestPath}`, { cancelToken: this.source.token})
+            axios.get(`${API_ROOT}${this.props.requestPath}`, createAxiosConfig())
                 .then(response => {
                     this.products = response.data;
                     this.products.forEach(product => {
@@ -46,7 +47,7 @@ class SummaryTable extends React.Component {
 
                     //fetch budget if in season level
                     if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
-                        return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, {cancelToken: this.source.token})
+                        return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, createAxiosConfig())
                             .then(res => {
                                 return res.data[0].budget;
                             })
@@ -141,10 +142,14 @@ class SummaryTable extends React.Component {
                 const promises = [];
                 changedProds.forEach(prod => {
                     promises.push(
-                        axios.patch(API_ROOT + '/product/?id=' + prod.id, {
-                            amount: prod.amount,
-                            sellingPrice: prod.sellingPrice,
-                        })
+                        axios.patch(
+                            API_ROOT + '/product/?id=' + prod.id,
+                            {
+                                amount: prod.amount,
+                                sellingPrice: prod.sellingPrice,
+                            },
+                            createAxiosConfig()
+                        )
                     );
                 });
                 Promise.all(promises)
@@ -159,10 +164,14 @@ class SummaryTable extends React.Component {
                     });
             } else {
                 //IF in season level
-                axios.patch(API_ROOT + '/season/products?name=' + this.props.match.params.seasonId, {
-                    seasonName: this.props.match.params.seasonId,
-                    products: changedProds
-                })
+                axios.patch(
+                    API_ROOT + '/season/products?name=' + this.props.match.params.seasonId,
+                    {
+                        seasonName: this.props.match.params.seasonId,
+                        products: changedProds
+                    },
+                    createAxiosConfig()
+                )
                     .then(res => {
                         console.log(res);
                         this.setState({saving: false});
@@ -378,7 +387,7 @@ class SummaryTable extends React.Component {
     //React functions
     componentDidMount() {
         const dataCollected = [];
-        axios.get(`${API_ROOT}${this.props.requestPath}`, { cancelToken: this.source.token})
+        axios.get(`${API_ROOT}${this.props.requestPath}`, createAxiosConfig())
             .then(response => {
                 this.products = response.data;
                 this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
@@ -389,7 +398,7 @@ class SummaryTable extends React.Component {
 
                 //fetch budget if in season level
                 if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
-                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, {cancelToken: this.source.token})
+                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, createAxiosConfig())
                         .then(res => {
                             return res.data[0].budget;
                         })

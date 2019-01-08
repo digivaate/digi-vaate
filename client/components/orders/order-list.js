@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import {API_ROOT} from '../../api-config'
 import './orders.css'
 import OrderCreateForm from './newOrder'
+import createAxiosConfig from "../../createAxiosConfig";
 const confirm = Modal.confirm;
 
 
@@ -21,7 +22,7 @@ class OrderList extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.match.url !== this.props.match.url){
-            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
                 .then(response => {
                     this.setState({
                         productsCollection: response.data[0].products,
@@ -33,7 +34,7 @@ class OrderList extends Component{
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     productsCollection: response.data[0].products,
@@ -51,7 +52,7 @@ class OrderList extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/order?id=${item.id}`)
+                axios.delete(`${API_ROOT}/order?id=${item.id}`, createAxiosConfig())
                     .then(() => {
                         let orders = [...self.state.orders];
                         for(let i = 0; i<orders.length;i++){
@@ -92,7 +93,7 @@ class OrderList extends Component{
                 status: "In process",
                 price: 0
             };
-            axios.post(`${API_ROOT}/order`,values)
+            axios.post(`${API_ROOT}/order`,values, createAxiosConfig())
                 .then(response => {
                     message.success("Order created!");
                     response.data.orderProducts = [];

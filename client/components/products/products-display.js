@@ -9,6 +9,7 @@ import "./products.css"
 import ProductCreateForm from './poduct-create-form';
 import RenderInitialCard from '../renderInitialCard';
 import FilterArea from '../layout/Filter/FilterArea'
+import createAxiosConfig from "../../createAxiosConfig";
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -61,7 +62,7 @@ class ProductsDisplay extends Component{
             })
         }
 
-        axios.get(`${API_ROOT}${this.props.requestPath}`)
+        axios.get(`${API_ROOT}${this.props.requestPath}`, createAxiosConfig())
             .then(res => {
                 this.products = res.data;
                 this.productsOri = res.data
@@ -96,7 +97,7 @@ class ProductsDisplay extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/product?id=${productId}`)
+                axios.delete(`${API_ROOT}/product?id=${productId}`, createAxiosConfig())
                     .then(() => {
                         const products = [...self.state.products];
                         for(let i = 0; i < products.length; i++){
@@ -194,7 +195,7 @@ class ProductsDisplay extends Component{
             //Create new product group if one does not exist
             if(values.productGroup) {
                 if (!(typeof values.productGroup === 'number')) {
-                    await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup})
+                    await axios.post(`${API_ROOT}/productgroup`, {name: values.productGroup}, createAxiosConfig())
                         .then(response => {
                             values.productGroupId = response.data.id;
                         })
@@ -206,14 +207,14 @@ class ProductsDisplay extends Component{
 
             if (this.uploadImage) {
                 if (newSizes.length > 0) {
-                    axios.post(`${API_ROOT}/size`, newSizes)
+                    axios.post(`${API_ROOT}/size`, newSizes, createAxiosConfig())
                         .then(resp => {
                             newSizeId = resp.data.map(ele => ele.id);
                             existedSizes = existedSizes.concat(newSizeId);
                             values.sizes = existedSizes.slice(0);
-                            axios.post(`${API_ROOT}/product`, values)
+                            axios.post(`${API_ROOT}/product`, values, createAxiosConfig())
                                 .then(response => {
-                                    axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
+                                    axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage, createAxiosConfig())
                                         .then((re) => {
                                             if (response.data.companyId) {
                                                 response.data.seasonName = "None";
@@ -247,9 +248,9 @@ class ProductsDisplay extends Component{
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
-                    axios.post(`${API_ROOT}/product`, values)
+                    axios.post(`${API_ROOT}/product`, values, createAxiosConfig())
                         .then(response => {
-                            axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
+                            axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage, createAxiosConfig())
                                 .then((re) => {
                                     if (response.data.companyId) {
                                         response.data.seasonName = "None";
@@ -283,12 +284,12 @@ class ProductsDisplay extends Component{
                 }
             } else if (!this.uploadImage) {
                 if (newSizes.length > 0) {
-                    axios.post(`${API_ROOT}/size`, newSizes)
+                    axios.post(`${API_ROOT}/size`, newSizes, createAxiosConfig())
                         .then(response => {
                             newSizeId = response.data.map(ele => ele.id);
                             existedSizes = existedSizes.concat(newSizeId);
                             values.sizes = existedSizes.slice(0);
-                            axios.post(`${API_ROOT}/product`, values)
+                            axios.post(`${API_ROOT}/product`, values, createAxiosConfig())
                                 .then(response => {
                                     if (response.data.companyId) {
                                         response.data.seasonName = "None";
@@ -320,7 +321,7 @@ class ProductsDisplay extends Component{
                         })
                 } else {
                     values.sizes = existedSizes.slice(0);
-                    axios.post(`${API_ROOT}/product`, values)
+                    axios.post(`${API_ROOT}/product`, values, createAxiosConfig())
                         .then(response => {
                             if (response.data.companyId) {
                                 response.data.seasonName = "None";

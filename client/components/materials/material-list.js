@@ -7,6 +7,7 @@ import { API_ROOT } from '../../api-config';
 const confirm = Modal.confirm;
 const { Meta } = Card;
 import RenderInitialCard from '../renderInitialCard';
+import createAxiosConfig from "../../createAxiosConfig";
 
 class MaterialList extends Component{
     constructor(props){
@@ -22,7 +23,7 @@ class MaterialList extends Component{
     uploadImage=null;
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/material`)
+        axios.get(`${API_ROOT}/material`, createAxiosConfig())
             .then(response => this.materials = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
@@ -36,7 +37,7 @@ class MaterialList extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/material?id=${materialId}`)
+                axios.delete(`${API_ROOT}/material?id=${materialId}`, createAxiosConfig())
                     .then(() => {
                         const materials = [...self.materials];
                         for(let i = 0; i < materials.length; i++){

@@ -9,6 +9,7 @@ import FormData from 'form-data';
 import "./products.css"
 import {comaToPeriod} from "../../utils/coma-convert";
 import ProdGroupPicker from "./product-create-form/prodGroupPicker";
+import createAxiosConfig from "../../createAxiosConfig";
 
 const ProductCreateForm = Form.create()(
     class extends React.Component {
@@ -41,7 +42,7 @@ const ProductCreateForm = Form.create()(
 
         loadColors = () => {
             if(this.props.productLevelName === "company"){
-                axios.get(`${API_ROOT}/company?id=1`)
+                axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
                         this.setState({
@@ -50,10 +51,10 @@ const ProductCreateForm = Form.create()(
                     })
             }
             if(this.props.productLevelName === "season"){
-                axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
+                axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`, createAxiosConfig())
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
-                        axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`)
+                        axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`, createAxiosConfig())
                             .then(res => {
                                 this.setState({
                                     colorOptions:res.data[0].colors.concat(response.data[0].colors)
@@ -62,12 +63,12 @@ const ProductCreateForm = Form.create()(
                     })
             }
             if(this.props.productLevelName === "collection"){
-                axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
+                axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
-                        axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                        axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`, createAxiosConfig())
                             .then(res => {
-                                axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`)
+                                axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`, createAxiosConfig())
                                     .then(re => {
                                         this.setState({
                                             colorOptions:re.data[0].colors.concat(res.data[0].colors.concat(response.data[0].colors))
@@ -79,7 +80,7 @@ const ProductCreateForm = Form.create()(
         };
 
         loadMaterials = () => {
-            axios.get(`${API_ROOT}/material`)
+            axios.get(`${API_ROOT}/material`, createAxiosConfig())
                 .then(response => {
                     this.setState({
                         materialOptions: response.data
@@ -88,7 +89,7 @@ const ProductCreateForm = Form.create()(
         };
 
         loadSizes = () => {
-            axios.get(`${API_ROOT}/size`)
+            axios.get(`${API_ROOT}/size`, createAxiosConfig())
                 .then(response => {
                     this.setState({
                         sizeOptions: response.data

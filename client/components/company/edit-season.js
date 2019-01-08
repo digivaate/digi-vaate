@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Modal } from 'antd';
 import axios from 'axios';
 import {API_ROOT} from "../../api-config";
+import createAxiosConfig from "../../createAxiosConfig";
 
 const FormItem = Form.Item;
 const confirm = Modal.confirm;
@@ -68,7 +69,7 @@ class EditSeason extends React.Component {
         confirm({
             title: 'Delete this season?',
             onOk() {
-                return axios.delete(API_ROOT + '/season/?id=' + seasonId)
+                return axios.delete(API_ROOT + '/season/?id=' + seasonId, createAxiosConfig())
                     .then(res => {
                         self.props.deleteSeason(self.props.season)
                         console.log(res);

@@ -91,11 +91,12 @@ getDatabaseNames()
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
-            if (!apiRoutes[req.headers.dbname])
-                throw 'database with name ' + req.headers.dbname + ' not found';
+            const dbName = req.headers.authorization.split(' ')[1];
+            if (!apiRoutes[dbName])
+                throw 'database with name ' + dbName + ' not found';
 
             //forward request to correct database route
-            apiRoutes[req.headers.dbname](req, res, next);
+            apiRoutes[dbName](req, res, next);
         });
 
         //Error handling

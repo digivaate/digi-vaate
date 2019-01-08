@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 import {Row,Button, Modal, message,TreeSelect,Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './products.css'
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SingleProductImg extends Component{
@@ -47,7 +48,7 @@ class SingleProductImg extends Component{
                     message.error(`You are currently on ${this.props.seasonName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`,{seasonId:this.seasons[i][0]}, createAxiosConfig())
                         .then(() => {
                             this.props.changeLocation();
                             message.success("Change successfully",1);
@@ -65,7 +66,7 @@ class SingleProductImg extends Component{
                     message.error(`You are currently on ${this.props.collectionName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`, {collectionId: this.collections[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.props.loadedProduct.name}`, {collectionId: this.collections[i][0]}, createAxiosConfig())
                         .then(() => {
                             for (let j = 0; j < this.seasons.length; j++) {
                                 if (this.collections[i][2] === this.seasons[j][0]) {

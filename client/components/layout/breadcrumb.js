@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Breadcrumb } from 'antd';
 import axios from 'axios';
 import "./layout.css"
+import createAxiosConfig from "../../createAxiosConfig";
 
 const Home = withRouter((props) => {
     const { location } = props;
@@ -59,7 +60,7 @@ class BreadCrumbDigi extends Component{
 
     componentDidMount(){
         //Breadcrumbs for all company stuffs
-        axios.get(`${API_ROOT}/company`)
+        axios.get(`${API_ROOT}/company`, createAxiosConfig())
             .then(res => {
                 this.companies = res.data;
                 for(let i=0;i<this.companies.length;i++) {
@@ -71,7 +72,7 @@ class BreadCrumbDigi extends Component{
                     this.breadcrumbNameMap["/materials"] = "Materials";
                     this.breadcrumbNameMap["/seasons"] = "Seasons";
                     this.breadcrumbNameMap["/orders"] = "Orders";
-                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`)
+                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`, createAxiosConfig())
                         .then(response => {
                             this.companiesProduct = response.data;
                             for(let m = 0 ; m<this.companiesProduct.length; m++){
@@ -81,7 +82,7 @@ class BreadCrumbDigi extends Component{
                             this.setState({})
                         })
                         .then(() => {
-                            axios.get(`${API_ROOT}/material`)
+                            axios.get(`${API_ROOT}/material`, createAxiosConfig())
                                 .then(res => {
                                     this.materials = res.data;
                                     for(let m = 0 ; m<this.materials.length; m++) {
@@ -94,7 +95,7 @@ class BreadCrumbDigi extends Component{
             });
 
         //Breadcrumb for all season stuffs
-        axios.get(`${API_ROOT}/season`)
+        axios.get(`${API_ROOT}/season`, createAxiosConfig())
             .then(response => {
                 this.seasons = response.data;
                     for(let i=0;i<this.seasons.length;i++){
@@ -118,7 +119,7 @@ class BreadCrumbDigi extends Component{
                         }
                     }
                     for(let n=0; n<this.seasonsMap.length; n++){
-                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`)
+                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`, createAxiosConfig())
                             .then(response => {
                                 this.seasonProducts = response.data;
                                 for(let m = 0 ; m<this.seasonProducts.length; m++){
@@ -133,7 +134,7 @@ class BreadCrumbDigi extends Component{
             );
 
         //Breadcrumb for all collection stuffs
-        axios.get(`${API_ROOT}/collection`)
+        axios.get(`${API_ROOT}/collection`, createAxiosConfig())
             .then(response => {
                 this.collections = response.data;
                     for(let k=0; k < this.seasons.length; k++){

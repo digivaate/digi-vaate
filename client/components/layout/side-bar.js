@@ -8,6 +8,7 @@ const {  Sider } = Layout;
 import axios from'axios';
 import { API_ROOT } from '../../api-config';
 import "./layout.css"
+import createAxiosConfig from "../../createAxiosConfig";
 
 
 class SideBar extends Component{
@@ -122,7 +123,7 @@ class SideBar extends Component{
     }
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/season`)
+        axios.get(`${API_ROOT}/season`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     seasons: response.data
