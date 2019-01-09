@@ -1,5 +1,5 @@
 const express = require('express');
-const SizeController = require('../controllers/sizeController');
+const SizeController = require('../controllers/SizeController');
 
 module.exports = (dbConnection) => {
     const router = express.Router();

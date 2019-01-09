@@ -115,9 +115,11 @@ class ProductController extends Controller {
             });
     };
 
+    //TODO Fix image upload
     uploadImage = (req, res, next) => {
         this.dbConnection.models.images.create(req.file)
             .then(img => {
+                console.log('IMG', img);
                 this.model.findById(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {

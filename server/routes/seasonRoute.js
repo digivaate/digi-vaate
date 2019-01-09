@@ -1,5 +1,5 @@
 const express = require('express');
-const SeasonController = require('../controllers/seasonController');
+const SeasonController = require('../controllers/SeasonController');
 
 module.exports = (dbConnection) => {
     const router = express.Router();

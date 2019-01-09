@@ -1,3 +1,5 @@
+import ProductController from "./ProductController";
+
 const Controller = require('./Controller');
 
 class SeasonController extends Controller {
@@ -83,7 +85,6 @@ class SeasonController extends Controller {
                     prod.dataValues.seasonName = season.name;
                     products.push(prod);
                 });
-                //TODO: Import product controller
                 products.forEach(product => product.dataValues.materialCosts = ProductController.calcMaterialCosts(product));
                 res.send(products);
             })
