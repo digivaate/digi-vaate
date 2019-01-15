@@ -12,7 +12,10 @@ class ImageController extends Controller {
                 res.contentType(image.mimetype);
                 res.end(image.buffer);
             })
-            .catch(err => res.status(500).json({ error: err }));
+            .catch(err => {
+                console.error(err);
+                res.status(500).json({ error: err })
+            });
     }
 }
 

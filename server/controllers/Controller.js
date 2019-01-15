@@ -26,7 +26,7 @@ module.exports = class Controller {
                 console.error(err);
                 res.status(500).json(err);
             });
-    }
+    };
 
     create(req, res) {
         let entity = null;

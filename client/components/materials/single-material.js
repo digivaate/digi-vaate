@@ -195,6 +195,7 @@ class SingleMaterial extends Component{
                         <br/>
                     </Fragment>
             }
+            //TODO material image upload error "materials.name cannot be null"
             if (this.props.location.state.materialListUrl) {
                 backToMaterialListBtn =
                     <Fragment>

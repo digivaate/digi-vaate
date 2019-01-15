@@ -12,12 +12,13 @@ class MaterialController extends Controller {
     };
 
     uploadImage = (req, res, next) => {
-       this.model.create(req.file)
+        console.log('MATIMG', req);
+       this.dbConnection.models.images.create(req.file)
             .then(img => {
                 this.model.findById(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {
-                            this.dbConnection.images.destroy({
+                            this.dbConnection.models.images.destroy({
                                 where: { id: ent.imageId }
                             });
                         }

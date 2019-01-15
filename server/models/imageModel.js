@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         originalname: DataTypes.STRING,
         encoding: DataTypes.STRING,
         mimetype: DataTypes.STRING,
-        buffer: DataTypes.ARRAY(DataTypes.CHAR),
+        buffer: DataTypes.BLOB,
     });
 
     Image.associate = (models) => {

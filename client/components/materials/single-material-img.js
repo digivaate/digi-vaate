@@ -4,6 +4,7 @@ import {Icon} from 'antd';
 import {API_ROOT} from '../../api-config';
 import './materials.css'
 import FormData from 'form-data';
+import createAxiosConfig from "../../createAxiosConfig";
 
 class SingleMaterialImg extends Component{
     constructor(props){
@@ -17,9 +18,9 @@ class SingleMaterialImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/image?id=${this.props.loadedMaterial.id}`, data)
+        axios.patch(`${API_ROOT}/material/image?id=${this.props.loadedMaterial.id}`, data, createAxiosConfig())
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.props.loadedMaterial.id}`)
+                axios.get(`${API_ROOT}/material?id=${this.props.loadedMaterial.id}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
                             singleMaterialImg: response.data[0].imageId

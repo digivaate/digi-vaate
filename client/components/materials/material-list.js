@@ -8,6 +8,7 @@ const confirm = Modal.confirm;
 const { Meta } = Card;
 import RenderInitialCard from '../renderInitialCard';
 import createAxiosConfig from "../../createAxiosConfig";
+import getImage from "../../utils/getImage";
 
 class MaterialList extends Component{
     constructor(props){
@@ -105,9 +106,9 @@ class MaterialList extends Component{
             }
             this.props.newMaterial(values.name);
             if(this.uploadImage) {
-                axios.post(`${API_ROOT}/material`, values)
+                axios.post(`${API_ROOT}/material`, values, createAxiosConfig())
                     .then(response => {
-                        axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage)
+                        axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage, createAxiosConfig())
                             .then((re) => {
                                 response.data.imageId = re.data.id;
                                 this.materials.push(response.data);
@@ -119,7 +120,7 @@ class MaterialList extends Component{
                 form.resetFields();
             }
             else if(!this.uploadImage){
-                axios.post(`${API_ROOT}/material`, values)
+                axios.post(`${API_ROOT}/material`, values, createAxiosConfig())
                     .then(response => {
                         this.materials.push(response.data);
                         message.success("Material created",1);
@@ -158,7 +159,7 @@ class MaterialList extends Component{
                                         }
                                     }}>
                                         {imgUrl ?
-                                            <img alt="example" className="material-list-img" src={`${imgUrl}`}/> :
+                                            <img alt="example" className="material-list-img" src={getImage(imgUrl)}/> :
                                             <div className="material-list-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE

@@ -91,6 +91,11 @@ getDatabaseNames()
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
+            if (!req.headers.authorization){
+                res.status(401).json({ error: 'Unauthorized'});
+                return;
+            }
+
             const dbName = req.headers.authorization.split(' ')[1];
             if (!apiRoutes[dbName])
                 throw 'database with name ' + dbName + ' not found';

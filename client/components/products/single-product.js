@@ -65,7 +65,7 @@ class SingleProduct extends Component {
     };
 
     loadCollection = () => {
-        axios.get(`${API_ROOT}/collection`)
+        axios.get(`${API_ROOT}/collection`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     collections: response.data
@@ -78,7 +78,7 @@ class SingleProduct extends Component {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
+                axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, createAxiosConfig())
                     .then(response => {
                         if(response.data[0].companyId){
                             this.setState({
@@ -87,7 +87,7 @@ class SingleProduct extends Component {
                             });
                         }
                         if(response.data[0].seasonId){
-                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
+                            axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`, createAxiosConfig())
                                 .then(res => {
                                     this.setState({
                                         collectionName: "None",
@@ -96,14 +96,14 @@ class SingleProduct extends Component {
                                 });
                         }
                         if(response.data[0].collectionId){
-                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`)
+                            axios.get(`${API_ROOT}/product?name=${response.data[0].name}`, createAxiosConfig())
                                 .then(response => {
-                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`)
+                                    axios.get(`${API_ROOT}/collection?id=${response.data[0].collectionId}`, createAxiosConfig())
                                         .then(res => {
                                             this.setState({
                                                 collectionName: res.data[0].name,
                                             });
-                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`)
+                                            axios.get(`${API_ROOT}/season?id=${res.data[0].seasonId}`, createAxiosConfig())
                                                 .then(re => {
                                                     this.setState({
                                                         seasonName: re.data[0].name,
@@ -150,7 +150,7 @@ class SingleProduct extends Component {
         }
         else if(this.props.match.params.productId){
             if (!this.state.loadedProduct || (this.state.loadedProduct.id !== this.props.match.params.productId)) {
-                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`)
+                axios.get(`${API_ROOT}/product?name=${this.props.match.params.productId}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
                             loadedProduct: response.data[0],
@@ -171,7 +171,7 @@ class SingleProduct extends Component {
 
     /*Edit color*/
     loadColors() {
-        axios.get(`${API_ROOT}/color`)
+        axios.get(`${API_ROOT}/color`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     colorOptions: response.data
@@ -206,13 +206,13 @@ class SingleProduct extends Component {
             if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
                 const { location } = this.props;
                 const pathSnippets = location.pathname.split('/').filter(i => i);
-                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {colors: this.updatedColors})
+                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {colors: this.updatedColors}, createAxiosConfig())
                     .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({colorVisible: false}))
                     .then(() => {
                         setTimeout(() => {
                             message.success("Colors updated!", 1);
-                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`)
+                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, createAxiosConfig())
                                 .then(response => {
                                     this.setState({
                                         productColors: response.data[0].colors
@@ -222,13 +222,13 @@ class SingleProduct extends Component {
                     })
             }
             else if(this.props.match.params.productId){
-                axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors})
+                axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {colors: this.updatedColors}, createAxiosConfig())
                     .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({colorVisible: false}))
                     .then(() => {
                         setTimeout(() => {
                             message.success("Colors updated!", 1);
-                            axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                            axios.get(`${API_ROOT}/product?name=${this.state.productName}`, createAxiosConfig())
                                 .then(response => {
                                     this.setState({
                                         productColors: response.data[0].colors
@@ -249,7 +249,7 @@ class SingleProduct extends Component {
     /*Edit material*/
 
     loadMaterials() {
-        axios.get(`${API_ROOT}/material`)
+        axios.get(`${API_ROOT}/material`, createAxiosConfig())
             .then(response => {
                 this.setState({
                     materialOptions: response.data
@@ -321,13 +321,13 @@ class SingleProduct extends Component {
             if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
                 const {location} = this.props;
                 const pathSnippets = location.pathname.split('/').filter(i => i);
-                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, {materials: objUpdateMaterials})
+                axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, {materials: objUpdateMaterials}, createAxiosConfig())
                     .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({materialVisible: false}))
                     .then(response => {
                         setTimeout(() => {
                             message.success("Materials updated!", 1);
-                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`)
+                            axios.get(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length - 1]}`, createAxiosConfig())
                                 .then(response => {
                                     this.setState({
                                         productMaterials: response.data[0].materials,
@@ -339,13 +339,13 @@ class SingleProduct extends Component {
                     })
             }
             else if (this.props.match.params.productId) {
-                axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials})
+                axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {materials: this.updatedMaterials}, createAxiosConfig())
                     .then(() => this.setState(prevState => prevState))
                     .then(() => this.setState({materialVisible: false}))
                     .then(response => {
                         setTimeout(() => {
                             message.success("Materials updated!", 1);
-                            axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                            axios.get(`${API_ROOT}/product?name=${this.state.productName}`, createAxiosConfig())
                                 .then(response => {
                                     this.setState({
                                         productMaterials: response.data[0].materials,
@@ -382,9 +382,9 @@ class SingleProduct extends Component {
         if ((this.props.match.params) || (this.props.match.params && this.props.match.params.seasonId)) {
             const { location } = this.props;
             const pathSnippets = location.pathname.split('/').filter(i => i);
-            axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {name: this.state.productName})
+            axios.patch(`${API_ROOT}/product?name=${pathSnippets[pathSnippets.length-1]}`, {name: this.state.productName}, createAxiosConfig())
                 .then(response => {
-                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`, createAxiosConfig())
                         .then(response => {
                             this.setState({
                                 loadedProduct: response.data[0],
@@ -399,9 +399,9 @@ class SingleProduct extends Component {
                 })
         }
         else if(this.props.match.params.productId){
-            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {name: this.state.productName})
+            axios.patch(`${API_ROOT}/product?name=${this.props.match.params.productId}`, {name: this.state.productName}, createAxiosConfig())
                 .then(response => {
-                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                    axios.get(`${API_ROOT}/product?name=${this.state.productName}`, createAxiosConfig())
                         .then(response => {
                             this.setState({
                                 loadedProduct: response.data[0],
@@ -422,9 +422,9 @@ class SingleProduct extends Component {
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data)
+        axios.patch(`${API_ROOT}/product/image?name=${this.state.productName}`, data, createAxiosConfig())
             .then(() => {
-                axios.get(`${API_ROOT}/product?name=${this.state.productName}`)
+                axios.get(`${API_ROOT}/product?name=${this.state.productName}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
                             productImg: response.data[0].imageId
@@ -457,7 +457,7 @@ class SingleProduct extends Component {
                     message.error(`You are currently on ${this.state.seasonName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{seasonId:this.seasons[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`,{seasonId:this.seasons[i][0]}, createAxiosConfig())
                         .then(() => {
                             message.success("Change successfully",1);
                             setTimeout(() => {
@@ -473,7 +473,7 @@ class SingleProduct extends Component {
                     message.error(`You are currently on ${this.state.collectionName}`,1.5)
                 }
                 else {
-                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`, {collectionId: this.collections[i][0]})
+                    axios.patch(`${API_ROOT}/product?name=${this.state.loadedProduct.name}`, {collectionId: this.collections[i][0]}, createAxiosConfig())
                         .then(() => {
                             for (let j = 0; j < this.seasons.length; j++) {
                                 if (this.collections[i][2] === this.seasons[j][0]) {
