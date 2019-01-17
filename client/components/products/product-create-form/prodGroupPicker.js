@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Input, Select, Col} from "antd";
 import axios from "axios";
 import {API_ROOT} from "../../../api-config";

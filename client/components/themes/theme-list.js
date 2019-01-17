@@ -4,6 +4,7 @@ import { API_ROOT } from '../../api-config';
 import { Col,Row,Icon,Input,Button,Spin } from 'antd';
 import './themes.css'
 import createAxiosConfig from "../../createAxiosConfig";
+import Image from "../Image";
 class ThemeList extends Component{
     constructor(props){
         super(props);
@@ -137,7 +138,7 @@ class ThemeList extends Component{
                     renderThemeImg = this.state.themeImg.map(theme =>
                         <Col key={theme} span={6}>
                             <div className="show-image">
-                                <img className="img-theme" src={`${API_ROOT}/${theme}`}/>
+                                <Image className="img-theme" url={`${API_ROOT}/${theme}`}/>
                                 <button className="btn"
                                         onClick={() => this.handleDelete(theme)}
                                 >

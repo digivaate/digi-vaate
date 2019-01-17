@@ -6,6 +6,7 @@ import './products.css'
 import {Link} from 'react-router-dom';
 import {comaToPeriod} from "../../utils/coma-convert";
 import createAxiosConfig from "../../createAxiosConfig";
+import Image from "../Image";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -259,10 +260,6 @@ class SingleProductMaterials extends Component{
             this.state.productMaterials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
-                    let materialImgUrl = null;
-                    if (material.imageId) {
-                        materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
-                    }
                     return (
                         <Col key={material.id}>
                             <Link to={{
@@ -282,8 +279,8 @@ class SingleProductMaterials extends Component{
                             <Card
                                 hoverable
                                 className="product-material-card"
-                                cover={materialImgUrl ?
-                                    <img className="single-product-material-img" src={`${materialImgUrl}`}/> :
+                                cover={material.imageId ?
+                                    <Image className="single-product-material-img" id={material.imageId} /> :
                                     <div className="single-product-material-no-img">
                                         <div className="no-image-text">
                                             NO IMAGE AVAILABLE

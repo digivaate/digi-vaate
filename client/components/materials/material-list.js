@@ -9,6 +9,7 @@ const { Meta } = Card;
 import RenderInitialCard from '../renderInitialCard';
 import createAxiosConfig from "../../createAxiosConfig";
 import getImage from "../../utils/getImage";
+import Image from "../Image";
 
 class MaterialList extends Component{
     constructor(props){
@@ -159,7 +160,7 @@ class MaterialList extends Component{
                                         }
                                     }}>
                                         {imgUrl ?
-                                            <img alt="example" className="material-list-img" src={imgUrl}/> :
+                                            <Image alt="example" className="material-list-img" url={imgUrl}/> :
                                             <div className="material-list-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE

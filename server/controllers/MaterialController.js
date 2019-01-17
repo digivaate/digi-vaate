@@ -12,7 +12,6 @@ class MaterialController extends Controller {
     };
 
     uploadImage = (req, res, next) => {
-        console.log('MATIMG', req);
        this.dbConnection.models.images.create(req.file)
             .then(img => {
                 this.model.findById(req.query.id)

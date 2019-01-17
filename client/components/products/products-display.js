@@ -10,6 +10,7 @@ import ProductCreateForm from './poduct-create-form';
 import RenderInitialCard from '../renderInitialCard';
 import FilterArea from '../layout/Filter/FilterArea'
 import createAxiosConfig from "../../createAxiosConfig";
+import Image from "../Image";
 
 class ProductsDisplay extends Component{
     constructor(props){
@@ -620,7 +621,7 @@ class ProductsDisplay extends Component{
                                                 collectionName:product.collectionName
                                             }
                                         }}> {imgUrl ?
-                                            <img alt="example" className="products-display-img" src={`${imgUrl}`} /> :
+                                            <Image alt="example" className="products-display-img" url={imgUrl} /> :
                                             <div className="products-display-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE
@@ -690,7 +691,7 @@ class ProductsDisplay extends Component{
                                     }
                                 }}>
                                     {imgUrl ?
-                                        <img alt="example" className="products-display-img" src={`${imgUrl}`} /> :
+                                        <Image alt="example" className="products-display-img" url={imgUrl} /> :
                                         <div className="products-display-no-img">
                                             <div className="no-image-text">
                                                 NO IMAGE AVAILABLE

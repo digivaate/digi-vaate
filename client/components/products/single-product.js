@@ -5,6 +5,7 @@ import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
 import createAxiosConfig from "../../createAxiosConfig";
+import Image from "../Image";
 const { Meta } = Card;
 const Option = Select.Option;
 
@@ -668,7 +669,7 @@ class SingleProduct extends Component {
                                 <Card
                                     hoverable
                                     style={{width: 170, height: 160}}
-                                    cover={<img width="100" height="100" src={`${materialImgUrl}`}/>}
+                                    cover={<Image width="100" height="100" url={`${materialImgUrl}`}/>}
                                 >
                                     <Meta
                                         title={material.name}
@@ -724,7 +725,7 @@ class SingleProduct extends Component {
                         <Col span={8}>
                             <div className="img-container">
                                 {changeImgBtn}
-                                <img alt="example" height="300" width="370" src={`${imgUrl}`}/>
+                                <Image alt="example" height="300" width="370" url={`${imgUrl}`}/>
                             </div>
                             <Card className="product-description">
                                 {changeLocationBtn}

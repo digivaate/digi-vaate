@@ -5,6 +5,7 @@ import {API_ROOT} from '../../api-config';
 import './products.css'
 import FormData from 'form-data';
 import createAxiosConfig from "../../createAxiosConfig";
+import Image from "../Image";
 
 class SingleProductImg extends Component{
     constructor(props){
@@ -46,7 +47,7 @@ class SingleProductImg extends Component{
             <div className="single-product-img-container">
                 {changeImgBtn}
                 { imgUrl ?
-                    <img alt="example" className="product-big-ava-img" src={`${imgUrl}`}/> :
+                    <Image alt="example" className="product-big-ava-img" url={`${imgUrl}`}/> :
                     <div className="product-big-ava-no-img">
                         <div className="no-image-text">
                             NO IMAGE AVAILABLE

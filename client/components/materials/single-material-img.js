@@ -5,12 +5,14 @@ import {API_ROOT} from '../../api-config';
 import './materials.css'
 import FormData from 'form-data';
 import createAxiosConfig from "../../createAxiosConfig";
+import getImage from '../../utils/getImage';
+import Image from "../Image";
 
 class SingleMaterialImg extends Component{
     constructor(props){
         super(props);
         this.state = {
-            singleMaterialImg: this.props.loadedMaterial.imageId,
+            imgId: this.props.loadedMaterial.imageId
         }
     }
 
@@ -18,19 +20,19 @@ class SingleMaterialImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/image?id=${this.props.loadedMaterial.id}`, data, createAxiosConfig())
+        axios.patch(`${API_ROOT}/material/image?id=${this.state.imgId}`, data, createAxiosConfig())
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.props.loadedMaterial.id}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/material?id=${this.state.imgId}`, createAxiosConfig())
                     .then(response => {
                         this.setState({
-                            singleMaterialImg: response.data[0].imageId
+                            imgId: response.data[0].imageId
                         });
-                    });
+                    })
             })
     };
 
     render(){
-        let imgUrl = null;
+        const imageId = this.state.imgId;
         let changeImgBtn = <div style={{height:40}}></div>;
         if(this.props.editModeStatus === true) {
             changeImgBtn = <div className="upload-btn-wrapper">
@@ -38,15 +40,13 @@ class SingleMaterialImg extends Component{
                 <button className="btn-upload"><Icon type="upload"/></button>
             </div>;
         }
-        if (this.state.singleMaterialImg) {
-            imgUrl = `${API_ROOT}/image?id=${this.state.singleMaterialImg}`
-        }
+
         return (
             <div className="img-container">
                 {changeImgBtn}
                 {
-                    imgUrl ?
-                        <img className="single-material-big-ava-img" src={imgUrl} /> :
+                    imageId ?
+                        <Image id={imageId}/> :
                         <div className="single-material-big-ava-no-img">
                             <div className="no-image-text">
                                 NO IMAGE AVAILABLE
