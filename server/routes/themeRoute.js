@@ -2,7 +2,6 @@ const express = require('express');
 const ThemeController = require('../controllers/ThemeController');
 const multer = require("../multer");
 
-/* TODO: Update routes and controllers to new image handling way */
 module.exports = (dbConnection) => {
     const router = express.Router();
     const themeController = new ThemeController(dbConnection);

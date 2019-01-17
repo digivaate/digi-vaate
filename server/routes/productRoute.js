@@ -6,7 +6,6 @@ module.exports = (dbConnection) => {
     const router = express.Router();
     const productController = new ProductController(dbConnection);
 
-    //TODO: Update multering
     router.get('/', productController.find_by_attribute);
     router.get('/image', productController.getImage);
     router.post('/', ProductController.clearOtherRelations, productController.create);

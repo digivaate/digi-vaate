@@ -2,7 +2,6 @@ const express = require('express');
 const MaterialController = require('../controllers/MaterialController');
 const multer = require('../multer');
 
-//TODO multer
 module.exports = (dbConnection) => {
     const router = express.Router();
     const materialController = new MaterialController(dbConnection);

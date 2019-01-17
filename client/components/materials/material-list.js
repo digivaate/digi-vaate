@@ -159,7 +159,7 @@ class MaterialList extends Component{
                                         }
                                     }}>
                                         {imgUrl ?
-                                            <img alt="example" className="material-list-img" src={getImage(imgUrl)}/> :
+                                            <img alt="example" className="material-list-img" src={imgUrl}/> :
                                             <div className="material-list-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE

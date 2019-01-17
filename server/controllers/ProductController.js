@@ -115,7 +115,6 @@ class ProductController extends Controller {
             });
     };
 
-    //TODO Fix image upload
     uploadImage = (req, res, next) => {
         this.dbConnection.models.images.create(req.file)
             .then(img => {
