@@ -64,7 +64,7 @@ class SeasonsList extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget}, createAxiosConfig())
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
                     let seasons = [...this.state.seasons];
