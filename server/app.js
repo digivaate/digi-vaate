@@ -3,7 +3,8 @@ import {
     connectToDatabases,
     createDatabase,
     databaseRouting,
-    getDatabaseNames
+    getDatabaseNames,
+    setupDatabase,
 } from "./database";
 import createApiRoutes from "./routes/createApiRoutes";
 
@@ -12,11 +13,16 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+
+import auth from './auth';
+import adminCommands from './adminCommands';
 
 //Holds all api routes for different databases
 let apiRoutes;
 let databaseConnections;
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -32,27 +38,11 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '../dist/client/')));
     app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
 }
-
-app.use('/db', async (req, res, next) => {
-    try {
-        if (!req.body.name) throw 'name missing';
-        if (!req.body.user) throw 'user info missing';
-        if (!req.body.user.name || !req.body.user.password) throw 'user info missing';
-
-        let dbName = await createDatabase(req.body.name);
-        let dbConnection = await connectToDatabase(dbName);
-        apiRoutes[dbName] = await createApiRoutes(dbConnection);
-
-        dbConnection.models.users.create(req.body.user)
-            .then(response => res.send(response));
-
-    } catch (e) {
-        next(e);
-    }
-});
+app.use('/admin', adminCommands(apiRoutes));
 
 app.use('/login', async (req, res, next) => {
     const promises = [];
+    // Query all databases for the credentials
     for (let key in databaseConnections) {
         if (databaseConnections.hasOwnProperty(key)) {
             promises.push(
@@ -76,14 +66,36 @@ app.use('/login', async (req, res, next) => {
         return;
     }
     const dbName = Object.keys(databaseConnections)[index];
-    res.json({ dbName: dbName });
+    res.json({dbName: dbName});
+});
+
+app.use(auth);
+
+app.use('/db', async (req, res, next) => {
+    try {
+        if (!req.body.name) throw 'name missing';
+        if (!req.body.user) throw 'user info missing';
+        if (!req.body.user.name || !req.body.user.password) throw 'user info missing';
+
+
+        let dbName = await createDatabase(req.body.name);
+        let dbConnection = await connectToDatabase(dbName);
+        apiRoutes[dbName] = await createApiRoutes(dbConnection);
+        apiRoutes[req.body.name]
+        //TODO let admin create company
+
+        dbConnection.models.users.create(req.body.user)
+            .then(response => res.send(response));
+
+    } catch (e) {
+        next(e);
+    }
 });
 
 getDatabaseNames()
     .then(connectToDatabases)
     .then(dbConnections => {
         databaseConnections = dbConnections;
-        console.log('MODELS', dbConnections.digivaate.models);
         return databaseRouting(dbConnections);
     })
     .then(routes => {
@@ -95,7 +107,7 @@ getDatabaseNames()
                 res.status(401).json({ error: 'Unauthorized'});
                 return;
             }
-
+            console.log(req.headers.authorization);
             const dbName = req.headers.authorization.split(' ')[1];
             if (!apiRoutes[dbName])
                 throw 'database with name ' + dbName + ' not found';

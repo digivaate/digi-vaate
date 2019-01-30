@@ -1,3 +1,6 @@
 {
+  "env": {
+    "JWT_KEY": "secret"
+  },
   "watch" : ["server"]
 }

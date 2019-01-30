@@ -65,3 +65,14 @@ export async function createDatabase(name) {
 
     return 'digivaate_' + name;
 }
+
+/**
+ * Creates, connects and adds routing to database
+ * @param {string} name - company name
+ * @return {express.router} router
+ */
+export async function setupDatabase(name) {
+    const dbName = await createDatabase(name);
+    const dbConnection = await connectToDatabase(dbName);
+    return await createApiRoutes(dbConnection);
+}
