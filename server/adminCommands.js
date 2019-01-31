@@ -1,10 +1,12 @@
+import {deleteCompany, getDatabaseNames, setupDatabase} from "./database";
+
 const express = require('express');
 const adminCred = require('./admin');
 const jwt = require('jsonwebtoken');
 
-import auth from './auth';
+import {adminAuth} from './auth';
 
-module.exports = (apiRoutes) => {
+module.exports = (apiRoutes, dbConnections) => {
     const router = express.Router();
 
     router.use('/login', (req, res, next) => {
@@ -19,20 +21,33 @@ module.exports = (apiRoutes) => {
                 }
             }, process.env.JWT_KEY, { expiresIn: '1h' });
 
-            res.cookie('token', token);
+            res.cookie('adminToken', token);
             res.send({status: 'Logged in'});
         }
     });
 
-    router.get('/company', auth, (req, res, next) => {
-        res.send({list: 'of companies'});
+    router.get('/company', adminAuth, async (req, res, next) => {
+        const names = await getDatabaseNames();
+        res.send(names);
     });
 
-    router.post('/company', auth, (req, res, next) => {
+    router.post('/company', adminAuth, async (req, res, next) => {
         const company = req.body.name;
-        if (!company) throw 'Name missing';
+        try {
+            if (!company) throw 'Name missing';
+            apiRoutes['digivaate_' + company] = await setupDatabase('digivaate_' + company);
+            res.send({success: req.body.name + ' company created'});
+        } catch (e) {
+            console.error('Error in creating company: ', e);
+            res.status(500).json({error: e});
+        }
+    });
 
-
+    router.delete('/company', adminAuth, async (req, res, next) => {
+        if (await deleteCompany(req.body.name, dbConnections, apiRoutes))
+            res.send({success: req.body.name + ' deleted'});
+        else
+            res.status(500).json({error: req.body.name + ' not found'});
     });
 
     return router;

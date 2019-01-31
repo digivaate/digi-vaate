@@ -19,7 +19,10 @@ export async function getDatabaseNames() {
         });
 
     const dbNames = [];
-    result.forEach(db => dbNames.push(db.datname));
+    result.forEach(db => {
+        if (/^digivaate_.*$/.test(db.datname))
+            dbNames.push(db.datname);
+    });
     return dbNames;
 }
 
@@ -40,6 +43,15 @@ export async function connectToDatabases(dbNames) {
         });
 }
 
+export async function createDatabase(name) {
+    const dbNames = await getDatabaseNames();
+    if (dbNames.includes(name)) throw 'Digivaate database with name ' + name + ' already exists';
+
+    await sequelize.query('CREATE DATABASE ' + name)
+        .catch(err => console.error(err) );
+
+    return name;
+}
 
 export async function connectToDatabase(dbName) {
         let db = new DatabaseConnection(dbName);
@@ -56,16 +68,6 @@ export function databaseRouting(dbConnections) {
     return apiRoutes;
 }
 
-export async function createDatabase(name) {
-    const dbNames = await getDatabaseNames();
-    if (dbNames.includes('digivaate_' + name)) throw 'Digivaate database with name ' + name + ' already exists';
-
-    await sequelize.query('CREATE DATABASE digivaate_' + name)
-        .catch(err => console.error(err) );
-
-    return 'digivaate_' + name;
-}
-
 /**
  * Creates, connects and adds routing to database
  * @param {string} name - company name
@@ -75,4 +77,14 @@ export async function setupDatabase(name) {
     const dbName = await createDatabase(name);
     const dbConnection = await connectToDatabase(dbName);
     return await createApiRoutes(dbConnection);
+}
+
+export async function deleteCompany(name, dbConnections, apiRoutes) {
+    if (!(name in apiRoutes) || !(name in dbConnections))
+        return false;
+
+    delete apiRoutes[name];
+    delete dbConnections[name];
+    await sequelize.query('DROP DATABASE ' + name);
+    return true;
 }

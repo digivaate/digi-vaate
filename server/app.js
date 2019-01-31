@@ -15,12 +15,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
-import auth from './auth';
+import {userAuth} from './auth';
 import adminCommands from './adminCommands';
+import login from './login';
 
 //Holds all api routes for different databases
-let apiRoutes;
-let databaseConnections;
+const apiRoutes = {};
+const databaseConnections = {};
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -38,68 +39,28 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '../dist/client/')));
     app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
 }
-app.use('/admin', adminCommands(apiRoutes));
+app.use('/admin', adminCommands(apiRoutes, databaseConnections));
 
-app.use('/login', async (req, res, next) => {
-    const promises = [];
-    // Query all databases for the credentials
-    for (let key in databaseConnections) {
-        if (databaseConnections.hasOwnProperty(key)) {
-            promises.push(
-                databaseConnections[key].models.users.findOne({
-                    where: {
-                        name: req.body.name,
-                        password: req.body.password
-                    }
-                })
-            )
-        }
-    }
+app.use('/login', login(databaseConnections));
 
-    let index = null;
-    const users = await Promise.all(promises);
-    for (let i = 0; i < users.length; i++) {
-        if (users[i]) index = i;
-    }
-    if (!index) {
-        res.status(401).json({error: 'login failed'});
-        return;
-    }
-    const dbName = Object.keys(databaseConnections)[index];
-    res.json({dbName: dbName});
-});
-
-app.use(auth);
-
-app.use('/db', async (req, res, next) => {
-    try {
-        if (!req.body.name) throw 'name missing';
-        if (!req.body.user) throw 'user info missing';
-        if (!req.body.user.name || !req.body.user.password) throw 'user info missing';
-
-
-        let dbName = await createDatabase(req.body.name);
-        let dbConnection = await connectToDatabase(dbName);
-        apiRoutes[dbName] = await createApiRoutes(dbConnection);
-        apiRoutes[req.body.name]
-        //TODO let admin create company
-
-        dbConnection.models.users.create(req.body.user)
-            .then(response => res.send(response));
-
-    } catch (e) {
-        next(e);
-    }
-});
+app.use(userAuth);
 
 getDatabaseNames()
     .then(connectToDatabases)
     .then(dbConnections => {
-        databaseConnections = dbConnections;
+        for (let dbConnKey in dbConnections) {
+            if (dbConnections.hasOwnProperty(dbConnKey))
+                databaseConnections[dbConnKey] = dbConnections[dbConnKey];
+        }
+        //databaseConnections = dbConnections;
         return databaseRouting(dbConnections);
     })
     .then(routes => {
-        apiRoutes = routes;
+        for (let routeKey in routes) {
+            if (routes.hasOwnProperty(routeKey))
+                apiRoutes[routeKey] = routes[routeKey];
+        }
+        //apiRoutes = routes;
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
