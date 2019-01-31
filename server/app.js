@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
-import {userAuth} from './auth';
+import {auth} from './auth';
 import adminCommands from './adminCommands';
 import login from './login';
 
@@ -43,7 +43,7 @@ app.use('/admin', adminCommands(apiRoutes, databaseConnections));
 
 app.use('/login', login(databaseConnections));
 
-app.use(userAuth);
+app.use(auth);
 
 getDatabaseNames()
     .then(connectToDatabases)

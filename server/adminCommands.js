@@ -32,11 +32,12 @@ module.exports = (apiRoutes, dbConnections) => {
     });
 
     router.post('/company', adminAuth, async (req, res, next) => {
-        const company = req.body.name;
+        const companyName = req.body.name;
         try {
-            if (!company) throw 'Name missing';
-            apiRoutes['digivaate_' + company] = await setupDatabase('digivaate_' + company);
-            res.send({success: req.body.name + ' company created'});
+            if (!companyName) throw 'Name missing';
+            apiRoutes['digivaate_' + companyName] = await setupDatabase('digivaate_' + companyName);
+            apiRoutes['digivaate_' + companyName](req, res, next);
+            //res.send({success: req.body.name + ' company created'});
         } catch (e) {
             console.error('Error in creating company: ', e);
             res.status(500).json({error: e});
@@ -48,6 +49,13 @@ module.exports = (apiRoutes, dbConnections) => {
             res.send({success: req.body.name + ' deleted'});
         else
             res.status(500).json({error: req.body.name + ' not found'});
+    });
+
+    router.use('/', adminAuth, async (req, res, next) => {
+        const companyName = req.body.companyName;
+        if (!companyName) throw 'Company name missing';
+        req.body = req.body.content;
+        apiRoutes[companyName](req, res, next);
     });
 
     return router;
