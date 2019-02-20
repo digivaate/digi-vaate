@@ -28,7 +28,7 @@ module.exports = (apiRoutes, dbConnections) => {
                     expiresIn: '1h'
                 });
 
-            res.cookie('adminToken', token);
+            res.cookie('adminToken', token, {maxAge: 3600000, httpOnly: true});
             res.send({
                 status: 'Logged in'
             });
@@ -68,9 +68,13 @@ module.exports = (apiRoutes, dbConnections) => {
 
     router.use('/', adminAuth, async (req, res, next) => {
         try {
-            console.log('API ROUTES ', apiRoutes)
             const companyName = req.body.companyName;
-            if (!companyName) throw 'Company name missing';
+
+            if (!companyName)
+                throw 'Company name missing';
+            if (!Object.keys(apiRoutes).includes(companyName))
+                throw 'Routes for ' + companyName + ' not found';
+            
             req.body = req.body.content;
             apiRoutes[companyName](req, res, next);
         } catch (e) {

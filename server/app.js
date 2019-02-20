@@ -60,15 +60,11 @@ getDatabaseNames()
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
-            if (!req.headers.authorization){
-                res.status(401).json({ error: 'Unauthorized'});
-                return;
-            }
-            if (!apiRoutes[dbName])
-                throw 'database with name ' + dbName + ' not found';
+            if (!apiRoutes[req.userAuth.company])
+                throw 'Incorrect company name in req.userAuth';
 
             //forward request to correct database route
-            apiRoutes[dbName](req, res, next);
+            apiRoutes[req.userAuth.company](req, res, next);
         });
 
         //Error handling

@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 
 export default (databaseConnections) => {
     return async (req, res, next) => {
@@ -15,25 +16,20 @@ export default (databaseConnections) => {
                 )
             }
         }
-        //TODO: Fix login fail
-        let index = null;
         const users = await Promise.all(promises);
-        for (let i = 0; i < users.length; i++) {
-            if (users[i]) index = i;
-        }
-        
-        if (!index) {
+        if (!users[0]) {
             res.status(401).json({error: 'login failed'});
             return;
         }
-        
         const token = jwt.sign({
-            name: 'böö'
+            userId: users[0].id,
+            name: users[0].name,
+            company: Object.keys(databaseConnections)[0]
         },process.env.JWT_KEY,{
             expiresIn: '1h'
         });
 
-        res.cookie('token', token);
+        res.cookie('userToken', token, {maxAge: 3600000});
         res.send({status: 'Logged in'});
     }
 }
