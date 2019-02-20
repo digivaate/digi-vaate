@@ -1,10 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import axios from 'axios/index';
-import { API_ROOT } from '../api-config';
+import { API_ROOT } from '../../api-config';
 const FormItem = Form.Item;
 
-class Login extends Component {
+class AdminLogin extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -12,13 +12,13 @@ class Login extends Component {
             if (err) {
                 console.error(err);
             } else {
-                axios.post(`${API_ROOT}/login`, {
+                axios.post(`${API_ROOT}/admin/login`, {
                     name: values.name,
                     password: values.password
                 })
                 .then(res => {
                     console.log(res.status);
-                    location.href = '/';
+                    location.href = '/admin';
                 })
                 .catch(err => {
                     console.error(err);
@@ -54,10 +54,6 @@ class Login extends Component {
                         <Button type="primary" htmlType="submit" className="login-form-button" style={{width: "100%"}}>
                             Log in
                         </Button>
-                        {/*Or <a href="">register now!</a>*/}
-                    </FormItem>
-                    <FormItem>
-                        This login is not yet implemented to the backend. You can login with any username. For now login just stores username to the browser storage. Password is not stored.
                     </FormItem>
                 </Form>
             </Fragment>
@@ -65,4 +61,4 @@ class Login extends Component {
     }
 }
 
-export default Form.create()(Login);
+export default Form.create()(AdminLogin);

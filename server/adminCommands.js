@@ -37,7 +37,23 @@ module.exports = (apiRoutes, dbConnections) => {
 
     router.get('/company', adminAuth, async (req, res, next) => {
         const names = await getDatabaseNames();
-        res.send(names);
+        const compPromises = [];
+        const userPromises = [];
+
+        names.forEach(n => {
+            console.log(dbConnections[n].models.users);
+            compPromises.push(dbConnections[n].models.companies.find({raw: true}));
+            userPromises.push(dbConnections[n].models.users.findAll());
+        });
+        const compList = await Promise.all(compPromises);
+        const userList = await Promise.all(userPromises);
+        
+        for (let i = 0; i < compList.length; i++) {
+            compList[i].users = userList[i];
+            compList[i].dbName = names[i];
+        }
+        res.send(compList);
+        
     });
 
     router.post('/company', adminAuth, async (req, res, next) => {

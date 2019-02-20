@@ -23,7 +23,7 @@ export function auth(req, res, next) {
         next();
     } catch (e) {
         console.error(e);
-        res.status(401).json({ error: 'Unauthorized'});
+        res.status(401).json({ error: 'Unauthorized', level: 'user' });
     }
 }
 
@@ -49,6 +49,6 @@ export function adminAuth(req, res, next) {
         next();
     } catch (e) {
         console.error(e);
-        res.status(401).json({ error: 'Unauthorized'});
+        res.status(401).json({ error: 'Unauthorized', level: 'admin' });
     }
 }
