@@ -20,9 +20,9 @@ class SingleProductImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data, createAxiosConfig())
+        axios.patch(`${API_ROOT}/product/image?id=${this.props.productId}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/product?id=${this.props.productId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/product?id=${this.props.productId}`)
                     .then(response => {
                         this.setState({
                             singleProductImg: response.data[0].imageId

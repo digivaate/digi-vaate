@@ -22,11 +22,11 @@ class SingleMaterial extends Component{
     materialId = this.props.match.params.materialId.split('-')[0];
     materials = [];
     componentDidMount(){
-        axios.get(`${API_ROOT}/material`, createAxiosConfig())
+        axios.get(`${API_ROOT}/material`)
             .then(response => {
                 this.materials = response.data
             });
-        axios.get(`${API_ROOT}/material?id=${this.materialId}`, createAxiosConfig())
+        axios.get(`${API_ROOT}/material?id=${this.materialId}`)
             .then(response => {
                 this.loadedMaterialOri = response.data[0];
                 this.setState({
@@ -77,7 +77,7 @@ class SingleMaterial extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk(){
-                axios.get(`${API_ROOT}/material?id=${self.materialId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/material?id=${self.materialId}`)
                     .then(response => {
                         console.log(response.data[0])
                         self.loadedMaterialOri = response.data[0];
@@ -106,9 +106,9 @@ class SingleMaterial extends Component{
             instructions:this.state.loadedMaterial.instructions,
             composition:this.state.loadedMaterial.composition,
         };
-        axios.patch(`${API_ROOT}/material?id=${this.materialId}`,materialChanges, createAxiosConfig())
+        axios.patch(`${API_ROOT}/material?id=${this.materialId}`,materialChanges)
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.materialId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/material?id=${this.materialId}`)
                     .then(response => {
                         message.success("Material updated!",1);
                         this.loadedMaterialOri = response.data[0];

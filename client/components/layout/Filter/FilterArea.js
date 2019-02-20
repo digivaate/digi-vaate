@@ -22,7 +22,7 @@ class FilterArea extends Component {
         let allProductGroupIdFromDb = this.state.productGroupFromDb.map(productG => productG.id);
         for(let i = 0; i< allProductGroupId.length; i++){
             if(allProductGroupIdFromDb.indexOf(allProductGroupId[i]) < 0){
-                axios.get(`${API_ROOT}/productGroup`, createAxiosConfig())
+                axios.get(`${API_ROOT}/productGroup`)
                     .then(res => {
                         this.setState({
                             productGroupFromDb: res.data
@@ -35,7 +35,7 @@ class FilterArea extends Component {
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/productGroup`, createAxiosConfig())
+        axios.get(`${API_ROOT}/productGroup`)
             .then(res => {
                 this.setState({
                     productGroupFromDb: res.data

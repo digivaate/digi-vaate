@@ -60,7 +60,7 @@ class BreadCrumbDigi extends Component{
 
     componentDidMount(){
         //Breadcrumbs for all company stuffs
-        axios.get(`${API_ROOT}/company`, createAxiosConfig())
+        axios.get(`${API_ROOT}/company`)
             .then(res => {
                 this.companies = res.data;
                 for(let i=0;i<this.companies.length;i++) {
@@ -72,7 +72,7 @@ class BreadCrumbDigi extends Component{
                     this.breadcrumbNameMap["/materials"] = "Materials";
                     this.breadcrumbNameMap["/seasons"] = "Seasons";
                     this.breadcrumbNameMap["/orders"] = "Orders";
-                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`, createAxiosConfig())
+                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`)
                         .then(response => {
                             this.companiesProduct = response.data;
                             for(let m = 0 ; m<this.companiesProduct.length; m++){
@@ -82,7 +82,7 @@ class BreadCrumbDigi extends Component{
                             this.setState({})
                         })
                         .then(() => {
-                            axios.get(`${API_ROOT}/material`, createAxiosConfig())
+                            axios.get(`${API_ROOT}/material`)
                                 .then(res => {
                                     this.materials = res.data;
                                     for(let m = 0 ; m<this.materials.length; m++) {
@@ -95,7 +95,7 @@ class BreadCrumbDigi extends Component{
             });
 
         //Breadcrumb for all season stuffs
-        axios.get(`${API_ROOT}/season`, createAxiosConfig())
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.seasons = response.data;
                     for(let i=0;i<this.seasons.length;i++){
@@ -119,7 +119,7 @@ class BreadCrumbDigi extends Component{
                         }
                     }
                     for(let n=0; n<this.seasonsMap.length; n++){
-                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`, createAxiosConfig())
+                        axios.get(`${API_ROOT}/season/products?name=${this.seasonsMap[n]}`)
                             .then(response => {
                                 this.seasonProducts = response.data;
                                 for(let m = 0 ; m<this.seasonProducts.length; m++){
@@ -134,7 +134,7 @@ class BreadCrumbDigi extends Component{
             );
 
         //Breadcrumb for all collection stuffs
-        axios.get(`${API_ROOT}/collection`, createAxiosConfig())
+        axios.get(`${API_ROOT}/collection`)
             .then(response => {
                 this.collections = response.data;
                     for(let k=0; k < this.seasons.length; k++){

@@ -69,7 +69,7 @@ class EditSeason extends React.Component {
         confirm({
             title: 'Delete this season?',
             onOk() {
-                return axios.delete(API_ROOT + '/season/?id=' + seasonId, createAxiosConfig())
+                return axios.delete(API_ROOT + '/season/?id=' + seasonId)
                     .then(res => {
                         self.props.deleteSeason(self.props.season)
                         console.log(res);

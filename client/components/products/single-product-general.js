@@ -55,7 +55,7 @@ class SingleProductGeneralInfo extends Component{
     }
 
     loadProductGroups = () => {
-        axios.get(`${API_ROOT}/productgroup`, createAxiosConfig())
+        axios.get(`${API_ROOT}/productgroup`)
             .then(response => {
                 let prodGroup = undefined;
                 response.data.forEach(group => {

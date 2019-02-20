@@ -48,7 +48,7 @@ class ClientInfo extends Component{
             brandLabel: this.state.brandLabel,
         };
         this.props.newClientInfo(newData)
-        axios.patch(`${API_ROOT}/order?id=${this.props.clientInfo.id}`,newData, createAxiosConfig())
+        axios.patch(`${API_ROOT}/order?id=${this.props.clientInfo.id}`,newData)
             .then((response) => {
                 console.log(response.data[0])
                 this.setState({

@@ -20,9 +20,9 @@ class SingleMaterialImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/image?id=${this.state.imgId}`, data, createAxiosConfig())
+        axios.patch(`${API_ROOT}/material/image?id=${this.state.imgId}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.state.imgId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/material?id=${this.state.imgId}`)
                     .then(response => {
                         this.setState({
                             imgId: response.data[0].imageId

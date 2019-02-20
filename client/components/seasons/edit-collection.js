@@ -58,7 +58,7 @@ class EditCollection extends React.Component {
         confirm({
             title: 'Delete this collection?',
             onOk() {
-                return axios.delete(API_ROOT + '/collection/?id=' + collectionId, createAxiosConfig())
+                return axios.delete(API_ROOT + '/collection/?id=' + collectionId)
                     .then(res => {
                         self.props.deleteCollection(self.props.collection)
                         self.close();

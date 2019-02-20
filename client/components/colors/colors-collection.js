@@ -38,7 +38,7 @@ class ColorCollection extends Component{
 
     loadColors = () => {
         if (this.props.match.params.seasonId && this.props.match.params.collectionId){
-            axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`)
                 .then(response => {
                     this.colorCard = response.data;
                     this.colorsArray = response.data.map(color => color.id)
@@ -47,7 +47,7 @@ class ColorCollection extends Component{
                     })
                 })
         } else if (this.props.match.params.seasonId){
-            axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`)
                 .then(response => {
                     this.colorCard = response.data;
                     this.colorsArray = response.data.map(color => color.id)
@@ -56,7 +56,7 @@ class ColorCollection extends Component{
                     })
                 })
         } else {
-            axios.get(`${API_ROOT}/company/colors?id=1`, createAxiosConfig())
+            axios.get(`${API_ROOT}/company/colors?id=1`)
                 .then(response => {
                     this.colorCard = response.data;
                     this.colorsArray = response.data.map(color => color.id);
@@ -69,12 +69,12 @@ class ColorCollection extends Component{
 
     createColor = (newColor) => {
         if(this.state.colorsLevel === "company"){
-            axios.post(`${API_ROOT}/color`,newColor, createAxiosConfig())
+            axios.post(`${API_ROOT}/color`,newColor)
                 .then((response) => {
                     this.colorsArray.push(response.data.id);
-                    axios.patch(`${API_ROOT}/company?id=1`,{colors:this.colorsArray}, createAxiosConfig())
+                    axios.patch(`${API_ROOT}/company?id=1`,{colors:this.colorsArray})
                         .then(() => {
-                            axios.get(`${API_ROOT}/company/colors?id=1`, createAxiosConfig())
+                            axios.get(`${API_ROOT}/company/colors?id=1`)
                                 .then(response => {
                                     this.colorCard = response.data;
                                     this.setState({})
@@ -84,12 +84,12 @@ class ColorCollection extends Component{
         }
 
         else if(this.state.colorsLevel === "season"){
-            axios.post(`${API_ROOT}/color`,newColor, createAxiosConfig())
+            axios.post(`${API_ROOT}/color`,newColor)
                 .then((response) => {
                     this.colorsArray.push(response.data.id);
-                    axios.patch(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`,{colors:this.colorsArray}, createAxiosConfig())
+                    axios.patch(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`,{colors:this.colorsArray})
                         .then(response => {
-                            axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`, createAxiosConfig())
+                            axios.get(`${API_ROOT}/season/colors?name=${this.props.match.params.seasonId}`)
                                 .then(response => {
                                     this.colorCard = response.data;
                                     this.setState({})
@@ -98,13 +98,13 @@ class ColorCollection extends Component{
                 })
         }
         else {
-            axios.post(`${API_ROOT}/color`,newColor, createAxiosConfig())
+            axios.post(`${API_ROOT}/color`,newColor)
                 .then((response) => {
                     this.colorsArray.push(response.data.id);
                     this.colorCard.push(response.data);
-                    axios.patch(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`,{colors:this.colorsArray}, createAxiosConfig())
+                    axios.patch(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`,{colors:this.colorsArray})
                         .then(response => {
-                            axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`, createAxiosConfig())
+                            axios.get(`${API_ROOT}/collection/colors?name=${this.props.match.params.collectionId}`)
                                 .then(response => {
                                     this.colorCard = response.data;
                                     this.setState({})
@@ -150,7 +150,7 @@ class ColorCollection extends Component{
                 return null;
             }
         }
-        axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code, value:this.state.hexCode}, createAxiosConfig())
+        axios.patch(`${API_ROOT}/color?id=${this.state.id}`,{name: this.state.name, code: this.state.code, value:this.state.hexCode})
             .then(() => {
                 this.loadColors();
             })
@@ -171,7 +171,7 @@ class ColorCollection extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/color?id=${self.state.id}`, createAxiosConfig())
+                axios.delete(`${API_ROOT}/color?id=${self.state.id}`)
                     .then(response => {
                         const colors = [...self.colorCard];
                         for(let i = 0; i < colors.length; i++){

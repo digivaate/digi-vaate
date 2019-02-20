@@ -37,7 +37,7 @@ class SummaryTable extends React.Component {
     componentDidUpdate(prevProps){
         if(prevProps.requestPath !== this.props.requestPath){
             const dataCollected = [];
-            axios.get(`${API_ROOT}${this.props.requestPath}`, createAxiosConfig())
+            axios.get(`${API_ROOT}${this.props.requestPath}`)
                 .then(response => {
                     this.products = response.data;
                     this.products.forEach(product => {
@@ -47,7 +47,7 @@ class SummaryTable extends React.Component {
 
                     //fetch budget if in season level
                     if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
-                        return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, createAxiosConfig())
+                        return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`)
                             .then(res => {
                                 return res.data[0].budget;
                             })
@@ -387,7 +387,7 @@ class SummaryTable extends React.Component {
     //React functions
     componentDidMount() {
         const dataCollected = [];
-        axios.get(`${API_ROOT}${this.props.requestPath}`, createAxiosConfig())
+        axios.get(`${API_ROOT}${this.props.requestPath}`)
             .then(response => {
                 this.products = response.data;
                 this.products.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
@@ -398,7 +398,7 @@ class SummaryTable extends React.Component {
 
                 //fetch budget if in season level
                 if (this.props.match.params.seasonId && !this.props.match.params.collectionId) {
-                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`, createAxiosConfig())
+                    return axios.get(`${API_ROOT}/season/?name=${this.props.match.params.seasonId}`)
                         .then(res => {
                             return res.data[0].budget;
                         })

@@ -65,7 +65,7 @@ class SingleProductSize extends Component{
     handleSizeOk = () => {
         let mergeSizes = [];
         if(this.newSizesCreated.length > 0) {
-            axios.post(`${API_ROOT}/size`, this.newSizesCreated, createAxiosConfig())
+            axios.post(`${API_ROOT}/size`, this.newSizesCreated)
                 .then((response) => {
                     mergeSizes = this.updateSizes.concat(response.data);
                     this.props.newSizes(mergeSizes);

@@ -21,7 +21,7 @@ class SeasonsList extends Component{
         }
     }
     componentDidMount =() => {
-        axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
+        axios.get(`${API_ROOT}/company?id=1`)
             .then(response => {
                 this.setState({
                     seasons: response.data[0].seasons,
@@ -64,7 +64,7 @@ class SeasonsList extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget}, createAxiosConfig())
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
                     let seasons = [...this.state.seasons];
@@ -156,7 +156,7 @@ class SeasonsList extends Component{
             budget: season.budget,
             name: season.name
         };
-        axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo, createAxiosConfig())
+        axios.patch(API_ROOT + '/season/?id=' + season.id, newInfo)
             .then(res => {
                 for(let i = 0; i < seasonsOri.length;i++) {
                     if (seasonsOri[i].id === res.data[0].id) {

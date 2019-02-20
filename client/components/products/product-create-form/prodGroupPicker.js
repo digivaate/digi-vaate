@@ -28,7 +28,7 @@ class ProdGroupPicker extends Component {
     }*/
 
     loadProdGroups = () => {
-        axios.get(`${API_ROOT}/productgroup`, createAxiosConfig())
+        axios.get(`${API_ROOT}/productgroup`)
             .then(response => {
                 this.setState({ data: response.data });
             })

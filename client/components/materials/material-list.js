@@ -25,7 +25,7 @@ class MaterialList extends Component{
     uploadImage=null;
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/material`, createAxiosConfig())
+        axios.get(`${API_ROOT}/material`)
             .then(response => this.materials = response.data)
             .then(() => this.setState({isFetched: true}))
             .catch(err => console.log(err));
@@ -39,7 +39,7 @@ class MaterialList extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/material?id=${materialId}`, createAxiosConfig())
+                axios.delete(`${API_ROOT}/material?id=${materialId}`)
                     .then(() => {
                         const materials = [...self.materials];
                         for(let i = 0; i < materials.length; i++){
@@ -107,9 +107,9 @@ class MaterialList extends Component{
             }
             this.props.newMaterial(values.name);
             if(this.uploadImage) {
-                axios.post(`${API_ROOT}/material`, values, createAxiosConfig())
+                axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
-                        axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage, createAxiosConfig())
+                        axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage)
                             .then((re) => {
                                 response.data.imageId = re.data.id;
                                 this.materials.push(response.data);
@@ -121,7 +121,7 @@ class MaterialList extends Component{
                 form.resetFields();
             }
             else if(!this.uploadImage){
-                axios.post(`${API_ROOT}/material`, values, createAxiosConfig())
+                axios.post(`${API_ROOT}/material`, values)
                     .then(response => {
                         this.materials.push(response.data);
                         message.success("Material created",1);

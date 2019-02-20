@@ -42,7 +42,7 @@ const ProductCreateForm = Form.create()(
 
         loadColors = () => {
             if(this.props.productLevelName === "company"){
-                axios.get(`${API_ROOT}/company?id=1`, createAxiosConfig())
+                axios.get(`${API_ROOT}/company?id=1`)
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
                         this.setState({
@@ -51,10 +51,10 @@ const ProductCreateForm = Form.create()(
                     })
             }
             if(this.props.productLevelName === "season"){
-                axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/season?name=${this.props.match.params.seasonId}`)
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
-                        axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`, createAxiosConfig())
+                        axios.get(`${API_ROOT}/company?id=${response.data[0].companyId}`)
                             .then(res => {
                                 this.setState({
                                     colorOptions:res.data[0].colors.concat(response.data[0].colors)
@@ -63,12 +63,12 @@ const ProductCreateForm = Form.create()(
                     })
             }
             if(this.props.productLevelName === "collection"){
-                axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
+                axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
                     .then(response => {
                         this.props.productLevelId(response.data[0].id)
-                        axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`, createAxiosConfig())
+                        axios.get(`${API_ROOT}/season?id=${response.data[0].seasonId}`)
                             .then(res => {
-                                axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`, createAxiosConfig())
+                                axios.get(`${API_ROOT}/company?id=${res.data[0].companyId}`)
                                     .then(re => {
                                         this.setState({
                                             colorOptions:re.data[0].colors.concat(res.data[0].colors.concat(response.data[0].colors))
@@ -80,7 +80,7 @@ const ProductCreateForm = Form.create()(
         };
 
         loadMaterials = () => {
-            axios.get(`${API_ROOT}/material`, createAxiosConfig())
+            axios.get(`${API_ROOT}/material`)
                 .then(response => {
                     this.setState({
                         materialOptions: response.data
@@ -89,7 +89,7 @@ const ProductCreateForm = Form.create()(
         };
 
         loadSizes = () => {
-            axios.get(`${API_ROOT}/size`, createAxiosConfig())
+            axios.get(`${API_ROOT}/size`)
                 .then(response => {
                     this.setState({
                         sizeOptions: response.data

@@ -21,7 +21,7 @@ class SingleOrder extends Component{
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/order?id=${this.props.match.params.orderId}`, createAxiosConfig())
+        axios.get(`${API_ROOT}/order?id=${this.props.match.params.orderId}`)
             .then(response => {
                 this.setState({
                     singleOrder: response.data[0],
@@ -68,7 +68,7 @@ class SingleOrder extends Component{
     };
 
     updateTotalPrice = (orderTotalPrice) => {
-        axios.patch(`${API_ROOT}/order?id=${this.props.match.params.orderId}`,{price:orderTotalPrice}, createAxiosConfig())
+        axios.patch(`${API_ROOT}/order?id=${this.props.match.params.orderId}`,{price:orderTotalPrice})
             .then(response => {
                 this.setState(prevState => {
                     return {

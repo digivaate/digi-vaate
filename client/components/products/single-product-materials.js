@@ -52,7 +52,7 @@ class SingleProductMaterials extends Component{
             })
         }
         if(!prevProps.editModeStatus && this.props.editModeStatus && this.props.productMaterials.length > 0){
-            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
                 .then(response => {
                     if (response.data[0].materials[0]) {
                         this.setState({
@@ -79,7 +79,7 @@ class SingleProductMaterials extends Component{
 
     componentDidMount(){
         if(this.props.editModeStatus && this.props.productMaterials.length > 0) {
-            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/product?id=${this.props.loadedProduct.id}`)
                 .then(response => {
                     console.log(response.data[0])
                     if (response.data[0].materials[0]) {

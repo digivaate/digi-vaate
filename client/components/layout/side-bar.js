@@ -123,7 +123,7 @@ class SideBar extends Component{
     }
 
     componentDidMount() {
-        axios.get(`${API_ROOT}/season`, createAxiosConfig())
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.setState({
                     seasons: response.data

@@ -22,7 +22,7 @@ class OrderList extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.match.url !== this.props.match.url){
-            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
                 .then(response => {
                     this.setState({
                         productsCollection: response.data[0].products,
@@ -34,7 +34,7 @@ class OrderList extends Component{
     }
 
     componentDidMount(){
-        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`, createAxiosConfig())
+        axios.get(`${API_ROOT}/collection?name=${this.props.match.params.collectionId}`)
             .then(response => {
                 this.setState({
                     productsCollection: response.data[0].products,
@@ -52,7 +52,7 @@ class OrderList extends Component{
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                axios.delete(`${API_ROOT}/order?id=${item.id}`, createAxiosConfig())
+                axios.delete(`${API_ROOT}/order?id=${item.id}`)
                     .then(() => {
                         let orders = [...self.state.orders];
                         for(let i = 0; i<orders.length;i++){
@@ -93,7 +93,7 @@ class OrderList extends Component{
                 status: "In process",
                 price: 0
             };
-            axios.post(`${API_ROOT}/order`,values, createAxiosConfig())
+            axios.post(`${API_ROOT}/order`,values)
                 .then(response => {
                     message.success("Order created!");
                     response.data.orderProducts = [];

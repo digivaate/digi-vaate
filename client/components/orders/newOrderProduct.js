@@ -27,7 +27,7 @@ const OrderProductCreateForm = Form.create()(
                     }
                 }
             }
-            axios.get(`${API_ROOT}/product?id=${value}`, createAxiosConfig())
+            axios.get(`${API_ROOT}/product?id=${value}`)
                 .then(response => {
                     this.setState({
                         productNameSelected: valueObj[0].name,
