@@ -35,9 +35,9 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '../dist/client/')));
     app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
 }
-app.use('/admin', adminCommands(apiRoutes, databaseConnections));
+app.use('/api/admin', adminCommands(apiRoutes, databaseConnections));
 
-app.use('/login', login(databaseConnections));
+app.use('/api/login', login(databaseConnections));
 
 app.use(auth);
 

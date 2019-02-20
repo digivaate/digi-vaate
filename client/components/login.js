@@ -1,5 +1,7 @@
 import React, {Component, Fragment} from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import axios from 'axios/index';
+import { API_ROOT } from '../api-config';
 const FormItem = Form.Item;
 
 class Login extends Component {
@@ -7,11 +9,21 @@ class Login extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                localStorage.setItem('userName', values.userName);
-                location.reload();
-            } else {
+            if (err) {
                 console.error(err);
+            } else {
+                axios.post(`${API_ROOT}/login`, {
+                    name: values.userName,
+                    password: values.password
+                })
+                .then(res => {
+                    console.log(res.status);
+                    location.reload();
+                })
+                .catch(err => {
+                    console.error(err);
+                    message.error('Login failed');
+                })
             }
         });
     };
