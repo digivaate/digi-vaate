@@ -28,7 +28,7 @@ export async function getDatabaseNames() {
 
 export async function connectToDatabases(dbNames) {
     const connections = [];
-    for (let i = 1; i < dbNames.length; i++) {
+    for (let i = 0; i < dbNames.length; i++) {
         let db = new DatabaseConnection(dbNames[i]);
         connections.push(
             db.sequelize.sync()

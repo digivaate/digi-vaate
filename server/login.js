@@ -15,17 +15,25 @@ export default (databaseConnections) => {
                 )
             }
         }
-
+        //TODO: Fix login fail
         let index = null;
         const users = await Promise.all(promises);
         for (let i = 0; i < users.length; i++) {
             if (users[i]) index = i;
         }
+        
         if (!index) {
             res.status(401).json({error: 'login failed'});
             return;
         }
-        const dbName = Object.keys(databaseConnections)[index];
-        res.json({dbName: dbName});
+        
+        const token = jwt.sign({
+            name: 'böö'
+        },process.env.JWT_KEY,{
+            expiresIn: '1h'
+        });
+
+        res.cookie('token', token);
+        res.send({status: 'Logged in'});
     }
 }

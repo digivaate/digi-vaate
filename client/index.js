@@ -8,8 +8,9 @@ import axios from "axios/index";
 import CreateCompany from "./components/createCompany";
 import Login from "./components/login";
 import createAxiosConfig from "./createAxiosConfig";
+import Cookies from js-Cookies;
 
-if (localStorage.getItem("dbname")) {
+if (Cookies.get('token')) {
     axios.get(`${API_ROOT}/company`, createAxiosConfig())
         .then(response => {
             if (response.data.length === 0) {

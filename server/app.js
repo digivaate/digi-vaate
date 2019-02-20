@@ -1,12 +1,8 @@
 import {
-    connectToDatabase,
     connectToDatabases,
-    createDatabase,
     databaseRouting,
-    getDatabaseNames,
-    setupDatabase,
+    getDatabaseNames
 } from "./database";
-import createApiRoutes from "./routes/createApiRoutes";
 
 const express = require('express');
 const path = require('path');
@@ -68,8 +64,6 @@ getDatabaseNames()
                 res.status(401).json({ error: 'Unauthorized'});
                 return;
             }
-            console.log(req.headers.authorization);
-            const dbName = req.headers.authorization.split(' ')[1];
             if (!apiRoutes[dbName])
                 throw 'database with name ' + dbName + ' not found';
 

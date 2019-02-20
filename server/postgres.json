@@ -1,5 +1,5 @@
 {
-  "database": "digivaate",
+  "database": "postgres",
   "username": "digivaate",
   "password": "digivaate",
   "options": {

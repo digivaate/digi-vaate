@@ -1,10 +1,16 @@
-import {deleteCompany, getDatabaseNames, setupDatabase} from "./database";
+import {
+    deleteCompany,
+    getDatabaseNames,
+    setupDatabase
+} from "./database";
 
 const express = require('express');
 const adminCred = require('./admin');
 const jwt = require('jsonwebtoken');
 
-import {adminAuth} from './auth';
+import {
+    adminAuth
+} from './auth';
 
 module.exports = (apiRoutes, dbConnections) => {
     const router = express.Router();
@@ -12,17 +18,20 @@ module.exports = (apiRoutes, dbConnections) => {
     router.use('/login', (req, res, next) => {
         if (!req.body.name || !req.body.password)
             next();
-        else if(req.body.name !== adminCred.name || req.body.password !== adminCred.password)
+        else if (req.body.name !== adminCred.name || req.body.password !== adminCred.password)
             next();
         else {
             const token = jwt.sign({
-                admin: {
                     name: adminCred.name
-                }
-            }, process.env.JWT_KEY, { expiresIn: '1h' });
+                },
+                process.env.JWT_KEY, {
+                    expiresIn: '1h'
+                });
 
             res.cookie('adminToken', token);
-            res.send({status: 'Logged in'});
+            res.send({
+                status: 'Logged in'
+            });
         }
     });
 
@@ -40,22 +49,34 @@ module.exports = (apiRoutes, dbConnections) => {
             //res.send({success: req.body.name + ' company created'});
         } catch (e) {
             console.error('Error in creating company: ', e);
-            res.status(500).json({error: e});
+            res.status(500).json({
+                error: e
+            });
         }
     });
 
     router.delete('/company', adminAuth, async (req, res, next) => {
         if (await deleteCompany(req.body.name, dbConnections, apiRoutes))
-            res.send({success: req.body.name + ' deleted'});
+            res.send({
+                success: req.body.name + ' deleted'
+            });
         else
-            res.status(500).json({error: req.body.name + ' not found'});
+            res.status(500).json({
+                error: req.body.name + ' not found'
+            });
     });
 
     router.use('/', adminAuth, async (req, res, next) => {
-        const companyName = req.body.companyName;
-        if (!companyName) throw 'Company name missing';
-        req.body = req.body.content;
-        apiRoutes[companyName](req, res, next);
+        try {
+            console.log('API ROUTES ', apiRoutes)
+            const companyName = req.body.companyName;
+            if (!companyName) throw 'Company name missing';
+            req.body = req.body.content;
+            apiRoutes[companyName](req, res, next);
+        } catch (e) {
+            console.error('Failed to redirect admin reqest:', e)
+            res.status(500).send(e)
+        }
     });
 
     return router;
