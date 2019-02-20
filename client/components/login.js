@@ -18,7 +18,7 @@ class Login extends Component {
                 })
                 .then(res => {
                     console.log(res.status);
-                    location.reload();
+                    location.href = '/';
                 })
                 .catch(err => {
                     console.error(err);

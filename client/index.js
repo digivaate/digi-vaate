@@ -5,9 +5,25 @@ import { render } from "react-dom";
 import App from './App';
 import Login from "./components/login";
 import Cookies from 'js-cookie';
+import {BrowserRouter,Route} from 'react-router-dom'
+import axios from "axios/index";
 
-if (Cookies.get('userToken')) {
-    render(<App />, document.getElementById("root"));
-} else {
-    render(<Login/>, document.getElementById("root"));
-}
+// Redirect to login page if not authorized
+axios.interceptors.response.use((res) => {return res}, (err) => {
+    if (err.response.status === 401) {
+        window.location.href = '/login';
+        return;
+    }
+    // Continue with other errors
+    return Promise.reject(err);
+})
+
+render(
+    <BrowserRouter>
+    <div>
+        <Route path={'/'} exact component={App}/>
+        <Route path={'/login'} exact component={Login}/>
+    </div>
+    </BrowserRouter>,
+    document.getElementById("root"));
+

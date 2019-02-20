@@ -18,7 +18,7 @@ export default (databaseConnections) => {
         }
         const users = await Promise.all(promises);
         if (!users[0]) {
-            res.status(401).json({error: 'login failed'});
+            res.status(400).json({error: 'login failed'});
             return;
         }
         const token = jwt.sign({
