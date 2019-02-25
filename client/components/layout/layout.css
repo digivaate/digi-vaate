@@ -13,6 +13,11 @@
     display: flex;
 }
 
+.sale-button{
+    background-color: #007CBB;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+}
+
 .main-nav__item {
     margin: 0 1rem;
     align-self: center;
@@ -22,9 +27,9 @@
 .main-nav__item a{
     color:white;
     text-decoration: none;
-    font-weight: bold;
     padding: 0.8rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-family: "Avenir Next";
 }
 
 .main-nav__item a:hover,
@@ -35,11 +40,23 @@
 .side-bar-menu{
     height: 100%;
     border-right: 0;
+    background: #f4f4f4;
+}
+
+.ant-menu{
+    margin-top:4rem;
+    background: #f4f4f4;
 }
 
 .logo {
     margin: 0.5em;
-    color: white
+    height: 35px;	
+    width: 122px;	
+    color: #FFFFFF;	
+    font-family: "PT Sans";	
+    font-size: 30px;	
+    font-weight: bold;	
+    line-height: 39px;
 }
 
 .season-menu {
@@ -64,10 +81,13 @@
 
 /* breadcrumb.js */
 .bread-crumb{
-    font-size:17px;
-    margin: 0.5em;
+    margin: 0.5rem;
     color:white;
     display:inline-block;
+    font-family: "Avenir Next";	
+    font-size: 18px;	
+    font-weight: 500;
+    padding-bottom: 0.5rem;
 }
 
 .ant-breadcrumb a{

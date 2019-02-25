@@ -28,14 +28,14 @@ body {
 
 .header {
     grid-area: header;
-    background-color: black;
+    background: radial-gradient(circle, #2C2C2C 0%, #191919 100%);;
     position: fixed;
     width:100%;
     color:white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    height: 72px;
     top: 0;
     left: 0;
     padding: 0.5rem 1rem;

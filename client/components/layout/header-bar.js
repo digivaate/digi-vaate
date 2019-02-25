@@ -67,12 +67,13 @@ class HeaderBar extends Component{
                     <ul className="main-nav__items">
                         <li className="main-nav__item">
                             <Dropdown overlay={menu}>
-                                <a href=""><Icon style={{fontSize:'20px'}} type="user" /> Username</a>
+                                <a href="javascript:void(0);"><Icon style={{fontSize:'20px'}} type="user" /> Username</a>
                             </Dropdown>
                         </li>
                         <li>
                         <Button
-                            size="large"
+                            size='large'
+                            className="sale-button"
                             type="primary"
                             target="_blank"
                             href="https://ems-v12.yritysohjelmisto.fi/web/login?db=dgv-181127"
