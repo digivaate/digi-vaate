@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import { API_ROOT } from '../../api-config';
-import { Link, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { Breadcrumb } from 'antd';
 import axios from 'axios';
 import "./layout.css"
@@ -12,15 +12,27 @@ const Home = withRouter((props) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
         return (
             <Breadcrumb.Item key={url}>
-                <Link to={url}>
+                <NavLink 
+                    activeStyle={{
+                        textDecoration:'none'
+                    }}
+                    to={url}
+                >
                     {props.breadcrumbMap[url]}
-                </Link>
+                </NavLink>
             </Breadcrumb.Item>
         );
     });
     const breadcrumbItems = [(
         <Breadcrumb.Item key="companyName">
-            <Link to="/">{props.companiesMap}</Link>
+            <NavLink 
+                activeStyle={{
+                    textDecoration:'none'
+                }}
+                to="/"
+            >
+                {props.companiesMap}
+            </NavLink>
         </Breadcrumb.Item>
     )].concat(extraBreadcrumbItems);
     return (

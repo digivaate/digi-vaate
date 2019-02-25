@@ -47,7 +47,13 @@ class HeaderBar extends Component{
         return(
             <div className={'header'}>
                 <div>
-                    <NavLink to={'/'} style={{display:'inline-block'}}>
+                    <NavLink 
+                        to={'/'} 
+                        style={{display:'inline-block'}}
+                        activeStyle={{
+                            textDecoration:'none'
+                        }}
+                    >
                         <h1 className={'logo'}>DigiVaate</h1>
                     </NavLink>
 
