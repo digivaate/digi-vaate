@@ -1,16 +1,35 @@
 /* header-bar.js */
-.nav-bar-menu{
-    line-height: 70px;
-    font-color:black;
-    float:right;
-    border:none;
+
+.main-nav {
+    display: flex;
+    margin-left:auto;
+    margin-right: 2rem;
+}
+  
+.main-nav__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
 }
 
-.header-section{
-    margin-left: 70%;
-    color: black;
-    font-size: 1.3em;
-    position: absolute;
+.main-nav__item {
+    margin: 0 1rem;
+    align-self: center;
+
+}
+
+.main-nav__item a{
+    color:white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.main-nav__item a:hover,
+.main-nav__item a:active {
+    color: #1890ff;
 }
 
 .side-bar-menu{
@@ -20,6 +39,7 @@
 
 .logo {
     margin: 0.5em;
+    color: white
 }
 
 .season-menu {
@@ -46,6 +66,16 @@
 .bread-crumb{
     font-size:17px;
     margin: 0.5em;
+    color:white;
+    display:inline-block;
+}
+
+.ant-breadcrumb a{
+    color: white
+}
+
+.ant-breadcrumb-separator {
+    color:white
 }
 
 

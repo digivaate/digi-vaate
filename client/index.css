@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
@@ -7,13 +11,13 @@ body {
 /*Main layout of app*/
 .App {
     height: 100vh;
+    background: #f4f4f4;
     display: grid;
     grid-template-columns: 250px auto;
-    grid-template-rows: 4em auto 50px;
+    grid-template-rows: 70px auto;
     grid-template-areas:
             'header header'
             'nav content'
-            'footer footer';
 }
 
 .content {
@@ -24,23 +28,24 @@ body {
 
 .header {
     grid-area: header;
-    z-index: 1;
-    border-bottom:1px groove;
-    /*content*/
+    background-color: black;
+    position: fixed;
+    width:100%;
+    color:white;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1rem;
+    z-index: 60;
 }
 .sider {
     grid-area: nav;
     border-right: 1px groove;
     max-height: 100%;
     overflow-x: hidden;
-}
-.footer {
-    grid-area: footer;
-    background-color: white;
-    border-top: 1px solid;
 }
 
 .ant-layout-sider {
