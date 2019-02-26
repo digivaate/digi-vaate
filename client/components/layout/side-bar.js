@@ -217,7 +217,7 @@ class SideBar extends Component{
         }return (
             <Sider className="side-bar-menu" width={250}>
                 <Menu mode="inline">
-                    <Menu.Item key="products">
+                    <Menu.Item className="side-bar__products" key="products">
                         <Link to={"/products"}>
                             Products
                         </Link>
@@ -234,7 +234,6 @@ class SideBar extends Component{
                     </Menu.Item>
                     <SubMenu key="seasons"
                              title={<span>Seasons</span>}
-
                     >
                         <Menu.Item>
                             <Link to="/seasons">

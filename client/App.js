@@ -138,6 +138,8 @@ class App extends React.Component {
     render() {
         return (
         <BrowserRouter>
+        <React.Fragment>
+            <div className="background"></div>
             <div className="App">
                 <HeaderBar
                     newSeasonName={this.state.newSeasonName}
@@ -269,6 +271,7 @@ class App extends React.Component {
                     </div>
                 </div>
             </div>
+            </React.Fragment>
         </BrowserRouter>
     )
 };

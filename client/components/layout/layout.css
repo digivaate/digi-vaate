@@ -37,15 +37,31 @@
     color: #1890ff;
 }
 
+/* side-bar.js */
+
 .side-bar-menu{
     height: 100%;
-    border-right: 0;
     background: #f4f4f4;
+}
+
+.side-bar-menu li{
+    font-family: "Avenir Next";
+    font-weight:bold;	
+}
+
+.side-bar__products{
+    height: 25px;	
+    width: 77px;	
+    color: #000000;	
 }
 
 .ant-menu{
     margin-top:4rem;
     background: #f4f4f4;
+}
+
+.ant-menu li {
+    font-size: 1.2rem;
 }
 
 .logo {
@@ -60,11 +76,13 @@
 }
 
 .season-menu {
-    background: #EBECF8;
+    /* background: #EBECF8; */
+    	color: #4A90E2;
 }
 
 .collection-menu {
-    background: #D6D8DF;
+    /* background: #D6D8DF; */
+    	color: #4A90E2;
 }
 
 .ant-menu-submenu > .ant-menu {
@@ -72,11 +90,11 @@
 }
 
 .ant-menu-submenu ul[id^='seasons$Menu'] {
-    background-color: #EBECF8;
+    /* background-color: #EBECF8; */
 }
 
 .ant-menu-submenu ul[id^='collections-season-'] {
-    background-color: #D6D8DF;
+    /* background-color: #D6D8DF; */
 }
 
 /* breadcrumb.js */
