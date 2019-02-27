@@ -766,7 +766,6 @@ class ProductsDisplay extends Component{
                             <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <br/>
                             <div className="products-display__filter-text">Narrow list by:</div>
-
                             <FilterArea
                                 sections={["Season","Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
@@ -815,7 +814,7 @@ class ProductsDisplay extends Component{
                             </Row>
                             <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <br/>
-                            <br/>
+                            <div className="products-display__filter-text">Narrow list by:</div>
                             <FilterArea
                                 sections={["Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
@@ -864,7 +863,7 @@ class ProductsDisplay extends Component{
                         </Row>
                         <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                         <br/>
-                        <br/>
+                        <div className="products-display__filter-text">Narrow list by:</div>
                         <FilterArea
                             sections={["Category","Color","Material","Size"]}
                             products = {this.products}
@@ -953,7 +952,7 @@ class ProductsDisplay extends Component{
                         </Row>
                         <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                         <br/>
-                        <br/>
+                        <div className="products-display__filter-text">Narrow list by:</div>
                         <FilterArea
                             sections={
                                 this.state.productLevel === "company" ?
@@ -997,7 +996,7 @@ class ProductsDisplay extends Component{
                     </Row>
                     <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                     <br/>
-                    <br/>
+                    <div className="products-display__filter-text">Narrow list by:</div>
                     <FilterArea
                         sections={["Season","Collection","Color","Material","Size"]}
                         products = {this.products}

@@ -116,7 +116,7 @@ class FilterTags extends Component{
         if(this.state.filterValues.length > 0 ){
             renderFilterTags = this.state.filterValues.map(filterValue => {
                 return (
-                    <Tag key={filterValue} closable afterClose={() => this.onDeleteFilterTag(filterValue)}>
+                    <Tag className="filter-tags__tag-container" key={filterValue} closable afterClose={() => this.onDeleteFilterTag(filterValue)}>
                         {filterValue}
                     </Tag>
                 )
@@ -125,7 +125,7 @@ class FilterTags extends Component{
         return (
             <div>
                 <div>
-                    <span style={{fontWeight:'bold',fontSize:'1.1em'}}>Filter tag: </span>
+                    <div className="filter-tags__showing">Showing: </div>
                     {renderFilterTags}
                 </div>
                 <br/>

@@ -9,9 +9,10 @@
 /* FilterSection.js */
 
 .filter-header{
-    width: 120px;
-    height: 30px;
-    border: 2px solid;
+    height: 35px;	
+    width: 120px;	
+    background-color: #F8F8F8;
+    border: 1px groove;
 }
 
 .filter-header:hover{
@@ -20,9 +21,8 @@
 
 .filter-header-active{
     width: 120px;
-    height: 30px;
-    border: 2px solid;
-    background-color: #1890ff;
+    height: 35px;
+    background-color: #69767b;
     color: white;
 }
 
@@ -35,7 +35,7 @@
     top: 50%;
     transform: translateY(-50%);
     margin-left: 3px;
-    font-weight: bold;
+    font-size: 1rem;
 }
 
 @media only screen and (max-width: 1110px){
@@ -68,3 +68,19 @@
     cursor: pointer;
     width:100%
 }
+
+
+/* FilterTags.js */
+.filter-tags__showing{
+    font-size: 1rem;	
+    font-weight: 600;
+    color:black;
+}
+
+.filter-tags__tag-container{
+    height: 35px;		
+    background-color: #F8F8F8;
+    font-size: 1rem;
+    padding-top: 5px;
+}
+
