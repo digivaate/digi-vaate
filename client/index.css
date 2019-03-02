@@ -25,6 +25,15 @@ body {
     z-index: -1;
 }
 
+.mainScreen__background{
+    filter: grayscale(40%);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
+    background: linear-gradient(172.25deg, rgba(0,0,0,0.63) 0%, rgba(0,0,0,0.25) 100%);
+}
+
 /*Main layout of app*/
 .App {
     height: 100vh;

@@ -786,7 +786,7 @@ class ProductsDisplay extends Component{
                                 dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 8,
+                                    pageSize: 9,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -837,7 +837,7 @@ class ProductsDisplay extends Component{
                                 dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 8,
+                                    pageSize: 9,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -886,7 +886,7 @@ class ProductsDisplay extends Component{
                             dataSource={renderProductList}
                             grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                             pagination={{
-                                pageSize: 8,
+                                pageSize: 9,
                                 hideOnSinglePage: true,
                                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 

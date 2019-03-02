@@ -139,7 +139,14 @@ class App extends React.Component {
         return (
         <BrowserRouter>
         <React.Fragment>
-            <div className="background"></div>
+            <Route path="/(.+)" render={() => 
+                <div className="background"></div>
+            }
+            />
+            <Route path="/" exact render={() =>
+                    <div className="mainScreen__background"></div>
+                }
+            />
             <div className="App">
                 <HeaderBar
                     newSeasonName={this.state.newSeasonName}
@@ -152,16 +159,18 @@ class App extends React.Component {
                     newProductName={this.state.newProductName}
                     newMaterialName={this.state.newMaterialName}
                 />
-                <div className="sider">
-                    <SideBar
-                        newSeason={this.state.newSeasonName}
-                        newCollection={this.state.newCollectionName}
-                        newDeleteSeason={this.state.newDeleteSeasonName}
-                        newDeleteCollection={this.state.newDeleteCollectionName}
-                        newSeasonEdit={this.state.newSeasonEdit}
-                        newCollectionEdit={this.state.newCollectionEdit}
-                    />
-                </div>
+                <Route path="/(.+)" render={() => 
+                    <div className="sider">
+                        <SideBar
+                            newSeason={this.state.newSeasonName}
+                            newCollection={this.state.newCollectionName}
+                            newDeleteSeason={this.state.newDeleteSeasonName}
+                            newDeleteCollection={this.state.newDeleteCollectionName}
+                            newSeasonEdit={this.state.newSeasonEdit}
+                            newCollectionEdit={this.state.newCollectionEdit}
+                        />
+                    </div>
+                }/>
                 <div className="content">
                     <div>
                         <Switch>
