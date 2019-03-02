@@ -16,12 +16,15 @@ class SingleProductMaterials extends Component{
             productMaterials: this.props.productMaterials.map(material => {
                 return {
                     id:material.id,
+                    code: material.code,
                     consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                     name:material.name,
                     imageId: material.imageId,
                     unitPrice: material.unitPrice,
                     freight:material.freight,
-                    materialCosts: material.material_product.consumption === null ? material.freight : parseFloat((material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight).toFixed(2))                }
+                    manufacturer: material.manufacturer,
+                    materialCosts: material.material_product.consumption === null ? material.freight : parseFloat((material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight).toFixed(2))                
+                }
             }),
             materialOptions: this.props.materialOptions,
         }
@@ -40,9 +43,11 @@ class SingleProductMaterials extends Component{
                         id:material.id,
                         consumption: material.material_product.consumption === null ? 0 : parseFloat(parseFloat(material.material_product.consumption).toFixed(2)),
                         name:material.name,
+                        code: material.code,
                         imageId: material.imageId,
                         unitPrice: material.unitPrice,
                         freight:material.freight,
+                        manufacturer: material.manufacturer,
                         materialCosts: material.material_product.consumption === null ? material.freight : parseFloat((material.unitPrice *parseFloat(parseFloat(material.material_product.consumption).toFixed(2)) + material.freight).toFixed(2))
                     }
                 }),
@@ -197,9 +202,11 @@ class SingleProductMaterials extends Component{
                         id:materialPair.id,
                         consumption: parseFloat(parseFloat(materialPair.consumption).toFixed(2)),
                         name:materialPair.name,
+                        code: materialPair.code,
                         imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
+                        manufacturer:materialPair.manufacturer,
                         materialCosts: parseFloat((materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight).toFixed(2))
                     }
                 });
@@ -209,9 +216,11 @@ class SingleProductMaterials extends Component{
                         id:materialPair.id,
                         consumption: parseFloat(parseFloat(materialPair.consumption).toFixed(2)),
                         name:materialPair.name,
+                        code: materialPair.code,
                         imageId: materialPair.imageId,
                         unitPrice: materialPair.unitPrice,
                         freight:materialPair.freight,
+                        manufacturer:materialPair.manufacturer,
                         materialCosts: parseFloat((materialPair.unitPrice *parseFloat(parseFloat(materialPair.consumption).toFixed(2)) + materialPair.freight).toFixed(2))
                     }
                 });
@@ -237,7 +246,7 @@ class SingleProductMaterials extends Component{
         let materialSelected2 = null;
         let materialSelected3 = null;
         let editMaterialBtn = <div style={{height:40,width:40}}></div>;
-        let renderProductMaterials = <p>This product does not have any materials yet</p>;
+        let renderProductMaterials = <p style={{fontSize:'1rem'}}>This product does not have any materials yet</p>;
         let renderMaterialOptions = [];
         let renderDefaultMaterials = [];
         if(this.props.editModeStatus === true) {
@@ -250,7 +259,7 @@ class SingleProductMaterials extends Component{
             this.state.materialOptions.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderMaterialOptions = this.state.materialOptions.map(material =>
                 <Option key={material.name}>
-                    {material.name}
+                    {material.name} - {material.code ? material.code : "No code"}
                 </Option>
             )
         }
@@ -263,45 +272,47 @@ class SingleProductMaterials extends Component{
                         materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`
                     }
                     return (
-                        <Col key={material.id}>
-                            <Link to={{
-                                pathname: `/materials/${material.id}-${material.name}`,
-                                state:
-                                    {
-                                        historyProductUrl:this.props.match.url,
-                                        historyProductListUrl: this.props.location.state ? this.props.location.state.productListUrl : null,
-                                        historyOrderUrl: this.props.location.state ?this.props.location.state.historyOrderUrl:null,
-                                        orderListUrl:this.props.location.state ?this.props.location.state.orderListUrl:null,
-                                        historyBudgetUrl: this.props.location.state ?this.props.location.state.historyBudgetUrl:null,
-                                        seasonName: this.props.location.state ? this.props.location.state.seasonName:null,
-                                        collectionName: this.props.location.state ? this.props.location.state.collectionName:null,
-                                        productsCollection: this.props.location.state ? this.props.location.state.productsCollection:null
-                                    }
-                            }}>
-                            <Card
-                                hoverable
-                                className="product-material-card"
-                                cover={materialImgUrl ?
+                        <div className="single-product-materials__material-container" key={material.id}>
+                        <Row type="flex" >
+                            <Col span={16}>
+                                <Link to={{
+                                    pathname: `/materials/${material.id}-${material.name}`,
+                                    state:
+                                        {
+                                            historyProductUrl:this.props.match.url,
+                                            historyProductListUrl: this.props.location.state ? this.props.location.state.productListUrl : null,
+                                            historyOrderUrl: this.props.location.state ?this.props.location.state.historyOrderUrl:null,
+                                            orderListUrl:this.props.location.state ?this.props.location.state.orderListUrl:null,
+                                            historyBudgetUrl: this.props.location.state ?this.props.location.state.historyBudgetUrl:null,
+                                            seasonName: this.props.location.state ? this.props.location.state.seasonName:null,
+                                            collectionName: this.props.location.state ? this.props.location.state.collectionName:null,
+                                            productsCollection: this.props.location.state ? this.props.location.state.productsCollection:null
+                                        }
+                                    }}
+                                    className="single-product-materials__material-name"
+                                >
+                                    {material.name} - {material.code ? material.code : "No code"}
+                                </Link>        
+                                <div className="single-product-materials__material-content">
+                                    <div>Manufacturer: <span className="single-product-materials__material-value">{material.manufacturer ? material.manufacturer : "-"}</span></div>
+                                    <div>Total Consumption: <span className="single-product-materials__material-value">{material.consumption} m</span></div>
+                                    <div>Unit Price: <span className="single-product-materials__material-value">{material.unitPrice} €</span></div>
+                                    <div>Cost: <span className="single-product-materials__material-value">{material.materialCosts} €</span></div>
+                                </div>
+                            </Col>
+                            <Col span={8}>
+                                {
+                                    materialImgUrl ?
                                     <img className="single-product-material-img" src={`${materialImgUrl}`}/> :
                                     <div className="single-product-material-no-img">
                                         <div className="no-image-text">
                                             NO IMAGE AVAILABLE
                                         </div>
-                                    </div>}
-                            >
-                                <Meta
-                                    title={material.name}
-                                    description={
-                                        <div>
-                                            <p>Consumption:{material.consumption}</p>
-                                            <p>Unit price: {material.unitPrice}</p>
-                                            <p>Cost: {material.materialCosts}</p>
-                                        </div>
-                                    }
-                                />
-                            </Card>
-                            </Link>
-                        </Col>
+                                    </div>
+                                }
+                            </Col>
+                        </Row>
+                        </div>
                     )
                 }
             )
@@ -370,14 +381,15 @@ class SingleProductMaterials extends Component{
         return (
             <div>
                 <Row gutter={8}>
-                    <Row type="flex">
-                        <h2>Materials&nbsp;&nbsp;</h2>
-                        {editMaterialBtn}
+                    <Row type="flex" justify='space-between'>
+                        <div style={{height:0}}>
+                            <h2 className="single-product__info-title">Materials&nbsp;&nbsp;</h2>
+                            {editMaterialBtn}
+                        </div>
+                        <div className="single-product-materials__total-text">Total materials cost: <span className="single-product-materials__material-value">{sumMaterialCost} €</span></div>
                     </Row>
                     <br/>
-                    <Row type="flex" gutter={8}>
-                        {renderProductMaterials}
-                    </Row>
+                    {renderProductMaterials}
                     <Modal
                         title="Edit material"
                         visible={this.state.materialVisible}
@@ -405,7 +417,7 @@ class SingleProductMaterials extends Component{
                     </Modal>
                 </Row>
                 <br/>
-                <h3>Total materials cost: {sumMaterialCost}</h3>
+                
             </div>
         )
     }

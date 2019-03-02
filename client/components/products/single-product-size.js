@@ -117,7 +117,7 @@ class SingleProductSize extends Component{
             return (
                 <div>
                     <Row type="flex">
-                        <h2>Sizes&nbsp;&nbsp;</h2>
+                        <h2 className="single-product__info-title">Sizes&nbsp;&nbsp;</h2>
                         {editSizeInfo}
                     </Row>
                     <Modal
@@ -140,7 +140,7 @@ class SingleProductSize extends Component{
                         </Select>
                     </Modal>
                     <Row type="flex" gutter={8} style={{margin:0}}>
-                        {sizesDisplay.length > 0 ? sizesDisplay : <div style={{height: 50}}>No sizes</div>}
+                        {sizesDisplay.length > 0 ? sizesDisplay : <div style={{height: 50, fontSize:'1rem'}}>This product does not have any sizes yet</div>}
                     </Row>
                 </div>
             )

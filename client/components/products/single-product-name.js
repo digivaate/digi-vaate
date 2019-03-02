@@ -83,7 +83,7 @@ class SingleProductName extends Component{
         }
         return (
             <Row type="flex">
-                <h1 style={ this.props.singleProductName !== this.state.productNameOri ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight: 'bold'} }>{this.props.singleProductName}&nbsp;</h1>
+                <h1 style={ this.props.singleProductName !== this.state.productNameOri ? { color: '#EDAA00', fontWeight: 'bold',fontSize:'2.2rem'} : {fontWeight: 'bold',fontSize:'2.2rem'} }>{this.props.singleProductName}&nbsp;</h1>
                 {editNameBtn}
                 <Modal
                     title="Edit name"

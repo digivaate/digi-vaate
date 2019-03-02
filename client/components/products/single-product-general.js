@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Row, Col, Input, Button, Icon, Modal, message, Select} from 'antd';
+import {Row, Col, Input, Button, Icon, Modal, message, Select, Divider} from 'antd';
 import './products.css'
 import { comaToPeriod } from "../../utils/coma-convert";
 import {API_ROOT} from "../../api-config";
@@ -14,6 +14,7 @@ class SingleProductGeneralInfo extends Component{
         this.state = {
             infoVisible: false,
             loadedProduct: this.props.loadedProduct,
+            code: this.props.loadedProduct.code,
             sellingPrice: this.props.loadedProduct.sellingPrice,
             resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
             taxPercent: this.props.loadedProduct.taxPercent,
@@ -21,7 +22,8 @@ class SingleProductGeneralInfo extends Component{
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
             productGroups: [],
             productGroup: undefined,
-            saved:this.props.saved
+            saved:this.props.saved,
+            selectDisabled: false
         }
     }
 
@@ -31,6 +33,7 @@ class SingleProductGeneralInfo extends Component{
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
+                code: this.props.loadedProduct.code,
                 sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
@@ -43,6 +46,7 @@ class SingleProductGeneralInfo extends Component{
             this.setState({
                 infoVisible: false,
                 loadedProduct: this.props.loadedProduct,
+                code: this.props.loadedProduct.code,
                 sellingPrice: this.props.loadedProduct.sellingPrice,
                 resellerProfitPercent: this.props.loadedProduct.resellerProfitPercent,
                 taxPercent: this.props.loadedProduct.taxPercent,
@@ -51,6 +55,11 @@ class SingleProductGeneralInfo extends Component{
                 saved: this.props.saved
             })
         }
+    }
+
+
+    componentDidMount() {
+        this.loadProductGroups();
     }
 
     loadProductGroups = () => {
@@ -84,6 +93,7 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.props.loadedProduct.taxPercent,
             amount: this.props.loadedProduct.amount,
             subcCostTotal: this.props.loadedProduct.subcCostTotal,
+            code: this.props.loadedProduct.code,
         });
     };
 
@@ -95,6 +105,12 @@ class SingleProductGeneralInfo extends Component{
         }
     };
 
+    handleCodeChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        }); 
+    };
+
     handleComa = (event) => {
         event.target.value = comaToPeriod(event.target.value);
         this.handleChange(event);
@@ -104,6 +120,22 @@ class SingleProductGeneralInfo extends Component{
         this.state.productGroups.forEach(group => {
             if (group.id === value)
                 this.setState({ productGroup: group});
+        });
+    };
+
+    handleCategoryChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        }, () => {
+            if(this.state.newCategory.length > 0){
+                this.setState({
+                    selectDisabled: true
+                })
+            } else {
+                this.setState({
+                    selectDisabled: false
+                })
+            }
         });
     };
 
@@ -137,7 +169,8 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.state.taxPercent ? parseFloat(parseFloat(this.state.taxPercent).toFixed(2)) : 0,
             amount: this.state.amount ? parseFloat(parseFloat(this.state.amount).toFixed(2)) : 0,
             subcCostTotal: this.state.subcCostTotal ? parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2)) : 0,
-            productGroupId: this.state.productGroup.id
+            productGroupId: this.state.productGroup.id,
+            code: this.state.code
         };
         console.log(newInfo);
         this.props.newInfo(newInfo);
@@ -158,11 +191,11 @@ class SingleProductGeneralInfo extends Component{
         const prodGroupOptions = this.state.productGroups.map(prodGroup => (
             <Option key={prodGroup.id} value={prodGroup.id}>{ prodGroup.name }</Option>
         ));
-        const productG = this.state.productGroup ? this.state.productGroup.name : '';
+        const productG = this.state.productGroup ? this.state.productGroup.name : 'None';
         return (
             <div>
                 <Row type="flex">
-                    <h3>Details&nbsp;&nbsp;</h3>
+                    <h2 className="single-product__info-title">Pricing & Information&nbsp;&nbsp;</h2>
                     {editGeneralInfo}
                 </Row>
                 <Modal
@@ -179,6 +212,17 @@ class SingleProductGeneralInfo extends Component{
                                 className="input-style"
                                 value={this.state.sellingPrice}
                                 name="sellingPrice"
+                                onChange={this.handleChange}
+                                onKeyDown={this.checkNumber}
+                                onBlur={this.handleComa}
+                            />
+                        </Col>
+                        <Col span={12}>
+                            Reseller Profit Percentage:
+                            <Input
+                                className="input-style"
+                                value={this.state.resellerProfitPercent}
+                                name="resellerProfitPercent"
                                 onChange={this.handleChange}
                                 onKeyDown={this.checkNumber}
                                 onBlur={this.handleComa}
@@ -206,30 +250,56 @@ class SingleProductGeneralInfo extends Component{
                                 onBlur={this.handleComa}
                             />
                         </Col>
-                        <Col span={12}>
+                    </Row>
+                    <br/>
+                    <Row gutter={8}>
+                        <Col span={8}>
                             Category:
+                            <br/>
                             <Select
                                 placeholder="Select category"
-                                style={{ width: '100%'}}
+                                style={{width:'100%'}}
                                 value={productG}
                                 onChange={this.handleProdGroup}
+                                disabled={this.state.selectDisabled}
                             >
                                 {prodGroupOptions}
                             </Select>
                         </Col>
+                        <Col span={16}>
+                            Create new category: (if not existed)
+                            <Input
+                                className="input-style"
+                                value={this.state.newCategory}
+                                name="newCategory"
+                                onChange={this.handleCategoryChange}
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                    <Col span={12}>
+                            Code:
+                            <Input
+                                className="input-style"
+                                value={this.state.code}
+                                name="code"
+                                onChange={this.handleCodeChange}
+                            />
+                        </Col>
                     </Row>
                 </Modal>
-                <p>Selling price: <span style={ this.props.loadedProduct.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {} }>{this.props.loadedProduct.sellingPrice} </span></p>
-                <p>Amount: <span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.amount}</span></p>
-                <p>Subcontracting cost: <span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {}}>{this.props.loadedProduct.subcCostTotal}</span></p>
-                <p>Product group: <span>{productG}</span></p>
+                <div style={{fontSize:'1rem'}}>
+                <p>Selling price: <span style={ this.props.loadedProduct.sellingPrice !== this.props.originalLoadedProduct.sellingPrice ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight:600,fontSize:'1.1rem'} }>{this.props.loadedProduct.sellingPrice} €</span></p>
+                <p>Reseller Profit Percentage: <span style={ this.props.loadedProduct.resellerProfitPercent !== this.props.originalLoadedProduct.resellerProfitPercent ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight:600,fontSize:'1.1rem'} }>{this.props.loadedProduct.resellerProfitPercent} %</span></p>
+                <p>Amount: <span style={ this.props.loadedProduct.amount !== this.props.originalLoadedProduct.amount ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight:600,fontSize:'1.1rem'}}>{this.props.loadedProduct.amount} pcs</span></p>
+                <p>Subcontracting cost: <span style={ this.props.loadedProduct.subcCostTotal !== this.props.originalLoadedProduct.subcCostTotal ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight:600,fontSize:'1.1rem'}}>{this.props.loadedProduct.subcCostTotal} €</span></p>
+                <p>Code: <span style={ this.props.loadedProduct.code !== this.props.originalLoadedProduct.code ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight:600,fontSize:'1.1rem'}}>{this.props.loadedProduct.code ? this.props.loadedProduct.code: "-"}</span></p>
+                <p>Category: <span style={{fontWeight:600,fontSize:'1.1rem'}}>{productG}</span></p>
+                </div>
             </div>
         )
     }
 
-    componentDidMount() {
-        this.loadProductGroups();
-    }
 }
 
 export default SingleProductGeneralInfo;

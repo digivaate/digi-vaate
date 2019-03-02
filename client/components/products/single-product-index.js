@@ -305,6 +305,7 @@ class SingleProduct extends Component {
             resellerProfitPercent: this.state.loadedProduct.resellerProfitPercent,
             amount: this.state.loadedProduct.amount,
             subcCostTotal: this.state.loadedProduct.subcCostTotal,
+            code: this.state.loadedProduct.code,
             productGroupId: this.state.loadedProduct.productGroupId
         })
             .then(res => {
@@ -456,16 +457,57 @@ class SingleProduct extends Component {
                         </Row>
                     </div>
                     <br/>
-                    <div className="img-layout">
-                        <SingleProductImg
-                            productId={this.state.loadedProduct.id}
-                            singleProductImg={this.state.productImg}
-                            editModeStatus = {this.state.editModeStatus}
-                            productName = {this.state.productName}
-                        />
-                    </div>
+                    <Card className="single-product__info-container">
+                        <div className="img-layout">
+                            <SingleProductImg
+                                productId={this.state.loadedProduct.id}
+                                singleProductImg={this.state.productImg}
+                                editModeStatus = {this.state.editModeStatus}
+                                productName = {this.state.productName}
+                            />
+                        </div>
+                        <br/>
+                        <br/>
+                        <div className="size-color-material-layout">
+                            <SingleProductSize
+                                sizeOptions = {this.state.sizeOptions}
+                                sizes={this.state.productSizes}
+                                editModeStatus = {this.state.editModeStatus}
+                                newSizes = {newSizes => this.receiveNewSizes(newSizes)}
+                            />
+                            <br/>
+                            <br/>
+                            <SingleProductColors
+                                colorOptions = {this.state.colorOptions}
+                                productColors = {this.state.productColors}
+                                editModeStatus = {this.state.editModeStatus}
+                                updatedColors = {this.updatedColors}
+                                newColors = {newColors => this.receiveNewColors(newColors)}
+                            />
+                            <br/>
+                            <br/>
+                            <SingleProductMaterials
+                                {...this.props}
+                                updatedMaterials = {this.updatedMaterials}
+                                materialOptions = {this.state.materialOptions}
+                                productMaterials = {this.state.productMaterials}
+                                editModeStatus = {this.state.editModeStatus}
+                                displaySelectedMaterial = {this.displaySelectedMaterial}
+                                loadedProduct = {this.state.loadedProduct}
+                                newMaterials = {newMaterials => this.receiveNewMaterials(newMaterials)}
+                            />
+                        </div>
+                    </Card>
                     <div className="product-description-layout">
                         <Card className="product-description">
+                            <SingleProductGeneralInfo
+                                loadedProduct = {this.state.loadedProduct}
+                                originalLoadedProduct = {this.state.originalLoadedProduct}
+                                editModeStatus = {this.state.editModeStatus}
+                                newInfo = {newInfo => this.receiveNewInfo(newInfo)}
+                                saved = {this.state.saved}
+                                refreshCheck = {saved => this.refreshCheck(saved)}
+                            />
                             <SingleProductLocation
                                 {...this.props}
                                 editModeStatus = {this.state.editModeStatus}
@@ -474,14 +516,6 @@ class SingleProduct extends Component {
                                 collectionName = {collectionName}
                                 loadedProduct = {this.state.loadedProduct}
                                 changeLocation = {() => this.props.changeLocation()}
-                            />
-                            <SingleProductGeneralInfo
-                                loadedProduct = {this.state.loadedProduct}
-                                originalLoadedProduct = {this.state.originalLoadedProduct}
-                                editModeStatus = {this.state.editModeStatus}
-                                newInfo = {newInfo => this.receiveNewInfo(newInfo)}
-                                saved = {this.state.saved}
-                                refreshCheck = {saved => this.refreshCheck(saved)}
                             />
                         </Card>
                     </div>
@@ -492,38 +526,11 @@ class SingleProduct extends Component {
                             newName = {newName => this.receiveNewName(newName)}
                         />
                     </div>
-                    <div className="size-color-material-layout">
-                        <SingleProductSize
-                            sizeOptions = {this.state.sizeOptions}
-                            sizes={this.state.productSizes}
-                            editModeStatus = {this.state.editModeStatus}
-                            newSizes = {newSizes => this.receiveNewSizes(newSizes)}
-                        />
-                        <Divider/>
-                        <SingleProductColors
-                            colorOptions = {this.state.colorOptions}
-                            productColors = {this.state.productColors}
-                            editModeStatus = {this.state.editModeStatus}
-                            updatedColors = {this.updatedColors}
-                            newColors = {newColors => this.receiveNewColors(newColors)}
-                        />
-                        <Divider/>
-                        <SingleProductMaterials
-                            {...this.props}
-                            updatedMaterials = {this.updatedMaterials}
-                            materialOptions = {this.state.materialOptions}
-                            productMaterials = {this.state.productMaterials}
-                            editModeStatus = {this.state.editModeStatus}
-                            displaySelectedMaterial = {this.displaySelectedMaterial}
-                            loadedProduct = {this.state.loadedProduct}
-                            newMaterials = {newMaterials => this.receiveNewMaterials(newMaterials)}
-                        />
-                    </div>
                 </div>
             )
         }
         else {
-            return <Spin/>
+        return <Spin/>
         }
     }
 }

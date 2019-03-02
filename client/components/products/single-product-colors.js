@@ -61,7 +61,7 @@ class SingleProductColors extends Component{
         const {colorOptions,productColors} = this.props;
         let renderColorOptions = [];
         let renderDefaultColors = [];
-        let renderProductColors = <p>This product does not have any colors yet</p>;
+        let renderProductColors = <p style={{fontSize:'1rem'}}>This product does not have any colors yet</p>;
         let editColorBtn = <div style={{height:40,width:40}}></div>;
         if (colorOptions && colorOptions.length > 0) {
             renderColorOptions = colorOptions.map(color =>
@@ -85,10 +85,10 @@ class SingleProductColors extends Component{
             productColors.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             renderProductColors = productColors.map(color =>{
                     const colorContent =(
-                        <div>
-                            <p>Name: {color.name}</p>
-                            <p>Code: {color.code ? color.code : "None"}</p>
-                            <p>Hex: {color.value}</p>
+                        <div style={{fontSize:'1em'}}>
+                            <p>Name: <span style={{fontWeight:600}}>{color.name}</span></p>
+                            <p>Code: <span style={{fontWeight:600}}>{color.code ? color.code : "None"}</span></p>
+                            <p>Hex: <span style={{fontWeight:600}}>{color.value}</span></p>
                         </div>
                     );
                     return(
@@ -112,10 +112,13 @@ class SingleProductColors extends Component{
 
         return (
             <div>
-                <h2>Colors</h2>
+                <Row type="flex">
+                    <h2 className="single-product__info-title">Colors&nbsp;&nbsp;</h2>
+                    {editColorBtn}
+                </Row>
                 <Row type="flex" gutter={8} style={{margin:0}}>
                     {renderProductColors}
-                    {editColorBtn}
+                    
                 </Row>
                 <Modal
                     title="Edit color"

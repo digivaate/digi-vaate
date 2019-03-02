@@ -186,7 +186,7 @@ class SingleProductImg extends Component{
         return (
             <Fragment>
                 <Row type="flex">
-                    <h3>Location&nbsp;&nbsp;</h3>
+                    <h2 className="single-product__info-title">Delivery&nbsp;&nbsp;</h2>
                     {changeLocationBtn}
                 </Row>
                 {moveToSeason}
@@ -210,8 +210,10 @@ class SingleProductImg extends Component{
                         onChange={this.onChange}
                     />
                 </Modal>
-                <p>Season:{this.props.seasonName}</p>
-                <p>Collection:{this.props.collectionName}</p>
+                <div style={{fontSize:'1rem'}}>
+                <p>Season: <span style={{fontSize:'1.1rem',fontWeight:600}}>{this.props.seasonName}</span></p>
+                <p>Collection: <span style={{fontSize:'1.1rem',fontWeight:600}}>{this.props.collectionName}</span></p>
+                </div>
             </Fragment>
         )
     }
