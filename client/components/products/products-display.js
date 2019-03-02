@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,List,BackTop } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,List } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -646,9 +646,10 @@ class ProductsDisplay extends Component{
                                                 title= {
                                                     <div>
                                                         <div className="product-name">{product.name}</div>
-                                                        <div className="product-price">
+                                                        <div className="product-price-wrapper">
                                                             {renderProductPrice}
                                                         </div>
+                                                        <br/>
                                                         <div className="product-location">Season: {product.seasonName} </div>
                                                         <div className="product-location">Collection: {product.collectionName}</div>
                                                     </div>
@@ -751,7 +752,6 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "company"){
                     return (
                         <div>
-                            <BackTop/>
                             <Row type='flex'>
                                 <div className="products-header">Products</div>
                                 <Button 
@@ -786,7 +786,7 @@ class ProductsDisplay extends Component{
                                 dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 9,
+                                    pageSize: 15,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -800,7 +800,6 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "season") {
                     return (
                         <div>
-                            <BackTop/>
                             <Row type='flex'>
                                 <div className="products-header">Products</div>
                                 <Button 
@@ -837,7 +836,7 @@ class ProductsDisplay extends Component{
                                 dataSource={renderProductList}
                                 grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 9,
+                                    pageSize: 15,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -886,7 +885,7 @@ class ProductsDisplay extends Component{
                             dataSource={renderProductList}
                             grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                             pagination={{
-                                pageSize: 9,
+                                pageSize: 15,
                                 hideOnSinglePage: true,
                                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 

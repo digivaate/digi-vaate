@@ -2,6 +2,7 @@ import React from "react";
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import {BackTop} from 'antd'
 import MainScreen from "./components/mainScreen";
 import BudgetPlanningTable from './components/summary-table'
 import ColorCollection from './components/colors/colors-collection'
@@ -171,8 +172,12 @@ class App extends React.Component {
                         />
                     </div>
                 }/>
-                <div className="content">
+                <div className="content" id="content">
                     <div>
+                        <BackTop 
+                            visibilityHeight={500} 
+                            target={() => document.getElementById('content')}
+                        />
                         <Switch>
                             <Route path={'/'} exact component={MainScreen}/>
                             <Route path='/products' exact render={(props) =>
