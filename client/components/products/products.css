@@ -149,12 +149,11 @@
 }
 
 .product-big-ava-no-img{
-    width:370px;
-    height:320px;
+    width: 370px;
+    height: 320px;
     text-align: center;
     background-color: #e4e4e4;
-        margin: auto;
-
+    margin: auto;
 }
 
 .size-card{

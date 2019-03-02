@@ -41,19 +41,20 @@ class SingleMaterialImg extends Component{
             imgUrl = `${API_ROOT}/image?id=${this.state.singleMaterialImg}`
         }
         return (
-            <div className="img-container">
+            <React.Fragment>
                 {changeImgBtn}
-                {
-                    imgUrl ?
-                        <img className="single-material-big-ava-img" src={imgUrl} /> :
-                        <div className="single-material-big-ava-no-img">
-                            <div className="no-image-text">
-                                NO IMAGE AVAILABLE
+                <div className="img-container">
+                    {
+                        imgUrl ?
+                            <img className="single-material-big-ava-img" src={imgUrl} /> :
+                            <div className="single-material-big-ava-no-img">
+                                <div className="no-image-text">
+                                    NO IMAGE AVAILABLE
+                                </div>
                             </div>
-                        </div>
-                }
-
-            </div>
+                    }
+                </div>
+            </React.Fragment>
         )
     }
 }

@@ -1,6 +1,6 @@
 import React,{ Component,Fragment } from "react";
 import axios from 'axios';
-import {Row,Button,Icon,Modal,message } from 'antd';
+import {Row,Button,Icon,Modal,message,Col,Spin } from 'antd';
 import { API_ROOT } from '../../api-config';
 import {Link,Redirect} from 'react-router-dom'
 import '../../utils/compare-obj';
@@ -253,7 +253,7 @@ class SingleMaterial extends Component{
             )
         }
         else{
-            return "Loading..."
+            return <Spin/>
         }
     }
 }
