@@ -46,7 +46,7 @@ class HeaderBar extends Component{
     render(){
         return(
             <div className={'header'}>
-                <div>
+                <div style={{display: 'flex',alignItems: 'center'}}>
                     <NavLink 
                         to={'/'} 
                         style={{display:'inline-block'}}

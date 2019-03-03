@@ -103,9 +103,8 @@
     color:white;
     display:inline-block;
     font-family: "Avenir Next";	
-    font-size: 18px;	
+    font-size: 1.1rem;	
     font-weight: 500;
-    padding-bottom: 0.5rem;
 }
 
 .ant-breadcrumb a{
