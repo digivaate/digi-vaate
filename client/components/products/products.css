@@ -228,9 +228,7 @@
 
 /* products-display.js */
 
-.products-header{
-    height: 57.24px;	
-    width: 775.86px;	
+.products-header{	
     color: #000000;	
     font-size: 36px;	
     font-weight: bold;	
@@ -244,8 +242,6 @@
 }
 
 .products-description{
-    height: 97.21px;	
-    width: 957.36px;	
     color: #000000;	
     font-size: 24px;	
     line-height: 32px;

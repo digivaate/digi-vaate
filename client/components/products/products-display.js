@@ -752,7 +752,7 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "company"){
                     return (
                         <div>
-                            <Row type='flex'>
+                            <Row type='flex' justify="space-between">
                                 <div className="products-header">Products</div>
                                 <Button 
                                     className="products-display__create-product-btn"
@@ -763,7 +763,7 @@ class ProductsDisplay extends Component{
                                     <Icon type="plus" /> Create product
                                 </Button>
                             </Row>
-                            <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
+                            <div className="products-description">Create your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <br/>
                             <div className="products-display__filter-text">Narrow list by:</div>
                             <FilterArea
@@ -800,7 +800,7 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "season") {
                     return (
                         <div>
-                            <Row type='flex'>
+                            <Row type='flex' justify="space-between">
                                 <div className="products-header">Products</div>
                                 <Button 
                                     className="products-display__create-product-btn"
@@ -849,7 +849,7 @@ class ProductsDisplay extends Component{
                 }
                 return (
                     <div>
-                        <Row type='flex'>
+                        <Row type='flex' justify="space-between">
                             <div className="products-header">Products</div>
                             <Button 
                                 className="products-display__create-product-btn"
@@ -899,7 +899,7 @@ class ProductsDisplay extends Component{
             else if(this.state.products.length === 0 && this.state.isFetched === false){
                 return (
                         <div>
-                            <Row type='flex'>
+                            <Row type='flex' justify="space-between">
                                 <div className="products-header">Products</div>
                                 <Button 
                                     className="products-display__create-product-btn"
@@ -938,7 +938,7 @@ class ProductsDisplay extends Component{
             else{
                 return (
                     <div>
-                        <Row type='flex'>
+                        <Row type='flex' justify="space-between">
                             <div className="products-header">Products</div>
                             <Button 
                                 className="products-display__create-product-btn"
@@ -982,7 +982,7 @@ class ProductsDisplay extends Component{
         } else {
             return (
                 <div>
-                    <Row type='flex'>
+                    <Row type='flex' justify="space-between">
                         <div className="products-header">Products</div>
                         <Button 
                             className="products-display__create-product-btn"

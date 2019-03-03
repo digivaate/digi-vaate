@@ -117,7 +117,24 @@
 }
 
 /*material-list.js*/
+.material-list__header{
+    color: #000000;	
+    font-size: 36px;	
+    font-weight: bold;	
+    line-height: 49px;
+}
 
+.material-list__create-material-btn{
+    border-radius: 3px;	
+    background-color: #007CBB;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+}
+
+.material-list__description{
+    color: #000000;	
+    font-size: 24px;	
+    line-height: 32px;
+}
 
 .material-card-wrapper{
     height:360px;
@@ -125,6 +142,8 @@
 
 .material-card-display{
     width:265px;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.5);
+    border-radius: 3px;	
 }
 
 .material-list-img{
@@ -150,8 +169,4 @@ img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-}
-
-.ant-card-actions {
-    background-color: red;
 }
