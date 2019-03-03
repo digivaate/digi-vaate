@@ -225,7 +225,11 @@ class SingleSeason extends Component{
                                         <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.discardEdit(item)}>Discard</Button>,
                                         <Button disabled={!this.state[`${item.id}-modified`]} onClick={() => this.saveEdit(item)}>Save</Button>
                                     ]}
+                                    
                                 >
+                                    <List.Item.Meta
+                                            title={item.name}
+                                    />
                                 </List.Item>
                             )}
                         />

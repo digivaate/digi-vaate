@@ -198,7 +198,7 @@ class ColorCollection extends Component{
         if(this.colorCard && this.colorCard.length === 0){
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
@@ -212,7 +212,7 @@ class ColorCollection extends Component{
         } else if(!this.colorCard){
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
@@ -239,7 +239,7 @@ class ColorCollection extends Component{
                             description={
                                 <div>
                                     <p>Hex: {element.value}</p>
-                                    <p>Code: {element.code ? element.code: "None"}</p>
+                                    <p>Code: {element.code ? element.code: "-"}</p>
                                 </div>}
                             className="color-card-description"
                         />
@@ -249,13 +249,18 @@ class ColorCollection extends Component{
 
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <br/>
+                    <Card 
+                        title="Color Collection" 
+                        bodyStyle={{padding:24,margin:0}}
+                        headStyle={{fontSize:'1.5rem', fontWeight:"bold",color: "#4A4A4A"}}
+                    >
                         {colorCard}
                         <Modal
                             title="Edit color"
