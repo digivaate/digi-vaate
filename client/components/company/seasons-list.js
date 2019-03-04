@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import { List,Button,Spin,Icon,message } from 'antd';
+import { List,Button,Spin,Icon,message,Row } from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
@@ -205,11 +205,18 @@ class SeasonsList extends Component{
             if(this.state.seasons.length > 0){
                 let elements = [<Fragment key={0}>
                     <div>
-                        <h1>Seasons of company</h1>
-                        <Button type="primary"
-                                size="large"
-                                onClick={this.createNewSeason}
-                        >New season</Button>
+                        <Row type="flex" justify="space-between">
+                            <div className="seasons-list__header">Seasons</div>
+                            <Button 
+                                type="primary"
+                                size="large" 
+                                onClick={this.createNewSeason}  
+                                className="seasons-list__create-season-btn"
+                            >
+                                <Icon type="plus" /> Create season
+                            </Button>
+                        </Row>
+                        <div className="seasons-list__description">Seasons are used for gathering multiple collections together. Season's collection budgets and products are grouped together for easier management. </div>
                         <SeasonCreateForm
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
@@ -252,14 +259,19 @@ class SeasonsList extends Component{
             else{
                 return (
                     <div>
-                        <h1>Seasons of company</h1>
+                        <Row type="flex" justify="space-between">
+                            <div className="seasons-list__header">Seasons</div>
+                            <Button 
+                                type="primary"
+                                size="large" 
+                                onClick={this.createNewSeason}  
+                                className="seasons-list__create-season-btn"
+                            >
+                                <Icon type="plus" /> Create season
+                            </Button>
+                        </Row>
+                        <div className="seasons-list__description">Seasons are used for gathering multiple collections together. Season's collection budgets and products are grouped together for easier management. </div>
                         <h3>This company does not have any seasons.</h3>
-                        <Button type="primary"
-                                size="large"
-                                onClick={this.createNewSeason}
-                        >
-                            New season
-                        </Button>
                         <SeasonCreateForm
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}

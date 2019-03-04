@@ -179,12 +179,12 @@ class MaterialList extends Component{
                                     }}>
                                         <Meta
                                         title= {
-                                            <div>
-                                                <p>{material.name}</p>
+                                            <div className="material-list__material-name">
+                                                {material.name}
                                             </div>
                                         }
                                         description = {
-                                            <p>Code: {material.code ? material.code : "None"}</p>
+                                            <div className="material-list__material-code">Code: {material.code ? material.code : "-"}</div>
                                         }
                                     />
                                     </Link>

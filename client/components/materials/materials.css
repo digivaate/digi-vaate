@@ -136,6 +136,24 @@
     line-height: 32px;
 }
 
+.material-list__material-name{
+    height: 25px;	
+    width: 226px;	
+    color: #000000;	
+    font-size: 1.3rem;	
+    font-weight: 600;	
+    line-height: 25px;
+}
+
+.material-list__material-code{
+    height: 25px;	
+    width: 226px;	
+    color: #000000;	
+    font-size: 1rem;	
+    line-height: 25px;
+    font-weight:300;
+}
+
 .material-card-wrapper{
     height:360px;
 }
