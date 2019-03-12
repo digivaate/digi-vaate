@@ -41,7 +41,6 @@ module.exports = (apiRoutes, dbConnections) => {
         const userPromises = [];
 
         names.forEach(n => {
-            console.log(dbConnections[n].models.users);
             compPromises.push(dbConnections[n].models.companies.find({raw: true}));
             userPromises.push(dbConnections[n].models.users.findAll());
         });
