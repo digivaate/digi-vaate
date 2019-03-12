@@ -25,7 +25,7 @@
     "cleardb": "babel-node server/resetdb.js"
   },
   "dependencies": {
-    "antd": "^3.13.5",
+    "antd": "^3.15.0",
     "axios": "^0.18.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-polyfill": "^6.26.0",
