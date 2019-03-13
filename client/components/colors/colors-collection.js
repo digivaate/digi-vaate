@@ -225,6 +225,7 @@ class ColorCollection extends Component{
             )
         }
         else {
+            console.log(this.state.productList)
             this.colorCard.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             const colorCard = this.colorCard.map(element => {
                 return(
@@ -299,14 +300,21 @@ class ColorCollection extends Component{
                                 name="hexCode"
                                 onChange={this.handleChange}
                             />
-                            <p>List of products used this colors:</p>
-                            <List
-                                size="small"
-                                bordered
-                                dataSource={this.state.productList}
-                                renderItem={item => {
-                                    return (<List.Item>{item.name}</List.Item>)}}
-                            />
+                            <div className="colors-collection__modal-productList-title">Used on following active products:</div>
+                            {this.state.productList ? 
+                            <ul>
+                                {
+                                    this.state.productList.map(product => {
+                                        return (
+                                            <li key={product.id} className="colors-collection__modal-productList-product">
+                                                <div className="colors-collection__modal-productList-product-name">{product.name}</div>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>:
+                            <div></div>
+                            }
                         </Modal>
                 </div>
             )

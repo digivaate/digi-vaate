@@ -60,6 +60,24 @@
     text-align: center;
 }
 
+.colors-collection__modal-productList-title{
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+    color: #4A4A4A;
+    font-size: 1.2rem;	
+    font-weight: bold;	
+}
+
+.colors-collection__modal-productList-product{
+    padding-left:1rem;
+}
+
+
+.colors-collection__modal-productList-product-name{
+    font-size: 1rem;	
+    font-weight: 500;	
+}
+
 /* create-color.js */
 .color-input{
     width: 25%;
