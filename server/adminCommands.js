@@ -1,7 +1,8 @@
 import {
     deleteCompany,
     getDatabaseNames,
-    setupDatabase
+    createDatabase,
+    connectToDatabase
 } from "./database";
 
 const express = require('express');
@@ -11,6 +12,7 @@ const jwt = require('jsonwebtoken');
 import {
     adminAuth
 } from './auth';
+import createApiRoutes from "./routes/createApiRoutes";
 
 module.exports = (apiRoutes, dbConnections) => {
     const router = express.Router();
@@ -39,7 +41,7 @@ module.exports = (apiRoutes, dbConnections) => {
         const names = await getDatabaseNames();
         const compPromises = [];
         const userPromises = [];
-
+        
         names.forEach(n => {
             compPromises.push(dbConnections[n].models.companies.find({raw: true}));
             userPromises.push(dbConnections[n].models.users.findAll());
@@ -59,8 +61,11 @@ module.exports = (apiRoutes, dbConnections) => {
         const companyName = req.body.name;
         try {
             if (!companyName) throw 'Name missing';
-            apiRoutes['digivaate_' + companyName] = await setupDatabase('digivaate_' + companyName);
-            apiRoutes['digivaate_' + companyName](req, res, next);
+            const dbName = await createDatabase('digivaate_' + companyName);
+            const dbConn = await connectToDatabase(dbName);
+            dbConnections[dbName] = dbConn;
+            apiRoutes[dbName] = await createApiRoutes(dbConn);
+            apiRoutes[dbName](req, res, next);
             //res.send({success: req.body.name + ' company created'});
         } catch (e) {
             console.error('Error in creating company: ', e);
@@ -71,13 +76,13 @@ module.exports = (apiRoutes, dbConnections) => {
     });
 
     router.delete('/company', adminAuth, async (req, res, next) => {
-        if (await deleteCompany(req.body.name, dbConnections, apiRoutes))
+        if (await deleteCompany(req.query.name, dbConnections, apiRoutes))
             res.send({
-                success: req.body.name + ' deleted'
+                success: req.query.name + ' deleted'
             });
         else
             res.status(500).json({
-                error: req.body.name + ' not found'
+                error: req.query.name + ' not found'
             });
     });
 
