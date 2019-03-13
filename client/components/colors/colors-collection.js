@@ -204,9 +204,9 @@ class ColorCollection extends Component{
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <div className="colors-collection__colors-container">
                         <h4>No colors</h4>
-                    </Card>
+                    </div>             
                 </div>
             )
         } else if(!this.colorCard){
@@ -218,9 +218,9 @@ class ColorCollection extends Component{
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <div className="colors-collection__colors-container">
                         <Spin/>
-                    </Card>
+                    </div>
                 </div>
             )
         }
@@ -228,22 +228,24 @@ class ColorCollection extends Component{
             this.colorCard.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             const colorCard = this.colorCard.map(element => {
                 return(
-                    <Card.Grid
-                        className="single-color-card"
-                        style={{backgroundColor: element.value, border: "1px solid"}}
-                        key={element.id}
-                        onClick = {() => this.showColorModal(element)}
-                    >
-                        <Meta
-                            title={element.name}
-                            description={
-                                <div>
-                                    <p>Hex: {element.value}</p>
-                                    <p>Code: {element.code ? element.code: "-"}</p>
-                                </div>}
-                            className="color-card-description"
-                        />
-                    </Card.Grid>
+                    <div key={element.id} className="colors-collection__color-container">
+                        <Card
+                            className="colors-collection__color-card"
+                            hoverable
+                            cover={
+                                <div className="colors-collection__color-card-background" style={{backgroundColor:`${element.value}`}}></div>
+                            }
+                            onClick = {() => this.showColorModal(element)}
+                        >
+                            <div className="colors-collection__color-card-name">
+                                {element.name}
+                            </div>
+                            <div className="colors-collection__color-card-info">
+                                <div>Hex: {element.value}</div>
+                                <div>Code: {element.code ? element.code: "-"}</div>
+                            </div>
+                        </Card>
+                    </div>
                 )
             });
 
@@ -256,12 +258,9 @@ class ColorCollection extends Component{
                         allColors = {this.colorCard}
                     />
                     <br/>
-                    <Card 
-                        title="Color Collection" 
-                        bodyStyle={{padding:24,margin:0}}
-                        headStyle={{fontSize:'1.5rem', fontWeight:"bold",color: "#4A4A4A"}}
-                    >
+                    <div className="colors-collection__colors-container">
                         {colorCard}
+                    </div>
                         <Modal
                             title="Edit color"
                             visible={this.state.colorVisible}
@@ -309,7 +308,6 @@ class ColorCollection extends Component{
                                     return (<List.Item>{item.name}</List.Item>)}}
                             />
                         </Modal>
-                    </Card>
                 </div>
             )
         }

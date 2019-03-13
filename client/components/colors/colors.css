@@ -23,6 +23,43 @@
     color:black;
 }
 
+.colors-collection__colors-container{
+    display:flex;
+    flex-flow: row wrap;
+}
+
+.colors-collection__color-container{
+    width: 16rem;
+    height: 23.5rem;
+}
+
+.colors-collection__color-card{
+    height: 21.3rem;	
+    width: 14.1rem;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.5);
+    border-radius: 3px;	
+}
+
+.colors-collection__color-card-background{
+    height: 14.1rem;	
+    width: 14.1rem;	
+    border-radius: 3px;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5)
+}
+
+.colors-collection__color-card-name{
+    color: #000000;
+    font-size: 1.2rem;	
+    font-weight: bold;	
+    text-align: center;
+}
+
+.colors-collection__color-card-info{
+    color: #000000;
+    font-size: 1rem;	
+    text-align: center;
+}
+
 /* create-color.js */
 .color-input{
     width: 25%;
