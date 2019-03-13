@@ -16,3 +16,74 @@
     font-size: 24px;	
     line-height: 32px;
 }
+
+/*  */
+
+.season-list__season-main-wrapper{
+    margin-bottom: 3rem;
+}
+
+.seasons-list__season-name{
+    color: #4A4A4A;	
+    font-size: 1.5rem;	
+    font-weight: bold;	
+}
+
+.seasons-list__season-info{
+    color: #4A4A4A;	
+    font-size: 1.1rem;
+    display:flex;
+    justify-content: space-between	
+}
+
+.seasons-list__season-info-nav{
+    width: 50%;
+    display:flex;
+    justify-content: space-around;
+}
+
+.seasons-list__season-info-nav-item{
+    color: #007CBB;	
+    font-size: 1.1rem;	
+    font-weight: 500;	
+}
+
+.seasons-list__season-container{
+    padding: 1rem;
+    height: 6rem;
+    width:100%;
+    border: 1px solid #E5E2E2;	
+    background-color: #F8F7F7;
+}
+
+.seasons-list__season-name-collections{
+    padding:1rem;
+    font-size: 1.3rem;	
+    font-weight: 600;
+    color: #4A4A4A;
+    border-bottom: 1px solid #E5E2E2;
+}
+
+.seasons-list__collection-name{
+    font-size: 1.1rem;	
+    font-weight: 600;
+}
+
+.seasons-list__collection-info{
+    font-size: 0.9rem;
+}
+
+.seasons-list__season-name-collections-container{
+    height: 100%;
+    width:100%;
+    border: 1px solid #E5E2E2;	
+    background-color: white;
+    margin-top: 0.2rem;
+}
+
+.seasons-list__collection-container{
+    padding:1rem;
+}
+.seasons-list__collection-container:nth-child(odd){
+    background-color: #F8F8F8;
+}

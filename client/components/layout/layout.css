@@ -76,13 +76,13 @@
 }
 
 .season-menu {
-    /* background: #EBECF8; */
-    	color: #4A90E2;
+    background: #EBECF8;
+    color: #4A90E2;
 }
 
 .collection-menu {
-    /* background: #D6D8DF; */
-    	color: #4A90E2;
+    background: #D6D8DF;
+    color: #4A90E2;
 }
 
 .ant-menu-submenu > .ant-menu {

@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import { List,Button,Spin,Icon,message,Row } from 'antd';
+import {NavLink} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 import './company.css'
@@ -20,12 +21,11 @@ class SeasonsList extends Component{
         }
     }
     componentDidMount =() => {
-        axios.get(`${API_ROOT}/company?id=1`)
+        axios.get(`${API_ROOT}/season`)
             .then(response => {
                 this.setState({
-                    seasons: response.data[0].seasons,
-                    seasonsOri: response.data[0].seasons,
-                    company: response.data[0]
+                    seasons: response.data,
+                    seasonsOri: response.data,
                 }, () => {
                     this.stateForButtons()
                 })
@@ -63,7 +63,7 @@ class SeasonsList extends Component{
             if (err) {
                 return;
             }
-            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: this.state.company.id, budget:values.budget})
+            axios.post(`${API_ROOT}/season`,{name: values.name, companyId: 1, budget:values.budget})
                 .then((res) => {
                     this.props.sendNewSeason(res.data);
                     let seasons = [...this.state.seasons];
@@ -196,6 +196,7 @@ class SeasonsList extends Component{
     render(){
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
+            console.log(this.state.seasons)
             this.state.seasons.sort(function(a, b){
                 return a.id-b.id
             });
@@ -232,7 +233,7 @@ class SeasonsList extends Component{
                         />
                         <br/>
                         <br/>
-                        <List
+                        {/* <List
                             size="small"
                             bordered
                             dataSource={this.state.seasons}
@@ -251,7 +252,45 @@ class SeasonsList extends Component{
                                         }
                                     />
                                 </List.Item>)}
-                        />
+                        /> */}
+                        {
+                            this.state.seasons.map(season => {
+                                return (
+                                    <div className="season-list__season-main-wrapper">
+                                        <div className="seasons-list__season-container">
+                                            <div className="seasons-list__season-name">{season.name}</div>
+                                            <div className="seasons-list__season-info">
+                                                <div>{`Budget: € ${season.budget}`} </div>
+                                                <div className="seasons-list__season-info-nav">
+                                                    <NavLink to={`/seasons/${season.name}/products`} className="seasons-list__season-info-nav-item">
+                                                        Products
+                                                    </NavLink>
+                                                    <NavLink to={`/seasons/${season.name}/colors`} className="seasons-list__season-info-nav-item">
+                                                        Colors
+                                                    </NavLink>
+                                                    <NavLink to={`/seasons/${season.name}/budgeting`} className="seasons-list__season-info-nav-item">
+                                                        Budgeting
+                                                    </NavLink>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="seasons-list__season-name-collections-container">
+                                            <div className="seasons-list__season-name-collections">{season.name} - Collections</div>
+                                                {season.collections.map(collection => {
+                                                    return (
+                                                        <div className="seasons-list__collection-container">
+                                                            <div className="seasons-list__collection-name">{collection.name}</div>
+                                                            <div className="seasons-list__collection-info">
+                                                                {`Budget: € ${collection.budget}`}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </Fragment>];
                 return (elements)

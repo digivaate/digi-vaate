@@ -23,7 +23,7 @@ class Login extends Component {
                 <div className={'header'}>
                     <h1 className={'logo'}>Welcome to DigiVaate</h1>
                 </div>
-                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'1em'}}>
+                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'10em'}}>
                     <FormItem>
                         {getFieldDecorator('userName', {
                             rules: [{ required: true, message: 'Please input your username!' }],
