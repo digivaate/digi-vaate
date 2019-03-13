@@ -1,11 +1,17 @@
 .company-header {
   display: flex;
+  min-height: 2em;
 }
 
+.companies-title {
+  margin: 0.4em;
+}
 .header-text {
   width: 100%;
+  align-self: center;
 }
 
-.extra {
-
+.logout-button {
+  flex: 'flex-end';
+  margin-right: 1em;
 }

@@ -4,7 +4,6 @@ import './index.css';
 import { render } from "react-dom";
 import App from './App';
 import Login from "./components/login";
-import Cookies from 'js-cookie';
 import {BrowserRouter,Route} from 'react-router-dom'
 import axios from "axios/index";
 import AdminLogin from "./components/admin/adminLogin";

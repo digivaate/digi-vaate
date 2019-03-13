@@ -2,13 +2,15 @@ import { API_ROOT } from '../../api-config';
 import React,{Component,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {Collapse, Button, Modal} from 'antd';
+import {Collapse, Button, Typography} from 'antd';
 import '../layout/layout.css'
 import UserList from './userList';
 import CompanyHeader from './companyHeader';
 import CreateCompany from './createCompany';
+import Cookies from 'js-cookie';
 
 const Panel = Collapse.Panel;
+const Title = Typography.Title;
 
 class AdminInterface extends Component {
 	state = {
@@ -53,18 +55,29 @@ class AdminInterface extends Component {
 			.catch(err => console.error(err, err.response.data));
 	}
 
+	logout = () => {
+		Cookies.remove('adminToken');
+		window.location.href = '/admin/login';
+	}
+
 	componentDidMount() {
 		this.getCompanies();
 	}
 
 	render() {
 		return(<Fragment>
-			<div className={'header'}>
+			<div className='header'>
 				<Link to={'/'}>
 					<h1 className={'logo'}>DigiVaate</h1>
 				</Link>
-				<p>Admin console</p>
+				<p className='header-text'>Admin console</p>
+				<Button
+				className='logout-button'
+				onClick={this.logout}>
+					Logout
+				</Button>
 			</div>
+			<h2 className='companies-title'>Companies</h2>
 			<Collapse>
 				{this.state.companies
 					.map((comp, i) =>

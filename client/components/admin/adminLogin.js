@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import { Form, Icon, Input, Button, message } from 'antd';
+import {Link} from 'react-router-dom';
 import axios from 'axios/index';
 import { API_ROOT } from '../../api-config';
 const FormItem = Form.Item;
@@ -33,7 +34,10 @@ class AdminLogin extends Component {
         return(
             <Fragment>
                 <div className={'header'}>
-                    <h1 className={'logo'}>Welcome to DigiVaate</h1>
+                    <Link to={'/'}>
+					    <h1 className={'logo'}>DigiVaate</h1>
+				    </Link>
+                    <p>Admin login</p>
                 </div>
                 <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'1em'}}>
                     <FormItem>
