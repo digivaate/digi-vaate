@@ -2,24 +2,30 @@ import { API_ROOT } from '../../api-config';
 import React,{Component,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {Collapse, Icon} from 'antd';
+import {Collapse, Button, Modal} from 'antd';
 import '../layout/layout.css'
 import UserList from './userList';
 import CompanyHeader from './companyHeader';
+import CreateCompany from './createCompany';
 
 const Panel = Collapse.Panel;
 
 class AdminInterface extends Component {
 	state = {
-		companies: []
+		companies: [],
+		showCreate: false
 	}
 
-	getCompanies() {
+	getCompanies = () => {
 		axios.get(`${API_ROOT}/admin/company`)
 			.then(res => {
 				this.setState({ companies: res.data});
 			})
 			.catch(err => console.error(err));
+	}
+
+	showCreate() {
+		this.setState({showCreate: true});
 	}
 
 	deleteComp = (dbName) => {
@@ -46,6 +52,7 @@ class AdminInterface extends Component {
 			.then(() => this.getCompanies())
 			.catch(err => console.error(err, err.response.data));
 	}
+
 	componentDidMount() {
 		this.getCompanies();
 	}
@@ -67,10 +74,11 @@ class AdminInterface extends Component {
 							deleteComp={this.deleteComp}
 							patchComp={this.patchComp}
 							/>}>
-							<UserList compDbName={comp.dbName}/>
+							<UserList dbName={comp.dbName}/>
 						</Panel>
 					)}
 			</Collapse>
+			<CreateCompany update={this.getCompanies}/>
 		</Fragment>)
 	};
 };

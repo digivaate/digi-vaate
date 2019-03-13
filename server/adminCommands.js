@@ -58,7 +58,7 @@ module.exports = (apiRoutes, dbConnections) => {
     });
 
     router.post('/company', adminAuth, async (req, res, next) => {
-        const companyName = req.body.name;
+        const companyName = req.body.name.replace(/ /g,"_");
         try {
             if (!companyName) throw 'Name missing';
             const dbName = await createDatabase('digivaate_' + companyName);
@@ -86,17 +86,16 @@ module.exports = (apiRoutes, dbConnections) => {
             });
     });
 
-    router.use('/', adminAuth, async (req, res, next) => {
+    router.use('/:dbName', adminAuth, async (req, res, next) => {
         try {
-            const companyName = req.body.companyName;
+            const name = req.params.dbName;
 
-            if (!companyName)
+            if (!name)
                 throw 'Company name missing';
-            if (!Object.keys(apiRoutes).includes(companyName))
-                throw 'Routes for ' + companyName + ' not found';
+            if (!Object.keys(apiRoutes).includes(name))
+                throw 'Routes for ' + name + ' not found';
             
-            req.body = req.body.content;
-            apiRoutes[companyName](req, res, next);
+            apiRoutes[name](req, res, next);
         } catch (e) {
             console.error('Failed to redirect admin reqest:', e)
             res.status(500).send(e)
