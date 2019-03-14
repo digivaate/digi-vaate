@@ -78,7 +78,7 @@ class AdminInterface extends Component {
 				</Button>
 			</div>
 			<h2 className='companies-title'>Companies</h2>
-			<Collapse>
+			<Collapse style={{maxWidth: '600px'}}>
 				{this.state.companies
 					.map((comp, i) =>
 						<Panel key={i} header={<CompanyHeader

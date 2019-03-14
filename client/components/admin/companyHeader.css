@@ -1,6 +1,8 @@
 .company-header {
   display: flex;
-  min-height: 2em;
+  max-height: 3em;
+  margin: -10px -14px -10px -40px;
+  padding: 10px 14px 10px 40px;
 }
 
 .companies-title {
