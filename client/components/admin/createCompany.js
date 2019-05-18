@@ -1,5 +1,5 @@
 import React,{Component, Fragment} from 'react';
-import {Button, Modal, Input} from 'antd';
+import {message, Button, Modal, Input} from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
 
@@ -7,9 +7,9 @@ class CreateCompany extends Component {
     state = {
         visible: false,
         confirmLoading: false,
-        okDisabled: true,
         cancelDisabled: false,
-        name: '',
+        name: null,
+        password: null
     }
 
     show = () => {
@@ -22,12 +22,17 @@ class CreateCompany extends Component {
 
     updateName = (e) => {
         if (e.target.value === '') {
-            this.setState({ okDisabled: true});
+            this.setState({ name: null });
         } else {
-            this.setState({
-                okDisabled: false,
-                name: e.target.value
-            });
+            this.setState({ name: e.target.value });
+        }
+    }
+
+    updatePassword = (e) => {
+        if (e.target.value === '') {
+            this.setState({ password: null });
+        } else {
+            this.setState({ password: e.target.value })
         }
     }
 
@@ -39,18 +44,25 @@ class CreateCompany extends Component {
         
         axios.post(`${API_ROOT}/admin/company`,
         {
-            name: this.state.name 
+            name: this.state.name,
+            password: this.state.password
         })
         .then(res => {
             console.log(res);
+        })
+        .catch(err => {
+            message.error('Something went wrong');
+            console.error(err);
+        })
+        .finally(() => {
             this.setState({
-                name: '',
+                name: null,
+                password: null,
                 confirmLoading: false,
                 visible: false,
             })
             this.props.update();
-        })
-        .catch(err => console.error(err));
+        });
     }
 
     render() {
@@ -62,11 +74,13 @@ class CreateCompany extends Component {
             closable={false}
             confirmLoading={this.state.confirmLoading}
             onOk={this.create}
+            okText="Create"
             onCancel={this.hide}
-            okButtonProps={{disabled: this.state.okDisabled}}
+            okButtonProps={{disabled: (!this.state.name || !this.state.password)}}
             cancelButtonProps={{disabled: this.state.cancelDisabled}}
             >
                 <Input placeholder='Name' onChange={this.updateName}/>
+                <Input placeholder='Password' type='password' onChange={this.updatePassword} />
             </Modal>
         </Fragment>)
     }

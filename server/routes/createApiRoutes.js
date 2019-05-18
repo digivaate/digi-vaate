@@ -15,7 +15,6 @@ export default function (dbConnection) {
     router.use('/orderproduct', require('./oderProductRoute')(dbConnection));
     router.use('/image', require('./imageRoute')(dbConnection));
     router.use('/productgroup', require('./prodGroupRoute')(dbConnection));
-    router.use('/user', require('./userRoute')(dbConnection));
-
+    
     return router;
 };

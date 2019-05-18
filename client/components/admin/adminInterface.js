@@ -2,15 +2,14 @@ import { API_ROOT } from '../../api-config';
 import React,{Component,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {Collapse, Button, Typography} from 'antd';
+import {List, Button, Typography} from 'antd';
 import '../layout/layout.css'
-import UserList from './userList';
-import CompanyHeader from './companyHeader';
+import CompanyItem from './companyItem';
 import CreateCompany from './createCompany';
 import Cookies from 'js-cookie';
+import './adminInterface.css';
 
-const Panel = Collapse.Panel;
-const Title = Typography.Title;
+const Item = List.Item;
 
 class AdminInterface extends Component {
 	state = {
@@ -42,11 +41,11 @@ class AdminInterface extends Component {
 			})
 			.catch(err => console.error(err));
 	}
-
+	/*
 	patchComp = (dbName, name) => {
-		axios.patch(`${API_ROOT}/admin/company`,
+		axios.patch(`${API_ROOT}/admin/${dbName}`,
 			{
-				companyName: dbName,
+				dbName: dbName,
 				content: {
 					name: name
 				}
@@ -54,7 +53,7 @@ class AdminInterface extends Component {
 			.then(() => this.getCompanies())
 			.catch(err => console.error(err, err.response.data));
 	}
-
+	*/
 	logout = () => {
 		Cookies.remove('adminToken');
 		window.location.href = '/admin/login';
@@ -78,19 +77,19 @@ class AdminInterface extends Component {
 				</Button>
 			</div>
 			<h2 className='companies-title'>Companies</h2>
-			<Collapse style={{maxWidth: '600px'}}>
-				{this.state.companies
-					.map((comp, i) =>
-						<Panel key={i} header={<CompanyHeader
-							name={comp.name}
-							dbName={comp.dbName}
-							deleteComp={this.deleteComp}
-							patchComp={this.patchComp}
-							/>}>
-							<UserList dbName={comp.dbName}/>
-						</Panel>
-					)}
-			</Collapse>
+			<List style={{maxWidth: '600px'}}
+			bordered
+			dataSource={this.state.companies}
+			renderItem={item => (
+				<Item >
+					<CompanyItem
+					name={item.name}
+					dbName={item.dbName}
+					deleteComp={this.deleteComp}
+					//patchComp={this.patchComp}
+					/>
+				</Item>
+			)} />
 			<CreateCompany update={this.getCompanies}/>
 		</Fragment>)
 	};

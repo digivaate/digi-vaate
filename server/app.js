@@ -60,11 +60,11 @@ getDatabaseNames()
 
         //Create connections for all databases
         app.use('/api', (req, res, next) => {
-            if (!apiRoutes[req.userAuth.company])
-                throw 'Incorrect company name in req.userAuth';
+            if (!apiRoutes[req.compAuth.company])
+                throw 'Incorrect company name in req.compAuth. Name: ' + req.compAuth.company;
 
             //forward request to correct database route
-            apiRoutes[req.userAuth.company](req, res, next);
+            apiRoutes[req.compAuth.company](req, res, next);
         });
 
         //Error handling

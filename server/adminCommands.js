@@ -40,17 +40,13 @@ module.exports = (apiRoutes, dbConnections) => {
     router.get('/company', adminAuth, async (req, res, next) => {
         const names = await getDatabaseNames();
         const compPromises = [];
-        const userPromises = [];
         
         names.forEach(n => {
             compPromises.push(dbConnections[n].models.companies.find({raw: true}));
-            userPromises.push(dbConnections[n].models.users.findAll());
         });
         const compList = await Promise.all(compPromises);
-        const userList = await Promise.all(userPromises);
         
         for (let i = 0; i < compList.length; i++) {
-            compList[i].users = userList[i];
             compList[i].dbName = names[i];
         }
         res.send(compList);
@@ -58,16 +54,22 @@ module.exports = (apiRoutes, dbConnections) => {
     });
 
     router.post('/company', adminAuth, async (req, res, next) => {
-        const companyName = req.body.name.replace(/ /g,"_");
+        const companyName = req.body.name.trim().replace(/ /g,"_");
+        req.body.name = companyName;
+        let dbName = null;
+        let dbConn = null;
         try {
             if (!companyName) throw 'Name missing';
-            const dbName = await createDatabase('digivaate_' + companyName);
-            const dbConn = await connectToDatabase(dbName);
+            if (!req.body.password) throw 'Password missing';
+
+            dbName = await createDatabase('digivaate_' + companyName);
+            dbConn = await connectToDatabase(dbName);
             dbConnections[dbName] = dbConn;
             apiRoutes[dbName] = await createApiRoutes(dbConn);
             apiRoutes[dbName](req, res, next);
             //res.send({success: req.body.name + ' company created'});
         } catch (e) {
+            await deleteCompany(dbName, dbConnections, apiRoutes);
             console.error('Error in creating company: ', e);
             res.status(500).json({
                 error: e
@@ -93,7 +95,7 @@ module.exports = (apiRoutes, dbConnections) => {
             if (!name)
                 throw 'Company name missing';
             if (!Object.keys(apiRoutes).includes(name))
-                throw 'Routes for ' + name + ' not found';
+                throw 'Routes for ' + name + ' not found in routes: ' + Object.keys(apiRoutes);
             
             apiRoutes[name](req, res, next);
         } catch (e) {

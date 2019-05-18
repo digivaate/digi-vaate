@@ -1,0 +1,14 @@
+.company-item {
+  display: flex;
+  max-height: 3em;
+  width: 100%;
+}
+
+.item-text {
+  width: 100%;
+  align-self: center;
+}
+
+.item-buttons {
+  margin-left: auto;
+}
