@@ -31,14 +31,7 @@ class AdminInterface extends Component {
 
 	deleteComp = (dbName) => {
 		axios.delete(`${API_ROOT}/admin/company?name=${dbName}`)
-			.then(res => {
-				let compList = this.state.companies;
-				for (let i = 0; i < compList.length; i++) {
-					if (`digivaate_${compList[i].name}` === dbName)
-						delete compList[i];
-				}
-				this.setState({companies: compList});
-			})
+			.then(() => this.getCompanies())
 			.catch(err => console.error(err));
 	}
 	/*
@@ -84,6 +77,7 @@ class AdminInterface extends Component {
 				<Item >
 					<CompanyItem
 					name={item.name}
+					password={item.password}
 					dbName={item.dbName}
 					deleteComp={this.deleteComp}
 					//patchComp={this.patchComp}

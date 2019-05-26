@@ -12,3 +12,8 @@
 .item-buttons {
   margin-left: auto;
 }
+
+.buttons-group {
+  display: flex;
+  flex-direction: row;
+}

@@ -77,15 +77,20 @@ module.exports = (apiRoutes, dbConnections) => {
         }
     });
 
-    router.delete('/company', adminAuth, async (req, res, next) => {
-        if (await deleteCompany(req.query.name, dbConnections, apiRoutes))
+    router.delete('/company', adminAuth, (req, res, next) => {
+        console.log('DELETE');
+        deleteCompany(req.query.name, dbConnections, apiRoutes)
+        .then(() => {
             res.send({
                 success: req.query.name + ' deleted'
             });
-        else
+        })
+        .catch(err => {
+            console.error(err);
             res.status(500).json({
-                error: req.query.name + ' not found'
+                error: err
             });
+        })
     });
 
     router.use('/:dbName', adminAuth, async (req, res, next) => {

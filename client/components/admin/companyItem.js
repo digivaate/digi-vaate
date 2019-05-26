@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Input, Button, Icon, Modal} from 'antd';
+import React, {Component, Fragment} from 'react';
+import {Input, Button, Icon, Modal, Popover} from 'antd';
 import './companyItem.css'
 
 const confirm = Modal.confirm;
@@ -9,7 +9,7 @@ class CompanyItem extends Component {
 		super(props);
 		this.state = {
 			showEdit: false,
-			edit: false,
+			showPassword: false,
 			name: props.name,
 		}
 	}
@@ -26,6 +26,10 @@ class CompanyItem extends Component {
 	hideEdit = () => {
 		if (!this.state.edit)
 			this.setState({ showEdit: false  });
+	}
+	
+	togglePassword = () => {
+		this.setState({ showPassword: this.state.showPassword ? false : true })
 	}
 
 	confirmDelete = () => {
@@ -49,21 +53,22 @@ class CompanyItem extends Component {
 		onMouseEnter={this.showEdit}
 		onMouseLeave={this.hideEdit}
 		className="company-item">
-			{this.state.edit ?
-				<Input
-				defaultValue={this.props.name}
-				onClick={e => e.stopPropagation()}
-				onBlur={this.updateNewName}
-				/>
-				:
-				<div className="item-text">
-					{this.props.name}
-				</div>
-			}
+			<div className="item-text">
+				<h2>{this.props.name}</h2>
+				{this.state.showPassword ?
+					` Password: ${this.props.password}`
+			: null}
+			</div>
 			{this.state.showEdit ?
+			<div className='buttons-group' >
+					<Button size='small' onClick={this.togglePassword}>
+						<Icon type='eye' />
+						Show Password
+					</Button>
 				<Button size='small' onClick={this.confirmDelete}>
 					<Icon type="delete"/>
 				</Button>
+			</div>
 			: null}
 		</div>)
 	}

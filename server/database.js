@@ -82,19 +82,20 @@ export async function setupDatabase(name) {
 export async function deleteCompany(name, dbConnections, apiRoutes) {
     if (!(name in apiRoutes) || !(name in dbConnections))
         return false;
-    await sequelize.query(
-        `SELECT pg_terminate_backend(pg_stat_activity.pid)
-        FROM pg_stat_activity
-        WHERE pg_stat_activity.datname = '${name}';`
-    )
-    await sequelize.query('DROP DATABASE ' + name)
-        .then(() => {
-            delete apiRoutes[name];
-            delete dbConnections[name];
-        })
-        .catch(e => {
-            console.error(e);
-            return false;
-        })
+    try {
+        await sequelize.query(
+            `SELECT pg_terminate_backend(pg_stat_activity.pid)
+            FROM pg_stat_activity
+            WHERE pg_stat_activity.datname = '${name}';`
+        )
+        await sequelize.query('DROP DATABASE ' + name)
+            .then(() => {
+                delete apiRoutes[name];
+                delete dbConnections[name];
+            })
+    } catch(error) {
+        console.error(error);
+        return false;
+    };
     return true;
 }
