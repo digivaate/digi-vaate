@@ -4,19 +4,12 @@ import BreadCrumbDisplay from './breadcrumb';
 import './layout.css';
 import asyncComponent from '../../hoc/asyncComponent'
 import { Menu, Dropdown, Icon, Button } from 'antd';
-
+import Cookies from 'js-cookie';
 
 const AsyncBreadCrumb = asyncComponent(() => {
     return import(/* webpackChunkName: "breadcrumb" */'./breadcrumb')
 });
 
-const menu = (
-    <Menu>
-        <Menu.Item>
-            <Icon type="logout" /> Sign Out
-        </Menu.Item>
-    </Menu>
-);
 class HeaderBar extends Component{
     constructor(props){
         super(props);
@@ -43,6 +36,11 @@ class HeaderBar extends Component{
         }
     }
 
+    logout = () => {
+		Cookies.remove('compToken');
+		window.location.href = '/login';
+    }
+    
     render(){
         return(
             <div className={'header'}>
@@ -66,9 +64,9 @@ class HeaderBar extends Component{
                 <nav className="main-nav">
                     <ul className="main-nav__items">
                         <li className="main-nav__item">
-                            <Dropdown overlay={menu}>
-                                <a href="javascript:void(0);"><Icon style={{fontSize:'20px'}} type="user" /> Username</a>
-                            </Dropdown>
+                            <Button onClick={this.logout}>
+                                <Icon type="logout" /> Sign Out
+                            </Button>
                         </li>
                         <li>
                         <Button
