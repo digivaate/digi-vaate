@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import MaterialCreateForm from './newMaterial'
-import { Card, List, Col,Icon,Button,message,Modal } from 'antd';
+import { Card, List, Col,Icon,Button,message,Modal,Row } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -146,7 +146,7 @@ class MaterialList extends Component{
                     imgUrl = `${API_ROOT}/image?id=${material.imageId}`
                 }
                     return(
-                        <Col span={6} key={material.id}>
+                        <div key={material.id}>
                             <div className="material-card-wrapper">
                                 <Card
                                     hoverable
@@ -182,18 +182,18 @@ class MaterialList extends Component{
                                     }}>
                                         <Meta
                                         title= {
-                                            <div>
-                                                <p>{material.name}</p>
+                                            <div className="material-list__material-name">
+                                                {material.name}
                                             </div>
                                         }
                                         description = {
-                                            <p>Code: {material.code ? material.code : "None"}</p>
+                                            <div className="material-list__material-code">Code: {material.code ? material.code : "-"}</div>
                                         }
                                     />
                                     </Link>
                                 </Card>
                             </div>
-                        </Col>
+                        </div>
                     )
                 }
 
@@ -203,13 +203,17 @@ class MaterialList extends Component{
             if(renderMaterialList.length === 0){
                 return (
                     <div>
-                        <h1>Materials</h1>
-                        <Button type="primary"
-                                size="large"
-                                onClick={this.createNewMaterial}
-                        >
-                            Create new material
-                        </Button>
+                        <Row type="flex" justify="space-between">
+                            <div className="material-list__header">Materials</div>
+                            <Button type="primary"
+                                    size="large"
+                                    onClick={this.createNewMaterial}
+                                    className="material-list__create-material-btn"
+                            >
+                                <Icon type="plus" /> Create material
+                            </Button>
+                        </Row>
+                        <div className="material-list__description">Create your materials. You can assign the materials to the products or leave them without. </div>
                         <MaterialCreateForm
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
@@ -223,13 +227,17 @@ class MaterialList extends Component{
             } else {
                 return (
                     <div>
-                        <h1>Materials</h1>
-                        <Button type="primary"
-                                size="large"
-                                onClick={this.createNewMaterial}
-                        >
-                            Create new material
-                        </Button>
+                        <Row type="flex" justify="space-between">
+                            <div className="material-list__header">Materials</div>
+                            <Button type="primary"
+                                    size="large"
+                                    onClick={this.createNewMaterial}
+                                    className="material-list__create-material-btn"
+                            >
+                                <Icon type="plus" /> Create material
+                            </Button>
+                        </Row>
+                        <div className="material-list__description">Create your materials. You can assign the materials to the products or leave them without. </div>
                         <MaterialCreateForm
                             wrappedComponentRef={this.saveFormRef}
                             visible={this.state.visible}
@@ -241,9 +249,9 @@ class MaterialList extends Component{
                         <br/>
                         <List
                             dataSource={renderMaterialList}
-                            grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+                            grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4}}
                             pagination={{
-                                pageSize: 8,
+                                pageSize: 15,
                                 hideOnSinglePage: true,
                                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -257,13 +265,17 @@ class MaterialList extends Component{
         } else {
             return (
                 <div>
-                    <h1>Materials</h1>
-                    <Button type="primary"
-                            size="large"
-                            onClick={this.createNewMaterial}
-                    >
-                        Create new material
-                    </Button>
+                    <Row type="flex" justify="space-between">
+                        <div className="material-list__header">Materials</div>
+                        <Button type="primary"
+                                size="large"
+                                onClick={this.createNewMaterial}
+                                className="material-list__create-material-btn"
+                        >
+                            <Icon type="plus" /> Create material
+                        </Button>
+                    </Row>
+                    <div className="material-list__description">Create your materials. You can assign the materials to the products or leave them without. </div>
                     <MaterialCreateForm
                         wrappedComponentRef={this.saveFormRef}
                         visible={this.state.visible}
@@ -273,7 +285,7 @@ class MaterialList extends Component{
                     />
                     <br/>
                     <RenderInitialCard
-                        numberOfCard={4}
+                        numberOfCard={6}
                         cardTypeWrapper="material-card-wrapper"
                         bodyHeight={{height:100}}
                         cardTypeDisplay="material-card-display"

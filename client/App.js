@@ -1,8 +1,8 @@
 import React from "react";
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
-import FooterArea from './components/layout/footer'
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import {BackTop} from 'antd'
 import MainScreen from "./components/mainScreen";
 import BudgetPlanningTable from './components/summary-table'
 import ColorCollection from './components/colors/colors-collection'
@@ -139,6 +139,15 @@ class App extends React.Component {
     render() {
         return (
         <BrowserRouter>
+        <React.Fragment>
+            <Route path="/(.+)" render={() => 
+                <div className="background"></div>
+            }
+            />
+            <Route path="/" exact render={() =>
+                    <div className="mainScreen__background"></div>
+                }
+            />
             <div className="App">
                 <HeaderBar
                     newSeasonName={this.state.newSeasonName}
@@ -151,18 +160,24 @@ class App extends React.Component {
                     newProductName={this.state.newProductName}
                     newMaterialName={this.state.newMaterialName}
                 />
-                <div className="sider">
-                    <SideBar
-                        newSeason={this.state.newSeasonName}
-                        newCollection={this.state.newCollectionName}
-                        newDeleteSeason={this.state.newDeleteSeasonName}
-                        newDeleteCollection={this.state.newDeleteCollectionName}
-                        newSeasonEdit={this.state.newSeasonEdit}
-                        newCollectionEdit={this.state.newCollectionEdit}
-                    />
-                </div>
-                <div className="content">
+                <Route path="/(.+)" render={() => 
+                    <div className="sider">
+                        <SideBar
+                            newSeason={this.state.newSeasonName}
+                            newCollection={this.state.newCollectionName}
+                            newDeleteSeason={this.state.newDeleteSeasonName}
+                            newDeleteCollection={this.state.newDeleteCollectionName}
+                            newSeasonEdit={this.state.newSeasonEdit}
+                            newCollectionEdit={this.state.newCollectionEdit}
+                        />
+                    </div>
+                }/>
+                <div className="content" id="content">
                     <div>
+                        <BackTop 
+                            visibilityHeight={500} 
+                            target={() => document.getElementById('content')}
+                        />
                         <Switch>
                             <Route path={'/'} exact component={MainScreen}/>
                             <Route path='/products' exact render={(props) =>
@@ -269,8 +284,8 @@ class App extends React.Component {
                         </Switch>
                     </div>
                 </div>
-                <FooterArea/>
             </div>
+            </React.Fragment>
         </BrowserRouter>
     )
 };

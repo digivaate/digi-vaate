@@ -1,50 +1,76 @@
+* {
+    box-sizing: border-box;
+    font-family: "Avenir Next";
+}
+
+html{
+    height: 100%;
+    font-family: "Avenir Next";
+}
+
 body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: "Avenir Next";
     font-weight: 300;
     font-size: 14px;
+    height: 100%; 
+}
+
+.background {
+    background: #f4f4f4;
+    filter: grayscale(40%);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
+}
+
+.mainScreen__background{
+    filter: grayscale(40%);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
+    background: linear-gradient(172.25deg, rgba(0,0,0,0.63) 0%, rgba(0,0,0,0.25) 100%);
 }
 
 /*Main layout of app*/
 .App {
     height: 100vh;
+    
     display: grid;
     grid-template-columns: 250px auto;
-    grid-template-rows: 4em auto 50px;
+    grid-template-rows: 70px auto;
     grid-template-areas:
             'header header'
             'nav content'
-            'footer footer';
 }
 
 .content {
     grid-area: content;
     overflow-y: scroll;
     padding: 2em;
+    padding-top: 5em
 }
 
 .header {
     grid-area: header;
-    z-index: 1;
-    border-bottom:1px groove;
-    /*content*/
+    background: radial-gradient(circle, #2C2C2C 0%, #191919 100%);;
+    position: fixed;
+    width:100%;
+    color:white;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1rem;
+    z-index: 60;
 }
 .sider {
     grid-area: nav;
-    border-right: 1px groove;
     max-height: 100%;
-    overflow-x: hidden;
-}
-.footer {
-    grid-area: footer;
-    background-color: white;
-    border-top: 1px solid;
-}
-
-.ant-layout-sider {
-    border-right: 1px groove;
+    /* overflow-x: hidden; */
 }
 
 hr {

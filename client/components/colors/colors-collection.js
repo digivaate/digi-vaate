@@ -199,65 +199,70 @@ class ColorCollection extends Component{
         if(this.colorCard && this.colorCard.length === 0){
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <div className="colors-collection__colors-container">
                         <h4>No colors</h4>
-                    </Card>
+                    </div>             
                 </div>
             )
         } else if(!this.colorCard){
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <div className="colors-collection__colors-container">
                         <Spin/>
-                    </Card>
+                    </div>
                 </div>
             )
         }
         else {
+            console.log(this.state.productList)
             this.colorCard.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             const colorCard = this.colorCard.map(element => {
                 return(
-                    <Card.Grid
-                        className="single-color-card"
-                        style={{backgroundColor: element.value, border: "1px solid"}}
-                        key={element.id}
-                        onClick = {() => this.showColorModal(element)}
-                    >
-                        <Meta
-                            title={element.name}
-                            description={
-                                <div>
-                                    <p>Hex: {element.value}</p>
-                                    <p>Code: {element.code ? element.code: "None"}</p>
-                                </div>}
-                            className="color-card-description"
-                        />
-                    </Card.Grid>
+                    <div key={element.id} className="colors-collection__color-container">
+                        <Card
+                            className="colors-collection__color-card"
+                            hoverable
+                            cover={
+                                <div className="colors-collection__color-card-background" style={{backgroundColor:`${element.value}`}}></div>
+                            }
+                            onClick = {() => this.showColorModal(element)}
+                        >
+                            <div className="colors-collection__color-card-name">
+                                {element.name}
+                            </div>
+                            <div className="colors-collection__color-card-info">
+                                <div>Hex: {element.value}</div>
+                                <div>Code: {element.code ? element.code: "-"}</div>
+                            </div>
+                        </Card>
+                    </div>
                 )
             });
 
             return (
                 <div>
-                    <h1>Colors</h1>
+                    <div className="colors-collection__header">Colors</div>
                     <ColorPage
                         createColor = {(newColor) => this.createColor(newColor)}
                         colorsLevel = {this.state.colorsLevel}
                         allColors = {this.colorCard}
                     />
-                    <Card title="Color Collection" bodyStyle={{padding:24,margin:0}}>
+                    <br/>
+                    <div className="colors-collection__colors-container">
                         {colorCard}
+                    </div>
                         <Modal
                             title="Edit color"
                             visible={this.state.colorVisible}
@@ -296,16 +301,22 @@ class ColorCollection extends Component{
                                 name="hexCode"
                                 onChange={this.handleChange}
                             />
-                            <p>List of products used this colors:</p>
-                            <List
-                                size="small"
-                                bordered
-                                dataSource={this.state.productList}
-                                renderItem={item => {
-                                    return (<List.Item>{item.name}</List.Item>)}}
-                            />
+                            <div className="colors-collection__modal-productList-title">Used on following active products:</div>
+                            {this.state.productList ? 
+                            <ul>
+                                {
+                                    this.state.productList.map(product => {
+                                        return (
+                                            <li key={product.id} className="colors-collection__modal-productList-product">
+                                                <div className="colors-collection__modal-productList-product-name">{product.name}</div>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>:
+                            <div></div>
+                            }
                         </Modal>
-                    </Card>
                 </div>
             )
         }

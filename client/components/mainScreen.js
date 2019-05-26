@@ -1,47 +1,61 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Card, Col, Row} from 'antd';
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import './mainScreen.css'
 
 class MainScreen extends Component {
 
     render() {
         return (
             <Fragment>
+                <div className="mainScreen__welcome-title">Welcome to Digivaate</div>
+                <div className="mainScreen__welcome-description">Digivaate is a tool for managing textile collection planning. You can start by creating products, seasons or collections.</div>
+                <div className="mainScreen__cards-area">
                 <Row type={'flex'} justify="start" gutter={30}>
                     <Col>
-                        <Link to={'/products'}>
+                        <NavLink to={'/products'} activeStyle={{
+                            textDecoration:'none'
+                        }}>
                             <Card
-                                title={'Products'}
                                 hoverable={true}
                                 headStyle={{border: 'none'}}
-                                style={{width: 300}}>
-
+                                className="mainScreen__card-container"
+                            >   
+                                <div className="mainScreen__card-title">Products</div>
+                                <div className="mainScreen__card-description">Create and edit products and their features.</div>
                             </Card>
-                        </Link>
+                        </NavLink>
                     </Col>
                     <Col>
-                        <Link to={'/seasons'}>
+                        <NavLink to={'/seasons'} activeStyle={{
+                            textDecoration:'none'
+                        }}>
                             <Card
-                                title={"Seasons"}
                                 hoverable={true}
                                 headStyle={{border: 'none'}}
-                                style={{width: 300}}>
-
+                                className="mainScreen__card-container"
+                            >
+                                <div className="mainScreen__card-title">Seasons</div>
+                                <div className="mainScreen__card-description">Create and edit seasons and manage collections together with combined budgets.</div>
                             </Card>
-                        </Link>
+                        </NavLink>
                     </Col>
                     <Col>
-                        <Link to={'/'}>
+                        <NavLink to={'/'} activeStyle={{
+                            textDecoration:'none'
+                        }}>
                             <Card
-                                title={'Collections'}
                                 hoverable={true}
                                 headStyle={{border: 'none'}}
-                                style={{width: 300}}>
-
+                                className="mainScreen__card-container"
+                            >
+                                <div className="mainScreen__card-title">Customers' collections</div>
+                                <div className="mainScreen__card-description">Manage collections for specific customer or purpose.</div>
                             </Card>
-                        </Link>
+                        </NavLink>
                     </Col>
                 </Row>
+                </div>
             </Fragment>
         )
     }

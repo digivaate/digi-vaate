@@ -1,0 +1,51 @@
+
+
+
+.mainScreen__welcome-title{
+    height: 3.3rem;	
+    width: 42.6rem;	
+    color: #FFFFFF;	
+    font-size: 2rem;	
+    font-weight: bold;	
+    line-height: 3rem;
+}
+
+.mainScreen__welcome-description{
+    height: 3.9rem;	
+    width: 52.6rem;	
+    color: #FFFFFF;	
+    font-size: 1.6rem;	
+    line-height: 2rem;
+}
+
+.mainScreen__cards-area{
+    margin-top:4rem;
+}
+
+.mainScreen__card-container{
+    width: 15.6rem;
+    height: 15.6rem;
+    border-radius: 3px;	
+    background-color: #FFFFFF;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.mainScreen__card-title{
+    height: 5rem;	
+    width: 12.9rem;	
+    color: #4A4A4A;	
+    font-size: 1.9rem;	
+    font-weight: bold;	
+    line-height: 2.1rem;	
+    text-align: center;
+}
+
+.mainScreen__card-description{
+    height: 4.5rem;	
+    width: 11.8rem;	
+    color: #4A4A4A;	
+    font-size: 1rem;	
+    line-height: 1.1rem;	
+    text-align: center;
+}

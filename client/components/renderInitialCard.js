@@ -3,7 +3,7 @@ import { Skeleton,Card,Col,Icon,List} from 'antd';
 const { Meta } = Card;
 
 const renderInitialCard = (props) => {
-    const arrayOfInitialCard = [...new Array(props.numberOfCard)].map(ele => <Col span={6}>
+    const arrayOfInitialCard = [...new Array(props.numberOfCard)].map(ele =>
         <div className={props.cardTypeWrapper}>
             <Card
                 hoverable
@@ -22,11 +22,11 @@ const renderInitialCard = (props) => {
                 </Skeleton>
             </Card>
         </div>
-    </Col>);
+    );
     return (
         <List
             dataSource={arrayOfInitialCard}
-            grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+            grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
             renderItem={item => <List.Item>{item}</List.Item>}
         >
         </List>

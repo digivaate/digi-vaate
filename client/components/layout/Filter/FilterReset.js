@@ -4,7 +4,7 @@ import './filter.css'
 const filterReset = (props) => {
     return (
         <div className="filter-reset" onClick={() => props.resetFilter(props.header)}>
-            Reset <Icon type="filter" />
+            Clear selection <Icon type="filter" />
         </div>
     )
 };

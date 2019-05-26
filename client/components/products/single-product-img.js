@@ -44,8 +44,10 @@ class SingleProductImg extends Component{
             imgUrl = `${API_ROOT}/image?id=${this.state.singleProductImg}`
         }
         return (
+            <React.Fragment>
+            {changeImgBtn}
             <div className="single-product-img-container">
-                {changeImgBtn}
+                
                 { imgUrl ?
                     <Image alt="example" className="product-big-ava-img" url={`${imgUrl}`}/> :
                     <div className="product-big-ava-no-img">
@@ -55,6 +57,7 @@ class SingleProductImg extends Component{
                     </div>
                 }
             </div>
+            </React.Fragment>
         )
     }
 }

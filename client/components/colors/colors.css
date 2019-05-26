@@ -1,5 +1,10 @@
 /* color-collection.js */
-
+.colors-collection__header{
+    color: #000000;	
+    font-size: 36px;	
+    font-weight: bold;	
+    line-height: 49px;
+}
 .single-color-card{
     width: 175px;
     height: 175px;
@@ -15,6 +20,62 @@
     background-color: white;
     margin-top: 60px;
     border-radius: 4px;
+    color:black;
+}
+
+.colors-collection__colors-container{
+    display:flex;
+    flex-flow: row wrap;
+}
+
+.colors-collection__color-container{
+    width: 16rem;
+    height: 23.5rem;
+}
+
+.colors-collection__color-card{
+    height: 21.3rem;	
+    width: 14.1rem;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.5);
+    border-radius: 3px;	
+}
+
+.colors-collection__color-card-background{
+    height: 14.1rem;	
+    width: 14.1rem;	
+    border-radius: 3px;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5)
+}
+
+.colors-collection__color-card-name{
+    color: #000000;
+    font-size: 1.2rem;	
+    font-weight: bold;	
+    text-align: center;
+}
+
+.colors-collection__color-card-info{
+    color: #000000;
+    font-size: 1rem;	
+    text-align: center;
+}
+
+.colors-collection__modal-productList-title{
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+    color: #4A4A4A;
+    font-size: 1.2rem;	
+    font-weight: bold;	
+}
+
+.colors-collection__modal-productList-product{
+    padding-left:1rem;
+}
+
+
+.colors-collection__modal-productList-product-name{
+    font-size: 1rem;	
+    font-weight: 500;	
 }
 
 /* create-color.js */
@@ -28,4 +89,10 @@
     right: 0;
     bottom: 0;
     left: 0;
+}
+
+.create-color__create-color-btn{
+    border-radius: 3px;	
+    background-color: #007CBB;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
 }

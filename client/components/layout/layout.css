@@ -1,33 +1,88 @@
 /* header-bar.js */
-.nav-bar-menu{
-    line-height: 70px;
-    font-color:black;
-    float:right;
-    border:none;
+
+.main-nav {
+    display: flex;
+    margin-left:auto;
+    margin-right: 2rem;
+}
+  
+.main-nav__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
 }
 
-.header-section{
-    margin-left: 70%;
-    color: black;
-    font-size: 1.3em;
-    position: absolute;
+.sale-button{
+    background-color: #007CBB;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
 }
+
+.main-nav__item {
+    margin: 0 1rem;
+    align-self: center;
+
+}
+
+.main-nav__item a{
+    color:white;
+    text-decoration: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: "Avenir Next";
+}
+
+.main-nav__item a:hover,
+.main-nav__item a:active {
+    color: #1890ff;
+}
+
+/* side-bar.js */
 
 .side-bar-menu{
     height: 100%;
-    border-right: 0;
+    background: #f4f4f4;
+}
+
+.side-bar-menu li{
+    font-family: "Avenir Next";
+    font-weight:bold;	
+}
+
+.side-bar__products{
+    height: 25px;	
+    width: 77px;	
+    color: #000000;	
+}
+
+.ant-menu{
+    margin-top:4rem;
+    background: #f4f4f4;
+}
+
+.ant-menu li {
+    font-size: 1.2rem;
 }
 
 .logo {
     margin: 0.5em;
+    height: 35px;	
+    width: 122px;	
+    color: #FFFFFF;	
+    font-family: "PT Sans";	
+    font-size: 30px;	
+    font-weight: bold;	
+    line-height: 39px;
 }
 
 .season-menu {
     background: #EBECF8;
+    color: #4A90E2;
 }
 
 .collection-menu {
     background: #D6D8DF;
+    color: #4A90E2;
 }
 
 .ant-menu-submenu > .ant-menu {
@@ -35,17 +90,29 @@
 }
 
 .ant-menu-submenu ul[id^='seasons$Menu'] {
-    background-color: #EBECF8;
+    /* background-color: #EBECF8; */
 }
 
 .ant-menu-submenu ul[id^='collections-season-'] {
-    background-color: #D6D8DF;
+    /* background-color: #D6D8DF; */
 }
 
 /* breadcrumb.js */
 .bread-crumb{
-    font-size:17px;
-    margin: 0.5em;
+    margin: 0.5rem;
+    color:white;
+    display:inline-block;
+    font-family: "Avenir Next";	
+    font-size: 1.1rem;	
+    font-weight: 500;
+}
+
+.ant-breadcrumb a{
+    color: white
+}
+
+.ant-breadcrumb-separator {
+    color:white
 }
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ColorPicker from './color_picker'
-import { Button, Modal, Form, Input, message } from 'antd';
+import { Button, Modal, Form, Input, message,Icon } from 'antd';
 const FormItem = Form.Item;
 import './colors.css'
 
@@ -121,7 +121,14 @@ class ColorPage extends React.Component {
     render() {
         return (
             <div>
-                <Button type="primary" onClick={this.showModal}>New Color</Button>
+                <Button 
+                    type="primary" 
+                    onClick={this.showModal}
+                    size="large"
+                    className="create-color__create-color-btn"
+                >
+                    <Icon type="plus" /> Create color
+                </Button>
                 <ColorCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

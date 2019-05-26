@@ -14,6 +14,10 @@ class FilterArea extends Component {
                 [this.props.sections[i].toLowerCase()]: []
             }
         }
+        this.state = {
+            ...this.state,
+            productGroupFromDb: []
+        }
     }
 
     componentDidUpdate(){

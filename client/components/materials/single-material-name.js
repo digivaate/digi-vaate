@@ -94,7 +94,7 @@ class SingleMaterialName extends Component{
         }
         return (
             <Row type="flex">
-                <h1><span style={ this.props.loadedMaterial.name !== this.props.loadedMaterialOri.name ? { color: '#EDAA00', fontWeight: 'bold'} : {} }> {this.props.loadedMaterial.name} </span>&nbsp;</h1>
+                <h1><span style={ this.props.loadedMaterial.name !== this.props.loadedMaterialOri.name ? { color: '#EDAA00', fontWeight: 'bold'} : {fontWeight: 'bold',fontSize:'2.2rem'} }> {this.props.loadedMaterial.name} </span>&nbsp;</h1>
                 {editNameBtn}
                 <Modal
                     title="Edit name"

@@ -1,5 +1,5 @@
 import React,{ Component } from "react";
-import { Card, Row, Col,Icon,Modal,Button,message,List,BackTop } from 'antd';
+import { Card, Row, Col,Icon,Modal,Button,message,List } from 'antd';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
@@ -70,11 +70,11 @@ class ProductsDisplay extends Component{
                 this.productsForFilter = res.data
                 for(let i = 0;i < this.products.length; i++){
                     if(this.products[i].companyId){
-                        this.products[i].seasonName = "None";
-                        this.products[i].collectionName = "None";
+                        this.products[i].seasonName = "-";
+                        this.products[i].collectionName = "-";
                     }
                     else if(this.products[i].seasonId){
-                        this.products[i].collectionName = "None";
+                        this.products[i].collectionName = "-";
                     }
                     else if(pathSnippetsLevel[0] === "collection"){
                         this.products[i].seasonName = this.props.match.params.seasonId;
@@ -218,11 +218,11 @@ class ProductsDisplay extends Component{
                                     axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                         .then((re) => {
                                             if (response.data.companyId) {
-                                                response.data.seasonName = "None";
-                                                response.data.collectionName = "None";
+                                                response.data.seasonName = "-";
+                                                response.data.collectionName = "-";
                                             } else if (re.data.seasonId) {
                                                 response.data.seasonName = this.props.match.params.seasonId
-                                                response.data.collectionName = "None";
+                                                response.data.collectionName = "-";
                                             }
                                             response.data.imageId = re.data.imageId
                                             this.products.push(response.data);
@@ -254,11 +254,11 @@ class ProductsDisplay extends Component{
                             axios.patch(`${API_ROOT}/product/image?id=${response.data.id}`, this.uploadImage)
                                 .then((re) => {
                                     if (response.data.companyId) {
-                                        response.data.seasonName = "None";
-                                        response.data.collectionName = "None";
+                                        response.data.seasonName = "-";
+                                        response.data.collectionName = "-";
                                     } else if (response.data.seasonId) {
                                         response.data.seasonName = this.props.match.params.seasonId
-                                        response.data.collectionName = "None";
+                                        response.data.collectionName = "-";
                                     }
                                     response.data.imageId = re.data.imageId
                                     this.products.push(response.data);
@@ -293,11 +293,11 @@ class ProductsDisplay extends Component{
                             axios.post(`${API_ROOT}/product`, values)
                                 .then(response => {
                                     if (response.data.companyId) {
-                                        response.data.seasonName = "None";
-                                        response.data.collectionName = "None";
+                                        response.data.seasonName = "-";
+                                        response.data.collectionName = "-";
                                     } else if (response.data.seasonId) {
                                         response.data.seasonName = this.props.match.params.seasonId
-                                        response.data.collectionName = "None";
+                                        response.data.collectionName = "-";
                                     }
                                     this.products.push(response.data);
                                     message.success("Product created", 1);
@@ -325,11 +325,11 @@ class ProductsDisplay extends Component{
                     axios.post(`${API_ROOT}/product`, values)
                         .then(response => {
                             if (response.data.companyId) {
-                                response.data.seasonName = "None";
-                                response.data.collectionName = "None";
+                                response.data.seasonName = "-";
+                                response.data.collectionName = "-";
                             } else if (response.data.seasonId) {
                                 response.data.seasonName = this.props.match.params.seasonId
-                                response.data.collectionName = "None";
+                                response.data.collectionName = "-";
                             }
                             this.products.push(response.data);
                             message.success("Product created", 1);
@@ -560,49 +560,51 @@ class ProductsDisplay extends Component{
                         if(product.colors.length > 0){
                             renderProductColors = product.colors.map(color =>
                                 <Col key={color.id} span={3}>
-                                    <Card className="products-display-color" style={{
+                                    <div className="products-display__color" style={{
                                         backgroundColor: color.value,
                                     }}/>
                                 </Col>
                             )
                         }
                         else {
-                            renderProductColors = `No colors`;
+                            renderProductColors = <div className="products-display__no-value">No colors</div>
                         }
                     }
 
                     if(product.materials){
                         if(product.materials.length > 0){
                             renderProductMaterials = product.materials.map(material =>
-                                <div key={material.id}>
+                                <div className="products-display__material" key={material.id}>
                                     {material.name} &nbsp; &nbsp;
                                 </div>
                             )
                         }
                         else {
-                            renderProductMaterials = `No materials`
+                            renderProductMaterials = <div className="products-display__no-value">No materials</div>
                         }
                     }
 
                 if(product.sizes){
                     if(product.sizes.length > 0){
                         renderProductSizes = product.sizes.map(size =>
-                            <Col key={size.id} span={3}>
-                                <div>
-                                    {size.value}
+                            <Col key={size.id} span={4}>
+                                <div className="products-display__size-card" >
+                                    <div className="products-display__size-value">
+                                        {size.value}
+                                    </div>
                                 </div>
                             </Col>
                         )
                     }
                     else {
-                        renderProductSizes = `No sizes`
+                        renderProductSizes = <div className="products-display__no-value">No sizes</div>
                     }
                 }
                 if(product.sellingPrice) {
-                    renderProductPrice = `€${product.sellingPrice}`
+                    renderProductPrice = <div className="product-price">{`€${product.sellingPrice}`}</div>
                 }
                 else {
-                    renderProductPrice = `No price`
+                    renderProductPrice = <div className="product-price">-</div>
                 }
 
                     if(this.state.productLevel === "collection"){
@@ -611,7 +613,7 @@ class ProductsDisplay extends Component{
                                 <div className="product-card-wrapper">
                                     <Card
                                         hoverable
-                                        bodyStyle={{height:230}}
+                                        bodyStyle={{height:300}}
                                         className="product-card-display"
                                         cover={<Link to={{
                                             pathname: `${url}${product.id}-${product.name}`,
@@ -645,24 +647,25 @@ class ProductsDisplay extends Component{
                                             <Meta
                                                 title= {
                                                     <div>
-                                                        {product.name}
-                                                        <div className="product-price">
+                                                        <div className="product-name">{product.name}</div>
+                                                        <div className="product-price-wrapper">
                                                             {renderProductPrice}
                                                         </div>
+                                                        <br/>
+                                                        <div className="product-location">Season: {product.seasonName} </div>
+                                                        <div className="product-location">Collection: {product.collectionName}</div>
                                                     </div>
                                                 }
                                                 description={
-                                                    <div>
-                                                        <br/>
+                                                    <div className="product-info">
+                                                        <Row type="flex">
+                                                            {renderProductMaterials}
+                                                        </Row>
                                                         <br/>
                                                         <Row>
                                                             { renderProductColors }
                                                         </Row>
-                                                        <hr/>
-                                                        <Row>
-                                                            {renderProductMaterials}
-                                                        </Row>
-                                                        <hr />
+                                                        <br/>
                                                         <Row>
                                                             {renderProductSizes}
                                                         </Row>
@@ -680,7 +683,7 @@ class ProductsDisplay extends Component{
                         <div className="product-card-wrapper">
                             <Card
                                 hoverable
-                                bodyStyle={{height:230}}
+                                bodyStyle={{height:300}}
                                 className="product-card-display"
                                 cover={<Link to={{
                                     pathname: `${url}${product.id}-${product.name}`,
@@ -716,24 +719,25 @@ class ProductsDisplay extends Component{
                                     <Meta
                                         title= {
                                             <div>
-                                                {product.name}
-                                                <div className="product-price">
-                                                {renderProductPrice}
+                                                <div className="product-name">{product.name}</div>
+                                                <div className="product-price-wrapper">
+                                                    {renderProductPrice}
                                                 </div>
+                                                <br/>
+                                                <div className="product-location">Season: {product.seasonName} </div>
+                                                <div className="product-location">Collection: {product.collectionName}</div>
                                             </div>
                                         }
                                         description={
-                                            <div>
-                                                <p>Season: {product.seasonName} </p>
-                                                <p>Collection: {product.collectionName}</p>
-                                                <Row>
-                                                    { renderProductColors }
-                                                </Row>
-                                                <hr/>
+                                            <div className="product-info">
                                                 <Row type="flex">
                                                     {renderProductMaterials}
                                                 </Row>
-                                                <hr />
+                                                <br/>
+                                                <Row>
+                                                    { renderProductColors }
+                                                </Row>
+                                                <br/>
                                                 <Row>
                                                     {renderProductSizes}
                                                 </Row>
@@ -750,16 +754,20 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "company"){
                     return (
                         <div>
-                            <BackTop/>
-                            <h1>Products</h1>
-                            <Button type="primary"
+                            <Row type='flex' justify="space-between">
+                                <div className="products-header">Products</div>
+                                <Button 
+                                    className="products-display__create-product-btn"
+                                    type="primary"
                                     size="large"
                                     onClick={this.createNewProduct}
-                            >
-                                Create new product
-                            </Button>
+                                >
+                                    <Icon type="plus" /> Create product
+                                </Button>
+                            </Row>
+                            <div className="products-description">Create your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <br/>
-                            <br/>
+                            <div className="products-display__filter-text">Narrow list by:</div>
                             <FilterArea
                                 sections={["Season","Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
@@ -778,9 +786,9 @@ class ProductsDisplay extends Component{
                             {showTotalProducts}
                             <List
                                 dataSource={renderProductList}
-                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 8,
+                                    pageSize: 15,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -794,16 +802,20 @@ class ProductsDisplay extends Component{
                 if(this.state.productLevel === "season") {
                     return (
                         <div>
-                            <BackTop/>
-                            <h1>Products</h1>
-                            <Button type="primary"
+                            <Row type='flex' justify="space-between">
+                                <div className="products-header">Products</div>
+                                <Button 
+                                    className="products-display__create-product-btn"
+                                    type="primary"
                                     size="large"
                                     onClick={this.createNewProduct}
-                            >
-                                Create new product
-                            </Button>
+                                >
+                                    <Icon type="plus" /> Create product
+                                </Button>
+                            </Row>
+                            <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <br/>
-                            <br/>
+                            <div className="products-display__filter-text">Narrow list by:</div>
                             <FilterArea
                                 sections={["Collection","Category","Color","Material","Size"]}
                                 sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
@@ -824,9 +836,9 @@ class ProductsDisplay extends Component{
                             {showTotalProducts}
                             <List
                                 dataSource={renderProductList}
-                                grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+                                grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                                 pagination={{
-                                    pageSize: 8,
+                                    pageSize: 15,
                                     hideOnSinglePage: true,
                                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -839,15 +851,20 @@ class ProductsDisplay extends Component{
                 }
                 return (
                     <div>
-                        <h1>Products</h1>
-                        <Button type="primary"
+                        <Row type='flex' justify="space-between">
+                            <div className="products-header">Products</div>
+                            <Button 
+                                className="products-display__create-product-btn"
+                                type="primary"
                                 size="large"
                                 onClick={this.createNewProduct}
-                        >
-                            Create new product
-                        </Button>
+                            >
+                                <Icon type="plus" /> Create product
+                            </Button>
+                        </Row>
+                        <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                         <br/>
-                        <br/>
+                        <div className="products-display__filter-text">Narrow list by:</div>
                         <FilterArea
                             sections={["Category","Color","Material","Size"]}
                             products = {this.products}
@@ -868,9 +885,9 @@ class ProductsDisplay extends Component{
                         {showTotalProducts}
                         <List
                             dataSource={renderProductList}
-                            grid={{gutter: 35, xs: 1, sm: 1, md: 2, lg: 3, xl: 4, xxl: 4}}
+                            grid={{gutter: 35, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 3}}
                             pagination={{
-                                pageSize: 8,
+                                pageSize: 15,
                                 hideOnSinglePage: true,
                                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
 
@@ -884,13 +901,18 @@ class ProductsDisplay extends Component{
             else if(this.state.products.length === 0 && this.state.isFetched === false){
                 return (
                         <div>
-                            <h1>Products</h1>
-                            <Button type="primary"
+                            <Row type='flex' justify="space-between">
+                                <div className="products-header">Products</div>
+                                <Button 
+                                    className="products-display__create-product-btn"
+                                    type="primary"
                                     size="large"
                                     onClick={this.createNewProduct}
-                            >
-                                Create new product
-                            </Button>
+                                >
+                                    <Icon type="plus" /> Create product
+                                </Button>
+                            </Row>
+                            <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                             <ProductCreateForm
                                 productLevelName = {this.state.productLevel}
                                 productLevelId = {(productLevelId) => this.setState({productLevelId})}
@@ -905,11 +927,11 @@ class ProductsDisplay extends Component{
                             <br/>
                             {showTotalProducts}
                             <RenderInitialCard
-                                numberOfCard={4}
+                                numberOfCard={3}
                                 cardTypeWrapper="product-card-wrapper"
-                                bodyHeight={{height:230}}
+                                bodyHeight={{height:300}}
                                 cardTypeDisplay="product-card-display"
-                                coverStyle={{height: 160,width: 278, background:"#f2f2f2"}}
+                                coverStyle={{height: 180,width: 300, background:"#e4e4e4"}}
                                 numberOfRow={{ rows: 6 }}
                             />
                         </div>
@@ -918,15 +940,20 @@ class ProductsDisplay extends Component{
             else{
                 return (
                     <div>
-                        <h1>Products</h1>
-                        <Button type="primary"
+                        <Row type='flex' justify="space-between">
+                            <div className="products-header">Products</div>
+                            <Button 
+                                className="products-display__create-product-btn"
+                                type="primary"
                                 size="large"
                                 onClick={this.createNewProduct}
-                        >
-                            Create new product
-                        </Button>
+                            >
+                                <Icon type="plus" /> Create product
+                            </Button>
+                        </Row>
+                        <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                         <br/>
-                        <br/>
+                        <div className="products-display__filter-text">Narrow list by:</div>
                         <FilterArea
                             sections={
                                 this.state.productLevel === "company" ?
@@ -957,15 +984,20 @@ class ProductsDisplay extends Component{
         } else {
             return (
                 <div>
-                    <h1>Products</h1>
-                    <Button type="primary"
+                    <Row type='flex' justify="space-between">
+                        <div className="products-header">Products</div>
+                        <Button 
+                            className="products-display__create-product-btn"
+                            type="primary"
                             size="large"
                             onClick={this.createNewProduct}
-                    >
-                        Create new product
-                    </Button>
+                        >
+                            <Icon type="plus" /> Create product
+                        </Button>
+                    </Row>
+                    <div className="products-description">Create  your products and manage colours, materials and sizes. You can assign the products to the seasons and collections or leave them without. </div>
                     <br/>
-                    <br/>
+                    <div className="products-display__filter-text">Narrow list by:</div>
                     <FilterArea
                         sections={["Season","Collection","Color","Material","Size"]}
                         products = {this.products}

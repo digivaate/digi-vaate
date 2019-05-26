@@ -3,12 +3,12 @@
 .single-material-layout {
     height: 100vh;
     display: grid;
-    grid-template-columns: 390px 450px;
-    grid-template-rows: 4em 4em 60px auto;
+    grid-template-columns: 500px 450px;
+    grid-template-rows: 4em 4em 4em 60px auto;
     grid-template-areas:
             'back-button back-button'
+            'name-layout name-layout'
             'edit-group edit-group'
-            'img-layout name-layout'
             'img-layout info-card-layout'
 }
 
@@ -29,9 +29,13 @@
 }
 
 .img-container{
-    border:1px solid #e8e8e8;
-    width: 376px;
-    height: 450px !important;
+    border: 1px solid #e8e8e8;
+    width: 460px;
+    height: 390px;
+    margin: auto;
+    padding-top: 1rem;
+    background: white;
+    text-align: center;
 }
 
 .single-material-big-ava-img{
@@ -40,15 +44,23 @@
 }
 
 .single-material-big-ava-no-img{
-    width:370px;
-    height:320px;
+    width: 370px;
+    height: 320px;
     text-align: center;
     background-color: #e4e4e4;
+    margin: auto;
 }
 
 .material-card-info{
     width:100%;
     height: 390px
+}
+
+.single-material__info-title{
+    font-size: 1.5rem;
+    font-weight:bold;
+    color: #4A4A4A;
+    display:inline-block
 }
 
 .upload-btn-wrapper {
@@ -105,12 +117,51 @@
 }
 
 /*material-list.js*/
+.material-list__header{
+    color: #000000;	
+    font-size: 36px;	
+    font-weight: bold;	
+    line-height: 49px;
+}
+
+.material-list__create-material-btn{
+    border-radius: 3px;	
+    background-color: #007CBB;	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.25);
+}
+
+.material-list__description{
+    color: #000000;	
+    font-size: 24px;	
+    line-height: 32px;
+}
+
+.material-list__material-name{
+    height: 25px;	
+    width: 226px;	
+    color: #000000;	
+    font-size: 1.3rem;	
+    font-weight: 600;	
+    line-height: 25px;
+}
+
+.material-list__material-code{
+    height: 25px;	
+    width: 226px;	
+    color: #000000;	
+    font-size: 1rem;	
+    line-height: 25px;
+    font-weight:300;
+}
+
 .material-card-wrapper{
     height:360px;
 }
 
 .material-card-display{
     width:265px;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.5);
+    border-radius: 3px;	
 }
 
 .material-list-img{

@@ -1,15 +1,22 @@
 import React,{ Component } from "react";
-import {Link, Route} from 'react-router-dom'
-import 'antd/dist/antd.css';
+import {NavLink, Route} from 'react-router-dom'
 import BreadCrumbDisplay from './breadcrumb';
 import './layout.css';
 import asyncComponent from '../../hoc/asyncComponent'
+import { Menu, Dropdown, Icon, Button } from 'antd';
 
 
 const AsyncBreadCrumb = asyncComponent(() => {
     return import(/* webpackChunkName: "breadcrumb" */'./breadcrumb')
 });
 
+const menu = (
+    <Menu>
+        <Menu.Item>
+            <Icon type="logout" /> Sign Out
+        </Menu.Item>
+    </Menu>
+);
 class HeaderBar extends Component{
     constructor(props){
         super(props);
@@ -39,22 +46,46 @@ class HeaderBar extends Component{
     render(){
         return(
             <div className={'header'}>
-                <Link to={'/'}>
-                    <h1 className={'logo'}>DigiVaate</h1>
-                </Link>
+                <div style={{display: 'flex',alignItems: 'center'}}>
+                    <NavLink 
+                        to={'/'} 
+                        style={{display:'inline-block'}}
+                        activeStyle={{
+                            textDecoration:'none'
+                        }}
+                    >
+                        <h1 className={'logo'}>DigiVaate</h1>
+                    </NavLink>
 
-                <Route path="/" render={(props) => <BreadCrumbDisplay
-                    className={'bread-crumb'}
-                    refresh = {this.state.refresh}
-                />}
-                />
-                <a
-                    className="header-section"
-                    target="_blank"
-                    href="https://ems-v12.yritysohjelmisto.fi/web/login?db=dgv-181127"
-                >
-                    SALES
-                </a>
+                    <Route path="/" render={(props) => <BreadCrumbDisplay
+                        className={'bread-crumb'}
+                        refresh = {this.state.refresh}
+                    />}
+                    />
+                </div>
+                <nav className="main-nav">
+                    <ul className="main-nav__items">
+                        <li className="main-nav__item">
+                            <Dropdown overlay={menu}>
+                                <a href="javascript:void(0);"><Icon style={{fontSize:'20px'}} type="user" /> Username</a>
+                            </Dropdown>
+                        </li>
+                        <li>
+                        <Button
+                            size='large'
+                            className="sale-button"
+                            type="primary"
+                            target="_blank"
+                            href="https://ems-v12.yritysohjelmisto.fi/web/login?db=dgv-181127"
+                        >
+                            SALES <Icon type="right" />
+                        </Button>
+                        </li>
+                    </ul>
+                </nav>
+                <nav>
+                
+                </nav>
             </div>
         )
     }
