@@ -39,19 +39,19 @@ class AdminLogin extends Component {
 				    </Link>
                     <p>Admin login</p>
                 </div>
-                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'1em'}}>
+                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'10em'}}>
                     <FormItem>
                         {getFieldDecorator('name', {
-                            rules: [{ required: true, message: 'Please input your username!' }],
+                            rules: [{ required: true, message: 'Please input username!' }],
                         })(
-                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Admin username" />
                         )}
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('password', {
-                            rules: [{ required: true, message: 'Please input your Password!' }],
+                            rules: [{ required: true, message: 'Please input password!' }],
                         })(
-                            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Admin password" />
                         )}
                     </FormItem>
                     <FormItem>

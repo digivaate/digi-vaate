@@ -56,9 +56,6 @@ class Login extends Component {
                         </Button>
                         {/*Or <a href="">register now!</a>*/}
                     </FormItem>
-                    <FormItem>
-                        This login is not yet implemented to the backend. You can login with any username. For now login just stores username to the browser storage. Password is not stored.
-                    </FormItem>
                 </Form>
             </Fragment>
         )

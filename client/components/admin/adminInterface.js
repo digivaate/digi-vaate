@@ -69,6 +69,7 @@ class AdminInterface extends Component {
 					Logout
 				</Button>
 			</div>
+			<div style={{marginTop: '6em'}}>
 			<h2 className='companies-title'>Companies</h2>
 			<List style={{maxWidth: '600px'}}
 			bordered
@@ -85,6 +86,7 @@ class AdminInterface extends Component {
 				</Item>
 			)} />
 			<CreateCompany update={this.getCompanies}/>
+			</div>
 		</Fragment>)
 	};
 };

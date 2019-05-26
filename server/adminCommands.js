@@ -6,7 +6,7 @@ import {
 } from "./database";
 
 const express = require('express');
-const adminCred = require('./admin');
+const adminCred = require('../admin');
 const jwt = require('jsonwebtoken');
 
 import {
