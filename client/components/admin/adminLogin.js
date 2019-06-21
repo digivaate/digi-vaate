@@ -19,7 +19,7 @@ class AdminLogin extends Component {
                 })
                 .then(res => {
                     console.log(res.status);
-                    location.href = '/admin';
+                    this.props.history.push('/admin');
                 })
                 .catch(err => {
                     console.error(err);

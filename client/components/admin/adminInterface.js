@@ -49,7 +49,7 @@ class AdminInterface extends Component {
 	*/
 	logout = () => {
 		Cookies.remove('adminToken');
-		window.location.href = '/admin/login';
+		this.props.history.push('/admin/login');
 	}
 
 	componentDidMount() {
