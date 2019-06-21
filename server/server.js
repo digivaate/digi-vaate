@@ -1,11 +1,11 @@
 const http = require('http');
 const app = require('./app');
 const debug = require('debug')('digi-vaate:server');
-
+const dotenv = require('dotenv')
 const port = normalizePort(process.env.PORT || 8080);
 app.set('port', port);
 const server = http.createServer(app);
-
+dotenv.config()
 server.listen(port, () => console.log('Listening on port ' + port));
 server.on('error', onError);
 server.on('listening', onListening);

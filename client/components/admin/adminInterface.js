@@ -62,7 +62,6 @@ class AdminInterface extends Component {
 	}
 
 	render() {
-		console.log(Cookies.get())
 		return(<Fragment>
 			<div className='header'>
 				<Link to={'/'}>
