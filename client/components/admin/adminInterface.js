@@ -53,10 +53,16 @@ class AdminInterface extends Component {
 	}
 
 	componentDidMount() {
-		this.getCompanies();
+		const adminToken = Cookies.get('adminToken');
+		if(!adminToken){
+			this.props.history.push('/admin/login')
+		} else {
+			this.getCompanies();
+		}
 	}
 
 	render() {
+		console.log(Cookies.get())
 		return(<Fragment>
 			<div className='header'>
 				<Link to={'/'}>

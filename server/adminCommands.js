@@ -30,7 +30,7 @@ module.exports = (apiRoutes, dbConnections) => {
                     expiresIn: '1h'
                 });
 
-            res.cookie('adminToken', token, {maxAge: 3600000, httpOnly: true});
+            res.cookie('adminToken', token, {maxAge: 3600000});
             res.send({
                 status: 'Logged in'
             });

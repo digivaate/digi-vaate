@@ -3,9 +3,18 @@ import { Form, Icon, Input, Button, message } from 'antd';
 import {Link} from 'react-router-dom';
 import axios from 'axios/index';
 import { API_ROOT } from '../../api-config';
+import Cookies from 'js-cookie';
+
 const FormItem = Form.Item;
 
 class AdminLogin extends Component {
+
+    componentDidMount() {
+		const adminToken = Cookies.get('adminToken');
+		if(adminToken){
+			this.props.history.push('/admin')
+		}
+	}
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -19,6 +28,7 @@ class AdminLogin extends Component {
                 })
                 .then(res => {
                     console.log(res.status);
+                    console.log(res)
                     this.props.history.push('/admin');
                 })
                 .catch(err => {
