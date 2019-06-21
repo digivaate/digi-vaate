@@ -23,12 +23,18 @@ export default (databaseConnections) => {
         }
 
         const token = jwt.sign({
-            company: 'digivaate_' + company.name
+            company: 'digivaate_' + company.name,
+            companyName: company.name,
+            companyId: company.id,
+            companyTaxPercent: company.taxPercent
+
         },process.env.JWT_KEY,{
             expiresIn: '1h'
         });
 
         res.cookie('compToken', token, {maxAge: 3600000});
-        res.send({status: 'Logged in'});
+        res.send({
+            status: 'Logged in',
+        });
     }
 }
