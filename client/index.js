@@ -4,7 +4,7 @@ import './index.css';
 import { render } from "react-dom";
 import App from './App';
 import Login from "./components/login";
-import {BrowserRouter,Route} from 'react-router-dom'
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import axios from "axios/index";
 import AdminLogin from "./components/admin/adminLogin";
 import AdminInterface from "./components/admin/adminInterface";
@@ -25,12 +25,14 @@ axios.interceptors.response.use((res) => {return res}, (err) => {
 
 render(
     <BrowserRouter>
-    <div>
-        <Route path={'/'} exact component={App}/>
-        <Route path={'/login'} exact component={Login}/>
-        <Route path={'/admin'} exact component={AdminInterface}/>
-        <Route path={'/admin/login'} component={AdminLogin}/>
-    </div>
+        <div>
+            <Switch>
+                <Route path={'/login'} exact component={Login}/>
+                <Route path={'/admin'} exact component={AdminInterface}/>
+                <Route path={'/admin/login'} component={AdminLogin}/>
+                <Route path={'/'} component={App}/>
+            </Switch>
+        </div>
     </BrowserRouter>,
     document.getElementById("root"));
 
