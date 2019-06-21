@@ -3,7 +3,7 @@ import {NavLink, Route} from 'react-router-dom'
 import BreadCrumbDisplay from './breadcrumb';
 import './layout.css';
 import asyncComponent from '../../hoc/asyncComponent'
-import { Menu, Dropdown, Icon, Button } from 'antd';
+import { Icon, Button } from 'antd';
 import Cookies from 'js-cookie';
 
 const AsyncBreadCrumb = asyncComponent(() => {

@@ -2,9 +2,17 @@ import React, {Component, Fragment} from 'react';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import axios from 'axios/index';
 import { API_ROOT } from '../api-config';
+import Cookies from 'js-cookie';
+
 const FormItem = Form.Item;
 
 class Login extends Component {
+    componentDidMount(){
+        const compToken = Cookies.get('compToken')
+        if(compToken){
+            this.props.history.push('/')
+        }
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();

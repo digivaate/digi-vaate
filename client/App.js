@@ -1,7 +1,8 @@
 import React from "react";
+import Cookies from 'js-cookie';
 import HeaderBar from './components/layout/header-bar'
 import SideBar from './components/layout/side-bar'
-import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import {Route,Switch} from 'react-router-dom'
 import {BackTop} from 'antd'
 import MainScreen from "./components/mainScreen";
 import BudgetPlanningTable from './components/summary-table'
@@ -41,6 +42,13 @@ class App extends React.Component {
             mount: false,
             renderBC: false,
             changeLocation: false
+        }
+    }
+
+    componentDidMount(){
+        const compToken = Cookies.get('compToken')
+        if(!compToken){
+            this.props.history.push('/login')
         }
     }
 
