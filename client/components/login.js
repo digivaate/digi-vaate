@@ -17,8 +17,7 @@ class Login extends Component {
                     password: values.password
                 })
                 .then(res => {
-                    console.log(res.status);
-                    location.href = '/';
+                    this.props.history.push('/')
                 })
                 .catch(err => {
                     console.error(err);

@@ -138,7 +138,6 @@ class App extends React.Component {
 
     render() {
         return (
-        <BrowserRouter>
         <React.Fragment>
             <Route path="/(.+)" render={() => 
                 <div className="background"></div>
@@ -149,17 +148,21 @@ class App extends React.Component {
                 }
             />
             <div className="App">
-                <HeaderBar
-                    newSeasonName={this.state.newSeasonName}
-                    newCollectionName={this.state.newCollectionName}
-                    newProduct={this.state.newProduct}
-                    newMaterial={this.state.newMaterial}
-                    changeLocation={this.state.changeLocation}
-                    newSeasonEdit={this.state.newSeasonEdit}
-                    newCollectionEdit={this.state.newCollectionEdit}
-                    newProductName={this.state.newProductName}
-                    newMaterialName={this.state.newMaterialName}
-                />
+                <Route path="/" render={(props) => 
+                    <HeaderBar
+                        {...props}
+                        newSeasonName={this.state.newSeasonName}
+                        newCollectionName={this.state.newCollectionName}
+                        newProduct={this.state.newProduct}
+                        newMaterial={this.state.newMaterial}
+                        changeLocation={this.state.changeLocation}
+                        newSeasonEdit={this.state.newSeasonEdit}
+                        newCollectionEdit={this.state.newCollectionEdit}
+                        newProductName={this.state.newProductName}
+                        newMaterialName={this.state.newMaterialName}
+                    />
+                }/>
+                
                 <Route path="/(.+)" render={() => 
                     <div className="sider">
                         <SideBar
@@ -286,7 +289,6 @@ class App extends React.Component {
                 </div>
             </div>
             </React.Fragment>
-        </BrowserRouter>
     )
 };
 

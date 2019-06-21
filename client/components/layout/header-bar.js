@@ -37,8 +37,8 @@ class HeaderBar extends Component{
     }
 
     logout = () => {
-		Cookies.remove('compToken');
-		window.location.href = '/login';
+        Cookies.remove('compToken');
+		this.props.history.push('/login')
     }
     
     render(){
