@@ -957,10 +957,10 @@ class ProductsDisplay extends Component{
                         <FilterArea
                             sections={
                                 this.state.productLevel === "company" ?
-                                    ["Season","Collection","Color","Material","Size"] :
+                                    ["Season","Collection","Category","Color","Material","Size"] :
                                         this.state.productLevel === "season" ?
-                                            ["Collection","Color","Material","Size"] :
-                                            ["Color","Material","Size"]
+                                            ["Collection","Category","Color","Material","Size"] :
+                                            ["Category","Color","Material","Size"]
                             }
                             products = {this.products}
                             sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
@@ -999,7 +999,7 @@ class ProductsDisplay extends Component{
                     <br/>
                     <div className="products-display__filter-text">Narrow list by:</div>
                     <FilterArea
-                        sections={["Season","Collection","Color","Material","Size"]}
+                        sections={["Season","Collection",",Category","Color","Material","Size"]}
                         products = {this.products}
                         sendFilterValues = {(filterValues) => this.receiveFilterValues(filterValues)}
                     />
