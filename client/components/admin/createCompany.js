@@ -1,8 +1,8 @@
 import React,{Component, Fragment} from 'react';
-import {message, Button, Modal, Input} from 'antd';
+import {message, Button, Modal, Input, Icon} from 'antd';
 import axios from 'axios';
 import { API_ROOT } from '../../api-config';
-
+import './adminInterface.css'
 class CreateCompany extends Component {
     state = {
         visible: false,
@@ -67,17 +67,23 @@ class CreateCompany extends Component {
 
     render() {
         return(<Fragment>
-			<Button onClick={this.show}>Create new company</Button>
+            <Button 
+                className="adminIn__create-company-btn" 
+                onClick={this.show}
+                size='large'
+            >
+                <Icon type='plus'/>Create new company
+            </Button>
             <Modal
-            title='Create company'
-            visible={this.state.visible}
-            closable={false}
-            confirmLoading={this.state.confirmLoading}
-            onOk={this.create}
-            okText="Create"
-            onCancel={this.hide}
-            okButtonProps={{disabled: (!this.state.name || !this.state.password)}}
-            cancelButtonProps={{disabled: this.state.cancelDisabled}}
+                title='Create company'
+                visible={this.state.visible}
+                closable={false}
+                confirmLoading={this.state.confirmLoading}
+                onOk={this.create}
+                okText="Create"
+                onCancel={this.hide}
+                okButtonProps={{disabled: (!this.state.name || !this.state.password)}}
+                cancelButtonProps={{disabled: this.state.cancelDisabled}}
             >
                 <Input placeholder='Name' onChange={this.updateName}/>
                 <Input placeholder='Password' type='password' onChange={this.updatePassword} />

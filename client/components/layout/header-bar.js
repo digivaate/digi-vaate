@@ -65,7 +65,7 @@ class HeaderBar extends Component{
                     <ul className="main-nav__items">
                         <li className="main-nav__item">
                             <Button className="logout-button" onClick={this.logout}>
-                                <Icon type="logout" /> Sign Out
+                                <Icon type="logout" /> Logout
                             </Button>
                         </li>
                         <li>

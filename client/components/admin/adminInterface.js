@@ -2,7 +2,7 @@ import { API_ROOT } from '../../api-config';
 import React,{Component,Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {List, Button, Typography} from 'antd';
+import {List, Button, Icon} from 'antd';
 import '../layout/layout.css'
 import CompanyItem from './companyItem';
 import CreateCompany from './createCompany';
@@ -67,30 +67,32 @@ class AdminInterface extends Component {
 				<Link to={'/'}>
 					<h1 className={'logo'}>DigiVaate</h1>
 				</Link>
-				<p className='header-text'>Admin console</p>
 				<Button
 				className='logout-button'
 				onClick={this.logout}>
-					Logout
+					<Icon type="logout" /> Logout
 				</Button>
 			</div>
 			<div style={{marginTop: '6em'}}>
-			<h2 className='companies-title'>Companies</h2>
-			<List style={{maxWidth: '600px'}}
-			bordered
-			dataSource={this.state.companies}
-			renderItem={item => (
-				<Item >
-					<CompanyItem
-					name={item.name}
-					id={item.id}
-					password={item.password}
-					deleteComp={this.deleteComp}
-					//patchComp={this.patchComp}
-					/>
-				</Item>
-			)} />
-			<CreateCompany update={this.getCompanies}/>
+			<div className='adminIn__header'>Admin console</div>
+			<div className='adminIn__content'>
+				<h2 className='companies-title'>Companies</h2>
+				<CreateCompany update={this.getCompanies}/>
+				<List style={{maxWidth: '600px'}}
+				bordered
+				dataSource={this.state.companies}
+				renderItem={item => (
+					<Item >
+						<CompanyItem
+						name={item.name}
+						id={item.id}
+						password={item.password}
+						deleteComp={this.deleteComp}
+						//patchComp={this.patchComp}
+						/>
+					</Item>
+				)} />
+			</div>
 			</div>
 		</Fragment>)
 	};
