@@ -12,10 +12,10 @@
 
 .mainScreen__welcome-description{
     height: 3.9rem;	
-    width: 52.6rem;	
     color: #FFFFFF;	
     font-size: 1.6rem;	
     line-height: 2rem;
+    padding-bottom: 0.5rem;
 }
 
 .mainScreen__cards-area{
