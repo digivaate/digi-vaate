@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "set JWT_KEY=abcd&& set NODE_ENV=production&& babel-node ./server/server.js",
+    "start-mac": "NODE_ENV=production babel-node ./server/server.js",
     "build": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
     "heroku-postbuild": "npm run build",
