@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import axios from 'axios/index';
 import { API_ROOT } from '../api-config';
 import Cookies from 'js-cookie';
+import './login.css'
 
 const FormItem = Form.Item;
 
@@ -38,11 +39,14 @@ class Login extends Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return(
-            <Fragment>
+            <React.Fragment>
+            <div className="background"></div>
+            <div className="login__login-container">
                 <div className={'header'}>
                     <h1 className={'logo'}>Welcome to DigiVaate</h1>
                 </div>
-                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'10em'}}>
+                <Form onSubmit={this.handleSubmit} className="login__login-form">
+                    <div className="login__login-header">Company Login</div>
                     <FormItem>
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'Please input the company name!' }],
@@ -64,7 +68,8 @@ class Login extends Component {
                         {/*Or <a href="">register now!</a>*/}
                     </FormItem>
                 </Form>
-            </Fragment>
+            </div>
+            </React.Fragment>
         )
     }
 }
