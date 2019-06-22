@@ -7,6 +7,7 @@ class SizeController extends Controller {
         if (Array.isArray(req.body)) {
             const promises = [];
             req.body.forEach(ent => {
+                ent.companyId = req.compAuth.companyId;
                 promises.push( this.model.create(ent) );
             });
             Promise.all(promises)
@@ -16,6 +17,7 @@ class SizeController extends Controller {
                 .catch(err => next(err) );
         } else {
             let entity = null;
+            req.body.companyId = req.compAuth.companyId;
             this.model.create(req.body)
                 .then(ent => {
                     entity = ent;

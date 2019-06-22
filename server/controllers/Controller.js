@@ -2,7 +2,7 @@ module.exports = class Controller {
     constructor(dbConnection, model) {
         this.model = model;
         this.dbConnection = dbConnection;
-        this.find_by_attribute = this.find_by_attribute.bind(this);
+        //this.find_by_attribute = this.find_by_attribute.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
         this.create = this.create.bind(this);
@@ -10,7 +10,7 @@ module.exports = class Controller {
     }
 
     find_by_attribute = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
@@ -30,6 +30,9 @@ module.exports = class Controller {
 
     create(req, res) {
         let entity = null;
+        
+        req.body.companyId = req.compAuth.companyId;
+        
         this.model.create(req.body)
             .then(ent => {
                 entity = ent;
@@ -38,7 +41,7 @@ module.exports = class Controller {
             .then(() => {
                 res.send(entity);
             })
-            .catch(this.dbConnection.Sequelize.ValidationError, (err) => {
+            .catch(this.dbConnection.sequelize.ValidationError, (err) => {
                 // respond with validation errors
                 console.error(err);
                 return res.status(422).send(err.errors);
@@ -50,7 +53,7 @@ module.exports = class Controller {
     };
 
     update(req, res) {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -78,7 +81,7 @@ module.exports = class Controller {
     };
 
     delete(req, res) {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.stat(500).json(properties);
             return;
@@ -98,8 +101,11 @@ module.exports = class Controller {
             });
     };
 
-    static collectProperties(query, model) {
+    static collectProperties(query, model, companyId) {
         const properties = {};
+        if (companyId) {
+            properties.companyId =  companyId;
+        }
         for (let attr in query) {
             if (attr in model.rawAttributes) {
                 if (query.hasOwnProperty(attr)) {

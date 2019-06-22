@@ -46,7 +46,7 @@ class ProductController extends Controller {
     };
 
     find_by_attribute = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
@@ -67,6 +67,8 @@ class ProductController extends Controller {
 
     create = (req, res) => {
         let entity = null;
+        req.body.companyId = req.compAuth.companyId;
+        
         this.model.create(req.body)
             .then(async ent => {
                 entity = ent;
@@ -76,7 +78,7 @@ class ProductController extends Controller {
                 });
                 res.send(entity);
             })
-            .catch(this.dbConnection.Sequelize.ValidationError, (err) => {
+            .catch(this.dbConnection.sequelize.ValidationError, (err) => {
                 // respond with validation errors
                 console.error(err);
                 return res.status(422).send({errors: err.errors });
@@ -87,7 +89,7 @@ class ProductController extends Controller {
     };
 
     update = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;
