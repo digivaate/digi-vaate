@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios/index';
 import { API_ROOT } from '../../api-config';
 import Cookies from 'js-cookie';
-
+import './adminLogin.css'
 const FormItem = Form.Item;
 
 class AdminLogin extends Component {
@@ -43,13 +43,15 @@ class AdminLogin extends Component {
         const { getFieldDecorator } = this.props.form;
         return(
             <Fragment>
+                <div className="background"></div>
+                <div className="adminLogin__login-container">
                 <div className={'header'}>
                     <Link to={'/'}>
 					    <h1 className={'logo'}>DigiVaate</h1>
 				    </Link>
-                    <p>Admin login</p>
                 </div>
-                <Form onSubmit={this.handleSubmit} style={{ maxWidth:'400px', margin:'auto', marginTop:'10em'}}>
+                <Form onSubmit={this.handleSubmit} className="adminLogin__login-form">
+                    <div className="adminLogin__login-header">Admin Login</div>
                     <FormItem>
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'Please input username!' }],
@@ -70,6 +72,7 @@ class AdminLogin extends Component {
                         </Button>
                     </FormItem>
                 </Form>
+                </div>
             </Fragment>
         )
     }
