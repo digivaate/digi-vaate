@@ -52,9 +52,7 @@
     "react-scripts": "1.1.4",
     "react-table": "^6.8.6",
     "reactcss": "latest",
-    "sequelize": "^4.37.10"
-  },
-  "devDependencies": {
+    "sequelize": "^4.37.10",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-dynamic-import-webpack": "^1.1.0",
@@ -62,7 +60,9 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
+  },
+  "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.5.1",
     "html-loader": "^0.5.5",
