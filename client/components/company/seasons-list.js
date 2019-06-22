@@ -197,7 +197,6 @@ class SeasonsList extends Component{
     render(){
         let renderSeasonsOfCompany = [];
         if(this.state.seasons){
-            console.log(this.state.seasons)
             this.state.seasons.sort(function(a, b){
                 return a.id-b.id
             });
@@ -277,7 +276,7 @@ class SeasonsList extends Component{
                                         </div>
                                         <div className="seasons-list__season-name-collections-container">
                                             <div className="seasons-list__season-name-collections">{season.name} - Collections</div>
-                                                {season.collections.map(collection => {
+                                                {season.collections ? season.collections.map(collection => {
                                                     return (
                                                         <div className="seasons-list__collection-container">
                                                             <div className="seasons-list__collection-name">{collection.name}</div>
@@ -286,7 +285,7 @@ class SeasonsList extends Component{
                                                             </div>
                                                         </div>
                                                     )
-                                                })}
+                                                }) : null}
                                         </div>
                                     </div>
                                 )
