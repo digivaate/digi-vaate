@@ -11,7 +11,7 @@ class CollectionController extends Controller {
 
     //populates with products
     getAllColors = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -44,7 +44,7 @@ class CollectionController extends Controller {
     };
 
     find_by_attribute = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;
@@ -66,7 +66,7 @@ class CollectionController extends Controller {
     };
 
     getAllProducts = (req, res, next) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;

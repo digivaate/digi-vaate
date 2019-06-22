@@ -1,10 +1,3 @@
-import {
-    deleteCompany,
-    getDatabaseNames,
-    createDatabase,
-    connectToDatabase
-} from "./database";
-
 const express = require('express');
 const adminCred = require('../admin');
 const jwt = require('jsonwebtoken');
@@ -12,9 +5,8 @@ const jwt = require('jsonwebtoken');
 import {
     adminAuth
 } from './auth';
-import createApiRoutes from "./routes/createApiRoutes";
 
-module.exports = (apiRoutes, dbConnections) => {
+module.exports = (apiRoutes, dbConnection) => {
     const router = express.Router();
 
     router.use('/login', (req, res, next) => {
@@ -38,38 +30,29 @@ module.exports = (apiRoutes, dbConnections) => {
     });
 
     router.get('/company', adminAuth, async (req, res, next) => {
-        const names = await getDatabaseNames();
-        const compPromises = [];
+        try {
+            const compList = await dbConnection.models.companies.findAll({raw: true});
         
-        names.forEach(n => {
-            compPromises.push(dbConnections[n].models.companies.find({raw: true}));
-        });
-        const compList = await Promise.all(compPromises);
-        
+        /*
         for (let i = 0; i < compList.length; i++) {
             compList[i].dbName = names[i];
         }
-        res.send(compList);
-        
+        */
+            res.send(compList);
+        } catch (e) {
+            console.error(e);
+            res.status(500).send();
+        }
     });
 
     router.post('/company', adminAuth, async (req, res, next) => {
-        const companyName = req.body.name.trim().replace(/ /g,"_");
-        req.body.name = companyName;
-        let dbName = null;
-        let dbConn = null;
         try {
-            if (!companyName) throw 'Name missing';
+            if (!req.body.name) throw 'Name missing';
             if (!req.body.password) throw 'Password missing';
-
-            dbName = await createDatabase('digivaate_' + companyName);
-            dbConn = await connectToDatabase(dbName);
-            dbConnections[dbName] = dbConn;
-            apiRoutes[dbName] = await createApiRoutes(dbConn);
-            apiRoutes[dbName](req, res, next);
-            //res.send({success: req.body.name + ' company created'});
+            
+            apiRoutes(req, res, next);
+            
         } catch (e) {
-            await deleteCompany(dbName, dbConnections, apiRoutes);
             console.error('Error in creating company: ', e);
             res.status(500).json({
                 error: e
@@ -79,20 +62,18 @@ module.exports = (apiRoutes, dbConnections) => {
 
     router.delete('/company', adminAuth, (req, res, next) => {
         console.log('DELETE');
-        deleteCompany(req.query.name, dbConnections, apiRoutes)
-        .then(() => {
-            res.send({
-                success: req.query.name + ' deleted'
+        dbConnection.models.companies.findOne({ where: { id: req.query.id } })
+            .then(ent => {
+                return ent.destroy();
+            })
+            .then(() => res.send('deleted'))
+            .catch(err => {
+                console.error('Error: ' + err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(err => {
-            console.error(err);
-            res.status(500).json({
-                error: err
-            });
-        })
     });
 
+    /*
     router.use('/:dbName', adminAuth, async (req, res, next) => {
         try {
             const name = req.params.dbName;
@@ -108,6 +89,6 @@ module.exports = (apiRoutes, dbConnections) => {
             res.status(500).send(e)
         }
     });
-
+    */
     return router;
 };

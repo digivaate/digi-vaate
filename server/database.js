@@ -24,6 +24,7 @@ if (process.env.DATABASE_URL) {
         config.options
     );
 }
+/*
 export async function getDatabaseNames() {
     if (!config) throw 'Postgres config missing';
 
@@ -39,7 +40,8 @@ export async function getDatabaseNames() {
     });
     return dbNames;
 }
-
+*/
+/*
 export async function connectToDatabases(dbNames) {
     const connections = [];
     for (let i = 0; i < dbNames.length; i++) {
@@ -56,7 +58,8 @@ export async function connectToDatabases(dbNames) {
             return databases;
         });
 }
-
+*/
+/*
 export async function createDatabase(name) {
     const dbNames = await getDatabaseNames();
     if (dbNames.includes(name)) throw 'Digivaate database with name ' + name + ' already exists';
@@ -66,6 +69,7 @@ export async function createDatabase(name) {
 
     return name;
 }
+*/
 
 export async function connectToDatabase(dbName) {
         let db = new DatabaseConnection(dbName);

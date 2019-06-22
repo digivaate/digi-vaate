@@ -10,7 +10,7 @@ class OrderController extends Controller {
     //override
     find_by_attribute = (req, res) => {
         let orders = null;
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.stat(500).json(properties.error);
             return;

@@ -34,12 +34,13 @@ class CompanyItem extends Component {
 
 	confirmDelete = () => {
 		const name = this.props.name;
+		const id = this.props.id;
 		const deleteComp = this.props.deleteComp;
 
 		confirm({
 			title: `Do you really want to delete ${name}?`,
 			onOk() {
-				deleteComp(`digivaate_${name}`);
+				deleteComp(id);
 			}
 		})
 	}

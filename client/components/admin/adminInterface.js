@@ -29,8 +29,8 @@ class AdminInterface extends Component {
 		this.setState({showCreate: true});
 	}
 
-	deleteComp = (dbName) => {
-		axios.delete(`${API_ROOT}/admin/company?name=${dbName}`)
+	deleteComp = (id) => {
+		axios.delete(`${API_ROOT}/admin/company?id=${id}`)
 			.then(() => this.getCompanies())
 			.catch(err => console.error(err));
 	}
@@ -83,8 +83,8 @@ class AdminInterface extends Component {
 				<Item >
 					<CompanyItem
 					name={item.name}
+					id={item.id}
 					password={item.password}
-					dbName={item.dbName}
 					deleteComp={this.deleteComp}
 					//patchComp={this.patchComp}
 					/>

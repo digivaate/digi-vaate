@@ -11,7 +11,7 @@ class SeasonController extends Controller {
 
     //populates with products
     getAllColors = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -45,7 +45,7 @@ class SeasonController extends Controller {
 
     getAllProducts = (req, res) => {
 
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties(req.query, this.model, req.compAuth.companyId);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -97,7 +97,7 @@ class SeasonController extends Controller {
     //updates product values that changed in table. Checks if values are in a limit of the budget
     updateProducts = (req, res) => {
         this.model.findOne({
-            where: { name: req.body.seasonName },
+            where: { name: req.body.seasonName, companyId: req.compAuth.companyId },
             include: [
                 {
                     model: this.dbConnection.models.products,

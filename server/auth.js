@@ -6,7 +6,6 @@ export function auth(req, res, next) {
         if (!process.env.JWT_KEY) throw 'JWT_KEY missing from environment variables';
 
         req.compAuth = jwt.verify(req.cookies.compToken, process.env.JWT_KEY);
-        
         //Refresh token if about to expire
         if(req.compAuth.exp - Date.now()/Math.pow(10,3) < 1800) {
             console.log('Refreshed company token for: ', req.compAuth.name);
