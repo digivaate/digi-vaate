@@ -4,7 +4,8 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { Breadcrumb } from 'antd';
 import axios from 'axios';
 import "./layout.css"
-import createAxiosConfig from "../../createAxiosConfig";
+import Cookies from 'js-cookie';
+import * as jwt from 'jsonwebtoken'
 
 const Home = withRouter((props) => {
     const { location } = props;
@@ -57,7 +58,7 @@ class BreadCrumbDigi extends Component{
     productsMap = [];
     materials=[];
     companies = [];
-    companiesMap = [];
+    companyInfo = "";
     companiesProduct = [];
     companiesProductsMap = [];
     breadcrumbNameMap = {};
@@ -71,12 +72,16 @@ class BreadCrumbDigi extends Component{
     }
 
     componentDidMount(){
+        const compToken = Cookies.get('compToken')
+        const companyInfo = jwt.decode(compToken)
         //Breadcrumbs for all company stuffs
         axios.get(`${API_ROOT}/company`)
             .then(res => {
                 this.companies = res.data;
                 for(let i=0;i<this.companies.length;i++) {
-                    this.companiesMap[i] = this.companies[i].name;
+                    if (this.companies[i].name === companyInfo.companyName) {
+                        this.companyInfo = this.companies[i];
+                    }   
                 }
                 for(let j=0; j<this.companies.length; j++){
                     this.breadcrumbNameMap["/products"] = "Products";
@@ -84,7 +89,7 @@ class BreadCrumbDigi extends Component{
                     this.breadcrumbNameMap["/materials"] = "Materials";
                     this.breadcrumbNameMap["/seasons"] = "Seasons";
                     this.breadcrumbNameMap["/orders"] = "Orders";
-                    axios.get(`${API_ROOT}/company/products?id=${this.companies[j].id}`)
+                    axios.get(`${API_ROOT}/company/products?id=${this.companyInfo.id}`)
                         .then(response => {
                             this.companiesProduct = response.data;
                             for(let m = 0 ; m<this.companiesProduct.length; m++){
@@ -172,10 +177,11 @@ class BreadCrumbDigi extends Component{
     }
 
     render(){
+        console.log(this.breadcrumbNameMap)
         return(
             <Home
                 breadcrumbMap={this.breadcrumbNameMap}
-                companiesMap={this.companiesMap[0]}
+                companiesMap={this.companyInfo.name}
             />
         )
     }
