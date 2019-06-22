@@ -15,7 +15,7 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
-    "start": "babel-node ./server/server.js",
+    "start": "NODE_ENV=production babel-node ./server/server.js",
     "build": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
     "heroku-postbuild": "npm run build",
