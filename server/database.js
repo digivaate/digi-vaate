@@ -3,13 +3,27 @@ import createApiRoutes from "./routes/createApiRoutes";
 const Sequelize = require('sequelize');
 const config = require('./postgres');
 
-const sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config.options
-);
+let sequelize = null;
 
+if (process.env.DATABASE_URL) {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+        options: {
+            dialect: 'postgres',
+            protocol: 'postgres',
+            logging: false,
+            dialectOptions: {
+                ssl: true
+            }
+        }
+    });
+} else {
+    sequelize = new Sequelize(
+        config.database,
+        config.username,
+        config.password,
+        config.options
+    );
+}
 export async function getDatabaseNames() {
     if (!config) throw 'Postgres config missing';
 
