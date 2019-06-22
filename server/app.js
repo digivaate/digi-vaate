@@ -31,15 +31,18 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 //Serve front end
+const staticPath = express.static(path.resolve(__dirname, '../dist/client/'));
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, '../dist/client/')));
-    app.use('*', express.static(path.resolve(__dirname, '../dist/client/')));
+    app.use(staticPath);
+    app.use('/login', staticPath);
+    app.use('/admin', staticPath);
+    app.use('/admin/login', staticPath);
 }
 app.use('/api/admin', adminCommands(apiRoutes, databaseConnections));
 
 app.use('/api/login', login(databaseConnections));
 
-app.use(auth);
+app.use('/api', auth);
 
 getDatabaseNames()
     .then(connectToDatabases)
@@ -67,6 +70,7 @@ getDatabaseNames()
             apiRoutes[req.compAuth.company](req, res, next);
         });
 
+        app.use('*', staticPath);
         //Error handling
         app.use((req, res, next) => {
             const error = new Error('Not found');
@@ -81,7 +85,6 @@ getDatabaseNames()
             res.status(500);
             res.send({ error: err });
         });
-
         console.log('Routes open');
     });
 
