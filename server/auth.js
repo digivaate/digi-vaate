@@ -7,7 +7,8 @@ export function auth(req, res, next) {
 
         req.compAuth = jwt.verify(req.cookies.compToken, process.env.JWT_KEY);
         //Refresh token if about to expire
-        if(req.compAuth.exp - Date.now()/Math.pow(10,3) < 1800) {
+        console.log('TIME', (req.compAuth.exp - Date.now()/1000) - 1800);
+        if(req.compAuth.exp - Date.now()/1000 < 1800) {
             console.log('Refreshed company token for: ', req.compAuth.name);
             const token = jwt.sign({
                 company: req.compAuth.company

@@ -20,9 +20,9 @@ class SingleMaterialImg extends Component{
         let file = e.target.files[0];
         const data = new FormData();
         data.append('image', file, file.name);
-        axios.patch(`${API_ROOT}/material/image?id=${this.state.imgId}`, data)
+        axios.patch(`${API_ROOT}/material/image?id=${this.props.loadedMaterial.id}`, data)
             .then(() => {
-                axios.get(`${API_ROOT}/material?id=${this.state.imgId}`)
+                axios.get(`${API_ROOT}/material?id=${this.props.loadedMaterial.id}`)
                     .then(response => {
                         this.setState({
                             imgId: response.data[0].imageId
@@ -33,6 +33,7 @@ class SingleMaterialImg extends Component{
 
     render(){
         const imageId = this.state.imgId;
+        const imgUrl = `${API_ROOT}/image?id=${imageId}`
         let changeImgBtn = <div style={{height:40}}></div>;
         if(this.props.editModeStatus === true) {
             changeImgBtn = <div className="upload-btn-wrapper">
@@ -46,7 +47,7 @@ class SingleMaterialImg extends Component{
                 {changeImgBtn}
                 <div className="img-container">
                     {
-                        imgUrl ?
+                        imageId ?
                             <img className="single-material-big-ava-img" src={imgUrl} /> :
                             <div className="single-material-big-ava-no-img">
                                 <div className="no-image-text">

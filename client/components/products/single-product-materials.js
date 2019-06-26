@@ -266,6 +266,8 @@ class SingleProductMaterials extends Component{
             )
         }
         if (this.state.productMaterials.length > 0) {
+            const materialImgUrl = `${API_ROOT}/image?id=${this.state.imageId}`;
+
             this.state.productMaterials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
@@ -300,7 +302,7 @@ class SingleProductMaterials extends Component{
                             </Col>
                             <Col span={8}>
                                 {
-                                    materialImgUrl ?
+                                    this.state.imageId ?
                                     <img className="single-product-material-img" src={`${materialImgUrl}`}/> :
                                     <div className="single-product-material-no-img">
                                         <div className="no-image-text">
