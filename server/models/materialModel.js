@@ -37,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         minQuantity: DataTypes.INTEGER,
         instructions: DataTypes.STRING,
         manufacturer: DataTypes.STRING,
-        composition: DataTypes.STRING
+        composition: DataTypes.STRING,
+        ownerCompany: {
+            type: DataTypes.INTEGER
+        }
     });
 
     Material.associate = (models) => {

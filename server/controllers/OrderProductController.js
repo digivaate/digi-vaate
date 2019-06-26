@@ -41,6 +41,7 @@ class OrderProductController extends Controller {
             res.status(409).json({ Error: 'product already in order' });
             return;
         }
+        req.body.ownerCompany = req.compAuth.companyId;
         this.model.create(req.body)
             .then(async ent => {
                 await this.setRelations(ent, req.body);

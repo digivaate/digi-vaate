@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
             */
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
 

@@ -46,6 +46,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         subcCostTotal: {
             type: DataTypes.FLOAT
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
 

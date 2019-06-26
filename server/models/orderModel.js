@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         deliveryTerms: DataTypes.STRING,
         paymentTerms: DataTypes.STRING,
         brandLabel: DataTypes.STRING,
-        info: DataTypes.STRING
+        info: DataTypes.STRING,
+        ownerCompany: {
+            type: DataTypes.INTEGER
+        }
     });
 
     Order.associate = (models) => {

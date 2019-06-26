@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
         encoding: DataTypes.STRING,
         mimetype: DataTypes.STRING,
         buffer: DataTypes.BLOB,
+        ownerCompany: {
+            type: DataTypes.INTEGER
+        }
     });
 
     Image.associate = (models) => {

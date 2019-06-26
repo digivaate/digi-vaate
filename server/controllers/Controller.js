@@ -31,7 +31,7 @@ module.exports = class Controller {
     create(req, res) {
         let entity = null;
         
-        req.body.companyId = req.compAuth.companyId;
+        req.body.ownerCompany = req.compAuth.companyId;
         
         this.model.create(req.body)
             .then(ent => {
@@ -104,7 +104,7 @@ module.exports = class Controller {
     static collectProperties(query, model, companyId) {
         const properties = {};
         if (companyId) {
-            properties.companyId =  companyId;
+            properties.ownerCompany =  companyId;
         }
         for (let attr in query) {
             if (attr in model.rawAttributes) {

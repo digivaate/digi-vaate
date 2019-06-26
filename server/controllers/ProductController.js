@@ -4,7 +4,6 @@ class ProductController extends Controller {
     constructor(dbConnection) { super(dbConnection, dbConnection.models.products); }
 
     static clearOtherRelations = (req, res, next) => {
-        /*
         if (req.body.companyId) {
             req.body.seasonId = null;
             req.body.collectionId = null;
@@ -15,7 +14,6 @@ class ProductController extends Controller {
             req.body.seasonId = null;
             req.body.companyId = null;
         }
-        */
         next();
     };
 
@@ -69,7 +67,7 @@ class ProductController extends Controller {
 
     create = (req, res) => {
         let entity = null;
-        req.body.companyId = req.compAuth.companyId;
+        req.body.ownerCompany = req.compAuth.companyId;
         
         this.model.create(req.body)
             .then(async ent => {

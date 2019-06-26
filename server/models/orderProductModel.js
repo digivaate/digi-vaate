@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
         productId: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
     OrderProduct.associate = (models) => {

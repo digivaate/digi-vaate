@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         value: {
             type: DataTypes.STRING
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
 

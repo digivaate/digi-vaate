@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         filePaths: {
             type: DataTypes.ARRAY(DataTypes.STRING)
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
 

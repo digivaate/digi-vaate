@@ -1,7 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Size = sequelize.define('sizes', {
         value: DataTypes.STRING,
-        amount: DataTypes.INTEGER
+        amount: DataTypes.INTEGER,
+        ownerCompany: {
+            type: DataTypes.INTEGER
+        }
     });
 
     Size.associate = (model) => {

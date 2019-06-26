@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
         coverPercent: {
             type: DataTypes.FLOAT,
             defaultValue: 0,
+        },
+        ownerCompany: {
+            type: DataTypes.INTEGER
         }
     });
 
