@@ -7,15 +7,16 @@ export function auth(req, res, next) {
 
         req.compAuth = jwt.verify(req.cookies.compToken, process.env.JWT_KEY);
         //Refresh token if about to expire
-        console.log('TIME', (req.compAuth.exp - Date.now()/1000) - 1800);
         if(req.compAuth.exp - Date.now()/1000 < 1800) {
-            console.log('Refreshed company token for: ', req.compAuth.name);
+            console.log('Refreshed company token for: ', req.compAuth.companyName);
             const token = jwt.sign({
-                company: req.compAuth.company
+                companyName: req.compAuth.companyName,
+                companyId: req.compAuth.companyId,
+                companyTaxPercent: req.compAuth.companyTaxPercent
             },process.env.JWT_KEY,{
                 expiresIn: '1h'
             });
-            res.cookie('compToken', token, {maxAge: 3600000});    
+            res.cookie('compToken', token, {maxAge: 10000});    
         }
         
         next();
@@ -33,10 +34,11 @@ export function adminAuth(req, res, next) {
         req.adminAuth = jwt.verify(req.cookies.adminToken, process.env.JWT_KEY);
 
         //Refresh token if about to expire
-        if(req.adminAuth.exp - Date.now()/Math.pow(10,3) < 1800) {
+        if(req.adminAuth.exp - Date.now()/1000 < 1800) {
             console.log('Refreshed admin token');
             const token = jwt.sign({
-                name: req.adminAuth.name
+                name: req.adminAuth.name,
+                time: Date.now()
             },
             process.env.JWT_KEY, {
                 expiresIn: '1h'
