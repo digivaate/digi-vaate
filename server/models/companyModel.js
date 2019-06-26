@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
 
     Company.associate = (models) => {
         Company.hasMany(models.collections, { as: 'collections' });
-        Company.hasMany(models.colors, { as: 'colors' });
         Company.hasMany(models.images, { as: 'images' });
         Company.hasMany(models.materials, { as: 'materials' });
         Company.hasMany(models.orders, { as: 'orders' });

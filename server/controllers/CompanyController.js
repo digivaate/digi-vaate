@@ -53,9 +53,72 @@ class CompanyController extends Controller {
             });
     };
 
+    update(req, res) {
+        const properties = Controller.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.status(500).json(properties);
+            return;
+        }
+        const updatedEntities = [];
+        this.model.findAll({ where: properties })
+            .then(ents => {
+                const promises = [];
+                ents.forEach( ent => {
+                    promises.push(this.setRelations(ent, req.body));
+                    updatedEntities.push(ent.updateAttributes(req.body));
+                });
+                return Promise.all(promises.concat(updatedEntities));
+            })
+            .then(() => {
+                return Promise.all(updatedEntities);
+            })
+            .then(ents => {
+                res.send(ents);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json(err);
+            });
+    };
+
+    delete(req, res) {
+        const properties = Controller.collectProperties(req.query, this.model);
+        if (properties.error) {
+            res.stat(500).json(properties);
+            return;
+        }
+        this.model.findAll({ where: properties })
+            .then(ents => {
+                const deletedEnts = [];
+                ents.forEach(ent => {
+                    deletedEnts.push(ent.destroy());
+                });
+                return Promise.all(deletedEnts);
+            })
+            .then(() => res.send('deleted'))
+            .catch(err => {
+                console.error('Error: ' + err);
+                res.status(500).json({ error: err });
+            });
+    };
+
+    static collectProperties(query, model) {
+        const properties = {};
+        for (let attr in query) {
+            if (attr in model.rawAttributes) {
+                if (query.hasOwnProperty(attr)) {
+                    properties[attr] = query[attr];
+                }
+            } else {
+                return {error: 'No attribute ' + attr + ' found'}
+            }
+        }
+        return properties;
+    }
+
     //populates with products
     getAllColors = (req, res) => {
-        const properties = Controller.collectProperties(req.query, this.model);
+        const properties = Controller.collectProperties({id: req.compAuth.companyId}, this.model);
         if (properties.error) {
             res.status(500).json(properties);
             return;
@@ -76,11 +139,11 @@ class CompanyController extends Controller {
                 }
             ]
         })
-            .then(ent => {
-                const colors = [];
-                ent.colors.forEach(color => colors.push(color));
-                res.send(colors);
-            })
+        .then(ent => {
+            const colors = [];
+            ent.colors.forEach(color => colors.push(color));
+            res.send(colors);
+        })
             .catch(err => {
                 console.error(err);
                 res.status(500).json(err);

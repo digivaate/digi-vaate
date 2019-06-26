@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
+            /*
             validate: {
                 //No record can be created with similar name
                 isUnique: (value, next) => {
@@ -24,10 +25,11 @@ module.exports = (sequelize, DataTypes) => {
                         })
                 }
             }
+               */
         },
         code: {
             type: DataTypes.STRING,
-            unique: 'code'
+            //unique: 'code'
         },
         value: {
             type: DataTypes.STRING
