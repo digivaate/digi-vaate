@@ -2,7 +2,8 @@ import React from 'react';
 import axios from "axios";
 import {API_ROOT} from "../api-config";
 import createAxiosConfig from "../createAxiosConfig";
-
+import './materials/materials.css'
+import './products/products.css'
 class Image extends React.Component {
     state = {
         image: null
@@ -22,7 +23,10 @@ class Image extends React.Component {
 
     render() {
         return (
-            <img src={this.state.image}/>
+            <img 
+                className={ this.props.type === "product" ? "products-display-img" : "material-list-img" } 
+                src={this.state.image}
+            />
         )
     }
 }

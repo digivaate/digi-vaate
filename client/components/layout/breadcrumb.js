@@ -66,7 +66,6 @@ class BreadCrumbDigi extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.refresh != this.props.refresh){
-            console.log("BC updated!")
             this.componentDidMount();
         }
     }
@@ -177,7 +176,6 @@ class BreadCrumbDigi extends Component{
     }
 
     render(){
-        console.log(this.breadcrumbNameMap)
         return(
             <Home
                 breadcrumbMap={this.breadcrumbNameMap}

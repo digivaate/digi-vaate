@@ -89,7 +89,6 @@ class MaterialList extends Component{
             }
             //values.imagePath = values.imagePath.split('\\').pop().split('/').pop();
             values.imagePath = null;
-            console.log('Received values of form: ', values);
             if(!values.unitPrice){
                 values.unitPrice = 0;
             }
@@ -111,7 +110,7 @@ class MaterialList extends Component{
                     .then(response => {
                         axios.patch(`${API_ROOT}/material/image?id=${response.data.id}`, this.uploadImage)
                             .then((re) => {
-                                response.data.imageId = re.data.id;
+                                response.data.imageId = re.data.imageId;
                                 this.materials.push(response.data);
                                 message.success("Material created",1);
                                 this.uploadImage = null;
@@ -160,7 +159,7 @@ class MaterialList extends Component{
                                         }
                                     }}>
                                         {imgUrl ?
-                                            <Image alt="example" className="material-list-img" url={imgUrl}/> :
+                                            <Image key={material.id} alt="example" url={imgUrl}/> :
                                             <div className="material-list-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE
