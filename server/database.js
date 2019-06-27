@@ -24,52 +24,6 @@ if (process.env.DATABASE_URL) {
         config.options
     );
 }
-/*
-export async function getDatabaseNames() {
-    if (!config) throw 'Postgres config missing';
-
-    const result = await sequelize.query('SELECT datname FROM pg_database WHERE datistemplate = false;')
-        .spread(res => {
-            return res
-        });
-
-    const dbNames = [];
-    result.forEach(db => {
-        if (/^digivaate_.*$/.test(db.datname))
-            dbNames.push(db.datname);
-    });
-    return dbNames;
-}
-*/
-/*
-export async function connectToDatabases(dbNames) {
-    const connections = [];
-    for (let i = 0; i < dbNames.length; i++) {
-        let db = new DatabaseConnection(dbNames[i]);
-        connections.push(
-            db.sequelize.sync()
-                .catch(err => console.error('Unable to connect database. ', err))
-        )
-    }
-    return Promise.all(connections)
-        .then((res) => {
-            const databases = {};
-            res.forEach(db => databases[db.config.database] = db);
-            return databases;
-        });
-}
-*/
-/*
-export async function createDatabase(name) {
-    const dbNames = await getDatabaseNames();
-    if (dbNames.includes(name)) throw 'Digivaate database with name ' + name + ' already exists';
-
-    await sequelize.query('CREATE DATABASE ' + name)
-        .catch(err => console.error(err) );
-
-    return name;
-}
-*/
 
 export async function connectToDatabase(dbName) {
         let db = new DatabaseConnection(dbName);
