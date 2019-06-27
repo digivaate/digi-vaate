@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const config = require('../postgres');
+const config = require('../../databaseConfig');
 
 const modules = [
     require('./materialModel'),

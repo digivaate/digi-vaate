@@ -1,7 +1,7 @@
 import DatabaseConnection from "./models/DatabaseConnection";
 import createApiRoutes from "./routes/createApiRoutes";
 const Sequelize = require('sequelize');
-const config = require('./postgres');
+const config = require('../databaseConfig');
 
 let sequelize = null;
 
