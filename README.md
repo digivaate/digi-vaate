@@ -1,5 +1,5 @@
 # Digivaate testiversio
-Metropolia Ammattikorkeakoulun kehittämä, DigiVaate-hankkeeseen liittyvä, internet-pohjainen avoin lähdekoodi sovellukseen, jota on hankkeessa käytetty tuotetietohallinnan digitaalista mallintamista varten.
+Tämä on Metropolia Ammattikorkeakoulun kehittämä, DigiVaate-hankkeeseen liittyvä, selain-pohjainen sovellus, jota on hankkeessa käytetty tuotetietohallintaan ja digitaalista mallintamista varten.
 
 Kyseessä on valmisvaatteita suunnittelevien, valmistavien ja tuottavien yritysten budjetoinnin ja valikoimanhallinnan tarpeisiin kehitetty tuotehallintasovellus, joka on yhdistettävissä yleisiin toimitusketjunhallintaohjelmiin. DigiVaate-konsepti on suunniteltu toimimaan yritysten muiden järjestelmien kanssa. Yleisesti käytössä olevien rajapintojen lisäksi konseptissa on suunniteltu valmiit liitännät yleisimpien myynti- ja varastojärjestelmien kanssa. Valmiina kokonaisratkaisuna konsepti tarjoaa integraation Odoo-toiminnanohjausjärjestelmän kanssa.
 
