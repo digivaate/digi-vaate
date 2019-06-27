@@ -16,7 +16,7 @@ export function auth(req, res, next) {
             },process.env.JWT_KEY,{
                 expiresIn: '1h'
             });
-            res.cookie('compToken', token, {maxAge: 10000});    
+            res.cookie('compToken', token, {maxAge: 3600000});    
         }
         
         next();
@@ -37,8 +37,7 @@ export function adminAuth(req, res, next) {
         if(req.adminAuth.exp - Date.now()/1000 < 1800) {
             console.log('Refreshed admin token');
             const token = jwt.sign({
-                name: req.adminAuth.name,
-                time: Date.now()
+                name: req.adminAuth.name
             },
             process.env.JWT_KEY, {
                 expiresIn: '1h'
