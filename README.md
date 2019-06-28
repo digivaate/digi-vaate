@@ -25,12 +25,12 @@ Tietosisällössä ei ole mukana käyttäjähallintaan liittyviä osia, ne jäte
 - Käsitteen / tiedon päivitysaika (pvm ja kellonaika)
 
 ## Pyörittäminen
-Severin pohjana toimii Node.js. Tietokantana oletusarvoisesti käytetään PostgreSQL-tietokantaa, mutta Sequelize ORM kirjasto tukee myös muitakin SQL-tietokantoja. Tietokanta yhteyttä varten on määrittely tiedosto **databaseConfig.json**.
+Serverin pohjana toimii Node.js. Tietokantana oletusarvoisesti käytetään PostgreSQL-tietokantaa, mutta Sequelize ORM -kirjasto tukee myös muitakin SQL-tietokantoja. Tietokantayhteyttä varten on määrittely tiedosto **databaseConfig.json**.
 
-Salausta varten ympäristömuuttujiin on asetettava **JWT_KEY ympäristömuuttuja**, jolla salataan avaimia. Esim. JWT_KEY=SaLaInEnSalAUSavAIn.
+Salausta varten ympäristömuuttujiin on asetettava **JWT_KEY -ympäristömuuttuja**, jolla salataan avaimia. Esim. JWT_KEY=SaLaInEnSalAUSavAIn.
 
-Tuotanto version voi asettaa pyörimään suorittamalla ensin komennon **npm run build** ja sitten **npm run start**. Kehitys versio saa pyörimään komennolla **npm run dev**.
+Tuotantoversion voi asettaa pyörimään suorittamalla ensin komento **npm run build** ja sitten **npm run start**. Kehitysversion saa pyörimään komennolla **npm run dev**.
 
-Kun serveri on pyörimässä. Osoitteesta **\<osoite\>/admin** (esim. localhost:3000/admin) voi kirjautua admin tunnuksilla ja luoda yhtiöitä. Tiedostoon **admin.json** voi asettaa tunnukset admin käyttäjälle. Oletusarvoisesti käyttäjänimi on admin ja salasana admin.
+Kun serveri on pyörimässä, osoitteesta **\<osoite\>/admin** (esim. localhost:3000/admin) voi kirjautua admin-tunnuksilla ja luoda yhtiöitä. Tiedostoon **admin.json** voi asettaa tunnukset admin-käyttäjälle. Oletusarvoisesti käyttäjänimi on admin ja salasana admin.
 
-Kun admin tunnuksilla on luotu yhtiöitä. Näille yhtiön sovellukseen voi kirjautua pääsivulta ja alkaa käyttämään sovellusta.
+Kun admin-tunnuksilla on luotu yhtiö, sen sovellukseen voi kirjautua pääsivulta ja alkaa käyttämään sovellusta.
