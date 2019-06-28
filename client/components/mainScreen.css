@@ -32,6 +32,16 @@
     margin-bottom: 1rem;
 }
 
+.mainScreen__card-container-disabled{
+    width: 15.6rem;
+    height: 15.6rem;
+    border-radius: 3px;	
+    background-color: rgb(216, 205, 205);	
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 .mainScreen__card-title{
     height: 5rem;	
     width: 12.9rem;	

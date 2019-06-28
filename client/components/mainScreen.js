@@ -40,6 +40,20 @@ class MainScreen extends Component {
                             </Card>
                         </NavLink>
                     </Col>
+                    <Col>
+                        <NavLink to={'/'} activeStyle={{
+                            textDecoration:'none'
+                        }}>
+                            <Card
+                                hoverable={true}
+                                headStyle={{border: 'none'}}
+                                className="mainScreen__card-container-disabled"
+                            >
+                                <div className="mainScreen__card-title">Customers' collections</div>
+                                <div className="mainScreen__card-description">Manage collections for specific customer or purpose. Starting by creating collections - not in function in demo.</div>
+                            </Card>
+                        </NavLink>
+                    </Col>
                 </Row>
                 </div>
             </Fragment>
