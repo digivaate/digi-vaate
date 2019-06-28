@@ -45,6 +45,9 @@ class Login extends Component {
                 <div className={'header'}>
                     <h1 className={'logo'}>Welcome to DigiVaate</h1>
                 </div>
+                <div className={'login__login-first-description'}>
+                    You may test the demo by using Company name: test and Password: test. Inquiries: digivaate (at) metropolia.fi
+                </div>
                 <Form onSubmit={this.handleSubmit} className="login__login-form">
                     <div className="login__login-header">Company Login</div>
                     <FormItem>
@@ -68,6 +71,10 @@ class Login extends Component {
                         {/*Or <a href="">register now!</a>*/}
                     </FormItem>
                 </Form>
+                <div className={'login__login-second-description'}>
+                    This is a test demo created by Metropolia UAS within the project DigiVaate (DigiGarment) for textile and fashion SMEs.  The project was funded by 
+                    the European Regional Development Fund (ERDF) and supervised by Helsinki-Uusimaa Regional Council (1 Sept 2017 - 31 Jan 2019).
+                </div>
             </div>
             </React.Fragment>
         )

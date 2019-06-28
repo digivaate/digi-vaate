@@ -16,6 +16,26 @@
     margin-top: 10rem;	
 }
 
+.login__login-first-description{
+    margin-top: 7rem;
+    position: fixed;
+    text-align: center;
+    width: 100vw;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.login__login-second-description{
+    margin-top: 30rem;
+    position: fixed;
+    text-align: center;
+    width: 100vw;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .login__login-header{
     font-size: 2rem;
     text-align: center;
