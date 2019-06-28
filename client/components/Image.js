@@ -24,7 +24,7 @@ class Image extends React.Component {
     render() {
         return (
             <img 
-                className={ this.props.type === "product" ? "products-display-img" : "material-list-img" } 
+                className={ this.props.classNameCSS } 
                 src={this.state.image}
             />
         )

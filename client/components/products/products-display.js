@@ -623,7 +623,7 @@ class ProductsDisplay extends Component{
                                                 collectionName:product.collectionName
                                             }
                                         }}> {imgUrl ?
-                                            <Image type="product" alt="example" url={imgUrl} /> :
+                                            <Image key={product.id} classNameCSS="products-display-img" alt="example" url={imgUrl} /> :
                                             <div className="products-display-no-img">
                                                 <div className="no-image-text">
                                                     NO IMAGE AVAILABLE
@@ -694,7 +694,7 @@ class ProductsDisplay extends Component{
                                     }
                                 }}>
                                     {imgUrl ?
-                                        <Image type="product" alt="example" url={imgUrl} /> :
+                                        <Image key={product.id} classNameCSS="products-display-img" type="product" alt="example" url={imgUrl} /> :
                                         <div className="products-display-no-img">
                                             <div className="no-image-text">
                                                 NO IMAGE AVAILABLE

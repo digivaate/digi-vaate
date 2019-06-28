@@ -49,7 +49,7 @@ class SingleProductImg extends Component{
             <div className="single-product-img-container">
                 
                 { imgUrl ?
-                    <Image alt="example" className="product-big-ava-img" url={`${imgUrl}`}/> :
+                    <Image alt="example" classNameCSS="product-big-ava-img" url={`${imgUrl}`}/> :
                     <div className="product-big-ava-no-img">
                         <div className="no-image-text">
                             NO IMAGE AVAILABLE

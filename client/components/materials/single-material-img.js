@@ -48,7 +48,7 @@ class SingleMaterialImg extends Component{
                 <div className="img-container">
                     {
                         imageId ?
-                            <img className="single-material-big-ava-img" src={imgUrl} /> :
+                            <Image classNameCSS="single-material-big-ava-img" url={imgUrl} /> :
                             <div className="single-material-big-ava-no-img">
                                 <div className="no-image-text">
                                     NO IMAGE AVAILABLE

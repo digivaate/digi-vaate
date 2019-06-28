@@ -242,6 +242,7 @@ class SingleProductMaterials extends Component{
     };
 
     render(){
+        console.log(this.state.productMaterials)
         let sumMaterialCost = this.state.productMaterials.reduce((sum,ele) => sum + ele.materialCosts,0);
         sumMaterialCost = parseFloat(sumMaterialCost.toFixed(2));
         let materialSelected1 = null;
@@ -266,11 +267,10 @@ class SingleProductMaterials extends Component{
             )
         }
         if (this.state.productMaterials.length > 0) {
-            const materialImgUrl = `${API_ROOT}/image?id=${this.state.imageId}`;
-
             this.state.productMaterials.sort((a,b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0));
             renderDefaultMaterials = this.state.productMaterials.map(material => material.name);
             renderProductMaterials = this.state.productMaterials.map(material => {
+                    const materialImgUrl = `${API_ROOT}/image?id=${material.imageId}`;
                     return (
                         <div className="single-product-materials__material-container" key={material.id}>
                         <Row type="flex" >
@@ -302,8 +302,8 @@ class SingleProductMaterials extends Component{
                             </Col>
                             <Col span={8}>
                                 {
-                                    this.state.imageId ?
-                                    <img className="single-product-material-img" src={`${materialImgUrl}`}/> :
+                                    material.imageId ?
+                                    <Image key={material.id} classNameCSS="single-product-material-img" url={`${materialImgUrl}`}/> :
                                     <div className="single-product-material-no-img">
                                         <div className="no-image-text">
                                             NO IMAGE AVAILABLE
