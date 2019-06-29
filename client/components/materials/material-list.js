@@ -199,6 +199,13 @@ class MaterialList extends Component{
             );
         }
         if(renderMaterialList){
+            let showTotalMaterials = (
+                renderMaterialList.length <= 1
+                    ?
+                    <h2 style={{textAlign:'center'}}>Total <strong>{renderMaterialList.length}</strong> material</h2>
+                    :
+                    <h2 style={{textAlign:'center'}}>Total <strong>{renderMaterialList.length}</strong> materials</h2>
+            );
             if(renderMaterialList.length === 0){
                 return (
                     <div>
@@ -220,7 +227,9 @@ class MaterialList extends Component{
                             onCreate={this.handleCreate}
                             uploadImage={(data) => this.uploadImage = data}
                         />
-                        <p>No materials yet...</p>
+                        <br/>
+                        {showTotalMaterials}
+                        <br/>
                     </div>
                 )
             } else {
@@ -245,6 +254,7 @@ class MaterialList extends Component{
                             uploadImage={(data) => this.uploadImage = data}
                         />
                         <br/>
+                        {showTotalMaterials}
                         <br/>
                         <List
                             dataSource={renderMaterialList}
@@ -252,7 +262,7 @@ class MaterialList extends Component{
                             pagination={{
                                 pageSize: 15,
                                 hideOnSinglePage: true,
-                                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} products`,
+                                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} materials`,
 
                             }}
                             renderItem={item => <List.Item>{item}</List.Item>}
