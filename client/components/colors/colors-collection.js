@@ -197,6 +197,9 @@ class ColorCollection extends Component{
 
     render(){
         if(this.colorCard && this.colorCard.length === 0){
+            let showTotalColors = (               
+                <h2 style={{textAlign:'center', width: '100vw'}}>Total <strong>{this.colorCard.length}</strong> color</h2>
+            );
             return (
                 <div>
                     <div className="colors-collection__header">Colors</div>
@@ -206,7 +209,9 @@ class ColorCollection extends Component{
                         allColors = {this.colorCard}
                     />
                     <div className="colors-collection__colors-container">
-                        <h4>No colors</h4>
+                        <br/>
+                        {showTotalColors}
+                        <br/>
                     </div>             
                 </div>
             )
@@ -226,7 +231,13 @@ class ColorCollection extends Component{
             )
         }
         else {
-            console.log(this.state.productList)
+            let showTotalColors = (
+                this.colorCard.length <= 1
+                    ?
+                    <h2 style={{textAlign:'center', width: '100vw'}}>Total <strong>{this.colorCard.length}</strong> color</h2>
+                    :
+                    <h2 style={{textAlign:'center', width: '100vw'}}>Total <strong>{this.colorCard.length}</strong> colors</h2>
+            );
             this.colorCard.sort((a,b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0));
             const colorCard = this.colorCard.map(element => {
                 return(
@@ -261,6 +272,9 @@ class ColorCollection extends Component{
                     />
                     <br/>
                     <div className="colors-collection__colors-container">
+                        <br/>
+                        {showTotalColors}
+                        <br/>
                         {colorCard}
                     </div>
                         <Modal
