@@ -281,7 +281,7 @@ class SeasonsList extends Component{
                                                         <div className="seasons-list__collection-container">
                                                             <div className="seasons-list__collection-name">{collection.name}</div>
                                                             <div className="seasons-list__collection-info">
-                                                                {`Budget: € ${collection.budget}`}
+                                                                {/* {`Cover percentage: ${collection.coverPercent} %`} */}
                                                             </div>
                                                         </div>
                                                     )
