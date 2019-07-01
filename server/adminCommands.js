@@ -45,7 +45,7 @@ module.exports = (apiRoutes, dbConnection) => {
         }
     });
 
-    router.post('/company', adminAuth, async (req, res, next) => {
+    router.post('/company', adminAuth, (req, res, next) => {
         try {
             if (!req.body.name) throw 'Name missing';
             if (!req.body.password) throw 'Password missing';
