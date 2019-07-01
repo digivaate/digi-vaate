@@ -31,7 +31,7 @@ class OrderController extends Controller {
                 ent.forEach(order => {
                     order.orderProducts.forEach(ordProd => {
                         promises.push(
-                            this.dbConnection.models.products.findByPk(ordProd.productId, {
+                            this.dbConnection.models.products.findById(ordProd.productId, {
                                 attributes: ['id', 'name', 'sellingPrice']
                             }).then(res => {
                                 ordProd.dataValues.product = res;

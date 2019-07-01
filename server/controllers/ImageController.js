@@ -5,7 +5,7 @@ class ImageController extends Controller {
 
     getImage = (req, res, next) => {
         if (!req.query.id) throw 'No image id given';
-        this.model.findByPk(req.query.id)
+        this.model.findById(req.query.id)
             .then(image => {
                 if (!image) throw `No image found with id: ${req.query.id}`;
 

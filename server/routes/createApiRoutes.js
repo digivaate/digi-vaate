@@ -1,6 +1,6 @@
 const express = require('express');
 
-export default function (dbConnection) {
+module.exports = function (dbConnection) {
     const router = express.Router();
 
     router.use('/collection', require('./collectionRoute')(dbConnection));

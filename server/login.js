@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-export default (databaseConnection) => {
+module.exports = (databaseConnection) => {
     return async (req, res, next) => {
 
         let company = await databaseConnection.models.companies.findOne({

@@ -2,9 +2,7 @@ const express = require('express');
 const adminCred = require('../admin');
 const jwt = require('jsonwebtoken');
 
-import {
-    adminAuth
-} from './auth';
+const {adminAuth} = require('./auth');
 
 module.exports = (apiRoutes, dbConnection) => {
     const router = express.Router();

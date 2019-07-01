@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
-import {auth} from './auth';
-import adminCommands from './adminCommands';
-import login from './login';
-import createApiRoutes from "./routes/createApiRoutes";
-import DatabaseConnection from "./models/DatabaseConnection";
+const {auth} = require('./auth');
+const adminCommands = require('./adminCommands');
+const login = require('./login');
+const createApiRoutes = require("./routes/createApiRoutes");
+const DatabaseConnection = require("./models/DatabaseConnection");
 
 const db = new DatabaseConnection('digivaate');
 let apiRoutes = null;

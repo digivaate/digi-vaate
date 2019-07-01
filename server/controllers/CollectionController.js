@@ -1,5 +1,5 @@
 const Controller = require('./Controller');
-import ProductController from "./ProductController";
+const ProductController = require("./ProductController");
 
 class CollectionController extends Controller {
     constructor(dbConnection) { super(dbConnection, dbConnection.models.collections) }

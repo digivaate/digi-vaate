@@ -14,7 +14,7 @@ class MaterialController extends Controller {
     uploadImage = (req, res, next) => {
        this.dbConnection.models.images.create(req.file)
             .then(img => {
-                this.model.findByPk(req.query.id)
+                this.model.findById(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {
                             this.dbConnection.models.images.destroy({
@@ -33,7 +33,7 @@ class MaterialController extends Controller {
     };
 
     getImage = (req, res, next) => {
-        this.dbConnection.models.products.findByPk(req.query.id, {
+        this.dbConnection.models.products.findById(req.query.id, {
             attributes: ['imageId']
         })
             .then(ent => {
@@ -43,13 +43,16 @@ class MaterialController extends Controller {
                 if (!ent.imageId) {
                     res.status(404).json({ error: 'No image found' });
                 }
-                return this.dbConnection.models.images.findByPk(ent.imageId);
+                return this.dbConnection.models.images.findById(ent.imageId);
             })
             .then(image => {
                 res.contentType(image.mimetype);
                 res.end(image.buffer);
             })
-            .catch(err => res.status(500).json({ error: err }));
+            .catch(err => {
+                console.error(err);
+                res.status(500).json({ error: err })
+            });
     };
 
 }

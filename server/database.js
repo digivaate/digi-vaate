@@ -1,5 +1,5 @@
-import DatabaseConnection from "./models/DatabaseConnection";
-import createApiRoutes from "./routes/createApiRoutes";
+const DatabaseConnection = require("./models/DatabaseConnection");
+const createApiRoutes = require("./routes/createApiRoutes");
 const Sequelize = require('sequelize');
 const config = require('../databaseConfig');
 
@@ -25,12 +25,12 @@ if (process.env.DATABASE_URL) {
     );
 }
 
-export async function connectToDatabase(dbName) {
+module.exports = async function connectToDatabase(dbName) {
         let db = new DatabaseConnection(dbName);
         return db.sequelize.sync();
 }
 
-export function databaseRouting(dbConnections) {
+module.exports = function databaseRouting(dbConnections) {
     const apiRoutes = {};
     for (let c in dbConnections) {
         if (dbConnections.hasOwnProperty(c)) {
@@ -45,13 +45,13 @@ export function databaseRouting(dbConnections) {
  * @param {string} name - company name
  * @return {express.router} router
  */
-export async function setupDatabase(name) {
+module.exports = async function setupDatabase(name) {
     const dbName = await createDatabase(name);
     const dbConnection = await connectToDatabase(dbName);
     return await createApiRoutes(dbConnection);
 }
 
-export async function deleteCompany(name, dbConnections, apiRoutes) {
+module.exports = async function deleteCompany(name, dbConnections, apiRoutes) {
     if (!(name in apiRoutes) || !(name in dbConnections))
         return false;
     try {

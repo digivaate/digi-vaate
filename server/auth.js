@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-export function auth(req, res, next) {
+function auth(req, res, next) {
     try {
         if (!req.cookies.compToken) throw 'Company token missing from cookies';
         if (!process.env.JWT_KEY) throw 'JWT_KEY missing from environment variables';
@@ -26,7 +26,7 @@ export function auth(req, res, next) {
     }
 }
 
-export function adminAuth(req, res, next) {
+function adminAuth(req, res, next) {
     try {
         if (!req.cookies.adminToken) throw 'Admin token missing from cookies';
         if (!process.env.JWT_KEY) throw 'JWT_KEY missing from environment variables';
@@ -50,4 +50,9 @@ export function adminAuth(req, res, next) {
         console.error(e);
         res.status(401).json({ error: 'Unauthorized', level: 'admin' });
     }
+}
+
+module.exports = {
+    auth,
+    adminAuth
 }

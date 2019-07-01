@@ -20,7 +20,7 @@ class OrderProductController extends Controller {
 
     //returns promise. Resolved value is boolean
     orderContainsProduct = (orderId, productId) => {
-        return this.dbConnection.models.orders.findByPk(orderId, {
+        return this.dbConnection.models.orders.findById(orderId, {
             attributes: ['id'],
             include: [{ model: this.model, as: 'orderProducts' }]
         })
@@ -47,7 +47,10 @@ class OrderProductController extends Controller {
                 await this.setRelations(ent, req.body);
                 res.send(ent);
             })
-            .catch(err => next(err) );
+            .catch(err => {
+                console.error(err);
+                next(err); 
+            });
     };
 
 }

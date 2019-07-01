@@ -1,4 +1,4 @@
-import ProductController from "./ProductController";
+const ProductController = require("./ProductController");
 
 const Controller = require('./Controller');
 
@@ -144,7 +144,7 @@ class SeasonController extends Controller {
                 if (season.budget > purchasingPrice) {
                     const promises = [];
                     req.body.products.forEach(prod => {
-                        this.dbConnection.models.products.findByPk(prod.id)
+                        this.dbConnection.models.products.findById(prod.id)
                             .then(ent => {
                                 promises.push(
                                     ent.updateAttributes(prod)

@@ -67,4 +67,4 @@ class DatabaseConnection {
     
 }
 
-export default DatabaseConnection;
+module.exports = DatabaseConnection;

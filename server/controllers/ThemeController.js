@@ -7,7 +7,7 @@ class ThemeController extends Controller {
     uploadImage = (req, res, next) => {
         if (!req.file) throw 'File not send';
 
-        this.model.findByPk(req.params.id)
+        this.model.findById(req.params.id)
             .then(ent => {
                 if (ent.imagePaths === null) {
                     ent.imagePaths = [req.file.filename];
@@ -24,12 +24,13 @@ class ThemeController extends Controller {
                 if (fs.existsSync('./uploads/' + req.file.path)) {
                     fs.unlinkSync('./uploads/' + req.file.path);
                 }
+                console.error(err);
                 res.status(500).json(err);
             });
     }
 
     deleteImage = (req, res, next) => {
-        this.model.findByPk(req.params.id)
+        this.model.findById(req.params.id)
             .then(ent => {
                 if (ent.imagePaths.includes(req.params.imageName)) {
                     if (fs.existsSync('./uploads/' + req.params.imageName)) {
@@ -48,6 +49,7 @@ class ThemeController extends Controller {
                 res.send(ent);
             })
             .catch(err => {
+                console.error(err);
                 res.status(500).json(err);
             });
     }

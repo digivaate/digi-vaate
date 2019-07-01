@@ -14,7 +14,10 @@ class SizeController extends Controller {
                 .then(resolved => {
                     res.send(resolved);
                 })
-                .catch(err => next(err) );
+                .catch(err => {
+                    console.error(err);
+                    next(err);
+                });
         } else {
             let entity = null;
             req.body.ownerCompany = req.compAuth.companyId;
