@@ -15,13 +15,13 @@
     "url": "https://github.com/makkelip/digi-vaate/issues"
   },
   "scripts": {
-    "start": "set JWT_KEY=abcd&& set NODE_ENV=production&& node ./server/server.js",
+    "start": "set JWT_KEY=abcd&& set NODE_ENV=production&& babel-node ./server/server.js",
     "start-mac": "NODE_ENV=production babel-node ./server/server.js",
     "build": "webpack --mode production",
     "build-run": "npm run preinstall && npm run start",
     "heroku-postbuild": "npm run build",
     "dev:client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "dev:server": "nodemon --exec node server/server",
+    "dev:server": "nodemon --exec babel-node server/server",
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\""
   },
   "dependencies": {
