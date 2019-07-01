@@ -7,7 +7,7 @@ class ThemeController extends Controller {
     uploadImage = (req, res, next) => {
         if (!req.file) throw 'File not send';
 
-        this.model.findById(req.params.id)
+        this.model.findByPk(req.params.id)
             .then(ent => {
                 if (ent.imagePaths === null) {
                     ent.imagePaths = [req.file.filename];
@@ -29,7 +29,7 @@ class ThemeController extends Controller {
     }
 
     deleteImage = (req, res, next) => {
-        this.model.findById(req.params.id)
+        this.model.findByPk(req.params.id)
             .then(ent => {
                 if (ent.imagePaths.includes(req.params.imageName)) {
                     if (fs.existsSync('./uploads/' + req.params.imageName)) {

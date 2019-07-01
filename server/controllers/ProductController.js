@@ -73,7 +73,7 @@ class ProductController extends Controller {
             .then(async ent => {
                 entity = ent;
                 await this.setRelations(ent, req.body);
-                entity = await this.model.findById(entity.id, {
+                entity = await this.model.findByPk(entity.id, {
                     include: [{ all: true }]
                 });
                 res.send(entity);
@@ -121,7 +121,7 @@ class ProductController extends Controller {
         this.dbConnection.models.images.create(req.file)
             .then(img => {
                 console.log('IMG', img);
-                this.model.findById(req.query.id)
+                this.model.findByPk(req.query.id)
                     .then(ent => {
                         if (ent.imageId) {
                             this.dbConnection.models.images.destroy({
@@ -140,7 +140,7 @@ class ProductController extends Controller {
     };
 
     getImage = (req, res, next) => {
-        this.model.findById(req.query.id, {
+        this.model.findByPk(req.query.id, {
             attributes: ['imageId']
         })
             .then(ent => {
@@ -150,7 +150,7 @@ class ProductController extends Controller {
                 if (!ent.imageId) {
                     res.status(404).json({ error: 'No image found' });
                 }
-                return this.dbConnection.models.images.findById(ent.imageId);
+                return this.dbConnection.models.images.findByPk(ent.imageId);
             })
             .then(image => {
                 res.contentType(image.mimetype);

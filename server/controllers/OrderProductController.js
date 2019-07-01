@@ -20,7 +20,7 @@ class OrderProductController extends Controller {
 
     //returns promise. Resolved value is boolean
     orderContainsProduct = (orderId, productId) => {
-        return this.dbConnection.models.orders.findById(orderId, {
+        return this.dbConnection.models.orders.findByPk(orderId, {
             attributes: ['id'],
             include: [{ model: this.model, as: 'orderProducts' }]
         })
