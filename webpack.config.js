@@ -25,7 +25,7 @@ const serverConfig = {
 const clientConfig = {
     target: "web",
     entry: {
-        client: ['babel-polyfill', "./client/index.js"]
+        client: ['@babel/polyfill', "./client/index.js"]
     },
     output: {
         path: path.resolve(__dirname, outputDir +'/client/'),
