@@ -170,7 +170,7 @@ class SingleProductGeneralInfo extends Component{
             taxPercent: this.state.taxPercent ? parseFloat(parseFloat(this.state.taxPercent).toFixed(2)) : 0,
             amount: this.state.amount ? parseFloat(parseFloat(this.state.amount).toFixed(2)) : 0,
             subcCostTotal: this.state.subcCostTotal ? parseFloat(parseFloat(this.state.subcCostTotal).toFixed(2)) : 0,
-            productGroupId: this.state.productGroup.id,
+            productGroupId: this.state.productGroup ? this.state.productGroup.id : null,
             code: this.state.code
         };
         console.log(newInfo);
