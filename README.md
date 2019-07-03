@@ -31,6 +31,6 @@ Salausta varten ympäristömuuttujiin on asetettava **JWT_KEY -ympäristömuuttu
 
 Tuotantoversion voi asettaa pyörimään suorittamalla ensin komento **npm run build** ja sitten **npm run start**. Kehitysversion saa pyörimään komennolla **npm run dev**.
 
-Kun serveri on pyörimässä, osoitteesta **\<osoite\>/admin** (esim. localhost:3000/admin) voi kirjautua admin-tunnuksilla ja luoda yhtiöitä. Tiedostoon **admin.json** voi asettaa tunnukset admin-käyttäjälle. Oletusarvoisesti käyttäjänimi on admin ja salasana admin.
+Kun serveri on pyörimässä, osoitteesta **\<osoite\>/admin** (esim. localhost:3000/admin) voi kirjautua admin-tunnuksilla ja luoda yhtiöitä. Ympäristömuuttujilla **diginame** ja **digipassword** voi määrittää admin käyttäjän nimen ja salasanan. Jos näitä arvoja ei löydy. Oletusarvoisesti käyttäjänimi ja salasana ovat admin, admin.
 
 Kun admin-tunnuksilla on luotu yhtiö, sen sovellukseen voi kirjautua pääsivulta ja alkaa käyttämään sovellusta.

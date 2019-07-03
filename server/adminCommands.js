@@ -1,8 +1,12 @@
 const express = require('express');
-const adminCred = require('../admin');
 const jwt = require('jsonwebtoken');
 
 const {adminAuth} = require('./auth');
+
+const adminCred = {
+    name: process.env.diginame || 'admin',
+    password: process.env.digipassword || 'admin'
+}
 
 module.exports = (apiRoutes, dbConnection) => {
     const router = express.Router();
