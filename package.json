@@ -25,6 +25,7 @@
     "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\""
   },
   "dependencies": {
+    "@babel/node": "^7.0.0",
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -68,7 +69,6 @@
     "sequelize": "^4.44.0"
   },
   "devDependencies": {
-    "@babel/node": "^7.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.6.1",
     "html-loader": "^0.5.5",
