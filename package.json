@@ -42,7 +42,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "antd": "^3.20.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babel-loader": "^8.0.0",
     "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "bcryptjs": "^2.4.3",
